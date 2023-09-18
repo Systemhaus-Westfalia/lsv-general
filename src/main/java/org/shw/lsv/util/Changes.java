@@ -15,7 +15,7 @@
  * All Rights Reserved.                                                       *
  * Contributor(s): Yamel Senih www.erpya.com                                  *
  *****************************************************************************/
-package org.spin.template.util;
+package org.shw.lsv.util;
 
 /**
  * Add here all changes for core and statci methods
