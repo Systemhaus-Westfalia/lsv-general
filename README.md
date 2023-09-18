@@ -1,6 +1,6 @@
-# ADempiere Template Project
+# ADempiere LSV
 
-Fill it with a comment about project.
+A Location for El Salvador
 
 ## Requirements
 - [JDK 11 or later](https://adoptium.net/)
@@ -8,26 +8,34 @@ Fill it with a comment about project.
 
 
 ### Packages Names
-you should change the follows packages for your own implementation, just change the word `template` by your implementation
+All implementation has some default packages like `org.shw.lsv`
 
 ```Java
-org.spin.template.model.validator
-org.spin.template.setup
-org.spin.template.util
+org.shw.lsv.setup
+org.shw.lsv.util
+org.shw.lsv.util.support
+org.shw.lsv.util.support.findex
 ```
 
-### Model Validators
-Change the `org.spin.template.model.validator.Validator` by your implementation, example: `org.spin.template.model.validator.MyOwnFunctionality`
-
 ### Model Deploy class
-Change the `org.spin.template.setup.Deploy` by your implementation, example: `org.spin.template.setup.MyOwnSetupForDeploy`
+The main deploy class `org.shw.lsv.setup.CreateFindex` used for deploy default provider [Findex](https://findex.la/)
 
-### Model Util class for core changes
-Change the `org.spin.template.util.Changes` by your implementation, example: `org.spin.template.util.MyOwnChanges`
+### Functionality Definition
+All abstraction for this functionality is in `org.shw.lsv.util.support`, these files has two files:
+
+- `IDeclarationProvider`: This interface must be implemented by provider, the main functionality for this is connect with provider, implement security and endpoints for publish documents
+- `IDeclarationDocument`: A representation of document to publish, the main method to implement is `getDocumentValues()`, this method allows return a map with all values to publish (assume that is a JSON body).
+
+
+### Functionality Implementation
+A first implementation for this is own package`org.shw.lsv.util.support.findex`, this package have some classes:
+
+- `Findex`: Main connector implementation
+- `Invoice`: A implementation for invoice document
 
 ## Binary Project
 
-You can get all binaries from github [here](https://central.sonatype.com/artifact/io.github.adempiere/adempiere-template-project/1.0.0).
+You can get all binaries from github [here](https://central.sonatype.com/artifact/io.github.adempiere/location-el-salvador/1.0.0).
 
 All contruction is from github actions
 
@@ -44,13 +52,13 @@ Is very easy.
 - Gradle
 
 ```Java
-implementation 'io.github.adempiere:adempiere-template-project:1.0.0'
+implementation 'io.github.adempiere:location-el-salvador:1.0.0'
 ```
 
 - SBT
 
 ```
-libraryDependencies += "io.github.adempiere" % "adempiere-template-project" % "1.0.0"
+libraryDependencies += "io.github.adempiere" % "location-el-salvador" % "1.0.0"
 ```
 
 - Apache Maven
@@ -58,7 +66,7 @@ libraryDependencies += "io.github.adempiere" % "adempiere-template-project" % "1
 ```
 <dependency>
     <groupId>io.github.adempiere</groupId>
-    <artifactId>adempiere-template-project</artifactId>
+    <artifactId>location-el-salvador</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
