@@ -15,7 +15,7 @@
  *************************************************************************************/
 package org.shw.lsv.util.support;
 
-import java.util.Map;
+import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 
 /** 
  * 	Interface as contract for supported API
@@ -26,6 +26,7 @@ public interface IDeclarationDocument {
 	/**
 	 * Get document values for publish
 	 * @return
+	 * @throws Exception 
 	 */
-	public Map<String, Object> getDocumentValues();
+	public X_E_InvoiceElectronic processElectronicInvoice() throws Exception;
 }

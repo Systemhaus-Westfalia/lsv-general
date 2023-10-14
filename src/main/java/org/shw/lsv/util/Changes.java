@@ -18,7 +18,7 @@
 package org.shw.lsv.util;
 
 /**
- * Add here all changes for core and statci methods
+ * Add here all changes for core and static methods
  * Please rename this class and package
  * @author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
  */

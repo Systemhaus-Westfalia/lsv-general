@@ -26,8 +26,9 @@ public interface IDeclarationProvider extends IAppSupport {
 	/**
 	 * Publish a document for this provider
 	 * @param document
+	 * @throws Exception 
 	 */
-	public String publishDocument(PO document);
+	public String publishDocument(PO document) throws Exception;
 	
 	/**
 	 * Get declaration document based on entity

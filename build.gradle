@@ -5,7 +5,7 @@ plugins {
 }
 
 sourceCompatibility = 1.11
-def baseVersion = 'shw-air-terminal-vertical-1.0.38'
+def baseVersion = 'shw-air-terminal-vertical-1.0.55'
 def baseGroupId = 'com.erpya'
 
 repositories {

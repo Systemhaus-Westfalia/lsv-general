@@ -33,7 +33,7 @@ public class CreateFindex implements ISetupDefinition {
 
 	private static final String DESCRIPTION = "(*Created from Setup Automatically*)";
 	private static final String NAME = "Findex Provider";
-	public static final String APPLICATION_TYPE = "LSE";
+	public static final String APPLICATION_TYPE = "LSV";
 	
 	@Override
 	public String doIt(Properties context, String transactionName) {

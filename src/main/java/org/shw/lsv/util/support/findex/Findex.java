@@ -24,13 +24,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.adempiere.core.domains.models.I_C_Invoice;
+import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MInvoice;
 import org.compiere.model.PO;
 import org.compiere.util.Env;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
-import org.json.JSONObject;
 import org.shw.lsv.util.support.IDeclarationDocument;
 import org.shw.lsv.util.support.IDeclarationProvider;
 import org.spin.model.MADAppRegistration;
@@ -41,9 +41,10 @@ import org.spin.model.MADAppRegistration;
  */
 public class Findex implements IDeclarationProvider {
 	/**	Findex Host	*/
-	private final String PROVIDER_HOST = "https://pruebas.findex.la";
+	private final String PROVIDER_HOST =  "providerhost"; // "https://pruebas.findex.la"
 	private final String TOKEN = "token";
 	private String token = null;
+	private String providerHost = null;
 	/**	Registration Id	*/
 	private int registrationId = 0;
 	
@@ -59,7 +60,8 @@ public class Findex implements IDeclarationProvider {
 		if(registration == null) {
 			throw new AdempiereException("@AD_AppRegistration_ID@ @NotFound@");
 		}
-		token = registration.getParameterValue(TOKEN);
+		this.token        = registration.getParameterValue(TOKEN);
+		this.providerHost = registration.getParameterValue(PROVIDER_HOST);
 	}
 
 	@Override
@@ -78,13 +80,21 @@ public class Findex implements IDeclarationProvider {
 		return registrationId;
 	}
 
+	public String getProviderHost() {
+		return providerHost;
+	}
+
+	public void setProviderHost(String providerHost) {
+		this.providerHost = providerHost;
+	}
+
 	@Override
-	public String publishDocument(PO document) {
+	public String publishDocument(PO document) throws Exception {
 		IDeclarationDocument declarationDocument = getDeclarationDocument(document);
 		if(declarationDocument == null) {
 			return null;
 		}
-		Invocation.Builder invocationBuilder = getClient().target(PROVIDER_HOST)
+		Invocation.Builder invocationBuilder = getClient().target(providerHost)
 				.path("api")
 				.path("procesar-json")
 				.path("3pl")
@@ -92,8 +102,9 @@ public class Findex implements IDeclarationProvider {
     			.header(HttpHeaders.AUTHORIZATION, token)
     			.header(HttpHeaders.ACCEPT, "application/json");
 		//	
-		JSONObject jsonValue = new JSONObject(declarationDocument.getDocumentValues());
-		Entity<String> entity = Entity.json(jsonValue.toString());
+		X_E_InvoiceElectronic invoiceElectronic = declarationDocument.processElectronicInvoice();
+		String jsonValue = invoiceElectronic.getjson();
+		Entity<String> entity = Entity.json(jsonValue);
         Response response = invocationBuilder.post(entity);
         if(response.getStatus() != 201
         		|| response.getStatus() != 200) {
@@ -118,9 +129,25 @@ public class Findex implements IDeclarationProvider {
 			return null;
 		}
 		if(entity.get_TableName().equals(I_C_Invoice.Table_Name)) {
-			return new Invoice((MInvoice) entity);
+			return new ElectronicInvoice((MInvoice) entity);
 		}
 		return null;
+	}
+	
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+        int invoiceID = Integer.parseInt(args[0]);
+		PO invoice = new MInvoice(Env.getCtx(), invoiceID, null);
+		Findex findex = new Findex();
+		try {
+			findex.publishDocument(invoice);			
+		} catch (Exception e) {
+			System.out.println("Error calling publishDocument()"); 
+		}
+		System.out.println("Publish document successful"); 
 	}
 }
 
