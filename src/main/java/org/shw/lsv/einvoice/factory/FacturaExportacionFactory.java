@@ -1,13 +1,6 @@
 package org.shw.lsv.einvoice.factory;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
@@ -34,9 +27,7 @@ import org.shw.lsv.einvoice.fefexfacturaexportacionv1.ResumenFacturaExportacion;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class FacturaExportacionFactory extends EDocumentFactory {
 	FacturaExportacion facturaExportacion;
@@ -468,47 +459,4 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 	public StringBuffer getEDocumentErrorMessages() {
 		 return facturaExportacion.errorMessages;
 	 }
-	
-	public boolean writeToFile (String json, MInvoice invoice, String directory) {
-		System.out.println("Factura de Exportacion: start writing to file");
-		try
-		{
-			Path rootpath = Paths.get(directory);
-			if (!Files.exists(rootpath)) {
-				return false;
-			}    	
-
-			directory = (directory.endsWith("/")
-					|| directory.endsWith("\\"))
-					? directory:directory + "/";
-			Path path = Paths.get(directory + invoice.getDateAcct().toString().substring(0, 10) + "/");
-			Files.createDirectories(path);
-			//java.nio.file.Files;
-			Files.createDirectories(path);
-			String filename = path +"/" + invoice.getDocumentNo().replace(" ", "") + ".json"; 
-			File out = new File (filename);
-			Writer fw = new OutputStreamWriter(new FileOutputStream(out, false), "UTF-8");
-			fw.write(json);
-			fw.flush ();
-			fw.close ();
-			float size = out.length();
-			size /= 1024;
-			System.out.println("File size: " + out.getAbsolutePath() + " - " + size + " kB");
-			System.out.println("Printed To: " + filename);
-			System.out.println("Factura de Exportacion: end writing to file");
-			return true;
-		}
-		catch (Exception ex)
-		{
-			throw new RuntimeException(ex);
-		}
-	}
-	
-	boolean deleteJsonNOde(JsonNode node) {
-        if(! node.isEmpty()) {
-            ((ObjectNode) node).removeAll();
-            return true;
-        }
-       return false;
-	}
 }
