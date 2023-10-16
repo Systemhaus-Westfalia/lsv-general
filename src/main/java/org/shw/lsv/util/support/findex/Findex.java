@@ -26,6 +26,7 @@ import javax.ws.rs.core.Response;
 import org.adempiere.core.domains.models.I_C_Invoice;
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.adempiere.exceptions.AdempiereException;
+import org.compiere.Adempiere;
 import org.compiere.model.MInvoice;
 import org.compiere.model.PO;
 import org.compiere.util.Env;
@@ -34,6 +35,8 @@ import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 import org.shw.lsv.util.support.IDeclarationDocument;
 import org.shw.lsv.util.support.IDeclarationProvider;
 import org.spin.model.MADAppRegistration;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * 	A implementation class for findex.la provider using LSV
@@ -92,6 +95,7 @@ public class Findex implements IDeclarationProvider {
 	}
 
 	@Override
+	@JsonInclude(JsonInclude.Include.ALWAYS)
 	public String publishDocument(PO document) throws Exception {
 		IDeclarationDocument declarationDocument = getDeclarationDocument(document);
 		if(declarationDocument == null) {
@@ -106,6 +110,10 @@ public class Findex implements IDeclarationProvider {
     			.header(HttpHeaders.ACCEPT, "application/json");
 
 		X_E_InvoiceElectronic electronicInvoiceModel = declarationDocument.processElectronicInvoice();
+		if(electronicInvoiceModel==null) {
+			return null;
+		}
+		
 		String documentAsJsonString = electronicInvoiceModel.getjson();
 		Entity<String> entity = Entity.json(documentAsJsonString);
         Response response = invocationBuilder.post(entity);
@@ -144,6 +152,7 @@ public class Findex implements IDeclarationProvider {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		Adempiere.startupEnvironment(true);
         int invoiceID = Integer.parseInt(args[0]);
         int registrationId = Integer.parseInt(args[1]);
 		PO invoice = new MInvoice(Env.getCtx(), invoiceID, null);

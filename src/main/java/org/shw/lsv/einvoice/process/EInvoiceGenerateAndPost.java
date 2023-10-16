@@ -70,7 +70,8 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 		MClient client = new MClient(getCtx(),Env.getAD_Client_ID(getCtx()), get_TrxName());
 		Timestamp startdate = (Timestamp)(client.get_Value("ei_Startdate"));
 		String whereClause = "issotrx = 'Y' AND processed = 'Y' AND dateacct>=? "
-				+ " AND ei_Processing = 'N' AND (ei_validationstatus is null OR ei_validationstatus = '02')";
+				+ " AND ei_Processing = 'N' AND (ei_validationstatus IS NULL OR ei_validationstatus = '02')";
+		
 		List<MInvoice> invoices = new Query(getCtx(), MInvoice.Table_Name, whereClause, get_TrxName())
 				.setClient_ID()
 				.setParameters(startdate)
@@ -80,6 +81,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 		.forEach(invoice -> {
 			try {
 				findex.publishDocument(invoice);
+				// TODO: set EIProcessing == false
 			} catch (Exception e) {
 				String error = "Error al procesar documento #" + invoice.getDocumentNo() + " " + e;
 				errorMessages.append(error);
