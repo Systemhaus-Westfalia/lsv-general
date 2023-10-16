@@ -40,14 +40,17 @@ import org.spin.model.MADAppRegistration;
  * 	@author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
  */
 public class Findex implements IDeclarationProvider {
-	/**	Findex Host	*/
+	public static final int HTTP_RESPONSE_200_OK = 200;
+	public static final int HTTP_RESPONSE_201_CREATED = 201;
 	private final String PROVIDER_HOST =  "providerhost"; // "https://pruebas.findex.la"
 	private final String TOKEN = "token";
 	private String token = null;
 	private String providerHost = null;
-	/**	Registration Id	*/
 	private int registrationId = 0;
 	
+
+	public Findex() {
+	}
 	
 	/**
 	 * Validate connection
@@ -101,13 +104,15 @@ public class Findex implements IDeclarationProvider {
     			.request(MediaType.APPLICATION_JSON)
     			.header(HttpHeaders.AUTHORIZATION, token)
     			.header(HttpHeaders.ACCEPT, "application/json");
-		//	
-		X_E_InvoiceElectronic invoiceElectronic = declarationDocument.processElectronicInvoice();
-		String jsonValue = invoiceElectronic.getjson();
-		Entity<String> entity = Entity.json(jsonValue);
+
+		X_E_InvoiceElectronic electronicInvoiceModel = declarationDocument.processElectronicInvoice();
+		String documentAsJsonString = electronicInvoiceModel.getjson();
+		Entity<String> entity = Entity.json(documentAsJsonString);
         Response response = invocationBuilder.post(entity);
-        if(response.getStatus() != 201
-        		|| response.getStatus() != 200) {
+        
+        // TODO: korrekte Antwort-Behandlung
+        if(response.getStatus() != HTTP_RESPONSE_201_CREATED
+        		|| response.getStatus() != HTTP_RESPONSE_200_OK) {
         	String output = response.readEntity(String.class);
         	return output;
         }
@@ -140,8 +145,10 @@ public class Findex implements IDeclarationProvider {
 	 */
 	public static void main(String[] args) {
         int invoiceID = Integer.parseInt(args[0]);
+        int registrationId = Integer.parseInt(args[1]);
 		PO invoice = new MInvoice(Env.getCtx(), invoiceID, null);
 		Findex findex = new Findex();
+		findex.setAppRegistrationId(registrationId);
 		try {
 			findex.publishDocument(invoice);			
 		} catch (Exception e) {
