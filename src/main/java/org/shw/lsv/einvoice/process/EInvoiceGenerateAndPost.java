@@ -18,11 +18,14 @@
 
 package org.shw.lsv.einvoice.process;
 
+import java.sql.Timestamp;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
 import org.compiere.model.Query;
+import org.compiere.util.Env;
 import org.shw.lsv.util.support.findex.Findex;
 import org.spin.model.MADAppRegistration;
 
@@ -64,9 +67,17 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 
 		Findex findex = new Findex();
 		findex.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
-
-		List<MInvoice> invoices = null;  // TODO: fällige Rechnungen ermitteln!!!!
-		invoices.forEach(invoice -> {
+		MClient client = new MClient(getCtx(),Env.getAD_Client_ID(getCtx()), get_TrxName());
+		Timestamp startdate = (Timestamp)(client.get_Value("ei_Startdate"));
+		String whereClause = "issotrx = 'Y' AND processed = 'Y' AND dateacct>=? "
+				+ " AND ei_Processing = 'N' AND (ei_validationstatus is null OR ei_validationstatus = '02')";
+		List<MInvoice> invoices = new Query(getCtx(), MInvoice.Table_Name, whereClause, get_TrxName())
+				.setClient_ID()
+				.setParameters(startdate)
+				.list();
+		invoices.stream()
+		.filter(invoice -> invoice.getC_DocType().getE_DocType_ID() >0)
+		.forEach(invoice -> {
 			try {
 				findex.publishDocument(invoice);
 			} catch (Exception e) {
