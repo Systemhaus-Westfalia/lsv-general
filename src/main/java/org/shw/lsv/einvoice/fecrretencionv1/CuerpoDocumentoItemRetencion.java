@@ -36,8 +36,8 @@ public class CuerpoDocumentoItemRetencion {
 	 * Validate the Schema conditions
 	 * Schema is wrong.
 	 * According to schema
-	 * if(getTipoDoc()==1)  -> codGeneracion PATTERN = "^[a-zA-Z0-9]{1,20}$"
-	 * if(getTipoDoc()==2)  -> codGeneracion PATTERN = "^[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}$"
+	 * if(getTipoDoc()==1)  -&gt; codGeneracion PATTERN = "^[a-zA-Z0-9]{1,20}$"
+	 * if(getTipoDoc()==2)  -&gt; codGeneracion PATTERN = "^[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}$"
 	 * But there is no codGeneracion in this class.
 	 */
 	public String validateValues() {	
