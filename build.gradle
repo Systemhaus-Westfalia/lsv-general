@@ -119,9 +119,13 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/adempiere/location-el-salvador.git'
-                    developerConnection = 'scm:git:ssh://github.com/adempiere/location-el-salvador.git'
-                    url = 'http://github.com/adempiere/location-el-salvador'
+                	//	Meanwhile it is not published in Adempiere
+                    //connection = 'scm:git:git://github.com/adempiere/location-el-salvador.git'
+                    //developerConnection = 'scm:git:ssh://github.com/adempiere/location-el-salvador.git'
+                    //url = 'http://github.com/adempiere/location-el-salvador'
+                    connection = 'scm:git:git://github.com/Systemhaus-Westfalia/LSV.git'
+                    developerConnection = 'scm:git:ssh://github.com/Systemhaus-Westfalia/LSV.git'
+                    url = 'http://github.com/Systemhaus-Westfalia/LSV'
                 }
             }
 		}
