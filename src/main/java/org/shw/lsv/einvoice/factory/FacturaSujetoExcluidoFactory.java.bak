@@ -340,7 +340,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		}		
 		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.DIRECCION, jsonDireccion);
 		
-		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.TELEFONO, partner.get_ValueAsString("phone"));
+		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.TELEFONO, client.get_ValueAsString("phone"));
 		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.CORREO, partner.get_ValueAsString("EMail"));		
 
 		System.out.println("Factura: end collecting JSON data for Receptor");
@@ -387,7 +387,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALDESCU, totalDescu);
 		jsonObjectResumen.put(FacturaSujetoExcluido.DESCU, descu);
 		jsonObjectResumen.put(FacturaSujetoExcluido.RETERENTA, reteRenta);
-		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALCOMPRA, subTotal);
+		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALCOMPRA, totalCompra);
 		jsonObjectResumen.put(FacturaSujetoExcluido.SUBTOTAL, subTotal);
 		jsonObjectResumen.put(FacturaSujetoExcluido.OBSERVACIONES, invoice.getDescription());
 
@@ -395,7 +395,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			JSONObject jsonPago = new JSONObject();
 			jsonPago.put(FacturaSujetoExcluido.CODIGO, "05");
 			jsonPago.put(FacturaSujetoExcluido.MONTOPAGO, invoice.getGrandTotal());
-			jsonPago.put(FacturaSujetoExcluido.REFERENCIA, "Transferencia_ Depósito Bancario");
+			jsonPago.put(FacturaSujetoExcluido.REFERENCIA, "Transferencia_ Dep??sito Bancario");
 			jsonPago.put(FacturaSujetoExcluido.PLAZO, invoice.getC_PaymentTerm().getE_TimeSpan().getValue());
 			jsonPago.put(FacturaSujetoExcluido.PERIODO, invoice.getC_PaymentTerm().getNetDays());
 		jsonArrayPagos.put(jsonPago);
@@ -415,10 +415,10 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		System.out.println("Factura: start collecting JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo());
 		JSONObject jsonCuerpoDocumento = new JSONObject();
 		JSONArray jsonCuerpoDocumentoArray = new JSONArray();
-		int i=0;
+		
 		for (MInvoiceLine invoiceLine:invoice.getLines()) { 
 			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() );
-			i++;
+			
 			BigDecimal compra 	= Env.ZERO;
 			String description = invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName();
 			String codigo = invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName();
@@ -428,7 +428,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
                 
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.NUMITEM, i);
+			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.NUMITEM, invoiceLine.getLine()/10);
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.TIPOITEM, 2);
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CANTIDAD, invoiceLine.getQtyInvoiced());
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CODIGO, codigo.substring(0,codigolength));

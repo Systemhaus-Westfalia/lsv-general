@@ -99,6 +99,8 @@ public class EDocument {
 	public static final String PAGOS				= "pagos";
 	public static final String DIRECCION			= "direccion";
 	public static final String IVAPERCI1			= "ivaPerci1";
+	public static final String FLETE				= "flete";
+	public static final String SEGURO				= "seguro";
 
 	public static final String VERSION				= "version";	
 	
