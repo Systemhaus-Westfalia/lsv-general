@@ -76,7 +76,7 @@ public class CreditoFiscal extends EDocument {
 	}
 
 	/**
-	 * @param identificacion the (IdentificacionCreditoFiscal) identificacion to set
+	 * @param factoryInput the JSONObject that contains the information
 	 */
 	public StringBuffer fillIdentification(JSONObject factoryInput) {
 		System.out.println("Start Credito Fiscal.fillIdentificacion()"); 
@@ -101,12 +101,6 @@ public class CreditoFiscal extends EDocument {
 
 	/**
 	 * @return the documentoRelacionado
-	 * To cast Lists where B extends A
-	 * 
-	 * List<B> b = new ArrayList<>();
-	 * List<?> t = (List<B>)b;
-	 * List<A> a = (List<A>)t;
-	 * 
 	 */
 	public List<DocumentoRelacionadoItemCreditoFiscal> getDocumentoRelacionado() {
 		return documentoRelacionado;

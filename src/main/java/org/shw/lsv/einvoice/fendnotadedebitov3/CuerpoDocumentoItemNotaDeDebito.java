@@ -61,9 +61,6 @@ public class CuerpoDocumentoItemNotaDeDebito {
 	 * @param ventaExenta
 	 * @param ventaGravada
 	 * @param tributos
-	 * @param psv
-	 * @param noGravado
-	 * @param ivaItem
 	 */
 	public CuerpoDocumentoItemNotaDeDebito(int numItem, int tipoItem, String numeroDocumento, BigDecimal cantidad, String codigo,
 			String codTributo, int uniMedida, String descripcion, BigDecimal precioUni, BigDecimal montoDescu,

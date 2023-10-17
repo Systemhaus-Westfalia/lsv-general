@@ -5,7 +5,7 @@ plugins {
 }
 
 sourceCompatibility = 1.11
-def baseVersion = 'shw-air-terminal-vertical-1.0.55'
+def baseVersion = 'shw-air-terminal-vertical-1.0.56'
 def baseGroupId = 'com.erpya'
 
 repositories {
@@ -17,6 +17,14 @@ allprojects {
     tasks.withType(Javadoc) {
     	options.addStringOption('Xdoclint:none', '-quiet')
    	}
+}
+
+compileJava { 
+  options.encoding = "UTF-8" 
+}
+
+javadoc {
+    options.charSet = 'UTF-8'
 }
 
 dependencies {
@@ -41,6 +49,10 @@ dependencies {
 	// JSON in Java
 	// https://mvnrepository.com/artifact/org.json/json
 	api 'org.json:json:20211205'
+	
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	api 'org.apache.commons:commons-lang3:3.0'
+
 }
 
 sourceSets {

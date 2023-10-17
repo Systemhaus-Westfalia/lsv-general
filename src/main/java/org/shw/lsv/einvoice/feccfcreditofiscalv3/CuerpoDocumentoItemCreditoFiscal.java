@@ -65,7 +65,6 @@ public class CuerpoDocumentoItemCreditoFiscal {
 	 * @param tributos
 	 * @param psv
 	 * @param noGravado
-	 * @param ivaItem
 	 */
 	public CuerpoDocumentoItemCreditoFiscal(int numItem, int tipoItem, String numeroDocumento, BigDecimal cantidad, String codigo,
 			String codTributo, int uniMedida, String descripcion, BigDecimal precioUni, BigDecimal montoDescu,
