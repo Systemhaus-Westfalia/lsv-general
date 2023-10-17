@@ -15,6 +15,11 @@
  ************************************************************************************/
 package org.shw.lsv.util.support.findex;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -27,16 +32,21 @@ import org.adempiere.core.domains.models.I_C_Invoice;
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.Adempiere;
+import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
 import org.compiere.model.PO;
+import org.compiere.model.Query;
 import org.compiere.util.Env;
+import org.compiere.util.Trx;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.shw.lsv.util.support.IDeclarationDocument;
 import org.shw.lsv.util.support.IDeclarationProvider;
 import org.spin.model.MADAppRegistration;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude;  
 
 /**
  * 	A implementation class for findex.la provider using LSV
@@ -120,9 +130,34 @@ public class Findex implements IDeclarationProvider {
         
         // TODO: korrekte Antwort-Behandlung
         if(response.getStatus() != HTTP_RESPONSE_201_CREATED
-        		|| response.getStatus() != HTTP_RESPONSE_200_OK) {
+        		&& response.getStatus() != HTTP_RESPONSE_200_OK) {
         	String output = response.readEntity(String.class);
         	return output;
+        }
+        else {
+        	String output = response.readEntity(String.class);
+        	JSONObject jsonoutput = new JSONObject(output);  
+        	String codigoGeneracion = jsonoutput.getString("codigo_generacion");
+
+        	MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
+        	String status = jsonoutput.getString("estado");
+        	if (status.equals("Rechazado")) {
+        		JSONArray array = jsonoutput.getJSONArray("error");
+        		String error = array.getString(0);
+        		if (error.contains("YA EXISTE UN REGISTRO CON ESE VALOR"))
+        			invoice.set_ValueOfColumn("ei_Status_Extern", "Firmado");
+        		else
+        			invoice.set_ValueOfColumn("ei_Status_Extern",status);
+        			
+        		invoice.saveEx();
+        	}
+        	else if (status.equals("Firmado")) {
+        		invoice.set_ValueOfColumn("ei_Status_Extern", "Firmado");
+            	invoice.setei_selloRecibido(jsonoutput.getString("sello_recepcion"));
+            	String datereceived = jsonoutput.getString("fecha");
+            	//invoice.set_ValueOfColumn("ei_dateReceived", datereceived);
+            	invoice.saveEx();
+        	}
         }
 		return null;
 	}
@@ -151,19 +186,56 @@ public class Findex implements IDeclarationProvider {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		Adempiere.startupEnvironment(true);
-        int invoiceID = Integer.parseInt(args[0]);
+
         int registrationId = Integer.parseInt(args[1]);
-		PO invoice = new MInvoice(Env.getCtx(), invoiceID, null);
 		Findex findex = new Findex();
 		findex.setAppRegistrationId(registrationId);
+		//Trx dbTransaction = null;
+		String whereClause = "AD_CLIENT_ID = 1000001 AND issotrx = 'Y' AND processed = 'Y' AND dateacct>=? AND documentno LIKE 'CF-281%'"
+				+ " AND ei_Processing = 'N' AND (ei_validationstatus IS NULL OR ei_validationstatus = '02')"
+				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
+		MClient client = new MClient(Env.getCtx(),1000001, null);
+		Timestamp startdate = (Timestamp)(client.get_Value("ei_Startdate"));
 		try {
-			findex.publishDocument(invoice);			
-		} catch (Exception e) {
-			System.out.println("Error calling publishDocument()"); 
+			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)
+						.setParameters(startdate)
+						.getIDs();
+			Arrays.stream(invoiceIds)
+			.filter(invoiceId -> invoiceId > 0)
+				.forEach(invoiceId -> {
+					try {
+						Integer id = (Integer)invoiceId;
+	                    Trx dbTransaction = Trx.get(id.toString(), true);   
+						MInvoice invoice = new MInvoice(Env.getCtx(), invoiceId, dbTransaction.getTrxName());
+						invoice.set_ValueOfColumn("ei_Processing", true);
+						invoice.saveEx();
+						dbTransaction.commit(true);
+						findex.publishDocument(invoice);
+						invoice.set_ValueOfColumn("ei_Processing", false);
+						invoice.saveEx();
+	                    if (dbTransaction != null) {
+	                        dbTransaction.commit(true);
+	                        dbTransaction.close();
+	                    }
+						// TODO: set EIProcessing == false
+					} catch (Exception e) {
+						String error = "Error al procesar documento #" + invoiceId + " " + e;
+						System.out.println(error);
+					}
+
+					System.out.println("Publish document successful"); 
+
+
+				});
+
+			
 		}
-		System.out.println("Publish document successful"); 
+		catch (Exception e) {
+			
+		}
+		
 	}
 }
 

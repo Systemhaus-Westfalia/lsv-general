@@ -82,7 +82,9 @@ public class ElectronicInvoice implements IDeclarationDocument {
 			errorMsg = documentFactory.getEDocumentErrorMessages().toString();
     		electronicInvoiceModel.seterrMsgIntern(errorMsg);
     		electronicInvoiceModel.setei_ValidationStatus("02");
+    		invoice.setei_ValidationStatus("02");
         	electronicInvoiceModel.saveEx();
+        	invoice.saveEx();
 			System.out.println("ElectronicInvoice.processElectronicInvoice(): produced the following errors:");
 			System.out.println(errorMsg);
 			System.out.println("ElectronicInvoice.processElectronicInvoice(): finished");
@@ -92,6 +94,7 @@ public class ElectronicInvoice implements IDeclarationDocument {
     	String creditoFiscalAsJsonString = documentFactory.createJsonString();
     	String ei_codigoGeneracion = documentFactory.getCodigoGeneracion(creditoFiscalAsJsonString);
     	invoice.setei_codigoGeneracion(ei_codigoGeneracion);
+    	invoice.setei_ValidationStatus("01");
     	invoice.saveEx();
        	electronicInvoiceModel.setjson(creditoFiscalAsJsonString);
     	electronicInvoiceModel.saveEx();
