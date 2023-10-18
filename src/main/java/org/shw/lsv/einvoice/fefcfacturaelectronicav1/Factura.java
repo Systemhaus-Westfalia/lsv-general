@@ -188,16 +188,33 @@ public class Factura extends EDocument {
 		try {receptor.setTipoDocumento(receptorJson.getString(TIPODOCUMENTO));} 				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
 		try {receptor.setNumDocumento(receptorJson.getString(NUMDOCUMENTO));} 					catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
 		try {receptor.setNombre(receptorJson.getString(NOMBRE));} 								catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
-		try {receptor.setCodActividad(receptorJson.getString(CODACTIVIDAD));} 					catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
-		try {receptor.setDescActividad(receptorJson.getString(DESCACTIVIDAD));} 				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
+		try {
+			if (receptorJson.getString(CODACTIVIDAD).equals("")) {
 
+				receptor.setCodActividad(null);
+				receptor.setDescActividad(null);
+			}
+			else {
+				receptor.setCodActividad(receptorJson.getString(CODACTIVIDAD)); 					
+				receptor.setDescActividad(receptorJson.getString(DESCACTIVIDAD));
+			}
+		}
+		catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
 		JSONObject jsonDireccion = receptorJson.getJSONObject(DIRECCION);
 		if (jsonDireccion.length()>0) {
-			try {receptor.getDireccion().setDepartamento(jsonDireccion.getString(DEPARTAMENTO));}	catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
-			try {receptor.getDireccion().setMunicipio(jsonDireccion.getString(MUNICIPIO));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
-			try {receptor.getDireccion().setComplemento(jsonDireccion.getString(COMPLEMENTO));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
+
+			try {
+				if (jsonDireccion.getString(DEPARTAMENTO).length()>0)
+					receptor.getDireccion().setDepartamento(jsonDireccion.getString(DEPARTAMENTO));
+				}																				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
+			try {if (jsonDireccion.getString(MUNICIPIO).length()>0)
+				receptor.getDireccion().setMunicipio(jsonDireccion.getString(MUNICIPIO));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
+			try {receptor.getDireccion().setComplemento(jsonDireccion.getString(COMPLEMENTO));} catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
 		}
-		try {receptor.setTelefono(receptorJson.getString(TELEFONO));} 							catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
+		try {if (receptorJson.getString(TELEFONO).equals(""))
+			receptor.setTelefono(null);
+		else
+			receptor.setTelefono(receptorJson.getString(TELEFONO));} 							catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
 		try {receptor.setCorreo(receptorJson.getString(CORREO));} 								catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
 
 		System.out.println("End Factura.fillReceptor()"); 

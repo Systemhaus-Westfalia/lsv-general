@@ -93,6 +93,12 @@ public class ElectronicInvoice implements IDeclarationDocument {
     	
     	String creditoFiscalAsJsonString = documentFactory.createJsonString();
     	String ei_codigoGeneracion = documentFactory.getCodigoGeneracion(creditoFiscalAsJsonString);
+    	String ei_numeroControl = "";
+    	if (!isreversal) {
+    		ei_numeroControl = documentFactory.getNumeroControl(creditoFiscalAsJsonString);
+        	invoice.setei_numeroControl(ei_numeroControl);
+    	}
+    	
     	invoice.setei_codigoGeneracion(ei_codigoGeneracion);
     	invoice.setei_ValidationStatus("01");
     	invoice.saveEx();

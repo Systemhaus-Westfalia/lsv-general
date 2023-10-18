@@ -73,11 +73,11 @@ public class Anulacion extends EDocument {
 		System.out.println("Start Anulacion.fillIdentificacion()"); 
 
 		JSONObject identificationJson = factoryInput.getJSONObject(IDENTIFICACION);
-		try {identificacion.setVersion(identificationJson.getInt(VERSION));} 						catch (Exception e) {errorMessages.append(ERROR_ANULACION_IDENTIFICACION + e);}
+		//try {identificacion.setVersion(identificationJson.getInt(VERSION));} 						catch (Exception e) {errorMessages.append(ERROR_ANULACION_IDENTIFICACION + e);}
 		try {identificacion.setAmbiente(identificationJson.getString(AMBIENTE));} 					catch (Exception e) {errorMessages.append(ERROR_ANULACION_IDENTIFICACION + e);}
 		try {identificacion.setCodigoGeneracion(identificationJson.getString(CODIGOGENERACION));}	catch (Exception e) {errorMessages.append(ERROR_ANULACION_IDENTIFICACION + e);}
-		try {identificacion.setFecAnula(identificationJson.getString(FECEMI));} 					catch (Exception e) {errorMessages.append(ERROR_ANULACION_IDENTIFICACION + e);}
-		try {identificacion.setHorAnula(identificationJson.getString(HOREMI));} 					catch (Exception e) {errorMessages.append(ERROR_ANULACION_IDENTIFICACION + e);}
+		try {identificacion.setFecAnula(identificationJson.getString(FECANULA));} 					catch (Exception e) {errorMessages.append(ERROR_ANULACION_IDENTIFICACION + e);}
+		try {identificacion.setHorAnula(identificationJson.getString(HORANULA));} 					catch (Exception e) {errorMessages.append(ERROR_ANULACION_IDENTIFICACION + e);}
 		System.out.println("End Anulacion.fillIdentificacion()");
 		return errorMessages;
 	}
@@ -109,10 +109,10 @@ public class Anulacion extends EDocument {
 		try {emisor.setNombre(emisorJson.getString(NOMBRE));} 							catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
 		try {emisor.setTipoEstablecimiento(emisorJson.getString(TIPOESTABLECIMIENTO));}	catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
 		try {emisor.setNomEstablecimiento(emisorJson.getString(NOMESTABLECIMIENTO));} 	catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
-		try {emisor.setCodEstableMH(emisorJson.getString(CODESTABLEMH));} 				catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
-		try {emisor.setCodEstable(emisorJson.getString(CODESTABLE));} 					catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
-		try {emisor.setCodPuntoVentaMH(emisorJson.getString(CODPUNTOVENTAMH));} 		catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
-		try {emisor.setCodPuntoVenta(emisorJson.getString(CODPUNTOVENTA));} 			catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
+//		try {emisor.setCodEstableMH(emisorJson.getString(CODESTABLEMH));} 				catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
+//		try {emisor.setCodEstable(emisorJson.getString(CODESTABLE));} 					catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
+//		try {emisor.setCodPuntoVentaMH(emisorJson.getString(CODPUNTOVENTAMH));} 		catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
+//		try {emisor.setCodPuntoVenta(emisorJson.getString(CODPUNTOVENTA));} 			catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
 		try {emisor.setTelefono(emisorJson.getString(TELEFONO));} 						catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
 		try {emisor.setCorreo(emisorJson.getString(CORREO));} 							catch (Exception e) {errorMessages.append(ERROR_ANULACION_EMISOR + e);}
 
@@ -152,7 +152,9 @@ public class Anulacion extends EDocument {
 		try {documento.setTipoDocumento(documentoJson.getString(TIPODOCUMENTO));} 			catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
 		try {documento.setNumDocumento(documentoJson.getString(NUMDOCUMENTO));} 			catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
 		try {documento.setNombre(documentoJson.getString(NOMBRE));} 						catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
-		try {documento.setTelefono(documentoJson.getString(TELEFONO));} 					catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
+		
+		try {if (documentoJson.getString(TELEFONO).length()>0)
+				documento.setTelefono(documentoJson.getString(TELEFONO));} 					catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
 		try {documento.setCorreo(documentoJson.getString(CORREO));} 						catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
 
 		System.out.println("End Anulacion.fillDocumento()");
@@ -179,7 +181,7 @@ public class Anulacion extends EDocument {
 	public StringBuffer fillMotivo(JSONObject factoryInput) {
 		System.out.println("Start Anulacion.fillMotivo()");
 
-		JSONObject motivoJson = factoryInput.getJSONObject(DOCUMENTO);
+		JSONObject motivoJson = factoryInput.getJSONObject(MOTIVO);
 		try {motivo.setTipoAnulacion(motivoJson.getInt(TIPOANULACION));} 			catch (Exception e) {errorMessages.append(ERROR_ANULACION_MOTIVO + e);}
 		try {motivo.setMotivoAnulacion(motivoJson.getString(MOTIVOANULACION));} 	catch (Exception e) {errorMessages.append(ERROR_ANULACION_MOTIVO + e);}
 		try {motivo.setNombreResponsable(motivoJson.getString(NOMBRERESPONSABLE));}	catch (Exception e) {errorMessages.append(ERROR_ANULACION_MOTIVO + e);}

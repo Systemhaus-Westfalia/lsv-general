@@ -144,7 +144,7 @@ public abstract class Documento {
 		final int MAXLENGTH = 31;
 		int length = numeroControl==null?0:numeroControl.length();
 		
-		final String PATTERN = "^DTE-0[0-9]|1[0-2]-[A-Z0-9]{8}-[0-9]{15}$";
+		final String PATTERN = "^(DTE-0[0-9]|1[0-2])-[A-Z0-9]{8}-[0-9]{15}$";
 		boolean patternOK = (numeroControl!=null) && Pattern.matches(PATTERN, numeroControl);  
 				
 		if(length>=MINLENGTH && length<=MAXLENGTH && patternOK)

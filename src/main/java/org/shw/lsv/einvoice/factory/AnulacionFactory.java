@@ -158,10 +158,15 @@ public class AnulacionFactory extends EDocumentFactory {
 		jsonObjectDocumento.put(Anulacion.NUMEROCONTROL, invoice.getReversal().getei_numeroControl());			
 		jsonObjectDocumento.put(Anulacion.FECEMI, invoice.getReversal().getDateAcct().toString().substring(0, 10));
 		jsonObjectDocumento.put(Anulacion.CODIGOGENERACIONR, codigoGeneracion);		
-		jsonObjectDocumento.put(Anulacion.TIPODOCUMENTO, invoice.getReversal().getC_DocType().getE_DocType().getValue());			
-		jsonObjectDocumento.put(Anulacion.NUMDOCUMENTO, invoice.getReversal().getDocumentNo());			
+		jsonObjectDocumento.put(Anulacion.TIPODOCUMENTO, invoice.getReversal().getC_BPartner().getE_Recipient_Identification().getValue());
+		String numDocumento = invoice.getC_BPartner().getTaxID();
+		if (!invoice.getC_BPartner().getE_Recipient_Identification().getValue().equals("36"))
+			numDocumento = invoice.getC_BPartner().getDUNS();
+		jsonObjectDocumento.put(Anulacion.NUMDOCUMENTO, numDocumento);			
 		jsonObjectDocumento.put(Anulacion.NOMBRE, invoice.getReversal().getC_BPartner().getName());
-		jsonObjectDocumento.put(Anulacion.TELEFONO, invoice.getReversal().getC_BPartner().getPhone());
+		String phone = invoice.getReversal().getC_BPartner().getPhone().replace("-", "").trim();
+		phone = phone.length()==8?phone:"";
+		jsonObjectDocumento.put(Anulacion.TELEFONO, phone);
 		jsonObjectDocumento.put(Anulacion.CORREO, invoice.getReversal().getC_BPartner().getEMail());
 		
 		BigDecimal montoIVA = Env.ZERO;
@@ -187,10 +192,10 @@ public class AnulacionFactory extends EDocumentFactory {
 		jsonObjectMotivo.put(Anulacion.MOTIVOANULACION, "Error en generacion");		
 		jsonObjectMotivo.put(Anulacion.NOMBRERESPONSABLE, user.getC_BPartner().getName());	
 		jsonObjectMotivo.put(Anulacion.TIPDOCRESPONSABLE, user.getC_BPartner().getE_Recipient_Identification().getValue());	
-		jsonObjectMotivo.put(Anulacion.NUMDOCRESPONSABLE, user.getC_BPartner().getTaxID());	
+		jsonObjectMotivo.put(Anulacion.NUMDOCRESPONSABLE, user.getC_BPartner().getTaxID().replace("-", ""));	
 		jsonObjectMotivo.put(Anulacion.NOMBRESOLICITA, user.getC_BPartner().getName());		// TODO: korrekte Daten einsetzen
 		jsonObjectMotivo.put(Anulacion.TIPDOCSOLICITA, user.getC_BPartner().getE_Recipient_Identification().getValue());		// TODO: korrekte Daten einsetzen
-		jsonObjectMotivo.put(Anulacion.NUMDOCSOLICITA, user.getC_BPartner().getTaxID());		// TODO: korrekte Daten einsetzen
+		jsonObjectMotivo.put(Anulacion.NUMDOCSOLICITA, user.getC_BPartner().getTaxID().replace("-", ""));		// TODO: korrekte Daten einsetzen
 
 		System.out.println("Finish collecting JSON data for Maotivo");
 		return jsonObjectMotivo;

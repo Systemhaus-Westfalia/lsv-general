@@ -148,7 +148,7 @@ public class Findex implements IDeclarationProvider {
         			invoice.set_ValueOfColumn("ei_Status_Extern", "Firmado");
         		else
         			invoice.set_ValueOfColumn("ei_Status_Extern",status);
-        			
+        		invoice.set_ValueOfColumn("ei_Error_Extern", error);
         		invoice.saveEx();
         	}
         	else if (status.equals("Firmado")) {
@@ -193,8 +193,10 @@ public class Findex implements IDeclarationProvider {
 		Findex findex = new Findex();
 		findex.setAppRegistrationId(registrationId);
 		//Trx dbTransaction = null;
-		String whereClause = "AD_CLIENT_ID = 1000001 AND issotrx = 'Y' AND processed = 'Y' AND dateacct>=? AND documentno LIKE 'CF-281%'"
-				+ " AND ei_Processing = 'N' AND (ei_validationstatus IS NULL OR ei_validationstatus = '02')"
+		String whereClause = "AD_CLIENT_ID = 1000001  "
+				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
+				+ " AND processed = 'Y' AND dateacct>=? AND documentno LIKE 'J%'"
+				+ " AND ei_Processing = 'N' "
 				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
 		MClient client = new MClient(Env.getCtx(),1000001, null);
 		Timestamp startdate = (Timestamp)(client.get_Value("ei_Startdate"));

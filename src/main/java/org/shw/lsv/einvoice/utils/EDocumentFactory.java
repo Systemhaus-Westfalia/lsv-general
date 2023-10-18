@@ -15,6 +15,8 @@ import java.util.Properties;
 import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrgInfo;
+import org.compiere.util.Language;
+import org.compiere.util.Util;
 import org.json.JSONObject;
 
 /**
@@ -31,6 +33,7 @@ public abstract class EDocumentFactory {
 	protected String trxName;
 	protected Properties contextProperties;
 	protected JSONObject jsonInputToFactory;  // Will contain data passed to factory
+	protected Language languageUsed = null;
 	
 	
 	public EDocumentFactory(String trxName, Properties contextProperties, MClient client, MOrgInfo orgInfo) {
@@ -38,6 +41,10 @@ public abstract class EDocumentFactory {
 		this.contextProperties = contextProperties;
 		this.client = client;
 		this.orgInfo = orgInfo;
+		String lang = client.getAD_Language();	
+		this.languageUsed = Language.getLanguage(lang);
+			
+			
 	}
 	
 	public String getCodigoGeneracion (String eDocumentAsJsonString) {
@@ -45,6 +52,14 @@ public abstract class EDocumentFactory {
         JSONObject eDocumentAsJson  = new JSONObject(eDocumentAsJsonString);
         JSONObject identification = (JSONObject)eDocumentAsJson.get(EDocument.IDENTIFICACION);
         String codigoGeneracion = identification.getString(EDocument.CODIGOGENERACION);
+		return codigoGeneracion;
+	}
+	
+	public String getNumeroControl (String eDocumentAsJsonString) {
+
+        JSONObject eDocumentAsJson  = new JSONObject(eDocumentAsJsonString);
+        JSONObject identification = (JSONObject)eDocumentAsJson.get(EDocument.IDENTIFICACION);
+        String codigoGeneracion = identification.getString(EDocument.NUMEROCONTROL);
 		return codigoGeneracion;
 	}
 	

@@ -171,7 +171,7 @@ public class ReceptorFactura {
 	 */
 	public void setCodActividad(String codActividad) {
 		final String PATTERN = "^[0-9]{2,6}$";
-		boolean patternOK = (codActividad!=null) && Pattern.matches(PATTERN, codActividad);  
+		boolean patternOK = codActividad == null ||  ((codActividad!=null) && Pattern.matches(PATTERN, codActividad));  
 		
 		if(patternOK)
 			this.codActividad = codActividad;

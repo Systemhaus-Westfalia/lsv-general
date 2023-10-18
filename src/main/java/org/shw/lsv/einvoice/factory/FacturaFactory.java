@@ -274,11 +274,11 @@ public class FacturaFactory extends EDocumentFactory {
 		System.out.println("Factura: start collecting JSON data for Receptor");
 
 		MBPartner partner = (MBPartner)invoice.getC_BPartner();
-		if (partner.getE_Activity_ID()<=0 || partner.getE_Recipient_Identification_ID() <= 0) {
-			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta configuracion para Facturacion Electronica"; 
-			factura.errorMessages.append(errorMessage);
-			System.out.println(errorMessage);
-		}
+//		if (partner.getE_Activity_ID()<=0 || partner.getE_Recipient_Identification_ID() <= 0) {
+//			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta configuracion para Facturacion Electronica"; 
+//			factura.errorMessages.append(errorMessage);
+//			System.out.println(errorMessage);
+//		}
 		
 		JSONObject jsonObjectReceptor = new JSONObject();
 		
@@ -319,13 +319,17 @@ public class FacturaFactory extends EDocumentFactory {
 		
 		// In case there is no address
 		if (departamento == null) {
-			jsonDireccion.put(Factura.DEPARTAMENTO, departamento);
-			jsonDireccion.put(Factura.MUNICIPIO, municipio);
+			jsonDireccion.put(Factura.DEPARTAMENTO, "");
+			jsonDireccion.put(Factura.MUNICIPIO, "");
 			jsonDireccion.put(Factura.COMPLEMENTO, complemento);
 		}		
 
 		jsonObjectReceptor.put(Factura.DIRECCION, jsonDireccion);
+		String phone = partner.get_ValueAsString("phone").replace("-", "").trim();
+		if (phone.length()==8)
 		jsonObjectReceptor.put(Factura.TELEFONO, partner.get_ValueAsString("phone"));
+		else
+			jsonObjectReceptor.put(Factura.TELEFONO,"");
 		jsonObjectReceptor.put(Factura.CORREO, partner.get_ValueAsString("EMail"));		
 
 		System.out.println("Factura: end collecting JSON data for Receptor");
