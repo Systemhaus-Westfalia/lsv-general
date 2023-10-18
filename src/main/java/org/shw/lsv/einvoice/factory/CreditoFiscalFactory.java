@@ -339,7 +339,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		BigDecimal ivaRete1 		= Env.ZERO;
 		BigDecimal montotributos	= Env.ZERO;
 
-		String totalLetras=Msg.getAmtInWords(Env.getLanguage(contextProperties), invoice.getGrandTotal().setScale(2).toString());
+		String totalLetras=Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
 
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties , MInvoiceTax.Table_Name , "C_Invoice_ID=?" , trxName)
 				.setParameters(invoice.getC_Invoice_ID())
@@ -465,7 +465,8 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.NUMITEM, i);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.TIPOITEM, CreditoFiscal.TIPOITEM_SERVICIO);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.CANTIDAD, invoiceLine.getQtyInvoiced());
-			jsonCuerpoDocumentoItem.put(CreditoFiscal.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
+			jsonCuerpoDocumentoItem.put(CreditoFiscal.CODIGO, invoiceLine.getM_Product_ID()>0? 
+					invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName().substring(0,3));
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.UNIMEDIDA, 1);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.DESCRIPCION, invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName());
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.PRECIOUNI, precioUnitario);
