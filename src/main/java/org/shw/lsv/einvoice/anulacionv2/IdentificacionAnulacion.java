@@ -100,7 +100,7 @@ public class IdentificacionAnulacion {
 
 
 	/**
-	 * @param fecEmi the fecAnula to set<br>
+	 * @param fecAnula the voiding date to set<br>
 	 * null not allowed
 	 */
 	public void setFecAnula(String fecAnula) {
@@ -120,7 +120,7 @@ public class IdentificacionAnulacion {
 
 
 	/**
-	 * @param horEmi the horAnula to set<br>
+	 * @param horAnula the voiding hour to set<br>
 	 * The parameter is validated.<br>
 	 * "pattern" : "^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]?$"
 	 */

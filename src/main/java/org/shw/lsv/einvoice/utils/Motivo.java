@@ -137,7 +137,7 @@ public abstract class Motivo {
 	 * @param tipDocResponsable the tipDocResponsable to set<br>
 	 * The parameter is validated.<br>
 	 * Specific values allowed according to schema: ["36", "13", "02", .....].
-	 * Tipo documento de identificaci??n CAT-22: 36 -> NIT, 13 -> DUI, 02 -> Carnet de residente, 03 -> PASAPORTE, 37 -> OTRO
+	 * Tipo documento de identificacion CAT-22: 36 -&gt; NIT, 13 -&gt; DUI, 02 -&gt; Carnet de residente, 03 -&gt; PASAPORTE, 37 -&gt; OTRO
 	 * The enum was chosen for validation.
 	 */
 	public void setTipDocResponsable(String tipDocResponsable) {
@@ -225,7 +225,7 @@ public abstract class Motivo {
 	 * @param tipDocSolicita the tipDocSolicita to set<br>
 	 * The parameter is validated.<br>
 	 * Specific values allowed according to schema: ["36", "13", "02", .....].
-	 * Tipo documento de identificaci??n CAT-22: 36 -> NIT, 13 -> DUI, 02 -> Carnet de residente, 03 -> PASAPORTE, 37 -> OTRO
+	 * Tipo documento de identificaci??n CAT-22: 36 -&gt; NIT, 13 -&gt; DUI, 02 -&gt; Carnet de residente, 03 -&gt; PASAPORTE, 37 -&gt; OTRO
 	 * The enum was chosen for validation.
 	 */
 	public void setTipDocSolicita(String tipDocSolicita) {

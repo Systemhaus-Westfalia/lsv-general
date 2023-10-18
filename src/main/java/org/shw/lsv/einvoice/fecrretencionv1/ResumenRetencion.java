@@ -75,7 +75,7 @@ public class ResumenRetencion {
 
 
 	/**
-	 * @param totalLetras the totalIVAretenidoLetras; to set<br>
+	 * @param totalIVAretenidoLetras amount of totalIVAretenidoLetras to set<br>
 	 * The parameter is validated.<br>
 	 * "maxLength" : 200
 	 */

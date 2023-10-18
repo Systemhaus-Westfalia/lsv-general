@@ -78,7 +78,7 @@ public class FacturaSujetoExcluido extends EDocument {
 
 
 	/**
-	 * @param identificacion the (IdentificacionFactura) identificacion to set
+	 * @param factoryInput the JSONObject that contains the information
 	 */
 	public StringBuffer fillIdentification(JSONObject factoryInput) {
 		System.out.println("Start FacturaNoSujeto.fillIdentificacion()");
