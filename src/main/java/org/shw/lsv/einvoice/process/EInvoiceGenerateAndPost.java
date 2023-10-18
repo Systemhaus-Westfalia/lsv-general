@@ -48,14 +48,13 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 	protected String doIt() throws Exception
 	{
 		String errorMessage= "";
-		System.out.println("Process EInvoiceGenerateAndPost: started");
+		System.out.println("Process EInvoiceGenerateAndPost: started with Client " + getClientId());
 		MADAppRegistration registration = new Query(getCtx(), MADAppRegistration.Table_Name, "EXISTS(SELECT 1 FROM AD_AppSupport s "
 				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
 				+ "AND s.ApplicationType = ?"
 				+ "AND s.IsActive = 'Y'"
 				+ "AND s.Classname = ?)", get_TrxName())
 				.setParameters(APPLICATION_TYPE, Findex.class.getName())
-				.setClient_ID()
 				.<MADAppRegistration>first();
 
 		if(registration==null) {
@@ -77,7 +76,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 	
 		try {
 			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)
-						.setParameters(startdate)
+						.setParameters(getClientId(), startdate)
 						.getIDs();
 			Arrays.stream(invoiceIds)
 			.filter(invoiceId -> invoiceId > 0)
