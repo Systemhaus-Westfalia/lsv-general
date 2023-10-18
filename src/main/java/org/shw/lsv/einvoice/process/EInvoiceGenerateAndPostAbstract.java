@@ -30,10 +30,25 @@ public abstract class EInvoiceGenerateAndPostAbstract extends SvrProcess {
 	/** Process Name 	*/
 	private static final String NAME_FOR_PROCESS = "EInvoiceGenerateAndPost";
 	/** Process Id 	*/
-	private static final int ID_FOR_PROCESS = 3000423;
+	private static final int ID_FOR_PROCESS = 3000425;
+	/**	Parameter Name for Client	*/
+	public static final String AD_CLIENT_ID = "AD_Client_ID";
+	/**	Parameter Value for Client	*/
+	private int clientId;
 
 	@Override
 	protected void prepare() {
+		clientId = getParameterAsInt(AD_CLIENT_ID);
+	}
+
+	/**	 Getter Parameter Value for Client	*/
+	protected int getClientId() {
+		return clientId;
+	}
+
+	/**	 Setter Parameter Value for Client	*/
+	protected void setClientId(int clientId) {
+		this.clientId = clientId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

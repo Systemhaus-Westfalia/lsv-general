@@ -193,7 +193,7 @@ public class Findex implements IDeclarationProvider {
 		Findex findex = new Findex();
 		findex.setAppRegistrationId(registrationId);
 		//Trx dbTransaction = null;
-		String whereClause = "AD_CLIENT_ID = 1000001  "
+		String whereClause = "AD_CLIENT_ID = ?  "
 				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
 				+ " AND processed = 'Y' AND dateacct>=? AND documentno LIKE 'J%'"
 				+ " AND ei_Processing = 'N' "

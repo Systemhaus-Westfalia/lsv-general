@@ -19,13 +19,13 @@
 package org.shw.lsv.einvoice.process;
 
 import java.sql.Timestamp;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.Arrays;
 
 import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
+import org.compiere.util.Trx;
 import org.shw.lsv.util.support.findex.Findex;
 import org.spin.model.MADAppRegistration;
 
@@ -67,34 +67,51 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 
 		Findex findex = new Findex();
 		findex.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
-		MClient client = new MClient(getCtx(),Env.getAD_Client_ID(getCtx()), get_TrxName());
+		MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
 		Timestamp startdate = (Timestamp)(client.get_Value("ei_Startdate"));
-		String whereClause = "issotrx = 'Y' AND processed = 'Y' AND dateacct>=? "
-				+ " AND ei_Processing = 'N' AND (ei_validationstatus IS NULL OR ei_validationstatus = '02')";
-		
-		List<MInvoice> invoices = new Query(getCtx(), MInvoice.Table_Name, whereClause, get_TrxName())
-				.setClient_ID()
-				.setParameters(startdate)
-				.list();
-		invoices.stream()
-		.filter(invoice -> invoice.getC_DocType().getE_DocType_ID() >0)
-		.forEach(invoice -> {
-			try {
-				findex.publishDocument(invoice);
-				// TODO: set EIProcessing == false
-			} catch (Exception e) {
-				String error = "Error al procesar documento #" + invoice.getDocumentNo() + " " + e;
-				errorMessages.append(error);
-				System.out.println(error);
-			}
-		});
+		String whereClause = "AD_CLIENT_ID = ?  "
+				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
+				+ " AND processed = 'Y' AND dateacct>=? "
+				+ " AND ei_Processing = 'N' "
+				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
+	
+		try {
+			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)
+						.setParameters(startdate)
+						.getIDs();
+			Arrays.stream(invoiceIds)
+			.filter(invoiceId -> invoiceId > 0)
+				.forEach(invoiceId -> {
+					try {
+						Integer id = (Integer)invoiceId;
+	                    Trx dbTransaction = Trx.get(id.toString(), true);   
+						MInvoice invoice = new MInvoice(Env.getCtx(), invoiceId, dbTransaction.getTrxName());
+						invoice.set_ValueOfColumn("ei_Processing", true);
+						invoice.saveEx();
+						dbTransaction.commit(true);
+						findex.publishDocument(invoice);
+						invoice.set_ValueOfColumn("ei_Processing", false);
+						invoice.saveEx();
+	                    if (dbTransaction != null) {
+	                        dbTransaction.commit(true);
+	                        dbTransaction.close();
+	                    }
+						// TODO: set EIProcessing == false
+					} catch (Exception e) {
+						String error = "Error al procesar documento #" + invoiceId + " " + e;
+						System.out.println(error);
+					}
 
-		if (errorMessages.length()>0) {
-			System.out.println(errorMessages.toString());
-			System.out.println("Process EInvoiceGenerateAndPost : finished with errors");
-			return "Process EInvoiceGenerateAndPost : finished with errors" + errorMessages.toString();
+					System.out.println("Publish document successful"); 
+
+
+				});
+
+			
 		}
-
+		catch (Exception e) {
+			
+		}
 		System.out.println("Process EInvoiceGenerateAndPost : finished");
 		return "OK";
 	}
