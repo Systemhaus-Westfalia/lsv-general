@@ -20,10 +20,12 @@ package org.shw.lsv.einvoice.process;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
 import org.compiere.model.Query;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Trx;
 import org.shw.lsv.util.support.findex.Findex;
@@ -48,7 +50,8 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 	protected String doIt() throws Exception
 	{
 		String errorMessage= "";
-		System.out.println("Process EInvoiceGenerateAndPost: started with Client " + getClientId());
+		MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
+		System.out.println("Process EInvoiceGenerateAndPost: started with Client " + client.getName() + " ID: " + getClientId());
 		MADAppRegistration registration = new Query(getCtx(), MADAppRegistration.Table_Name, "EXISTS(SELECT 1 FROM AD_AppSupport s "
 				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
 				+ "AND s.ApplicationType = ?"
@@ -66,11 +69,10 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 
 		Findex findex = new Findex();
 		findex.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
-		MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
 		Timestamp startdate = (Timestamp)(client.get_Value("ei_Startdate"));
 		String whereClause = "AD_CLIENT_ID = ?  "
 				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
-				+ " AND processed = 'Y' AND dateacct>=? "
+				+ " AND processed = 'Y' AND dateacct>=?  "
 				+ " AND ei_Processing = 'N' "
 				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
 	
@@ -78,16 +80,33 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)
 						.setParameters(getClientId(), startdate)
 						.getIDs();
+			final int length = invoiceIds.length;
+			Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
+			StringBuffer sqlUpdate = new StringBuffer("UPDATE C_Invoice set ei_Processing = 'Y' WHERE c_INvoice_ID in (");
+			String character = ",";
+			for ( int i = 0; i < length; i++) {
+				character = i<length-1? ",": ")";
+				int invoiceID = invoiceIds[i];
+				sqlUpdate.append(invoiceID + character);
+				System.out.println("InvoiceID to be processed: " + invoiceID); 
+			}
+			DB.executeUpdateEx(sqlUpdate.toString(), updateTransaction.getTrxName());
+			if (updateTransaction != null) {
+				updateTransaction.commit(true);
+				updateTransaction.close();
+			}
+			
+			AtomicInteger counter = new AtomicInteger(0);
+
 			Arrays.stream(invoiceIds)
 			.filter(invoiceId -> invoiceId > 0)
 				.forEach(invoiceId -> {
 					try {
+						counter.getAndIncrement();
+						System.out.println("Start invoice No. " + counter + " of " + length); 
 						Integer id = (Integer)invoiceId;
 	                    Trx dbTransaction = Trx.get(id.toString(), true);   
 						MInvoice invoice = new MInvoice(Env.getCtx(), invoiceId, dbTransaction.getTrxName());
-						invoice.set_ValueOfColumn("ei_Processing", true);
-						invoice.saveEx();
-						dbTransaction.commit(true);
 						findex.publishDocument(invoice);
 						invoice.set_ValueOfColumn("ei_Processing", false);
 						invoice.saveEx();
@@ -95,6 +114,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 	                        dbTransaction.commit(true);
 	                        dbTransaction.close();
 	                    }
+	                    System.out.println("End invoice No. " + counter + " of " + length); 
 						// TODO: set EIProcessing == false
 					} catch (Exception e) {
 						String error = "Error al procesar documento #" + invoiceId + " " + e;
@@ -109,7 +129,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 			
 		}
 		catch (Exception e) {
-			
+			System.out.println("Process EInvoiceGenerateAndPost : error " + e);
 		}
 		System.out.println("Process EInvoiceGenerateAndPost : finished");
 		return "OK";

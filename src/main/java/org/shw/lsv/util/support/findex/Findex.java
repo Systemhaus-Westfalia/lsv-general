@@ -128,11 +128,14 @@ public class Findex implements IDeclarationProvider {
 		Entity<String> entity = Entity.json(documentAsJsonString);
         Response response = invocationBuilder.post(entity);
         
-        // TODO: korrekte Antwort-Behandlung
         if(response.getStatus() != HTTP_RESPONSE_201_CREATED
         		&& response.getStatus() != HTTP_RESPONSE_200_OK) {
+        	MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
+        	invoice.set_ValueOfColumn("ei_Status_Extern", response.getStatus());
         	String output = response.readEntity(String.class);
-        	return output;
+        	invoice.set_ValueOfColumn("ei_Error_Extern", output);
+        	invoice.saveEx();
+			return null;
         }
         else {
         	String output = response.readEntity(String.class);
