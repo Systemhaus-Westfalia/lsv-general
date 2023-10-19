@@ -321,7 +321,6 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			jsonDireccion.put(CreditoFiscal.COMPLEMENTO, complemento);
 		}		
 		jsonObjectReceptor.put(CreditoFiscal.DIRECCION, jsonDireccion);
-		
 		jsonObjectReceptor.put(CreditoFiscal.TELEFONO, partner.get_ValueAsString("phone"));
 		jsonObjectReceptor.put(CreditoFiscal.CORREO, partner.get_ValueAsString("EMail"));		
 
@@ -467,7 +466,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.CANTIDAD, invoiceLine.getQtyInvoiced());
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.CODIGO, invoiceLine.getM_Product_ID()>0? 
 					invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName().substring(0,3));
-			jsonCuerpoDocumentoItem.put(CreditoFiscal.UNIMEDIDA, 1);
+			jsonCuerpoDocumentoItem.put(CreditoFiscal.UNIMEDIDA, 59);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.DESCRIPCION, invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName());
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.PRECIOUNI, precioUnitario);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.MONTODESCU, Env.ZERO);
@@ -507,6 +506,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
      // Manipulate generated JSON string
         String creditoFiscalAsStringFinal = creditoFiscalAsJson.toString().
         		replace(":[],", ":null,").
+        		replace("\"telefono\":\"\"", "\"telefono\":null").
         		replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
         		replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
         		replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null").

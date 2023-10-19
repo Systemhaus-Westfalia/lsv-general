@@ -432,7 +432,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.TIPOITEM, 2);
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CANTIDAD, invoiceLine.getQtyInvoiced());
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CODIGO, codigo.substring(0,codigolength));
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.UNIMEDIDA, 1);
+			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.UNIMEDIDA, 59);
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.DESCRIPCION, description);
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.PRECIOUNI, invoiceLine.getPriceActual());
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.MONTODESCU, Env.ZERO);
@@ -459,6 +459,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
      // Manipulate generated JSON string
         String facturaAsStringFinal = facturaAsJson.toString().
         		replace(":[],", ":null,").
+        		replace("\"telefono\":\"\"", "\"telefono\":null").
         		replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
         		replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
         		replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null").

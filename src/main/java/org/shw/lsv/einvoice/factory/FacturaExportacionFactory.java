@@ -407,7 +407,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			jsonTributosArray.put("C3");
 			jsonCuerpoDocumentoItem. put( FacturaExportacion.TRIBUTOS, jsonTributosArray); //tributosItems.add("20");
 			
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.UNIMEDIDA, 1);
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.UNIMEDIDA, 59);
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.DESCRIPCION, invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName());
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.PRECIOUNI, invoiceLine.getPriceActual());
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.MONTODESCU, Env.ZERO);

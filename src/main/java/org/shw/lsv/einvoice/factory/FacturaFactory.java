@@ -472,7 +472,7 @@ public class FacturaFactory extends EDocumentFactory {
 			JSONArray jsonTributosArray = new JSONArray();
 			jsonCuerpoDocumentoItem. put( Factura.TRIBUTOS, jsonTributosArray); //tributosItems.add("20");
 			
-			jsonCuerpoDocumentoItem.put(Factura.UNIMEDIDA, 1);
+			jsonCuerpoDocumentoItem.put(Factura.UNIMEDIDA, 59);
 			jsonCuerpoDocumentoItem.put(Factura.DESCRIPCION, invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName());
 			jsonCuerpoDocumentoItem.put(Factura.PRECIOUNI, invoiceLine.getPriceActual());
 			jsonCuerpoDocumentoItem.put(Factura.MONTODESCU, Env.ZERO);
@@ -504,6 +504,7 @@ public class FacturaFactory extends EDocumentFactory {
      // Manipulate generated JSON string
         String facturaAsStringFinal = facturaAsJson.toString().
         		replace(":[],", ":null,").
+        		replace("\"telefono\":\"\"", "\"telefono\":null").
         		replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
         		replace("\"direccion\":{\"complemento\":null,\"municipio\":null,\"departamento\":null},", "\"direccion\":null,").
         		replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
