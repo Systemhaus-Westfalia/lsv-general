@@ -60,7 +60,7 @@ public class EmisorFacturaSujetoExcluido {
 		if(patternOK)
 			this.nit = nit;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nit' in NotaDeCredito.Emisor.setNit()");
+	        throw new IllegalArgumentException("Wrong expression 'nit' in FacturaSujetoExcluido.Emisor.setNit()" + "\n");
 	}
 
 
@@ -84,7 +84,7 @@ public class EmisorFacturaSujetoExcluido {
 		if(patternOK)
 			this.nrc = nrc;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in NotaDeCredito.Emisor.setNrc()");
+	        throw new IllegalArgumentException("Wrong expression 'nrc' in FacturaSujetoExcluido.Emisor.setNrc()" + "\n");
 	}
 
 
@@ -109,7 +109,7 @@ public class EmisorFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in NotaDeCredito.Emisor.setNombre()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' in FacturaSujetoExcluido.Emisor.setNombre()" + "\n");
 	}
 
 
@@ -133,7 +133,7 @@ public class EmisorFacturaSujetoExcluido {
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codActividad' in NotaDeCredito.Emisor.setCodActividad()");
+	        throw new IllegalArgumentException("Wrong expression 'codActividad' in FacturaSujetoExcluido.Emisor.setCodActividad()" + "\n");
 	}
 
 
@@ -158,7 +158,7 @@ public class EmisorFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descActividad = descActividad;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in NotaDeCredito.Emisor.setDescActividad()");
+	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in FacturaSujetoExcluido.Emisor.setDescActividad()" + "\n");
 	}
 
 
@@ -199,7 +199,7 @@ public class EmisorFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in NotaDeCredito.Emisor.setTelefono()");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' in FacturaSujetoExcluido.Emisor.setTelefono()" + "\n");
 	}
 
 
@@ -224,7 +224,7 @@ public class EmisorFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in NotaDeCredito.Emisor.setCorreo()");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' in FacturaSujetoExcluido.Emisor.setCorreo()" + "\n");
 	}
 
     

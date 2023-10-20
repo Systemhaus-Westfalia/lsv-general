@@ -61,7 +61,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(patternOK)
 			this.nit = nit;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nit' in NotaDeCredito.Receptor.setNit()");
+	        throw new IllegalArgumentException("Wrong expression 'nit' in FacturaSujetoExcluido.Receptor.setNit()" + "\n");
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(patternOK)
 			this.nrc = nrc;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in NotaDeCredito.Receptor.setNrc()");
+	        throw new IllegalArgumentException("Wrong expression 'nrc' in FacturaSujetoExcluido.Receptor.setNrc()" + "\n");
 	}
     
 	/**
@@ -110,7 +110,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in NotaDeCredito.Receptor.setNombre()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' in FacturaSujetoExcluido.Receptor.setNombre()" + "\n");
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codActividad' in NotaDeCredito.Receptor.setCodActividad()");
+	        throw new IllegalArgumentException("Wrong expression 'codActividad' in FacturaSujetoExcluido.Receptor.setCodActividad()" + "\n");
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descActividad = descActividad;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in NotaDeCredito.Receptor.setDescActividad()");
+	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in FacturaSujetoExcluido.Receptor.setDescActividad()" + "\n");
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombreComercial==null) )
 			this.nombreComercial = nombreComercial;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in NotaDeCredito.Receptor.setNombreComercial()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in FacturaSujetoExcluido.Receptor.setNombreComercial()" + "\n");
 	}
 
 	/**
@@ -225,7 +225,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in NotaDeCredito.Receptor.setTelefono()");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' in FacturaSujetoExcluido.Receptor.setTelefono()" + "\n");
 	}
 
 	/**
@@ -249,7 +249,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(length<=MAXLENGTH)
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in NotaDeCredito.Receptor.setCorreo()");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' in FacturaSujetoExcluido.Receptor.setCorreo()" + "\n");
 	}
 
 

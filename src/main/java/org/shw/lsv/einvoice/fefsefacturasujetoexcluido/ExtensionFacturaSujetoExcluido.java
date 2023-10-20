@@ -53,7 +53,7 @@ public class ExtensionFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombEntrega==null) )
 			this.nombEntrega = nombEntrega;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombEntrega' in NotaDeCredito.Extension.setNombEntrega()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombEntrega' in FacturaSujetoExcluido.Extension.setNombEntrega()" + "\n");
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class ExtensionFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (docuEntrega==null) )
 			this.docuEntrega = docuEntrega;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'docuEntrega' in NotaDeCredito.Extension.setDocuEntrega()");
+	        throw new IllegalArgumentException("Wrong parameter 'docuEntrega' in FacturaSujetoExcluido.Extension.setDocuEntrega()" + "\n");
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class ExtensionFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombRecibe==null) )
 			this.nombRecibe = nombRecibe;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombRecibe' in NotaDeCredito.Extension.setNombRecibe()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombRecibe' in FacturaSujetoExcluido.Extension.setNombRecibe()" + "\n");
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class ExtensionFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (docuRecibe==null) )
 			this.docuRecibe = docuRecibe;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'docuRecibe' in NotaDeCredito.Extension.setDocuRecibe()");
+	        throw new IllegalArgumentException("Wrong parameter 'docuRecibe' in FacturaSujetoExcluido.Extension.setDocuRecibe()" + "\n");
 	}
 
 	/**
@@ -152,7 +152,7 @@ public class ExtensionFacturaSujetoExcluido {
 		if( (length<=MAXLENGTH) || (observaciones==null) )
 			this.observaciones = observaciones;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'observaciones' in NotaDeCredito.Extension.setObservaciones()");
+	        throw new IllegalArgumentException("Wrong parameter 'observaciones' in FacturaSujetoExcluido.Extension.setObservaciones()" + "\n");
 	}
 
 	/**
