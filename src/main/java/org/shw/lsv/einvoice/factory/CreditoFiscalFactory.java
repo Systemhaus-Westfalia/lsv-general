@@ -44,7 +44,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		System.out.println("CreditoFiscal: start generating and filling the Document");
 		String result="";
 
-		System.out.println("Instatiate, fill and verify Identificacion");
+		System.out.println("Instantiate, fill and verify Identificacion");
 		IdentificacionCreditoFiscal identification = creditoFiscal.getIdentificacion();
 		if(identification!=null) {
 			creditoFiscal.errorMessages.append(creditoFiscal.fillIdentification(jsonInputToFactory));
@@ -67,7 +67,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 //			);
 //		}
 
-		System.out.println("Instatiate, fill and verify Emisor");
+		System.out.println("Instantiate, fill and verify Emisor");
 		EmisorCreditoFiscal emisor = creditoFiscal.getEmisor();
 		if(emisor!=null) {
 			creditoFiscal.fillEmisor(jsonInputToFactory);
@@ -99,7 +99,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 //			}
 //		}
 
-		System.out.println("Instatiate, fill and verify Cuerpo Documento");
+		System.out.println("Instantiate, fill and verify Cuerpo Documento");
 		List<CuerpoDocumentoItemCreditoFiscal> cuerpoDocumento = creditoFiscal.getCuerpoDocumento();
 		if(cuerpoDocumento!=null) {
 			creditoFiscal.fillCuerpoDocumento(jsonInputToFactory);
@@ -113,7 +113,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			);
 		}
 
-		System.out.println("Instatiate, fill and verify Resumen");
+		System.out.println("Instantiate, fill and verify Resumen");
 		ResumenCreditoFiscal resumen = creditoFiscal.getResumen();
 		if(resumen!=null) {
 			creditoFiscal.fillResumen(jsonInputToFactory);
@@ -124,7 +124,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		}
 		
 
-		System.out.println("Instatiate, fill and verify Receptor");
+		System.out.println("Instantiate, fill and verify Receptor");
 		ReceptorCreditoFiscal receptor = creditoFiscal.getReceptor();
 		if(receptor!=null) {
 			creditoFiscal.fillReceptor(jsonInputToFactory);

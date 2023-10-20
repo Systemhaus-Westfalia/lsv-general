@@ -44,7 +44,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		String result="";
 		facturaSujetoExcluido = new FacturaSujetoExcluido();
 
-		System.out.println("Instatiate, fill and verify Identificacion");
+		System.out.println("Instantiate, fill and verify Identificacion");
 		IdentificacionFacturaSujetoExcluido identification = facturaSujetoExcluido.getIdentificacion();
 		if(identification!=null) {
 			facturaSujetoExcluido.errorMessages.append(facturaSujetoExcluido.fillIdentification(jsonInputToFactory));
@@ -55,7 +55,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		}
 		
 
-		System.out.println("Instatiate, fill and verify Sujeto Excluido");
+		System.out.println("Instantiate, fill and verify Sujeto Excluido");
 		SujetoExcluidoFacturaSujetoExcluido sujetoExcluido = facturaSujetoExcluido.getSujetoExcluido();
 		if(sujetoExcluido!=null) {
 			facturaSujetoExcluido.errorMessages.append(facturaSujetoExcluido.fillSujetoExcluido(jsonInputToFactory));
@@ -78,7 +78,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 //			);
 //		}
 
-		System.out.println("Instatiate, fill and verify Emisor");
+		System.out.println("Instantiate, fill and verify Emisor");
 		EmisorFacturaSujetoExcluido emisor = facturaSujetoExcluido.getEmisor();
 		if(emisor!=null) {
 			facturaSujetoExcluido.fillEmisor(jsonInputToFactory);
@@ -110,7 +110,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 //			}
 //		}
 
-		System.out.println("Instatiate, fill and verify Cuerpo Documento");
+		System.out.println("Instantiate, fill and verify Cuerpo Documento");
 		List<CuerpoDocumentoItemFacturaSujetoExcluido> cuerpoDocumento = facturaSujetoExcluido.getCuerpoDocumento();
 		if(cuerpoDocumento!=null) {
 			facturaSujetoExcluido.fillCuerpoDocumento(jsonInputToFactory);
@@ -124,7 +124,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			);
 		}
 
-		System.out.println("Instatiate, fill and verify Resumen");
+		System.out.println("Instantiate, fill and verify Resumen");
 		ResumenFacturaSujetoExcluido resumen = facturaSujetoExcluido.getResumen();
 		if(resumen!=null) {
 			facturaSujetoExcluido.fillResumen(jsonInputToFactory);
@@ -135,7 +135,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		}
 		
 //
-//		System.out.println("Instatiate, fill and verify Receptor");
+//		System.out.println("Instantiate, fill and verify Receptor");
 //		ReceptorFacturaSujetoExcluido receptor = facturaSujetoExcluido.getReceptor();
 //		if(receptor!=null) {
 //			facturaSujetoExcluido.fillReceptor(jsonInputToFactory);
@@ -395,7 +395,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			JSONObject jsonPago = new JSONObject();
 			jsonPago.put(FacturaSujetoExcluido.CODIGO, "05");
 			jsonPago.put(FacturaSujetoExcluido.MONTOPAGO, invoice.getGrandTotal());
-			jsonPago.put(FacturaSujetoExcluido.REFERENCIA, "Transferencia_ Depósito Bancario");
+			jsonPago.put(FacturaSujetoExcluido.REFERENCIA, "Transferencia_ Dep��sito Bancario");
 			jsonPago.put(FacturaSujetoExcluido.PLAZO, invoice.getC_PaymentTerm().getE_TimeSpan().getValue());
 			jsonPago.put(FacturaSujetoExcluido.PERIODO, invoice.getC_PaymentTerm().getNetDays());
 		jsonArrayPagos.put(jsonPago);

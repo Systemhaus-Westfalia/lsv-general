@@ -46,7 +46,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		System.out.println("Nota de Credito: start generating and filling the Document");
 		String result="";
 
-		System.out.println("Instatiate, fill and verify Identificacion");		
+		System.out.println("Instantiate, fill and verify Identificacion");		
 		IdentificacionNotaDeCredito identification = notaDeCredito.getIdentificacion();
 		if(identification!=null) {
 			notaDeCredito.errorMessages.append(notaDeCredito.fillIdentification(jsonInputToFactory));
@@ -69,7 +69,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 //			);
 //		}
 
-		System.out.println("Instatiate, fill and verify Emisor");
+		System.out.println("Instantiate, fill and verify Emisor");
 		EmisorNotaDeCredito emisor = notaDeCredito.getEmisor();
 		if(emisor!=null) {
 			notaDeCredito.fillEmisor(jsonInputToFactory);
@@ -101,7 +101,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 //			}
 //		}
 
-		System.out.println("Instatiate, fill and verify Cuerpo Documento");
+		System.out.println("Instantiate, fill and verify Cuerpo Documento");
 		List<DocumentoRelacionadoItemNotaDeCredito> documentosRelacionados = notaDeCredito.getDocumentoRelacionado();
 		if(documentosRelacionados!=null) {
 			notaDeCredito.fillDocumentosRelacionados(jsonInputToFactory);
@@ -115,7 +115,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			);
 		}
 		
-		System.out.println("Instatiate, fill and verify Documento Relacionados");
+		System.out.println("Instantiate, fill and verify Documento Relacionados");
 		List<CuerpoDocumentoItemNotaDeCredito> cuerpoDocumento = notaDeCredito.getCuerpoDocumento();
 		if(cuerpoDocumento!=null) {
 			notaDeCredito.fillCuerpoDocumento(jsonInputToFactory);
@@ -129,7 +129,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			);
 		}
 
-		System.out.println("Instatiate, fill and verify Resumen");
+		System.out.println("Instantiate, fill and verify Resumen");
 		ResumenNotaDeCredito resumen = notaDeCredito.getResumen();
 		if(resumen!=null) {
 			notaDeCredito.fillResumen(jsonInputToFactory);
@@ -139,7 +139,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			}
 		}
 
-		System.out.println("Instatiate, fill and verify Receptor");
+		System.out.println("Instantiate, fill and verify Receptor");
 		ReceptorNotaDeCredito receptor = notaDeCredito.getReceptor();
 		if(receptor!=null) {
 			notaDeCredito.fillReceptor(jsonInputToFactory);

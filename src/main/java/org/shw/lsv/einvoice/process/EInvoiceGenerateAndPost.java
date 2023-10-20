@@ -51,7 +51,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 	{
 		String errorMessage= "";
 		MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
-		System.out.println("Process EInvoiceGenerateAndPost: started with Client " + client.getName() + " ID: " + getClientId());
+		System.out.println("Process EInvoiceGenerateAndPost: started with Client '" + client.getName() + "', ID: " + getClientId());
 		MADAppRegistration registration = new Query(getCtx(), MADAppRegistration.Table_Name, "EXISTS(SELECT 1 FROM AD_AppSupport s "
 				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
 				+ "AND s.ApplicationType = ?"
@@ -86,7 +86,8 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 				System.out.println("Process EInvoiceGenerateAndPost: finished");
 				return "OK";
 			}
-			
+
+			System.out.println("Collecting invoices to be processed..."); 
 			Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
 			StringBuffer sqlUpdate = new StringBuffer("UPDATE C_Invoice set ei_Processing = 'Y' WHERE c_INvoice_ID in (");
 			String character = ",";
@@ -96,6 +97,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 				sqlUpdate.append(invoiceID + character);
 				System.out.println("InvoiceID to be processed: " + invoiceID); 
 			}
+			System.out.println("Set 'processing' flag so invoices cannot be processed by other processes..."+ "\n"); 
 			DB.executeUpdateEx(sqlUpdate.toString(), updateTransaction.getTrxName());
 			if (updateTransaction != null) {
 				updateTransaction.commit(true);
@@ -120,7 +122,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 	                        dbTransaction.commit(true);
 	                        dbTransaction.close();
 	                    }
-	                    System.out.println("End invoice No. " + counter + " of " + length);
+	                    System.out.println("End invoice No. " + counter + " of " + length+ "\n"+ "\n");
 					} catch (Exception e) {
 						String error = "Error al procesar documento #" + invoiceId + " " + e;
 						System.out.println(error);

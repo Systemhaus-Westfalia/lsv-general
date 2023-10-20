@@ -45,7 +45,7 @@ public class FacturaFactory extends EDocumentFactory {
 		String result="";
 		factura = new Factura();
 
-		System.out.println("Instatiate, fill and verify Identificacion");
+		System.out.println("Instantiate, fill and verify Identificacion");
 		IdentificacionFactura identification = factura.getIdentificacion();
 		if(identification!=null) {
 			factura.errorMessages.append(factura.fillIdentification(jsonInputToFactory));
@@ -68,7 +68,7 @@ public class FacturaFactory extends EDocumentFactory {
 //			);
 //		}
 
-		System.out.println("Instatiate, fill and verify Emisor");
+		System.out.println("Instantiate, fill and verify Emisor");
 		EmisorFactura emisor = factura.getEmisor();
 		if(emisor!=null) {
 			factura.fillEmisor(jsonInputToFactory);
@@ -100,7 +100,7 @@ public class FacturaFactory extends EDocumentFactory {
 //			}
 //		}
 
-		System.out.println("Instatiate, fill and verify Cuerpo Documento");
+		System.out.println("Instantiate, fill and verify Cuerpo Documento");
 		List<CuerpoDocumentoItemFactura> cuerpoDocumento = factura.getCuerpoDocumento();
 		if(cuerpoDocumento!=null) {
 			factura.fillCuerpoDocumento(jsonInputToFactory);
@@ -114,7 +114,7 @@ public class FacturaFactory extends EDocumentFactory {
 			);
 		}
 
-		System.out.println("Instatiate, fill and verify Resumen");
+		System.out.println("Instantiate, fill and verify Resumen");
 		ResumenFactura resumen = factura.getResumen();
 		if(resumen!=null) {
 			factura.fillResumen(jsonInputToFactory);
@@ -125,7 +125,7 @@ public class FacturaFactory extends EDocumentFactory {
 		}
 		
 
-		System.out.println("Instatiate, fill and verify Receptor");
+		System.out.println("Instantiate, fill and verify Receptor");
 		ReceptorFactura receptor = factura.getReceptor();
 		if(receptor!=null) {
 			factura.fillReceptor(jsonInputToFactory);

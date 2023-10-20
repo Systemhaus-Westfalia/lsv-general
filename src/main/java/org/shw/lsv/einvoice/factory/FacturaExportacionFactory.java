@@ -43,7 +43,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		System.out.println("Factura Exportacion: start generating and filling the Document");
 		String result="";
 
-		System.out.println("Instatiate, fill and verify Identificacion");
+		System.out.println("Instantiate, fill and verify Identificacion");
 		IdentificacionFacturaExportacion identification = facturaExportacion.getIdentificacion();
 		if(identification!=null) {
 			facturaExportacion.errorMessages.append(facturaExportacion.fillIdentification(jsonInputToFactory));
@@ -66,7 +66,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 //			);
 //		}
 
-		System.out.println("Instatiate, fill and verify Emisor");
+		System.out.println("Instantiate, fill and verify Emisor");
 		EmisorFacturaExportacion emisor = facturaExportacion.getEmisor();
 		if(emisor!=null) {
 			facturaExportacion.fillEmisor(jsonInputToFactory);
@@ -98,7 +98,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 //			}
 //		}
 
-		System.out.println("Instatiate, fill and verify Cuerpo Documento");
+		System.out.println("Instantiate, fill and verify Cuerpo Documento");
 		List<CuerpoDocumentoItemFacturaExportacion> cuerpoDocumento = facturaExportacion.getCuerpoDocumento();
 		if(cuerpoDocumento!=null) {
 			facturaExportacion.fillCuerpoDocumento(jsonInputToFactory);
@@ -112,7 +112,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			);
 		}
 
-		System.out.println("Instatiate, fill and verify Resumen");
+		System.out.println("Instantiate, fill and verify Resumen");
 		ResumenFacturaExportacion resumen = facturaExportacion.getResumen();
 		if(resumen!=null) {
 			facturaExportacion.fillResumen(jsonInputToFactory);
@@ -122,7 +122,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			}
 		}
 
-		System.out.println("Instatiate, fill and verify Receptor");
+		System.out.println("Instantiate, fill and verify Receptor");
 		ReceptorFacturaExportacion receptor = facturaExportacion.getReceptor();
 		if(receptor!=null) {
 			facturaExportacion.fillReceptor(jsonInputToFactory);
