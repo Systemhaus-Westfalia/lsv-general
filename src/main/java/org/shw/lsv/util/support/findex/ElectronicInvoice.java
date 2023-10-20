@@ -54,7 +54,7 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		if (!iscorrectDocType) {
 			errorMsg = "El documento " + invoice.getDocumentNo() + " no es Factura, Credito Fiscal, Nota de Credito u otro documento permitido. Aquí se interrumpe el proceso";
 			System.out.println(errorMsg);
-			System.out.println("ElectronicInvoice.processElectronicInvoice(): finished with errors");
+			System.out.println("****************** ElectronicInvoice.processElectronicInvoice(): finished with errors");
 			return null;
 		}
 		boolean isreversal = ((invoice.getDocStatus().equals("VO")) || invoice.getDocStatus().equals("RE"))
@@ -68,7 +68,7 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		documentFactory = getDocumentFactory(invoice, isreversal, existsWithholding);
 		if (documentFactory == null) {
 			errorMsg = "El documento " + invoice.getDocumentNo() + " no pertenece a un tipo de documento valido: " + invoice.getC_DocType().getE_DocType().getValue() ;
-			System.out.println("Error producido en ElectronicInvoice.processElectronicInvoice(): " + errorMsg);
+			System.out.println("****************** Error producido en ElectronicInvoice.processElectronicInvoice(): " + errorMsg);
 			return null;
 		}
 
@@ -85,7 +85,7 @@ public class ElectronicInvoice implements IDeclarationDocument {
     		invoice.setei_ValidationStatus("02");
         	electronicInvoiceModel.saveEx();
         	invoice.saveEx();
-			System.out.println("ElectronicInvoice.processElectronicInvoice(): produced the following errors:");
+			System.out.println("****************** ElectronicInvoice.processElectronicInvoice(): produced the following errors:");
 			System.out.println(errorMsg);
 			System.out.println("ElectronicInvoice.processElectronicInvoice(): finished");
     		return null;

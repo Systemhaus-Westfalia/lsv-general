@@ -82,7 +82,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 						.getIDs();
 			final int length = invoiceIds.length;
 			if(length==0) {
-				System.out.println("Process EInvoiceGenerateAndPost: There is no invoice to process!!!");
+				System.out.println("****************** Process EInvoiceGenerateAndPost: There is no invoice to process!!!");
 				System.out.println("Process EInvoiceGenerateAndPost: finished");
 				return "OK";
 			}
