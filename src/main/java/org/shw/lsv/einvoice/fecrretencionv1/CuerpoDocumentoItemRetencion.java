@@ -63,7 +63,7 @@ public class CuerpoDocumentoItemRetencion {
 		if(numItem>=MINIMUM && numItem<=MAXIMUM)
 			this.numItem = numItem;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numItem' in Retencion.CuerpoDocumentoItem.setNumItem()");
+	        throw new IllegalArgumentException("Wrong parameter 'numItem' in Retencion.CuerpoDocumentoItem.setNumItem()" + "\n");
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class CuerpoDocumentoItemRetencion {
 		if (tipoDte.compareTo("14")==0 || tipoDte.compareTo("03")==0 || tipoDte.compareTo("01")==0)
 			this.tipoDte = tipoDte;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoDte' in Retencion.CuerpoDocumentoItem.setTipoDte()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoDte' in Retencion.CuerpoDocumentoItem.setTipoDte()" + "\n");
 	}
 
 
@@ -114,7 +114,7 @@ public class CuerpoDocumentoItemRetencion {
 		if (tipoDoc==1 || tipoDoc==2)
 			this.tipoDoc = tipoDoc;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoDoc' in Retencion.CuerpoDocumentoItem.setTipoDoc()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoDoc' in Retencion.CuerpoDocumentoItem.setTipoDoc()" + "\n");
 	}
 
 
@@ -136,7 +136,7 @@ public class CuerpoDocumentoItemRetencion {
 		if (numDocumento!=null)
 			this.numDocumento = numDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' in Retencion.CuerpoDocumentoItem.setNumDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' in Retencion.CuerpoDocumentoItem.setNumDocumento()" + "\n");
 	}
 
 
@@ -158,7 +158,7 @@ public class CuerpoDocumentoItemRetencion {
 		if (fechaEmision!=null)
 			this.fechaEmision = fechaEmision;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'fechaEmision' in Retencion.CuerpoDocumentoItem.setFechaEmision()");
+	        throw new IllegalArgumentException("Wrong parameter 'fechaEmision' in Retencion.CuerpoDocumentoItem.setFechaEmision()" + "\n");
 	}
 
 
@@ -199,7 +199,7 @@ public class CuerpoDocumentoItemRetencion {
 		if (codigoRetencionMH.compareTo("22")==0 || codigoRetencionMH.compareTo("C4")==0 || codigoRetencionMH.compareTo("C9")==0)
 			this.codigoRetencionMH = codigoRetencionMH;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codigoRetencionMH' in Retencion.CuerpoDocumentoItem.setCodigoRetencionMH()");
+	        throw new IllegalArgumentException("Wrong parameter 'codigoRetencionMH' in Retencion.CuerpoDocumentoItem.setCodigoRetencionMH()" + "\n");
 	}
 
 
@@ -234,7 +234,7 @@ public class CuerpoDocumentoItemRetencion {
 		if(length<=MAXLENGTH)
 			this.descripcion = descripcion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descripcion' in Retencion.CuerpoDocumentoItem.setDescripcion()");
+	        throw new IllegalArgumentException("Wrong parameter 'descripcion' in Retencion.CuerpoDocumentoItem.setDescripcion()" + "\n");
 	}
 
 	/**

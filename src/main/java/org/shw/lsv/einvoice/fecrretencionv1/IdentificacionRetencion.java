@@ -77,7 +77,7 @@ public class IdentificacionRetencion {
 		if (ambiente.compareTo("00")==0 || ambiente.compareTo("01")==0)
 			this.ambiente = ambiente;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'ambiente' in Retencion.Identificacion.setAmbiente()");
+	        throw new IllegalArgumentException("Wrong parameter 'ambiente' in Retencion.Identificacion.setAmbiente()" + "\n");
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class IdentificacionRetencion {
 		if(patternOK)
 			this.numeroControl = numeroControl;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'numeroControl' in Retencion.Identificacion.setNumeroControl()");
+	        throw new IllegalArgumentException("Wrong expression 'numeroControl' in Retencion.Identificacion.setNumeroControl()" + "\n");
 	}
 
 
@@ -143,7 +143,7 @@ public class IdentificacionRetencion {
 		if (tipoContingencia==null)
 			this.tipoContingencia = tipoContingencia;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in Retencion.Identificacion.setTipoContingencia()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in Retencion.Identificacion.setTipoContingencia()" + "\n");
 
 		// Schema conditions
 		//if(getTipoContingencia()==5) {
@@ -163,7 +163,7 @@ public class IdentificacionRetencion {
 		if(patternOK)
 			this.codigoGeneracion = codigoGeneracion;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in Retencion.Identificacion.setCodigoGeneracion()");
+	        throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in Retencion.Identificacion.setCodigoGeneracion()" + "\n");
 	}
 
 
@@ -184,7 +184,7 @@ public class IdentificacionRetencion {
 		if(motivoContin==null)
 			this.motivoContin = motivoContin;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'motivoContin' in Retencion.Identificacion.setmotivoContin()");
+	        throw new IllegalArgumentException("Wrong parameter 'motivoContin' in Retencion.Identificacion.setmotivoContin()" + "\n");
 	}
 
 
@@ -204,7 +204,7 @@ public class IdentificacionRetencion {
 		if (fecEmi!=null)
 			this.fecEmi = fecEmi;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'fecEmi' in Retencion.Identificacion.setFecEmi()");
+	        throw new IllegalArgumentException("Wrong parameter 'fecEmi' in Retencion.Identificacion.setFecEmi()" + "\n");
 	}
 
 
@@ -228,7 +228,7 @@ public class IdentificacionRetencion {
 		if(patternOK)
 			this.horEmi = horEmi;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'horEmi' in Retencion.Identificacion.setHorEmi()");
+	        throw new IllegalArgumentException("Wrong expression 'horEmi' in Retencion.Identificacion.setHorEmi()" + "\n");
 	}
 
 
@@ -247,7 +247,7 @@ public class IdentificacionRetencion {
 		if (tipoMoneda==TIPOMONEDA)
 			this.tipoMoneda = tipoMoneda;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoMoneda' in Retencion.Identificacion.setTipoMoneda()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoMoneda' in Retencion.Identificacion.setTipoMoneda()" + "\n");
 		
 	}
 
@@ -267,7 +267,7 @@ public class IdentificacionRetencion {
 		if (tipoModelo==TIPOMODELO)
 			this.tipoModelo = tipoModelo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in Retencion.Identificacion.setTipoModelo()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in Retencion.Identificacion.setTipoModelo()" + "\n");
 	}
 
 	/**
@@ -286,7 +286,7 @@ public class IdentificacionRetencion {
 		if (tipoOperacion==TIPOOPERACION)
 			this.tipoOperacion = tipoOperacion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in Retencion.Identificacion.setTipoOperacion()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in Retencion.Identificacion.setTipoOperacion()" + "\n");
 	}
 
 	

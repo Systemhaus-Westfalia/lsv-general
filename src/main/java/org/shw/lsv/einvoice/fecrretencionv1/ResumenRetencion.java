@@ -87,7 +87,7 @@ public class ResumenRetencion {
 		if( length<=MAXLENGTH)
 			this.totalIVAretenidoLetras = totalIVAretenidoLetras;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in Retencion.Resumen.setTotalIVAretenidoLetras()");
+			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in Retencion.Resumen.setTotalIVAretenidoLetras()" + "\n");
 	}
 	
 	

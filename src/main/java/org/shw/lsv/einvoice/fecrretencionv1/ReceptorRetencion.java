@@ -121,7 +121,7 @@ public class ReceptorRetencion {
 		if((tipoDocumento==null) || (Arrays.stream(validTipoDocumento).anyMatch(tipoDocumento::equals)) )
 			this.tipoDocumento = tipoDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoDocumento' in Retencion.Receptor.setTipoDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoDocumento' in Retencion.Receptor.setTipoDocumento()" + "\n");
 	}
 
 
@@ -148,7 +148,7 @@ public class ReceptorRetencion {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.numDocumento = numDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' in Retencion.Receptor.setNumDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' in Retencion.Receptor.setNumDocumento()" + "\n");
 	}
 
 
@@ -173,7 +173,7 @@ public class ReceptorRetencion {
 		if(patternOK)
 			this.nrc = nrc;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in Retencion.Receptor.setNrc()");
+	        throw new IllegalArgumentException("Wrong expression 'nrc' in Retencion.Receptor.setNrc()" + "\n");
 	}
     
 	/**
@@ -198,7 +198,7 @@ public class ReceptorRetencion {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in Retencion.Receptor.setNombre()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' in Retencion.Receptor.setNombre()" + "\n");
 	}
 
 	/**
@@ -222,7 +222,7 @@ public class ReceptorRetencion {
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codActividad' in Retencion.Receptor.setCodActividad()");
+	        throw new IllegalArgumentException("Wrong expression 'codActividad' in Retencion.Receptor.setCodActividad()" + "\n");
 	}
 
 	/**
@@ -247,7 +247,7 @@ public class ReceptorRetencion {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descActividad = descActividad;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in Retencion.Receptor.setDescActividad()");
+	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in Retencion.Receptor.setDescActividad()" + "\n");
 	}
 
 	/**
@@ -274,7 +274,7 @@ public class ReceptorRetencion {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombreComercial==null) )
 			this.nombreComercial = nombreComercial;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in Retencion.Receptor.setNombreComercial()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in Retencion.Receptor.setNombreComercial()" + "\n");
 	}
 
 
@@ -317,7 +317,7 @@ public class ReceptorRetencion {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (telefono==null) )
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in Retencion.Receptor.setTelefono()");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' in Retencion.Receptor.setTelefono()" + "\n");
 	}
 
 	/**
@@ -341,7 +341,7 @@ public class ReceptorRetencion {
 		if(length<=MAXLENGTH)
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in Retencion.Receptor.setCorreo()");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' in Retencion.Receptor.setCorreo()" + "\n");
 	}
 	
 	/**
