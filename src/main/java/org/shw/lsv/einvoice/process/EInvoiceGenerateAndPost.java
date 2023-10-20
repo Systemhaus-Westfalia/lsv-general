@@ -81,6 +81,12 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 						.setParameters(getClientId(), startdate)
 						.getIDs();
 			final int length = invoiceIds.length;
+			if(length==0) {
+				System.out.println("Process EInvoiceGenerateAndPost: There is no invoice to process!!!");
+				System.out.println("Process EInvoiceGenerateAndPost: finished");
+				return "OK";
+			}
+			
 			Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
 			StringBuffer sqlUpdate = new StringBuffer("UPDATE C_Invoice set ei_Processing = 'Y' WHERE c_INvoice_ID in (");
 			String character = ",";
@@ -114,8 +120,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 	                        dbTransaction.commit(true);
 	                        dbTransaction.close();
 	                    }
-	                    System.out.println("End invoice No. " + counter + " of " + length); 
-						// TODO: set EIProcessing == false
+	                    System.out.println("End invoice No. " + counter + " of " + length);
 					} catch (Exception e) {
 						String error = "Error al procesar documento #" + invoiceId + " " + e;
 						System.out.println(error);
@@ -129,9 +134,9 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 			
 		}
 		catch (Exception e) {
-			System.out.println("Process EInvoiceGenerateAndPost : error " + e);
+			System.out.println("Process EInvoiceGenerateAndPost: error " + e);
 		}
-		System.out.println("Process EInvoiceGenerateAndPost : finished");
+		System.out.println("Process EInvoiceGenerateAndPost: finished");
 		return "OK";
 	}
 
