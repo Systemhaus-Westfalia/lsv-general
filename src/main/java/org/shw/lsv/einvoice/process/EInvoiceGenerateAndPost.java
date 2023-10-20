@@ -51,6 +51,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 	{
 		String errorMessage= "";
 		MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
+		System.out.println("\n" + "******************************************************");
 		System.out.println("Process EInvoiceGenerateAndPost: started with Client '" + client.getName() + "', ID: " + getClientId());
 		MADAppRegistration registration = new Query(getCtx(), MADAppRegistration.Table_Name, "EXISTS(SELECT 1 FROM AD_AppSupport s "
 				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
@@ -83,7 +84,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 			final int length = invoiceIds.length;
 			if(length==0) {
 				System.out.println("****************** Process EInvoiceGenerateAndPost: There is no invoice to process!!!");
-				System.out.println("Process EInvoiceGenerateAndPost: finished");
+				System.out.println("Process EInvoiceGenerateAndPost: finished" + "\n");
 				return "OK";
 			}
 
@@ -127,18 +128,14 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 						String error = "Error al procesar documento #" + invoiceId + " " + e;
 						System.out.println(error);
 					}
-
 					System.out.println("Publish document successful"); 
-
-
 				});
-
-			
 		}
 		catch (Exception e) {
 			System.out.println("Process EInvoiceGenerateAndPost: error " + e);
 		}
 		System.out.println("Process EInvoiceGenerateAndPost: finished");
+		System.out.println("******************************************************" + "\n");
 		return "OK";
 	}
 
