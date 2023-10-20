@@ -56,7 +56,7 @@ public class EmisorAnulacion {
 		if(patternOK)
 			this.nit = nit;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nit' in Anulacion.Emisor.setNit()");
+	        throw new IllegalArgumentException("Wrong expression 'nit' in Anulacion.Emisor.setNit()" + "\n");
 	}
 
 
@@ -81,7 +81,7 @@ public class EmisorAnulacion {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in Anulacion.Emisor.setNombre()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' in Anulacion.Emisor.setNombre()" + "\n");
 	}
 
 
@@ -103,7 +103,7 @@ public class EmisorAnulacion {
 		if (tipoEstablecimiento.compareTo("01")==0 || tipoEstablecimiento.compareTo("02")==0 || tipoEstablecimiento.compareTo("04")==0 || tipoEstablecimiento.compareTo("07")==0 || tipoEstablecimiento.compareTo("20")==0)
 			this.tipoEstablecimiento = tipoEstablecimiento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoEstablecimiento' in Anulacion.Emisor.setTipoEstablecimiento()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoEstablecimiento' in Anulacion.Emisor.setTipoEstablecimiento()" + "\n");
 	}
 
 
@@ -128,7 +128,7 @@ public class EmisorAnulacion {
 		if( (length>=MINLENGTH && length<=MAXLENGTH)  || (nomEstablecimiento==null) )
 			this.nomEstablecimiento = nomEstablecimiento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nomEstablecimiento' in Anulacion.Emisor.setNomEstablecimiento()");
+	        throw new IllegalArgumentException("Wrong parameter 'nomEstablecimiento' in Anulacion.Emisor.setNomEstablecimiento()" + "\n");
 	}
 
 
@@ -157,7 +157,7 @@ public class EmisorAnulacion {
 		if(length>=MINLENGTH && length<=MAXLENGTH && patternOK)
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in Anulacion.Emisor.setTelefono()");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' in Anulacion.Emisor.setTelefono()" + "\n");
 	}
 
 
@@ -182,7 +182,7 @@ public class EmisorAnulacion {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in Anulacion.Emisor.setCorreo()");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' in Anulacion.Emisor.setCorreo()" + "\n");
 	}
 
 
@@ -207,7 +207,7 @@ public class EmisorAnulacion {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codEstableMH==null) )
 			this.codEstableMH = codEstableMH;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codEstableMH' in Anulacion.Emisor.setCodEstableMH()");
+	        throw new IllegalArgumentException("Wrong parameter 'codEstableMH' in Anulacion.Emisor.setCodEstableMH()" + "\n");
 	}
 
 
@@ -232,7 +232,7 @@ public class EmisorAnulacion {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codEstable==null) )
 			this.codEstable = codEstable;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codEstable' in Anulacion.Emisor.setCodEstable()");
+	        throw new IllegalArgumentException("Wrong parameter 'codEstable' in Anulacion.Emisor.setCodEstable()" + "\n");
 	}
 
 
@@ -257,7 +257,7 @@ public class EmisorAnulacion {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codPuntoVentaMH==null) )
 			this.codPuntoVentaMH = codPuntoVentaMH;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVentaMH' in Anulacion.Emisor.setCodPuntoVentaMH()");
+	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVentaMH' in Anulacion.Emisor.setCodPuntoVentaMH()" + "\n");
 	}
 
 
@@ -282,7 +282,7 @@ public class EmisorAnulacion {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codPuntoVenta==null) )
 			this.codPuntoVenta = codPuntoVenta;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVenta' in Anulacion.Emisor.setCodPuntoVenta()");
+	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVenta' in Anulacion.Emisor.setCodPuntoVenta()" + "\n");
 	}
 
 
