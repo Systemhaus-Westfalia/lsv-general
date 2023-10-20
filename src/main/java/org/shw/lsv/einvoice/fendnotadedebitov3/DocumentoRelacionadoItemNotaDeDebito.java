@@ -6,7 +6,7 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
 
 public class DocumentoRelacionadoItemNotaDeDebito {
-	static final String VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED  = "Documento: Nota de Debito, clase: DocumentoRelacionadoItem. Validacion fall??: valor de 'numeroDocumento' no corresponde a patr??n";
+	static final String VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED  = "Documento: Nota de Debito, clase: DocumentoRelacionadoItem. Validacion fallo: valor de 'numeroDocumento' no corresponde a patron";
 	
 	String tipoDocumento;
 	int tipoGeneracion;
@@ -64,7 +64,7 @@ public class DocumentoRelacionadoItemNotaDeDebito {
 		if (tipoDocumento.compareTo("03")==0 || tipoDocumento.compareTo("07")==0)
 			this.tipoDocumento = tipoDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoDocumento' in NotaDeDebito.DocumentoRelacionadoItem.setTipoDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoDocumento' in NotaDeDebito.DocumentoRelacionadoItem.setTipoDocumento()" + "\n");
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class DocumentoRelacionadoItemNotaDeDebito {
 		if (tipoGeneracion==1 || tipoGeneracion==2)
 			this.tipoGeneracion = tipoGeneracion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoGeneracion' in NotaDeDebito.DocumentoRelacionadoItem.setTipoGeneracion()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoGeneracion' in NotaDeDebito.DocumentoRelacionadoItem.setTipoGeneracion()" + "\n");
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class DocumentoRelacionadoItemNotaDeDebito {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.numeroDocumento = numeroDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numeroDocumento' in NotaDeDebito.DocumentoRelacionadoItem.setNumeroDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'numeroDocumento' in NotaDeDebito.DocumentoRelacionadoItem.setNumeroDocumento()" + "\n");
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class DocumentoRelacionadoItemNotaDeDebito {
 		if(fechaEmision!=null)
 			this.fechaEmision = fechaEmision;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'fechaEmision' in NotaDeDebito.DocumentoRelacionadoItem.setFechaEmision()");
+	        throw new IllegalArgumentException("Wrong parameter 'fechaEmision' in NotaDeDebito.DocumentoRelacionadoItem.setFechaEmision()" + "\n");
 	}
 
 

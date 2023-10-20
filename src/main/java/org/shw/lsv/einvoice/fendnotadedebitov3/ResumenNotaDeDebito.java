@@ -14,12 +14,12 @@ import org.shw.lsv.einvoice.utils.TributosItem;
  * 
  */
 public class ResumenNotaDeDebito {
-	static final String VALIDATION_TOTALGRAVADA_IS_NULL  = "Documento: Nota de Debito, clase: Resumen. Validacion fall??: valor de 'totlaGravada' no debe ser = null";
-	static final String VALIDATION_PLAZO_IS_NULL         = "Documento: Nota de Debito, clase: Resumen. Validacion fall??: valor de 'plazo' de pagos no debe ser ='null'";
-	static final String VALIDATION_PERIODO_IS_NULL       = "Documento: Nota de Debito, clase: Resumen. Validacion fall??: valor de 'periodo' de pagos no debe ser ='null'";
-	static final String VALIDATION_TOTALGRAVADA_IVAPERC1 = "Documento: Nota de Debito, clase: Resumen. Validacion fall??: valor de 'ivaPerci1' no debe ser mayor que cero";
-	static final String VALIDATION_TOTALGRAVADA_IVARETE1 = "Documento: Nota de Debito, clase: Resumen. Validacion fall??: valor de 'ivaRete1' no debe ser mayor que cero";
-	static final String VALIDATION_TOTALGRAVADA_CONDOP   = "Documento: Nota de Debito, clase: Resumen. Validacion fall??: valor de 'condicionOperacion' no debe ser diferente a 1";
+	static final String VALIDATION_TOTALGRAVADA_IS_NULL  = "Documento: Nota de Debito, clase: Resumen. Validacion fallo: valor de 'totlaGravada' no debe ser = null";
+	static final String VALIDATION_PLAZO_IS_NULL         = "Documento: Nota de Debito, clase: Resumen. Validacion fallo: valor de 'plazo' de pagos no debe ser ='null'";
+	static final String VALIDATION_PERIODO_IS_NULL       = "Documento: Nota de Debito, clase: Resumen. Validacion fallo: valor de 'periodo' de pagos no debe ser ='null'";
+	static final String VALIDATION_TOTALGRAVADA_IVAPERC1 = "Documento: Nota de Debito, clase: Resumen. Validacion fallo: valor de 'ivaPerci1' no debe ser mayor que cero";
+	static final String VALIDATION_TOTALGRAVADA_IVARETE1 = "Documento: Nota de Debito, clase: Resumen. Validacion fallo: valor de 'ivaRete1' no debe ser mayor que cero";
+	static final String VALIDATION_TOTALGRAVADA_CONDOP   = "Documento: Nota de Debito, clase: Resumen. Validacion fallo: valor de 'condicionOperacion' no debe ser diferente a 1";
 
 	BigDecimal totalNoSuj;
 	BigDecimal totalExenta;
@@ -324,7 +324,7 @@ public class ResumenNotaDeDebito {
 		if( length<=MAXLENGTH)
 			this.totalLetras = totalLetras;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in NotaDeDebito.Resumen.setTotalLetras()");
+			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in NotaDeDebito.Resumen.setTotalLetras()" + "\n");
 	}
 
 
@@ -347,7 +347,7 @@ public class ResumenNotaDeDebito {
 		if (condicionOperacion==1 || condicionOperacion==2 || condicionOperacion==2)
 			this.condicionOperacion = condicionOperacion;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'condicionOperacion' in NotaDeDebito.Resumen.setCondicionOperacion()");
+			throw new IllegalArgumentException("Wrong parameter 'condicionOperacion' in NotaDeDebito.Resumen.setCondicionOperacion()" + "\n");
 	}
 
 	/**
@@ -387,7 +387,7 @@ public class ResumenNotaDeDebito {
 		if( (length<=MAXLENGTH) || (numPagoElectronico==null) )
 			this.numPagoElectronico = numPagoElectronico;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'numPagoElectronico' in NotaDeDebito.Resumen.setNumPagoElectronico()");
+			throw new IllegalArgumentException("Wrong parameter 'numPagoElectronico' in NotaDeDebito.Resumen.setNumPagoElectronico()" + "\n");
 	}
 
     

@@ -61,7 +61,7 @@ public class ReceptorNotaDeDebito {
 		if(patternOK)
 			this.nit = nit;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nit' in NotaDeDebito.Receptor.setNit()");
+	        throw new IllegalArgumentException("Wrong expression 'nit' in NotaDeDebito.Receptor.setNit()" + "\n");
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class ReceptorNotaDeDebito {
 		if(patternOK)
 			this.nrc = nrc;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in NotaDeDebito.Receptor.setNrc()");
+	        throw new IllegalArgumentException("Wrong expression 'nrc' in NotaDeDebito.Receptor.setNrc()" + "\n");
 	}
     
 	/**
@@ -110,7 +110,7 @@ public class ReceptorNotaDeDebito {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in NotaDeDebito.Receptor.setNombre()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' in NotaDeDebito.Receptor.setNombre()" + "\n");
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class ReceptorNotaDeDebito {
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codActividad' in NotaDeDebito.Receptor.setCodActividad()");
+	        throw new IllegalArgumentException("Wrong expression 'codActividad' in NotaDeDebito.Receptor.setCodActividad()" + "\n");
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class ReceptorNotaDeDebito {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descActividad = descActividad;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in NotaDeDebito.Receptor.setDescActividad()");
+	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in NotaDeDebito.Receptor.setDescActividad()" + "\n");
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class ReceptorNotaDeDebito {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombreComercial==null) )
 			this.nombreComercial = nombreComercial;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in NotaDeDebito.Receptor.setNombreComercial()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in NotaDeDebito.Receptor.setNombreComercial()" + "\n");
 	}
 
 	/**
@@ -225,7 +225,7 @@ public class ReceptorNotaDeDebito {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in NotaDeDebito.Receptor.setTelefono()");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' in NotaDeDebito.Receptor.setTelefono()" + "\n");
 	}
 
 	/**
@@ -249,7 +249,7 @@ public class ReceptorNotaDeDebito {
 		if(length<=MAXLENGTH)
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in NotaDeDebito.Receptor.setCorreo()");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' in NotaDeDebito.Receptor.setCorreo()" + "\n");
 	}
 
 
