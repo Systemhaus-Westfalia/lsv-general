@@ -77,7 +77,7 @@ public class OtrosDocumentosItemFactura {
 		if(codDocAsociado>=MINIMUM && codDocAsociado<=MAXIMUM)
 			this.codDocAsociado = codDocAsociado;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codDocAsociado' in Factura.OtrosDocumentosItem.setCodDocAsociado()");
+	        throw new IllegalArgumentException("Wrong parameter 'codDocAsociado' in Factura.OtrosDocumentosItem.setCodDocAsociado()" + "\n");
 	}
 
 
@@ -102,7 +102,7 @@ public class OtrosDocumentosItemFactura {
 		if( (length<=MAXLENGTH)  || (descDocumento==null) )
 			this.descDocumento = descDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descDocumento' in Factura.OtrosDocumentosItem.setDescDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'descDocumento' in Factura.OtrosDocumentosItem.setDescDocumento()" + "\n");
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class OtrosDocumentosItemFactura {
 		if( (length<=MAXLENGTH)  || (detalleDocumento==null) )
 			this.detalleDocumento = detalleDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'detalleDocumento' in Factura.OtrosDocumentosItem.setDetalleDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'detalleDocumento' in Factura.OtrosDocumentosItem.setDetalleDocumento()" + "\n");
 	}
 
 	/**

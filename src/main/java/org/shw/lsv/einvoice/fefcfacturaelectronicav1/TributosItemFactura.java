@@ -56,7 +56,7 @@ public class TributosItemFactura {
 		if(length>=MINLENGTH && length<=MAXLENGTH && isCodigoValid)
 			this.codigo = codigo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codigo' in Factura.TributosItem.setCodigo()");
+	        throw new IllegalArgumentException("Wrong parameter 'codigo' in Factura.TributosItem.setCodigo()" + "\n");
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class TributosItemFactura {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descripcion = descripcion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descripcion' in Factura.TributosItem.setDescripcion()");
+	        throw new IllegalArgumentException("Wrong parameter 'descripcion' in Factura.TributosItem.setDescripcion()" + "\n");
 	}
 
 

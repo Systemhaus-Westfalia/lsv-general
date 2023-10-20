@@ -59,7 +59,7 @@ public class EmisorFactura {
 		if(patternOK)
 			this.nit = nit;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nit' in Factura.Emisor.setNit()");
+	        throw new IllegalArgumentException("Wrong expression 'nit' in Factura.Emisor.setNit()" + "\n");
 	}
 
 
@@ -83,7 +83,7 @@ public class EmisorFactura {
 		if(patternOK)
 			this.nrc = nrc;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in Factura.Emisor.setNrc()");
+	        throw new IllegalArgumentException("Wrong expression 'nrc' in Factura.Emisor.setNrc()" + "\n");
 	}
 
 
@@ -108,7 +108,7 @@ public class EmisorFactura {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in Factura.Emisor.setNombre()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' in Factura.Emisor.setNombre()" + "\n");
 	}
 
 
@@ -132,7 +132,7 @@ public class EmisorFactura {
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codActividad' in Factura.Emisor.setCodActividad()");
+	        throw new IllegalArgumentException("Wrong expression 'codActividad' in Factura.Emisor.setCodActividad()" + "\n");
 	}
 
 
@@ -157,7 +157,7 @@ public class EmisorFactura {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descActividad = descActividad;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in Factura.Emisor.setDescActividad()");
+	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in Factura.Emisor.setDescActividad()" + "\n");
 	}
 
 
@@ -182,7 +182,7 @@ public class EmisorFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombreComercial==null) )
 			this.nombreComercial = nombreComercial;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in Factura.Emisor.setNombreComercial()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in Factura.Emisor.setNombreComercial()" + "\n");
 	}
 
 
@@ -203,7 +203,7 @@ public class EmisorFactura {
 		if (tipoEstablecimiento.compareTo("01")==0 || tipoEstablecimiento.compareTo("02")==0 || tipoEstablecimiento.compareTo("04")==0 || tipoEstablecimiento.compareTo("07")==0 || tipoEstablecimiento.compareTo("20")==0)
 			this.tipoEstablecimiento = tipoEstablecimiento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoEstablecimiento' in Factura.Emisor.setTipoEstablecimiento()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoEstablecimiento' in Factura.Emisor.setTipoEstablecimiento()" + "\n");
 	}
 
 
@@ -244,7 +244,7 @@ public class EmisorFactura {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in Factura.Emisor.setTelefono()");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' in Factura.Emisor.setTelefono()" + "\n");
 	}
 
 
@@ -269,7 +269,7 @@ public class EmisorFactura {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in Factura.Emisor.setCorreo()");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' in Factura.Emisor.setCorreo()" + "\n");
 	}
 
 
@@ -294,7 +294,7 @@ public class EmisorFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codEstableMH==null) )
 			this.codEstableMH = codEstableMH;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codEstableMH' in Factura.Emisor.setCodEstableMH()");
+	        throw new IllegalArgumentException("Wrong parameter 'codEstableMH' in Factura.Emisor.setCodEstableMH()" + "\n");
 	}
 
 
@@ -319,7 +319,7 @@ public class EmisorFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codEstable==null) )
 			this.codEstable = codEstable;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codEstable' in Factura.Emisor.setCodEstable()");
+	        throw new IllegalArgumentException("Wrong parameter 'codEstable' in Factura.Emisor.setCodEstable()" + "\n");
 	}
 
 
@@ -344,7 +344,7 @@ public class EmisorFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codPuntoVentaMH==null) )
 			this.codPuntoVentaMH = codPuntoVentaMH;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVentaMH' in Factura.Emisor.setCodPuntoVentaMH()");
+	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVentaMH' in Factura.Emisor.setCodPuntoVentaMH()" + "\n");
 	}
 
 
@@ -369,7 +369,7 @@ public class EmisorFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codPuntoVenta==null) )
 			this.codPuntoVenta = codPuntoVenta;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVenta' in Factura.Emisor.setCodPuntoVenta()");
+	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVenta' in Factura.Emisor.setCodPuntoVenta()" + "\n");
 	}
 
     

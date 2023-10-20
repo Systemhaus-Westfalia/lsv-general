@@ -102,7 +102,7 @@ public class IdentificacionFactura {
 		if (ambiente.compareTo("00")==0 || ambiente.compareTo("01")==0)
 			this.ambiente = ambiente;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'ambiente' in Factura.Identificacion.setAmbiente()");
+	        throw new IllegalArgumentException("Wrong parameter 'ambiente' in Factura.Identificacion.setAmbiente()" + "\n");
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class IdentificacionFactura {
 		if(patternOK)
 			this.numeroControl = numeroControl;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'numeroControl' in Factura.Identificacion.setNumeroControl()");
+	        throw new IllegalArgumentException("Wrong expression 'numeroControl' in Factura.Identificacion.setNumeroControl()" + "\n");
 	}
 
 
@@ -168,7 +168,7 @@ public class IdentificacionFactura {
 		if (tipoContingencia==null || tipoContingencia==1 || tipoContingencia==2 || tipoContingencia==3 || tipoContingencia==4 || tipoContingencia==5)
 			this.tipoContingencia = tipoContingencia;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in Factura.Identificacion.setTipoContingencia()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in Factura.Identificacion.setTipoContingencia()" + "\n");
 
 		// Schema conditions
 		//if(getTipoContingencia()==5) {
@@ -188,7 +188,7 @@ public class IdentificacionFactura {
 		if(patternOK)
 			this.codigoGeneracion = codigoGeneracion;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in Factura.Identificacion.setCodigoGeneracion()");
+	        throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in Factura.Identificacion.setCodigoGeneracion()" + "\n");
 	}
 
 
@@ -213,7 +213,7 @@ public class IdentificacionFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH ) || (motivoContin==null) )
 			this.motivoContin = motivoContin;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'motivoContin' in Factura.Identificacion.setMotivoContin()");
+	        throw new IllegalArgumentException("Wrong parameter 'motivoContin' in Factura.Identificacion.setMotivoContin()" + "\n");
 	}
 
 
@@ -233,7 +233,7 @@ public class IdentificacionFactura {
 		if (fecEmi!=null)
 			this.fecEmi = fecEmi;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'fecEmi' in Factura.Identificacion.setFecEmi()");
+	        throw new IllegalArgumentException("Wrong parameter 'fecEmi' in Factura.Identificacion.setFecEmi()" + "\n");
 	}
 
 
@@ -257,7 +257,7 @@ public class IdentificacionFactura {
 		if(patternOK)
 			this.horEmi = horEmi;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'horEmi' in Factura.Identificacion.setHorEmi()");
+	        throw new IllegalArgumentException("Wrong expression 'horEmi' in Factura.Identificacion.setHorEmi()" + "\n");
 	}
 
 
@@ -292,7 +292,7 @@ public class IdentificacionFactura {
 		if (tipoModelo==1 || tipoModelo==2)
 			this.tipoModelo = tipoModelo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in Factura.Identificacion.setTipoModelo()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in Factura.Identificacion.setTipoModelo()" + "\n");
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class IdentificacionFactura {
 		if (tipoOperacion==1 || tipoOperacion==2)
 			this.tipoOperacion = tipoOperacion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in Factura.Identificacion.setTipoOperacion()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in Factura.Identificacion.setTipoOperacion()" + "\n");
 	}
 
 	

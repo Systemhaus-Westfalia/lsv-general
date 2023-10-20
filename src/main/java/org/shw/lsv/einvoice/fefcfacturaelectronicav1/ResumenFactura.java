@@ -323,7 +323,7 @@ public String validateValues() {
 		if( length<=MAXLENGTH)
 			this.totalLetras = totalLetras;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'totalLetras' in FacturaExportacion.Resumen.setTotalLetras()");
+	        throw new IllegalArgumentException("Wrong parameter 'totalLetras' in FacturaExportacion.Resumen.setTotalLetras()" + "\n");
 	}
 
 
@@ -374,7 +374,7 @@ public String validateValues() {
 		if (condicionOperacion==1 || condicionOperacion==2 || condicionOperacion==2)
 			this.condicionOperacion = condicionOperacion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'condicionOperacion' in FacturaExportacion.Resumen.setCondicionOperacion()");
+	        throw new IllegalArgumentException("Wrong parameter 'condicionOperacion' in FacturaExportacion.Resumen.setCondicionOperacion()" + "\n");
 	}
 
 
@@ -414,7 +414,7 @@ public String validateValues() {
 		if( (length<=MAXLENGTH) || (numPagoElectronico==null) )
 			this.numPagoElectronico = numPagoElectronico;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numPagoElectronico' in FacturaExportacion.Resumen.setNumPagoElectronico()");
+	        throw new IllegalArgumentException("Wrong parameter 'numPagoElectronico' in FacturaExportacion.Resumen.setNumPagoElectronico()" + "\n");
 	}
 
 	/**

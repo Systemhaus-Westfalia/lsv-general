@@ -50,7 +50,7 @@ public class ExtensionFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombEntrega==null) )
 			this.nombEntrega = nombEntrega;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombEntrega' in (POJO).Extension.setNombEntrega()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombEntrega' in Factura.Extension.setNombEntrega()" + "\n");
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class ExtensionFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (docuEntrega==null) )
 			this.docuEntrega = docuEntrega;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'docuEntrega' in (POJO).Extension.setDocuEntrega()");
+	        throw new IllegalArgumentException("Wrong parameter 'docuEntrega' in Factura.Extension.setDocuEntrega()" + "\n");
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class ExtensionFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombRecibe==null) )
 			this.nombRecibe = nombRecibe;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombRecibe' in (POJO).Extension.setNombRecibe()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombRecibe' in Factura.Extension.setNombRecibe()" + "\n");
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class ExtensionFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (docuRecibe==null) )
 			this.docuRecibe = docuRecibe;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'docuRecibe' in (POJO).Extension.setDocuRecibe()");
+	        throw new IllegalArgumentException("Wrong parameter 'docuRecibe' in Factura.Extension.setDocuRecibe()" + "\n");
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class ExtensionFactura {
 		if( (length<=MAXLENGTH) || (observaciones==null) )
 			this.observaciones = observaciones;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'observaciones' in (POJO).Extension.setObservaciones()");
+	        throw new IllegalArgumentException("Wrong parameter 'observaciones' in Factura.Extension.setObservaciones()" + "\n");
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class ExtensionFactura {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (placaVehiculo==null) )
 			this.placaVehiculo = placaVehiculo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'placaVehiculo' in (POJO).Extension.setPlacaVehiculo()");
+	        throw new IllegalArgumentException("Wrong parameter 'placaVehiculo' in Factura.Extension.setPlacaVehiculo()" + "\n");
 	}
 
 
