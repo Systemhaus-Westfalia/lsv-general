@@ -49,6 +49,8 @@ public class EI_CreateInvoice_Electronic extends EI_CreateInvoice_ElectronicAbst
 	    	System.out.println("Error(s) en Process EI_CreateInvoice_Electronic: " + electronicInvoice.getErrorMsg());
 			System.out.println("Process EI_CreateInvoice_Electronic: finished");
 			return electronicInvoice.getErrorMsg();
+		} else  {
+	    	System.out.println("NO ERRORS in Process EI_CreateInvoice_Electronic");
 		}
 		
     	String documentAsJsonString = electronicInvoiceModel.getjson();
