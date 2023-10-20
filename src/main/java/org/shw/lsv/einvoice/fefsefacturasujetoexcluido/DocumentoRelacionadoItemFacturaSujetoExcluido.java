@@ -91,7 +91,7 @@ public class DocumentoRelacionadoItemFacturaSujetoExcluido {
 		if (tipoGeneracion==1 || tipoGeneracion==2)
 			this.tipoGeneracion = tipoGeneracion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoGeneracion' in FacturaSujetoExcluido.DocumentoRelacionadoItem.setTipoGeneracion()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoGeneracion' (" + tipoGeneracion +  ") in FacturaSujetoExcluido.DocumentoRelacionadoItem.setTipoGeneracion()" + "\n");
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class DocumentoRelacionadoItemFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.numeroDocumento = numeroDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numeroDocumento' in FacturaSujetoExcluido.DocumentoRelacionadoItem.setNumeroDocumento()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'numeroDocumento' (" + numeroDocumento +  ") in FacturaSujetoExcluido.DocumentoRelacionadoItem.setNumeroDocumento()" + "\n");
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class DocumentoRelacionadoItemFacturaSujetoExcluido {
 		if (fechaEmision!=null)
 			this.fechaEmision = fechaEmision;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'fechaEmision' in FacturaSujetoExcluido.DocumentoRelacionadoItem.setFechaEmision()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'fechaEmision' (" + fechaEmision +  ") in FacturaSujetoExcluido.DocumentoRelacionadoItem.setFechaEmision()" + "\n");
 	}
 
 

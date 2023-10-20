@@ -102,7 +102,7 @@ public class IdentificacionFacturaSujetoExcluido {
 		if (ambiente.compareTo("00")==0 || ambiente.compareTo("01")==0)
 			this.ambiente = ambiente;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'ambiente' in FacturaSujetoExcluido.Identificacion.setAmbiente()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'ambiente' (" + ambiente +  ") in FacturaSujetoExcluido.Identificacion.setAmbiente()" + "\n");
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class IdentificacionFacturaSujetoExcluido {
 		if(patternOK)
 			this.numeroControl = numeroControl;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'numeroControl' in FacturaSujetoExcluido.Identificacion.setNumeroControl()" + "\n");
+	        throw new IllegalArgumentException("Wrong expression 'numeroControl' (" + numeroControl +  ") in FacturaSujetoExcluido.Identificacion.setNumeroControl()" + "\n");
 	}
 
 
@@ -168,7 +168,7 @@ public class IdentificacionFacturaSujetoExcluido {
 		if (tipoContingencia==null || tipoContingencia==1 || tipoContingencia==2 || tipoContingencia==3 || tipoContingencia==4 || tipoContingencia==5)
 			this.tipoContingencia = tipoContingencia;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in FacturaSujetoExcluido.Identificacion.setTipoContingencia()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' (" + tipoContingencia +  ") in FacturaSujetoExcluido.Identificacion.setTipoContingencia()" + "\n");
 
 		// Schema conditions
 		//if(getTipoContingencia()==5) {
@@ -188,7 +188,7 @@ public class IdentificacionFacturaSujetoExcluido {
 		if(patternOK)
 			this.codigoGeneracion = codigoGeneracion;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in FacturaSujetoExcluido.Identificacion.setCodigoGeneracion()" + "\n");
+	        throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' (" + codigoGeneracion +  ") in FacturaSujetoExcluido.Identificacion.setCodigoGeneracion()" + "\n");
 	}
 
 
@@ -213,7 +213,7 @@ public class IdentificacionFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH ) || (motivoContin==null) )
 			this.motivoContin = motivoContin;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'motivoContin' in FacturaSujetoExcluido.Identificacion.setMotivoContin()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'motivoContin' (" + motivoContin +  ") in FacturaSujetoExcluido.Identificacion.setMotivoContin()" + "\n");
 	}
 
 
@@ -233,7 +233,7 @@ public class IdentificacionFacturaSujetoExcluido {
 		if (fecEmi!=null)
 			this.fecEmi = fecEmi;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'fecEmi' in FacturaSujetoExcluido.Identificacion.setFecEmi()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'fecEmi' (" + fecEmi +  ") in FacturaSujetoExcluido.Identificacion.setFecEmi()" + "\n");
 	}
 
 
@@ -257,7 +257,7 @@ public class IdentificacionFacturaSujetoExcluido {
 		if(patternOK)
 			this.horEmi = horEmi;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'horEmi' in FacturaSujetoExcluido.Identificacion.setHorEmi()" + "\n");
+	        throw new IllegalArgumentException("Wrong expression 'horEmi' (" + horEmi +  ") in FacturaSujetoExcluido.Identificacion.setHorEmi()" + "\n");
 	}
 
 
@@ -292,7 +292,7 @@ public class IdentificacionFacturaSujetoExcluido {
 		if (tipoModelo==1 || tipoModelo==2)
 			this.tipoModelo = tipoModelo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in FacturaSujetoExcluido.Identificacion.setTipoModelo()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoModelo' (" + tipoModelo +  ") in FacturaSujetoExcluido.Identificacion.setTipoModelo()" + "\n");
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class IdentificacionFacturaSujetoExcluido {
 		if (tipoOperacion==1 || tipoOperacion==2)
 			this.tipoOperacion = tipoOperacion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in FacturaSujetoExcluido.Identificacion.setTipoOperacion()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' (" + tipoOperacion +  ") in FacturaSujetoExcluido.Identificacion.setTipoOperacion()" + "\n");
 	}
 
 

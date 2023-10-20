@@ -62,7 +62,7 @@ public class IdentificacionAnulacion {
 		if (ambiente.compareTo("00")==0 || ambiente.compareTo("01")==0)
 			this.ambiente = ambiente;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'ambiente' in Anulacion.identificacion.setAmbiente()" + "\n");
+			throw new IllegalArgumentException("Wrong parameter 'ambiente' (" + ambiente +  ") in Anulacion.identificacion.setAmbiente()" + "\n");
 	}
 
 
@@ -86,7 +86,7 @@ public class IdentificacionAnulacion {
 		if(patternOK)
 			this.codigoGeneracion = codigoGeneracion;
 		else
-			throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in Anulacion.identificacion.setCodigoGeneracion()" + "\n");
+			throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' (" + codigoGeneracion +  ") in Anulacion.identificacion.setCodigoGeneracion()" + "\n");
 	}
 
 
@@ -107,7 +107,7 @@ public class IdentificacionAnulacion {
 		if(fecAnula!=null)
 			this.fecAnula = fecAnula;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'fecAnula' in Anulacion.Identificacion.setFecEmi()" + "\n");
+			throw new IllegalArgumentException("Wrong parameter 'fecAnula' (" + fecAnula +  ") in Anulacion.Identificacion.setFecEmi()" + "\n");
 	}
 
 
@@ -131,7 +131,7 @@ public class IdentificacionAnulacion {
 		if(patternOK)
 			this.horAnula = horAnula;
 		else
-			throw new IllegalArgumentException("Wrong expression 'horAnula' in Anulacion.identificacion.setHorAnula()" + "\n");
+			throw new IllegalArgumentException("Wrong expression 'horAnula' (" + horAnula +  ") in Anulacion.identificacion.setHorAnula()" + "\n");
 	}
 
 

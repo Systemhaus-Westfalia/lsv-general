@@ -69,7 +69,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 		if((tipoDocumento==null) || (Arrays.stream(validTipoDocumento).anyMatch(tipoDocumento::equals)) )
 			this.tipoDocumento = tipoDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoDocumento' in FacturaSujetoExcluido.SujetoExcluido.setTipoDocumento()"+ "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoDocumento' (" + tipoDocumento +  ") in FacturaSujetoExcluido.SujetoExcluido.setTipoDocumento()"+ "\n");
 	}
 
 	public String getNumDocumento() {
@@ -84,7 +84,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (numDocumento==null) )
 			this.numDocumento = numDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' in FacturaSujetoExcluido.SujetoExcluido.setNumDocumento()"+ "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' (" + numDocumento +  ") in FacturaSujetoExcluido.SujetoExcluido.setNumDocumento()"+ "\n");
 	}
 
 	public String getNombre() {
@@ -99,7 +99,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH)  || (nombre==null) )
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in FacturaSujetoExcluido.SujetoExcluido.setNombre()"+ "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' (" + nombre +  ") in FacturaSujetoExcluido.SujetoExcluido.setNombre()"+ "\n");
 	}
 
 	public String getCodActividad() {
@@ -113,7 +113,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codActividad' in FacturaSujetoExcluido.SujetoExcluido.setCodActividad()"+ "\n");
+	        throw new IllegalArgumentException("Wrong expression 'codActividad' (" + codActividad +  ") in FacturaSujetoExcluido.SujetoExcluido.setCodActividad()"+ "\n");
 	}
 
 	public String getDescActividad() {
@@ -128,7 +128,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (descActividad==null) )
 			this.descActividad = descActividad;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in FacturaSujetoExcluido.SujetoExcluido.setDescActividad()"+ "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'descActividad' (" + descActividad +  ") in FacturaSujetoExcluido.SujetoExcluido.setDescActividad()"+ "\n");
 	}
 
 	public Direccion getDireccion() {
@@ -151,7 +151,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (telefono==null) )
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in FacturaSujetoExcluido.SujetoExcluido.setTelefono()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' (" + telefono +  ") in FacturaSujetoExcluido.SujetoExcluido.setTelefono()" + "\n");
 	}
 
 	public String getCorreo() {
@@ -165,7 +165,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 		if(length<=MAXLENGTH)
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in FacturaSujetoExcluido.SujetoExcluido.setCorreo()"+ "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' (" + correo +  ") in FacturaSujetoExcluido.SujetoExcluido.setCorreo()"+ "\n");
 	}
 
 

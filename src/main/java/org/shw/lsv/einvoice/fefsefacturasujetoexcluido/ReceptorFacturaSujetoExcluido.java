@@ -61,7 +61,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(patternOK)
 			this.nit = nit;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nit' in FacturaSujetoExcluido.Receptor.setNit()" + "\n");
+	        throw new IllegalArgumentException("Wrong expression 'nit' (" + nit +  ") in FacturaSujetoExcluido.Receptor.setNit()" + "\n");
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(patternOK)
 			this.nrc = nrc;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in FacturaSujetoExcluido.Receptor.setNrc()" + "\n");
+	        throw new IllegalArgumentException("Wrong expression 'nrc' (" + nrc +  ") in FacturaSujetoExcluido.Receptor.setNrc()" + "\n");
 	}
     
 	/**
@@ -110,7 +110,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in FacturaSujetoExcluido.Receptor.setNombre()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' (" + nombre +  ") in FacturaSujetoExcluido.Receptor.setNombre()" + "\n");
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codActividad' in FacturaSujetoExcluido.Receptor.setCodActividad()" + "\n");
+	        throw new IllegalArgumentException("Wrong expression 'codActividad' (" + codActividad +  ") in FacturaSujetoExcluido.Receptor.setCodActividad()" + "\n");
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descActividad = descActividad;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in FacturaSujetoExcluido.Receptor.setDescActividad()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'descActividad' (" + descActividad +  ") in FacturaSujetoExcluido.Receptor.setDescActividad()" + "\n");
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombreComercial==null) )
 			this.nombreComercial = nombreComercial;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in FacturaSujetoExcluido.Receptor.setNombreComercial()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' (" + nombreComercial +  ") in FacturaSujetoExcluido.Receptor.setNombreComercial()" + "\n");
 	}
 
 	/**
@@ -225,7 +225,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in FacturaSujetoExcluido.Receptor.setTelefono()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' (" + telefono +  ") in FacturaSujetoExcluido.Receptor.setTelefono()" + "\n");
 	}
 
 	/**
@@ -249,7 +249,7 @@ public class ReceptorFacturaSujetoExcluido {
 		if(length<=MAXLENGTH)
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in FacturaSujetoExcluido.Receptor.setCorreo()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' (" + correo +  ") in FacturaSujetoExcluido.Receptor.setCorreo()" + "\n");
 	}
 
 
