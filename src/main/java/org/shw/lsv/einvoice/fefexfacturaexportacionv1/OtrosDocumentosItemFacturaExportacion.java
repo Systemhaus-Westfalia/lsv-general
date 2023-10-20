@@ -13,16 +13,16 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
  * 
  */
 public class OtrosDocumentosItemFacturaExportacion {
-	static final String VALIDATION_MODOTRANSP_IS_NULL       = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fall??: valor de 'modoTransp' no debe ser ='null'";
-	static final String VALIDATION_NUMCONDUCTOR_IS_NULL     = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fall??: valor de 'numCoductor' no debe ser ='null'";
-	static final String VALIDATION_NOMBRECONDUCTOR_IS_NULL  = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fall??: valor de 'nombreConductor' no debe ser ='null'";
-	static final String VALIDATION_PLACATRANS_IS_NULL       = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fall??: valor de 'placaTrans' no debe ser ='null'";
-	static final String VALIDATION_NUMCONDUCTOR_NOT_NULL    = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fall??: valor de 'numCoductor' debe ser ='null'";
-	static final String VALIDATION_NOMBRECONDUCTOR_NOT_NULL = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fall??: valor de 'nombreConductor' debe ser ='null'";
-	static final String VALIDATION_PLACATRANS_NOT_NULL      = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fall??: valor de 'placaTrans' debe ser ='null'";
-	static final String VALIDATION_MODOTRANSP_NOT_NULL      = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fall??: valor de 'modoTransp' no debe ser ='null'";
-	static final String VALIDATION_DESCDOCUMENTO_IS_NULL    = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fall??: valor de 'descDocumento' no debe ser ='null'";
-	static final String VALIDATION_DETALLEDOCUMENTO_IS_NULL = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fall??: valor de 'detalleDocumento' no debe ser ='null'";
+	static final String VALIDATION_MODOTRANSP_IS_NULL       = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fallo: valor de 'modoTransp' no debe ser ='null'";
+	static final String VALIDATION_NUMCONDUCTOR_IS_NULL     = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fallo: valor de 'numCoductor' no debe ser ='null'";
+	static final String VALIDATION_NOMBRECONDUCTOR_IS_NULL  = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fallo: valor de 'nombreConductor' no debe ser ='null'";
+	static final String VALIDATION_PLACATRANS_IS_NULL       = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fallo: valor de 'placaTrans' no debe ser ='null'";
+	static final String VALIDATION_NUMCONDUCTOR_NOT_NULL    = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fallo: valor de 'numCoductor' debe ser ='null'";
+	static final String VALIDATION_NOMBRECONDUCTOR_NOT_NULL = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fallo: valor de 'nombreConductor' debe ser ='null'";
+	static final String VALIDATION_PLACATRANS_NOT_NULL      = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fallo: valor de 'placaTrans' debe ser ='null'";
+	static final String VALIDATION_MODOTRANSP_NOT_NULL      = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fallo: valor de 'modoTransp' no debe ser ='null'";
+	static final String VALIDATION_DESCDOCUMENTO_IS_NULL    = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fallo: valor de 'descDocumento' no debe ser ='null'";
+	static final String VALIDATION_DETALLEDOCUMENTO_IS_NULL = "Documento: Factura de Exportacion, clase: OtrosDocumentosItem. Validacion fallo: valor de 'detalleDocumento' no debe ser ='null'";
 	
 
 	int codDocAsociado;
@@ -96,7 +96,7 @@ public class OtrosDocumentosItemFacturaExportacion {
 		if(codDocAsociado>=MINIMUM && codDocAsociado<=MAXIMUM)
 			this.codDocAsociado = codDocAsociado;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codDocAsociado' in FacturaExportacion.OtrosDocumentosItem.setCodDocAsociado()");
+	        throw new IllegalArgumentException("Wrong parameter 'codDocAsociado' in FacturaExportacion.OtrosDocumentosItem.setCodDocAsociado()" + "\n");
 	}
 
 
@@ -121,7 +121,7 @@ public class OtrosDocumentosItemFacturaExportacion {
 		if( (length<=MAXLENGTH)  || (descDocumento==null) )
 			this.descDocumento = descDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descDocumento' in FacturaExportacion.OtrosDocumentosItem.setDescDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'descDocumento' in FacturaExportacion.OtrosDocumentosItem.setDescDocumento()" + "\n");
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class OtrosDocumentosItemFacturaExportacion {
 		if( (length<=MAXLENGTH)  || (detalleDocumento==null) )
 			this.detalleDocumento = detalleDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'detalleDocumento' in FacturaExportacion.OtrosDocumentosItem.setDetalleDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'detalleDocumento' in FacturaExportacion.OtrosDocumentosItem.setDetalleDocumento()" + "\n");
 	}
 
 
@@ -171,7 +171,7 @@ public class OtrosDocumentosItemFacturaExportacion {
 		if( (placaTrans==null) || (length>=MINLENGTH && length<=MAXLENGTH) )
 			this.placaTrans = placaTrans;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'placaTrans' in FacturaExportacion.OtrosDocumentosItem.setPlacaTrans()");
+	        throw new IllegalArgumentException("Wrong parameter 'placaTrans' in FacturaExportacion.OtrosDocumentosItem.setPlacaTrans()" + "\n");
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class OtrosDocumentosItemFacturaExportacion {
 		if ( (modoTransp==null) || (modoTransp>=1 && modoTransp<=7) )
 			this.modoTransp = modoTransp;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'modoTransp' in FacturaExportacion.OtrosDocumentosItem.setModoTransp()");
+	        throw new IllegalArgumentException("Wrong parameter 'modoTransp' in FacturaExportacion.OtrosDocumentosItem.setModoTransp()" + "\n");
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class OtrosDocumentosItemFacturaExportacion {
 		if( (numConductor==null) || (length>=MINLENGTH && length<=MAXLENGTH) )
 			this.numConductor = numConductor;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numConductor' in FacturaExportacion.OtrosDocumentosItem.setNumConductor()");
+	        throw new IllegalArgumentException("Wrong parameter 'numConductor' in FacturaExportacion.OtrosDocumentosItem.setNumConductor()" + "\n");
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class OtrosDocumentosItemFacturaExportacion {
 		if( (nombreConductor==null) || (length>=MINLENGTH && length<=MAXLENGTH) )
 			this.nombreConductor = nombreConductor;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreConductor' in FacturaExportacion.OtrosDocumentosItem.setNombreConductor()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombreConductor' in FacturaExportacion.OtrosDocumentosItem.setNombreConductor()" + "\n");
 	}
 
 	/**

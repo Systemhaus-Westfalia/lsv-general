@@ -11,11 +11,11 @@ public class IdentificacionFacturaExportacion {
 	static final String TIPO_DE_DOCUMENTO = "11";
 	static final String TIPOMONEDA        = "USD";
 	
-	static final String VALIDATION_TIPOMODELO_FAILED_1         = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fall??: valor de 'tipoModelo' no debe ser diferente a 1";
-	static final String VALIDATION_TIPOCONTINGENCIA_NOT_NULL   = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fall??: valor de 'tipoContingencia' debe ser ='null'";
-	static final String VALIDATION_MOTIVOCONTINGENCIA_NOT_NULL = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fall??: valor de 'motivoContingencia' debe ser ='null'";
-	static final String VALIDATION_TIPOMODELO_FAILED_2         = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fall??: valor de 'tipoModelo' no debe ser diferente a 2";
-	static final String VALIDATION_MOTIVOCONTINGENCIA_IS_NULL  = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fall??: valor de 'motivoContingencia' no debe ser ='null'";
+	static final String VALIDATION_TIPOMODELO_FAILED_1         = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fallo: valor de 'tipoModelo' no debe ser diferente a 1";
+	static final String VALIDATION_TIPOCONTINGENCIA_NOT_NULL   = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fallo: valor de 'tipoContingencia' debe ser ='null'";
+	static final String VALIDATION_MOTIVOCONTINGENCIA_NOT_NULL = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fallo: valor de 'motivoContingencia' debe ser ='null'";
+	static final String VALIDATION_TIPOMODELO_FAILED_2         = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fallo: valor de 'tipoModelo' no debe ser diferente a 2";
+	static final String VALIDATION_MOTIVOCONTINGENCIA_IS_NULL  = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fallo: valor de 'motivoContingencia' no debe ser ='null'";
 	
 	int version;
 	String ambiente;
@@ -96,7 +96,7 @@ public class IdentificacionFacturaExportacion {
 		if (ambiente.compareTo("00")==0 || ambiente.compareTo("01")==0)
 			this.ambiente = ambiente;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'ambiente' in FacturaExportacion.Identificacion.setAmbiente()");
+	        throw new IllegalArgumentException("Wrong parameter 'ambiente' in FacturaExportacion.Identificacion.setAmbiente()" + "\n");
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class IdentificacionFacturaExportacion {
 		if(patternOK)
 			this.numeroControl = numeroControl;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'numeroControl' in FacturaExportacion.Identificacion.setNumeroControl()");
+	        throw new IllegalArgumentException("Wrong expression 'numeroControl' in FacturaExportacion.Identificacion.setNumeroControl()" + "\n");
 	}
 
 
@@ -162,11 +162,11 @@ public class IdentificacionFacturaExportacion {
 		if (tipoContingencia==null || tipoContingencia==1 || tipoContingencia==2 || tipoContingencia==3 || tipoContingencia==4 || tipoContingencia==5)
 			this.tipoContingencia = tipoContingencia;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in FacturaExportacion.Identificacion.setTipoContingencia()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in FacturaExportacion.Identificacion.setTipoContingencia()" + "\n");
 
 		// Schema conditions
 		//if(getTipoContingencia()==5) {
-		//	// it should be a string, but how???
+		//	// it should be a string, but howo?
 		//}
 	}
 
@@ -182,7 +182,7 @@ public class IdentificacionFacturaExportacion {
 		if(patternOK)
 			this.codigoGeneracion = codigoGeneracion;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in FacturaExportacion.Identificacion.setCodigoGeneracion()");
+	        throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in FacturaExportacion.Identificacion.setCodigoGeneracion()" + "\n");
 	}
 
 
@@ -207,7 +207,7 @@ public class IdentificacionFacturaExportacion {
 		if( (length>=MINLENGTH && length<=MAXLENGTH ) || (motivoContingencia==null) )
 			this.motivoContigencia = motivoContingencia;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'motivoContingencia' in FacturaExportacion.Identificacion.setMotivoContingencia()");
+	        throw new IllegalArgumentException("Wrong parameter 'motivoContingencia' in FacturaExportacion.Identificacion.setMotivoContingencia()" + "\n");
 	}
 
 
@@ -227,7 +227,7 @@ public class IdentificacionFacturaExportacion {
 		if (fecEmi!=null)
 			this.fecEmi = fecEmi;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'fecEmi' in FacturaExportacion.Identificacion.setFecEmi()");
+	        throw new IllegalArgumentException("Wrong parameter 'fecEmi' in FacturaExportacion.Identificacion.setFecEmi()" + "\n");
 	}
 
 
@@ -251,7 +251,7 @@ public class IdentificacionFacturaExportacion {
 		if(patternOK)
 			this.horEmi = horEmi;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'horEmi' in FacturaExportacion.Identificacion.setHorEmi()");
+	        throw new IllegalArgumentException("Wrong expression 'horEmi' in FacturaExportacion.Identificacion.setHorEmi()" + "\n");
 	}
 
 
@@ -286,7 +286,7 @@ public class IdentificacionFacturaExportacion {
 		if (tipoModelo==1 || tipoModelo==2)
 			this.tipoModelo = tipoModelo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in FacturaExportacion.Identificacion.setTipoModelo()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in FacturaExportacion.Identificacion.setTipoModelo()" + "\n");
 	}
 
 	/**
@@ -305,7 +305,7 @@ public class IdentificacionFacturaExportacion {
 		if (tipoOperacion==1 || tipoOperacion==2)
 			this.tipoOperacion = tipoOperacion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in FacturaExportacion.Identificacion.setTipoOperacion()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in FacturaExportacion.Identificacion.setTipoOperacion()" + "\n");
 	}
 
 	

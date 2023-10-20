@@ -12,8 +12,8 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
  * 
  */
 public class ReceptorFacturaExportacion {
-	static final String VALIDATION_CODPAIS_IS_NULL             = "Documento: Factura de Exportacion, clase: Receptor. Validacion fall??: valor de 'codPais' no debe ser = null";
-	static final String VALIDATION_NUMDOCUMENTO_PATTERN_FAILED = "Documento: Factura de Exportacion, clase: Receptor. Validacion fall??: valor de 'numDocumento' no corresponde a patr??n";
+	static final String VALIDATION_CODPAIS_IS_NULL             = "Documento: Factura de Exportacion, clase: Receptor. Validacion fallo: valor de 'codPais' no debe ser = null";
+	static final String VALIDATION_NUMDOCUMENTO_PATTERN_FAILED = "Documento: Factura de Exportacion, clase: Receptor. Validacion fallo: valor de 'numDocumento' no corresponde a patron";
 
 	String nombre;
 	String tipoDocumento;
@@ -88,7 +88,7 @@ public class ReceptorFacturaExportacion {
 			this.tipoDocumento = tipoDocumento;
 		else
 			throw new IllegalArgumentException(
-					"Wrong parameter 'tipoDocumento' in FacturaExportacion.Receptor.setTipoDocumento()");
+					"Wrong parameter 'tipoDocumento' in FacturaExportacion.Receptor.setTipoDocumento()" + "\n");
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class ReceptorFacturaExportacion {
 			this.numDocumento = numDocumento;
 		else
 			throw new IllegalArgumentException(
-					"Wrong parameter 'numDocumento' in FacturaExportacion.Receptor.setNumDocumento()");
+					"Wrong parameter 'numDocumento' in FacturaExportacion.Receptor.setNumDocumento()" + "\n");
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class ReceptorFacturaExportacion {
 			this.nombreComercial = nombreComercial;
 		else
 			throw new IllegalArgumentException(
-					"Wrong parameter 'nombreComercial' in FacturaExportacion.Receptor.setNombreComercial()");
+					"Wrong parameter 'nombreComercial' in FacturaExportacion.Receptor.setNombreComercial()" + "\n");
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class ReceptorFacturaExportacion {
 		if (Arrays.stream(validPais).anyMatch(codPais::equals))
 			this.codPais = codPais;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'codPais' in FacturaExportacion.Receptor.setCodPais()");
+			throw new IllegalArgumentException("Wrong parameter 'codPais' in FacturaExportacion.Receptor.setCodPais()" + "\n");
 	}
 
 	/**
@@ -210,7 +210,7 @@ public class ReceptorFacturaExportacion {
 			this.nombrePais = nombrePais;
 		else
 			throw new IllegalArgumentException(
-					"Wrong parameter 'nombrePais' in FacturaExportacion.Receptor.setNombrePais()");
+					"Wrong parameter 'nombrePais' in FacturaExportacion.Receptor.setNombrePais()" + "\n");
 	}
 
 	/**
@@ -236,7 +236,7 @@ public class ReceptorFacturaExportacion {
 			this.complemento = complemento;
 		else
 			throw new IllegalArgumentException(
-					"Wrong parameter 'complemento' in FacturaExportacion.Receptor.setComplemento()");
+					"Wrong parameter 'complemento' in FacturaExportacion.Receptor.setComplemento()" + "\n");
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class ReceptorFacturaExportacion {
 			this.tipoPersona = tipoPersona;
 		else
 			throw new IllegalArgumentException(
-					"Wrong parameter 'tipoPersona' in FacturaExportacion.Receptor.setTipoPersona()");
+					"Wrong parameter 'tipoPersona' in FacturaExportacion.Receptor.setTipoPersona()" + "\n");
 	}
 
 	/**
@@ -283,7 +283,7 @@ public class ReceptorFacturaExportacion {
 		if (length >= MINLENGTH && length <= MAXLENGTH)
 			this.nombre = nombre;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'nombre' in FacturaExportacion.Receptor.setNombre()");
+			throw new IllegalArgumentException("Wrong parameter 'nombre' in FacturaExportacion.Receptor.setNombre()" + "\n");
 	}
 
 	/**
@@ -309,7 +309,7 @@ public class ReceptorFacturaExportacion {
 			this.descActividad = descActividad;
 		else
 			throw new IllegalArgumentException(
-					"Wrong parameter 'descActividad' in FacturaExportacion.Receptor.setDescActividad()");
+					"Wrong parameter 'descActividad' in FacturaExportacion.Receptor.setDescActividad()" + "\n");
 	}
 	/*
 		*//**
@@ -348,7 +348,7 @@ public class ReceptorFacturaExportacion {
 			this.telefono = telefono;
 		else
 			throw new IllegalArgumentException(
-					"Wrong parameter 'telefono' in FacturaExportacion.Receptor.setTelefono()");
+					"Wrong parameter 'telefono' in FacturaExportacion.Receptor.setTelefono()" + "\n");
 	}
 
 	/**
@@ -373,7 +373,7 @@ public class ReceptorFacturaExportacion {
 		if ((length >= MINLENGTH && length <= MAXLENGTH) || (correo == null))
 			this.correo = correo;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'correo' in FacturaExportacion.Receptor.setCorreo()");
+			throw new IllegalArgumentException("Wrong parameter 'correo' in FacturaExportacion.Receptor.setCorreo()" + "\n");
 	}
 
 

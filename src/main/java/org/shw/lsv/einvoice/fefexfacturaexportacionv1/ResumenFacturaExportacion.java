@@ -225,7 +225,7 @@ public class ResumenFacturaExportacion {
 		if( length<=MAXLENGTH)
 			this.totalLetras = totalLetras;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in Factura.Resumen.setTotalLetras()");
+			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in Factura.Resumen.setTotalLetras()" + "\n");
 	}
 
 
@@ -248,7 +248,7 @@ public class ResumenFacturaExportacion {
 		if (condicionOperacion==1 || condicionOperacion==2 || condicionOperacion==2)
 			this.condicionOperacion = condicionOperacion;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'condicionOperacion' in Factura.Resumen.setCondicionOperacion()");
+			throw new IllegalArgumentException("Wrong parameter 'condicionOperacion' in Factura.Resumen.setCondicionOperacion()" + "\n");
 	}
 
 
@@ -310,7 +310,7 @@ public class ResumenFacturaExportacion {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (descIncoterms==null) )
 			this.descIncoterms = descIncoterms;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'descIncoterms' in Factura.Resumen.setDescIncoterms()");
+			throw new IllegalArgumentException("Wrong parameter 'descIncoterms' in Factura.Resumen.setDescIncoterms()" + "\n");
 	}
 
 	/**
@@ -335,7 +335,7 @@ public class ResumenFacturaExportacion {
 		if( (length<=MAXLENGTH) || (numPagoElectronico==null) )
 			this.numPagoElectronico = numPagoElectronico;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'numPagoElectronico' in Factura.Resumen.setNumPagoElectronico()");
+			throw new IllegalArgumentException("Wrong parameter 'numPagoElectronico' in Factura.Resumen.setNumPagoElectronico()" + "\n");
 	}
 
 
@@ -360,7 +360,7 @@ public class ResumenFacturaExportacion {
 		if( (length<=MAXLENGTH) || (observaciones==null) )
 			this.observaciones = observaciones;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'observaciones' in Factura.Resumen.setObservaciones()");
+			throw new IllegalArgumentException("Wrong parameter 'observaciones' in Factura.Resumen.setObservaciones()" + "\n");
 	}
 
     

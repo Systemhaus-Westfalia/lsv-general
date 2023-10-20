@@ -12,9 +12,9 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
  * 
  */
 public class CuerpoDocumentoItemFacturaExportacion {
-	static final String VALIDATION_NOGRAVADO_IS_NULL = "Documento: Factura de Exportacion, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'noGravado' no debe ser ='null'";
-	static final String VALIDATION_PRECIOUNI_IS_NULL = "Documento: Factura de Exportacion, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'precioUni' no debe ser ='null'";
-	static final String VALIDATION_TRIBUTOS          = "Documento: Factura de Exportacion, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' debe ser ='C3'";
+	static final String VALIDATION_NOGRAVADO_IS_NULL = "Documento: Factura de Exportacion, clase: CuerpoDocumentoItem. Validacion fallo: valor de 'noGravado' no debe ser ='null'";
+	static final String VALIDATION_PRECIOUNI_IS_NULL = "Documento: Factura de Exportacion, clase: CuerpoDocumentoItem. Validacion fallo: valor de 'precioUni' no debe ser ='null'";
+	static final String VALIDATION_TRIBUTOS          = "Documento: Factura de Exportacion, clase: CuerpoDocumentoItem. Validacion fallo: valor de 'tributos' debe ser ='C3'";
 	
 	int numItem;
 	BigDecimal cantidad;
@@ -101,7 +101,7 @@ public class CuerpoDocumentoItemFacturaExportacion {
 		if(numItem>=MINIMUM && numItem<=MAXIMUM)
 			this.numItem = numItem;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numItem' in FacturaExportacion.CuerpoDocumentoItem.setNumItem()");
+	        throw new IllegalArgumentException("Wrong parameter 'numItem' in FacturaExportacion.CuerpoDocumentoItem.setNumItem()" + "\n");
 	}
 
 
@@ -140,7 +140,7 @@ public class CuerpoDocumentoItemFacturaExportacion {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codigo==null) )
 			this.codigo = codigo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codigo' in FacturaExportacion.CuerpoDocumentoItem.setCodigo()");
+	        throw new IllegalArgumentException("Wrong parameter 'codigo' in FacturaExportacion.CuerpoDocumentoItem.setCodigo()" + "\n");
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class CuerpoDocumentoItemFacturaExportacion {
 		if(uniMedida>=MINIMUM && uniMedida<=MAXIMUM)
 			this.uniMedida = uniMedida;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'uniMedida' in FacturaExportacion.CuerpoDocumentoItem.setUniMedida()");
+	        throw new IllegalArgumentException("Wrong parameter 'uniMedida' in FacturaExportacion.CuerpoDocumentoItem.setUniMedida()" + "\n");
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class CuerpoDocumentoItemFacturaExportacion {
 		if(length<=MAXLENGTH)
 			this.descripcion = descripcion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descripcion' in FacturaExportacion.CuerpoDocumentoItem.setDescripcion()");
+	        throw new IllegalArgumentException("Wrong parameter 'descripcion' in FacturaExportacion.CuerpoDocumentoItem.setDescripcion()" + "\n");
 	}
 	
 	/**
@@ -267,7 +267,7 @@ public class CuerpoDocumentoItemFacturaExportacion {
 		if( (tributos==null) || (tributos.size()>=MINLENGTH) )
 			this.tributos = tributos;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'tributos' in FacturaExportacion.CuerpoDocumentoItem.setTributos()");
+	        throw new IllegalArgumentException("Wrong expression 'tributos' in FacturaExportacion.CuerpoDocumentoItem.setTributos()" + "\n");
 	}
 
 	/**
