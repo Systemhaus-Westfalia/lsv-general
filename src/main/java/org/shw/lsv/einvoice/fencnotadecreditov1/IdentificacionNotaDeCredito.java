@@ -10,12 +10,12 @@ public class IdentificacionNotaDeCredito {
 	static final String TIPO_DE_DOCUMENTO = "05";
 	static final String TIPOMONEDA        = "USD";
 	
-	static final String VALIDATION_TIPOMODELO_FAILED_1         = "Documento: Nota de Credito, clase: Identificacion. Validacion fall??: valor de 'tipoModelo' no debe ser diferente a 1";
-	static final String VALIDATION_TIPOCONTINGENCIA_NOT_NULL   = "Documento: Nota de Credito, clase: Identificacion. Validacion fall??: valor de 'tipoContingencia' debe ser ='null'";
-	static final String VALIDATION_MOTIVOCONTINGENCIA_NOT_NULL = "Documento: Nota de Credito, clase: Identificacion. Validacion fall??: valor de 'motivoContingencia' debe ser ='null'";
-	static final String VALIDATION_TIPOMODELO_FAILED_2         = "Documento: Nota de Credito, clase: Identificacion. Validacion fall??: valor de 'tipoModelo' no debe ser diferente a 2";
-	static final String VALIDATION_TIPOOCONTINGENCIA_IS_NULL   = "Documento: Nota de Credito, clase: Identificacion. Validacion fall??: valor de 'tipoContingencia' no debe ser ='null'";
-	static final String VALIDATION_MOTIVOCONTINGENCIA_IS_NULL  = "Documento: Nota de Credito, clase: Identificacion. Validacion fall??: valor de 'motivoContingencia' no debe ser ='null'";
+	static final String VALIDATION_TIPOMODELO_FAILED_1         = "Documento: Nota de Credito, clase: Identificacion. Validacion fallo: valor de 'tipoModelo' no debe ser diferente a 1";
+	static final String VALIDATION_TIPOCONTINGENCIA_NOT_NULL   = "Documento: Nota de Credito, clase: Identificacion. Validacion fallo: valor de 'tipoContingencia' debe ser ='null'";
+	static final String VALIDATION_MOTIVOCONTINGENCIA_NOT_NULL = "Documento: Nota de Credito, clase: Identificacion. Validacion fallo: valor de 'motivoContingencia' debe ser ='null'";
+	static final String VALIDATION_TIPOMODELO_FAILED_2         = "Documento: Nota de Credito, clase: Identificacion. Validacion fallo: valor de 'tipoModelo' no debe ser diferente a 2";
+	static final String VALIDATION_TIPOOCONTINGENCIA_IS_NULL   = "Documento: Nota de Credito, clase: Identificacion. Validacion fallo: valor de 'tipoContingencia' no debe ser ='null'";
+	static final String VALIDATION_MOTIVOCONTINGENCIA_IS_NULL  = "Documento: Nota de Credito, clase: Identificacion. Validacion fallo: valor de 'motivoContingencia' no debe ser ='null'";
 	
 	int version;
 	String ambiente;
@@ -102,7 +102,7 @@ public class IdentificacionNotaDeCredito {
 		if (ambiente.compareTo("00")==0 || ambiente.compareTo("01")==0)
 			this.ambiente = ambiente;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'ambiente' in NotaDeCredito.Identificacion.setAmbiente()");
+	        throw new IllegalArgumentException("Wrong parameter 'ambiente' in NotaDeCredito.Identificacion.setAmbiente()" + "\n");
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class IdentificacionNotaDeCredito {
 		if(patternOK)
 			this.numeroControl = numeroControl;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'numeroControl' in NotaDeCredito.Identificacion.setNumeroControl()");
+	        throw new IllegalArgumentException("Wrong expression 'numeroControl' in NotaDeCredito.Identificacion.setNumeroControl()" + "\n");
 	}
 
 
@@ -168,11 +168,11 @@ public class IdentificacionNotaDeCredito {
 		if (tipoContingencia==null || tipoContingencia==1 || tipoContingencia==2 || tipoContingencia==3 || tipoContingencia==4 || tipoContingencia==5)
 			this.tipoContingencia = tipoContingencia;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in NotaDeCredito.Identificacion.setTipoContingencia()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in NotaDeCredito.Identificacion.setTipoContingencia()" + "\n");
 
 		// Schema conditions
 		//if(getTipoContingencia()==5) {
-		//	// it should be a string, but how???
+		//	// it should be a string, but howo?
 		//}
 	}
 
@@ -188,7 +188,7 @@ public class IdentificacionNotaDeCredito {
 		if(patternOK)
 			this.codigoGeneracion = codigoGeneracion;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in NotaDeCredito.Identificacion.setCodigoGeneracion()");
+	        throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in NotaDeCredito.Identificacion.setCodigoGeneracion()" + "\n");
 	}
 
 
@@ -213,7 +213,7 @@ public class IdentificacionNotaDeCredito {
 		if( (length>=MINLENGTH && length<=MAXLENGTH ) || (motivoContin==null) )
 			this.motivoContin = motivoContin;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'motivoContin' in NotaDeCredito.Identificacion.setMotivoContin()");
+	        throw new IllegalArgumentException("Wrong parameter 'motivoContin' in NotaDeCredito.Identificacion.setMotivoContin()" + "\n");
 	}
 
 
@@ -233,7 +233,7 @@ public class IdentificacionNotaDeCredito {
 		if (fecEmi!=null)
 			this.fecEmi = fecEmi;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'fecEmi' in NotaDeCredito.Identificacion.setFecEmi()");
+	        throw new IllegalArgumentException("Wrong parameter 'fecEmi' in NotaDeCredito.Identificacion.setFecEmi()" + "\n");
 	}
 
 
@@ -257,7 +257,7 @@ public class IdentificacionNotaDeCredito {
 		if(patternOK)
 			this.horEmi = horEmi;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'horEmi' in NotaDeCredito.Identificacion.setHorEmi()");
+	        throw new IllegalArgumentException("Wrong expression 'horEmi' in NotaDeCredito.Identificacion.setHorEmi()" + "\n");
 	}
 
 
@@ -292,7 +292,7 @@ public class IdentificacionNotaDeCredito {
 		if (tipoModelo==1 || tipoModelo==2)
 			this.tipoModelo = tipoModelo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in NotaDeCredito.Identificacion.setTipoModelo()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in NotaDeCredito.Identificacion.setTipoModelo()" + "\n");
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class IdentificacionNotaDeCredito {
 		if (tipoOperacion==1 || tipoOperacion==2)
 			this.tipoOperacion = tipoOperacion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in NotaDeCredito.Identificacion.setTipoOperacion()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in NotaDeCredito.Identificacion.setTipoOperacion()" + "\n");
 	}
 
 
