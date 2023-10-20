@@ -417,7 +417,7 @@ public class ResumenCreditoFiscal {
 		if( length<=MAXLENGTH)
 			this.totalLetras = totalLetras;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in CreditoFiscal.Resumen.setTotalLetras()");
+			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in CreditoFiscal.Resumen.setTotalLetras()" + "\n");
 	}
 
 
@@ -458,7 +458,7 @@ public class ResumenCreditoFiscal {
 		if (condicionOperacion==1 || condicionOperacion==2 || condicionOperacion==2)
 			this.condicionOperacion = condicionOperacion;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'condicionOperacion' in CreditoFiscal.Resumen.setCondicionOperacion()");
+			throw new IllegalArgumentException("Wrong parameter 'condicionOperacion' in CreditoFiscal.Resumen.setCondicionOperacion()" + "\n");
 	}
 
 
@@ -502,7 +502,7 @@ public class ResumenCreditoFiscal {
 		if( (length<=MAXLENGTH) || (numPagoElectronico==null) )
 			this.numPagoElectronico = numPagoElectronico;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'numPagoElectronico' in CreditoFiscal.Resumen.setNumPagoElectronico()");
+			throw new IllegalArgumentException("Wrong parameter 'numPagoElectronico' in CreditoFiscal.Resumen.setNumPagoElectronico()" + "\n");
 	}
 
 

@@ -146,7 +146,7 @@ public class CuerpoDocumentoItemCreditoFiscal {
 		if(numItem>=MINIMUM && numItem<=MAXIMUM)
 			this.numItem = numItem;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numItem' in CreditoFiscal.CuerpoDocumentoItem.setNumItem()");
+	        throw new IllegalArgumentException("Wrong parameter 'numItem' in CreditoFiscal.CuerpoDocumentoItem.setNumItem()" + "\n");
 	}
 
 
@@ -166,7 +166,7 @@ public class CuerpoDocumentoItemCreditoFiscal {
 		if (tipoItem==1 || tipoItem==2 || tipoItem==3 || tipoItem==4)
 			this.tipoItem = tipoItem;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoItem' in CreditoFiscal.CuerpoDocumentoItem.setTipoItem()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoItem' in CreditoFiscal.CuerpoDocumentoItem.setTipoItem()" + "\n");
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class CuerpoDocumentoItemCreditoFiscal {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (numeroDocumento==null) )
 			this.numeroDocumento = numeroDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numeroDocumento' in CreditoFiscal.CuerpoDocumentoItem.setNumeroDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'numeroDocumento' in CreditoFiscal.CuerpoDocumentoItem.setNumeroDocumento()" + "\n");
 	}
 
 
@@ -228,7 +228,7 @@ public class CuerpoDocumentoItemCreditoFiscal {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codigo==null) )
 			this.codigo = codigo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codigo' in CreditoFiscal.CuerpoDocumentoItem.setCodigo()");
+	        throw new IllegalArgumentException("Wrong parameter 'codigo' in CreditoFiscal.CuerpoDocumentoItem.setCodigo()" + "\n");
 	}
 
 	/**
@@ -248,7 +248,7 @@ public class CuerpoDocumentoItemCreditoFiscal {
 				codTributo.compareTo("D5")==0 || codTributo.compareTo("25")==0 || codTributo.compareTo("A6")==0)
 			this.codTributo = codTributo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codTributo' in CreditoFiscal.CuerpoDocumentoItem.setCodTributo()");
+	        throw new IllegalArgumentException("Wrong parameter 'codTributo' in CreditoFiscal.CuerpoDocumentoItem.setCodTributo()" + "\n");
 	}
 
 
@@ -271,7 +271,7 @@ public class CuerpoDocumentoItemCreditoFiscal {
 		if(uniMedida>=MINIMUM && uniMedida<=MAXIMUM)
 			this.uniMedida = uniMedida;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'uniMedida' in CreditoFiscal.CuerpoDocumentoItem.setUniMedida()");
+	        throw new IllegalArgumentException("Wrong parameter 'uniMedida' in CreditoFiscal.CuerpoDocumentoItem.setUniMedida()" + "\n");
 	}
 
 	/**
@@ -293,7 +293,7 @@ public class CuerpoDocumentoItemCreditoFiscal {
 		if(length<=MAXLENGTH)
 			this.descripcion = descripcion;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descripcion' in CreditoFiscal.CuerpoDocumentoItem.setDescripcion()");
+	        throw new IllegalArgumentException("Wrong parameter 'descripcion' in CreditoFiscal.CuerpoDocumentoItem.setDescripcion()" + "\n");
 	}
 	
 	/**
@@ -420,7 +420,7 @@ public class CuerpoDocumentoItemCreditoFiscal {
 		if( (tributos==null) || (tributos.size()>=MINLENGTH) )
 			this.tributos = tributos;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'tributos' in CreditoFiscal.CuerpoDocumentoItem.setTributos()");
+	        throw new IllegalArgumentException("Wrong expression 'tributos' in CreditoFiscal.CuerpoDocumentoItem.setTributos()" + "\n");
 	}
 
 

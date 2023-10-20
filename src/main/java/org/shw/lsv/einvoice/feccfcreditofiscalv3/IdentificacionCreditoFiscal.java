@@ -101,7 +101,7 @@ public class IdentificacionCreditoFiscal {
 		if (ambiente.compareTo("00")==0 || ambiente.compareTo("01")==0)
 			this.ambiente = ambiente;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'ambiente' in CreditoFiscal.Identificacion.setAmbiente()");
+			throw new IllegalArgumentException("Wrong parameter 'ambiente' in CreditoFiscal.Identificacion.setAmbiente()" + "\n");
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class IdentificacionCreditoFiscal {
 		if(patternOK)
 			this.numeroControl = numeroControl;
 		else
-			throw new IllegalArgumentException("Wrong expression 'numeroControl' in CreditoFiscal.Identificacion.setNumeroControl()");
+			throw new IllegalArgumentException("Wrong expression 'numeroControl' in CreditoFiscal.Identificacion.setNumeroControl()" + "\n");
 	}
 
 
@@ -167,7 +167,7 @@ public class IdentificacionCreditoFiscal {
 		if (tipoContingencia==null || tipoContingencia==1 || tipoContingencia==2 || tipoContingencia==3 || tipoContingencia==4 || tipoContingencia==5)
 			this.tipoContingencia = tipoContingencia;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in CreditoFiscal.Identificacion.setTipoContingencia()");
+			throw new IllegalArgumentException("Wrong parameter 'tipoContingencia' in CreditoFiscal.Identificacion.setTipoContingencia()" + "\n");
 
 		// Schema conditions
 		//if(getTipoContingencia()==5) {
@@ -187,7 +187,7 @@ public class IdentificacionCreditoFiscal {
 		if(patternOK)
 			this.codigoGeneracion = codigoGeneracion;
 		else
-			throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in CreditoFiscal.Identificacion.setCodigoGeneracion()");
+			throw new IllegalArgumentException("Wrong expression 'codigoGeneracion' in CreditoFiscal.Identificacion.setCodigoGeneracion()" + "\n");
 	}
 
 
@@ -212,7 +212,7 @@ public class IdentificacionCreditoFiscal {
 		if(motivoContin==null || (length>=MINLENGTH && length<=MAXLENGTH))
 			this.motivoContin = motivoContin;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'motivoContin' in CreditoFiscal.Identificacion.setMotivoContin()");
+			throw new IllegalArgumentException("Wrong parameter 'motivoContin' in CreditoFiscal.Identificacion.setMotivoContin()" + "\n");
 	}
 
 
@@ -232,7 +232,7 @@ public class IdentificacionCreditoFiscal {
 		if (fecEmi!=null)
 			this.fecEmi = fecEmi;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'fecEmi' in CreditoFiscal.Identificacion.setFecEmi()");
+			throw new IllegalArgumentException("Wrong parameter 'fecEmi' in CreditoFiscal.Identificacion.setFecEmi()" + "\n");
 	}
 
 
@@ -256,7 +256,7 @@ public class IdentificacionCreditoFiscal {
 		if(patternOK)
 			this.horEmi = horEmi;
 		else
-			throw new IllegalArgumentException("Wrong expression 'horEmi' in CreditoFiscal.Identificacion.setHorEmi()");
+			throw new IllegalArgumentException("Wrong expression 'horEmi' in CreditoFiscal.Identificacion.setHorEmi()" + "\n");
 	}
 
 
@@ -291,7 +291,7 @@ public class IdentificacionCreditoFiscal {
 		if (tipoModelo==1 || tipoModelo==2)
 			this.tipoModelo = tipoModelo;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in CreditoFiscal.Identificacion.setTipoModelo()");
+			throw new IllegalArgumentException("Wrong parameter 'tipoModelo' in CreditoFiscal.Identificacion.setTipoModelo()" + "\n");
 	}
 
 	/**
@@ -310,7 +310,7 @@ public class IdentificacionCreditoFiscal {
 		if (tipoOperacion==1 || tipoOperacion==2)
 			this.tipoOperacion = tipoOperacion;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in CreditoFiscal.Identificacion.setTipoOperacion()");
+			throw new IllegalArgumentException("Wrong parameter 'tipoOperacion' in CreditoFiscal.Identificacion.setTipoOperacion()" + "\n");
 	}
 
 	

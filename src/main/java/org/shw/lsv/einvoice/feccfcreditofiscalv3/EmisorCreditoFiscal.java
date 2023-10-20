@@ -59,7 +59,7 @@ public class EmisorCreditoFiscal {
 		if(patternOK)
 			this.nit = nit;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nit' in Credito Fiscal.Emisor.setNit()");
+	        throw new IllegalArgumentException("Wrong expression 'nit' in Credito Fiscal.Emisor.setNit()" + "\n");
 	}
 
 
@@ -83,7 +83,7 @@ public class EmisorCreditoFiscal {
 		if(patternOK)
 			this.nrc = nrc;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in Credito Fiscal.Emisor.setNrc()");
+	        throw new IllegalArgumentException("Wrong expression 'nrc' in Credito Fiscal.Emisor.setNrc()" + "\n");
 	}
 
 
@@ -108,7 +108,7 @@ public class EmisorCreditoFiscal {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in Credito Fiscal.Emisor.setNombre()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' in Credito Fiscal.Emisor.setNombre()" + "\n");
 	}
 
 
@@ -132,7 +132,7 @@ public class EmisorCreditoFiscal {
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'codActividad' in Credito Fiscal.Emisor.setCodActividad()");
+	        throw new IllegalArgumentException("Wrong expression 'codActividad' in Credito Fiscal.Emisor.setCodActividad()" + "\n");
 	}
 
 
@@ -157,7 +157,7 @@ public class EmisorCreditoFiscal {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descActividad = descActividad;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in Credito Fiscal.Emisor.setDescActividad()");
+	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in Credito Fiscal.Emisor.setDescActividad()" + "\n");
 	}
 
 
@@ -182,7 +182,7 @@ public class EmisorCreditoFiscal {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombreComercial==null) )
 			this.nombreComercial = nombreComercial;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in Credito Fiscal.Emisor.setNombreComercial()");
+	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in Credito Fiscal.Emisor.setNombreComercial()" + "\n");
 	}
 
 
@@ -203,7 +203,7 @@ public class EmisorCreditoFiscal {
 		if (tipoEstablecimiento.compareTo("01")==0 || tipoEstablecimiento.compareTo("02")==0 || tipoEstablecimiento.compareTo("04")==0 || tipoEstablecimiento.compareTo("07")==0 || tipoEstablecimiento.compareTo("20")==0)
 			this.tipoEstablecimiento = tipoEstablecimiento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoEstablecimiento' in Credito Fiscal.Emisor.setTipoEstablecimiento()");
+	        throw new IllegalArgumentException("Wrong parameter 'tipoEstablecimiento' in Credito Fiscal.Emisor.setTipoEstablecimiento()" + "\n");
 	}
 
 
@@ -244,7 +244,7 @@ public class EmisorCreditoFiscal {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in Credito Fiscal.Emisor.setTelefono()");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' in Credito Fiscal.Emisor.setTelefono()" + "\n");
 	}
 
 
@@ -269,7 +269,7 @@ public class EmisorCreditoFiscal {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in Credito Fiscal.Emisor.setCorreo()");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' in Credito Fiscal.Emisor.setCorreo()" + "\n");
 	}
 
 
@@ -294,7 +294,7 @@ public class EmisorCreditoFiscal {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codEstableMH==null) )
 			this.codEstableMH = codEstableMH;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codEstableMH' in Credito Fiscal.Emisor.setCodEstableMH()");
+	        throw new IllegalArgumentException("Wrong parameter 'codEstableMH' in Credito Fiscal.Emisor.setCodEstableMH()" + "\n");
 	}
 
 
@@ -319,7 +319,7 @@ public class EmisorCreditoFiscal {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codEstable==null) )
 			this.codEstable = codEstable;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codEstable' in Credito Fiscal.Emisor.setCodEstable()");
+	        throw new IllegalArgumentException("Wrong parameter 'codEstable' in Credito Fiscal.Emisor.setCodEstable()" + "\n");
 	}
 
 
@@ -344,7 +344,7 @@ public class EmisorCreditoFiscal {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codPuntoVentaMH==null) )
 			this.codPuntoVentaMH = codPuntoVentaMH;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVentaMH' in Credito Fiscal.Emisor.setCodPuntoVentaMH()");
+	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVentaMH' in Credito Fiscal.Emisor.setCodPuntoVentaMH()" + "\n");
 	}
 
 
@@ -369,7 +369,7 @@ public class EmisorCreditoFiscal {
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codPuntoVenta==null) )
 			this.codPuntoVenta = codPuntoVenta;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVenta' in Credito Fiscal.Emisor.setCodPuntoVenta()");
+	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVenta' in Credito Fiscal.Emisor.setCodPuntoVenta()" + "\n");
 	}
 
 

@@ -78,7 +78,7 @@ public class OtrosDocumentosItemCreditoFiscal {
 		if(codDocAsociado>=MINIMUM && codDocAsociado<=MAXIMUM)
 			this.codDocAsociado = codDocAsociado;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codDocAsociado' in Credito Fiscal.OtrosDocumentosItem.setCodDocAsociado()");
+	        throw new IllegalArgumentException("Wrong parameter 'codDocAsociado' in Credito Fiscal.OtrosDocumentosItem.setCodDocAsociado()" + "\n");
 	}
 
 
@@ -103,7 +103,7 @@ public class OtrosDocumentosItemCreditoFiscal {
 		if( (length<=MAXLENGTH)  || (descDocumento==null) )
 			this.descDocumento = descDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descDocumento' in Credito Fiscal.OtrosDocumentosItem.setDescDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'descDocumento' in Credito Fiscal.OtrosDocumentosItem.setDescDocumento()" + "\n");
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class OtrosDocumentosItemCreditoFiscal {
 		if( (length<=MAXLENGTH)  || (detalleDocumento==null) )
 			this.detalleDocumento = detalleDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'detalleDocumento' in Credito Fiscal.OtrosDocumentosItem.setDetalleDocumento()");
+	        throw new IllegalArgumentException("Wrong parameter 'detalleDocumento' in Credito Fiscal.OtrosDocumentosItem.setDetalleDocumento()" + "\n");
 	}
 
 	/**
