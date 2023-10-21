@@ -222,7 +222,7 @@ public class ReceptorCreditoFiscal {
 		final int MAXLENGTH = 30;
 		int length = telefono==null?0:telefono.length();
 		
-		if(length>=MINLENGTH && length<=MAXLENGTH)
+		if((telefono == null || length==0) || (length>=MINLENGTH && length<=MAXLENGTH))
 			this.telefono = telefono;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'telefono' in CreditoFiscal.Receptor.setTelefono()" + "\n");

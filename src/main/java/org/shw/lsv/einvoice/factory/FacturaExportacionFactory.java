@@ -438,6 +438,9 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		// Manipulate generated JSON string
 		String facturaExportacionAsStringFinal = facturaExportacionAsJson.toString().
 				replace(":[],", ":null,").
+        		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
+        		replace("\"descActividad\":\"\"", "\"descActividad\":null").
+        		replace("\"codActividad\":\"\"", "\"codActividad\":null").
 				replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
 				replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
 				replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null").

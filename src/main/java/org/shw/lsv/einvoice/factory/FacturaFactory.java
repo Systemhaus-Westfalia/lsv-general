@@ -25,6 +25,7 @@ import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.IdentificacionFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ReceptorFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ResumenFactura;
+import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.FacturaSujetoExcluido;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
@@ -406,7 +407,10 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonObjectResumen.put(Factura.TOTALPAGAR, invoice.getGrandTotal());
 		jsonObjectResumen.put(Factura.TOTALLETRAS, totalLetras);
 		jsonObjectResumen.put(Factura.SALDOFAVOR, Env.ZERO);
-		jsonObjectResumen.put(Factura.CONDICIONOPERACION, Factura.CONDICIONOPERACION_A_CREDITO);
+		int condicionOperacion = 
+		invoice.getC_PaymentTerm().getNetDays() == 0? FacturaSujetoExcluido.CONDICIONOPERACION_AL_CONTADO:
+			FacturaSujetoExcluido.CONDICIONOPERACION_A_CREDITO;
+		jsonObjectResumen.put(FacturaSujetoExcluido.CONDICIONOPERACION, condicionOperacion);
 		jsonObjectResumen.put(Factura.TOTALDESCU, Env.ZERO);
 		jsonObjectResumen.put(Factura.RETERENTA, Env.ZERO);
 		jsonObjectResumen.put(Factura.TOTALIVA, totalIVA);
@@ -415,7 +419,7 @@ public class FacturaFactory extends EDocumentFactory {
 			JSONObject jsonPago = new JSONObject();
 			jsonPago.put(Factura.CODIGO, "05");
 			jsonPago.put(Factura.MONTOPAGO, invoice.getGrandTotal());
-			jsonPago.put(Factura.REFERENCIA, "Transferencia_ Dep??sito Bancario");
+			jsonPago.put(Factura.REFERENCIA, "Transferencia_ Deposito Bancario");
 			jsonPago.put(Factura.PLAZO, invoice.getC_PaymentTerm().getE_TimeSpan().getValue());
 			jsonPago.put(Factura.PERIODO, invoice.getC_PaymentTerm().getNetDays());
 		jsonArrayPagos.put(jsonPago);
@@ -504,6 +508,9 @@ public class FacturaFactory extends EDocumentFactory {
      // Manipulate generated JSON string
         String facturaAsStringFinal = facturaAsJson.toString().
         		replace(":[],", ":null,").
+        		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
+        		replace("\"descActividad\":\"\"", "\"descActividad\":null").
+        		replace("\"codActividad\":\"\"", "\"codActividad\":null").
         		replace("\"telefono\":\"\"", "\"telefono\":null").
         		replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
         		replace("\"direccion\":{\"complemento\":null,\"municipio\":null,\"departamento\":null},", "\"direccion\":null,").

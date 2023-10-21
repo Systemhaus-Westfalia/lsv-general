@@ -108,7 +108,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 
 	public void setCodActividad(String codActividad) {
 		final String PATTERN = "^[0-9]{2,6}$";
-		boolean patternOK = (codActividad!=null) && Pattern.matches(PATTERN, codActividad);  
+		boolean patternOK = codActividad.length()==0 ||  ((codActividad!=null) && Pattern.matches(PATTERN, codActividad));  
 		
 		if(patternOK)
 			this.codActividad = codActividad;
@@ -125,7 +125,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 		final int MAXLENGTH = 150;
 		int length = descActividad==null?0:descActividad.length();
 		
-		if( (length>=MINLENGTH && length<=MAXLENGTH) || (descActividad==null) )
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || (descActividad==null || length == 0) )
 			this.descActividad = descActividad;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'descActividad' (" + descActividad +  ") in FacturaSujetoExcluido.SujetoExcluido.setDescActividad()"+ "\n");
@@ -148,7 +148,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 		final int MAXLENGTH = 30;
 		int length = telefono==null?0:telefono.length();
 		
-		if( (length>=MINLENGTH && length<=MAXLENGTH) || (telefono==null) )
+		if((telefono == null || length==0) || (length>=MINLENGTH && length<=MAXLENGTH))
 			this.telefono = telefono;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'telefono' (" + telefono +  ") in FacturaSujetoExcluido.SujetoExcluido.setTelefono()" + "\n");

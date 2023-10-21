@@ -467,10 +467,10 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			}
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
-                
+            String numerodocumentno = invoiceLine.getRef_InvoiceLine().getC_Invoice().getei_codigoGeneracion();  
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMITEM, i);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.TIPOITEM, 2);
-			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMERODOCUMENTO, getNumeroControl(invoice.get_ID(), orgInfo, "DTE-01-"));
+			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMERODOCUMENTO, numerodocumentno);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CANTIDAD, invoiceLine.getQtyInvoiced());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CODTRIBUTO, "");  // String codTributo = "20";
@@ -535,6 +535,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		String notaDeCreditoAsStringFinal = notaDeCreditoAsJson.toString().
 				replace(":[],", ":null,").
         		replace("\"telefono\":\"\"", "\"telefono\":null").
+        		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
 				replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
 				replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
 				replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null").

@@ -84,8 +84,6 @@ public class FacturaSujetoExcluido extends EDocument {
 		System.out.println("Start FacturaNoSujeto.fillIdentificacion()");
 
 		JSONObject identificationJson = factoryInput.getJSONObject(IDENTIFICACION);
-		try {identificacion.setMotivoContin(identificationJson.getString(MOTIVOCONTIN));} 			catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_IDENTIFICACION + e);}
-		try {identificacion.setTipoContingencia(identificationJson.getInt(TIPOCONTINGENCIA));} 		catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_IDENTIFICACION + e);}
 		try {identificacion.setNumeroControl(identificationJson.getString(NUMEROCONTROL));} 		catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_IDENTIFICACION + e);}
 		try {identificacion.setCodigoGeneracion(identificationJson.getString(CODIGOGENERACION));} 	catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_IDENTIFICACION + e);}
 		try {identificacion.setTipoModelo(identificationJson.getInt(TIPOMODELO));} 					catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_IDENTIFICACION + e);}
@@ -94,7 +92,10 @@ public class FacturaSujetoExcluido extends EDocument {
 		try {identificacion.setHorEmi(identificationJson.getString(HOREMI));} 						catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_IDENTIFICACION + e);}
 		try {identificacion.setTipoMoneda(identificationJson.getString(TIPOMONEDA));} 				catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_IDENTIFICACION + e);}
 		try {identificacion.setAmbiente(identificationJson.getString(AMBIENTE));} 					catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_IDENTIFICACION + e);}
-
+		if (identificationJson.getInt(TIPOMODELO) == TIPOMODELO_CONTIGENCIA) {
+			try{identificacion.setMotivoContin(identificationJson.getString(MOTIVOCONTIN));} 		catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_IDENTIFICACION + e);}
+			try{identificacion.setTipoContingencia(identificationJson.getInt(TIPOCONTINGENCIA));} 	catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_IDENTIFICACION + e);}
+		}		
 		System.out.println("End FacturaNoSujeto.fillIdentificacion()");
 		return errorMessages;
 	}
@@ -187,13 +188,9 @@ public class FacturaSujetoExcluido extends EDocument {
 		JSONObject sujetoExcluidoJson = factoryInput.getJSONObject(SUJETOEXCLUIDO);
 		try {sujetoExcluido.setNumDocumento(sujetoExcluidoJson.getString(NUMDOCUMENTO));} 			catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_SUJETO_EXCLUIDO + e);}
 		try {sujetoExcluido.setNombre(sujetoExcluidoJson.getString(NOMBRE));} 						catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_SUJETO_EXCLUIDO + e);}
-		try {
-			if (sujetoExcluidoJson.getString(CODACTIVIDAD).length()> 0)
-				sujetoExcluido.setCodActividad(sujetoExcluidoJson.getString(CODACTIVIDAD));} 		catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_SUJETO_EXCLUIDO + e);}
-		try {
-			if (sujetoExcluidoJson.getString(DESCACTIVIDAD).length()>0)
-			sujetoExcluido.setDescActividad(sujetoExcluidoJson.getString(DESCACTIVIDAD));} 			catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_SUJETO_EXCLUIDO + e);}
 		try {sujetoExcluido.setTipoDocumento(sujetoExcluidoJson.getString(TIPODOCUMENTO));} 		catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_SUJETO_EXCLUIDO + e);}
+		try {sujetoExcluido.setCodActividad(sujetoExcluidoJson.getString(CODACTIVIDAD));} 			catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_SUJETO_EXCLUIDO + e);}
+		try {sujetoExcluido.setDescActividad(sujetoExcluidoJson.getString(DESCACTIVIDAD));} 		catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_SUJETO_EXCLUIDO + e);}
 
 		JSONObject jsonDireccion = sujetoExcluidoJson.getJSONObject(DIRECCION);
 		try {sujetoExcluido.getDireccion().setDepartamento(jsonDireccion.getString(DEPARTAMENTO));}	catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDO_SUJETO_EXCLUIDO + e);}

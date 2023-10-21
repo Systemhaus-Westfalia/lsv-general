@@ -210,7 +210,7 @@ public class NotaDeCredito extends EDocument {
 			CuerpoDocumentoItemNotaDeCredito cuerpoDocumentoItemNotaDeCredito = new CuerpoDocumentoItemNotaDeCredito();
 			try {cuerpoDocumentoItemNotaDeCredito.setNumItem(cuerpoDocumentoItemJson.getInt(NUMITEM));} 					catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e);}
 			try {cuerpoDocumentoItemNotaDeCredito.setTipoItem(cuerpoDocumentoItemJson.getInt(TIPOITEM));} 					catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e);}
-			//try {cuerpoDocumentoItemNotaDeCredito.setNumeroDocumento(cuerpoDocumentoItemJson.getString(NUMERODOCUMENTO));} 	catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e);}
+			try {cuerpoDocumentoItemNotaDeCredito.setNumeroDocumento(cuerpoDocumentoItemJson.getString(NUMERODOCUMENTO));} 	catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e);}
 			try {cuerpoDocumentoItemNotaDeCredito.setCantidad(cuerpoDocumentoItemJson.getBigDecimal(CANTIDAD));} 			catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e);}
 			try {cuerpoDocumentoItemNotaDeCredito.setCodigo(cuerpoDocumentoItemJson.getString(CODIGO));} 					catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e);}
 

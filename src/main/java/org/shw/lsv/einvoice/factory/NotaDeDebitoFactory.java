@@ -520,6 +520,7 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		// Manipulate generated JSON string
 		String notaDeCreditoAsStringFinal = notaDeCreditoAsJson.toString().
 				replace(":[],", ":null,").
+        		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
 				replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
 				replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
 				replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null").

@@ -305,6 +305,8 @@ public class FacturaExportacion extends EDocument {
 		try {resumen.setTotalDescu(resumenJson.getBigDecimal(TOTALDESCU));} 					catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXPORTACION_RESUMEN + e);}
 		try {resumen.setDescuento(resumenJson.getBigDecimal(DESCUENTO));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXPORTACION_RESUMEN + e);}
 		try {resumen.setMontoTotalOperacion(resumenJson.getBigDecimal(MONTOTOTALOPERACION));}	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXPORTACION_RESUMEN + e);}
+		try {resumen.setFlete(resumenJson.getBigDecimal(FLETE));} 								catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXPORTACION_RESUMEN + e);}
+		try {resumen.setSeguro(resumenJson.getBigDecimal(SEGURO));} 							catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXPORTACION_RESUMEN + e);}
 
 		JSONArray pagosItemsJson = resumenJson.getJSONArray(PAGOS);
 		JSONObject pagosItemJson = pagosItemsJson.getJSONObject(0);

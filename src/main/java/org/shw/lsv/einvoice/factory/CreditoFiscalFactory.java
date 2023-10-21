@@ -25,6 +25,7 @@ import org.shw.lsv.einvoice.feccfcreditofiscalv3.EmisorCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.IdentificacionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ReceptorCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ResumenCreditoFiscal;
+import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.FacturaSujetoExcluido;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
@@ -399,7 +400,10 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		jsonObjectResumen.put(CreditoFiscal.TOTALPAGAR, invoice.getGrandTotal());
 		jsonObjectResumen.put(CreditoFiscal.TOTALLETRAS, totalLetras);
 		jsonObjectResumen.put(CreditoFiscal.SALDOFAVOR, Env.ZERO);
-		jsonObjectResumen.put(CreditoFiscal.CONDICIONOPERACION, CreditoFiscal.CONDICIONOPERACION_A_CREDITO);
+		int condicionOperacion = 
+		invoice.getC_PaymentTerm().getNetDays() == 0? FacturaSujetoExcluido.CONDICIONOPERACION_AL_CONTADO:
+			FacturaSujetoExcluido.CONDICIONOPERACION_A_CREDITO;
+		jsonObjectResumen.put(CreditoFiscal.CONDICIONOPERACION, condicionOperacion);
 		jsonObjectResumen.put(CreditoFiscal.TOTALDESCU, Env.ZERO);
 		jsonObjectResumen.put(CreditoFiscal.RETERENTA, Env.ZERO);
 		jsonObjectResumen.put(CreditoFiscal.IVAPERCI1, Env.ZERO);

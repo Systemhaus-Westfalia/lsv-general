@@ -289,7 +289,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		System.out.println("Factura: start collecting JSON data for Sujeto Excluido");
 
 		MBPartner partner = (MBPartner)invoice.getC_BPartner();
-		if (partner.getE_Activity_ID()<=0 || partner.getE_Recipient_Identification_ID() <= 0) {
+		if (partner.getE_Recipient_Identification_ID() <= 0) {
 			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta configuracion para Facturacion Electronica"; 
 			facturaSujetoExcluido.errorMessages.append(errorMessage);
 			System.out.println(errorMessage);
@@ -339,8 +339,8 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			jsonDireccion.put(FacturaSujetoExcluido.COMPLEMENTO, complemento);
 		}		
 		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.DIRECCION, jsonDireccion);
-		
-		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.TELEFONO, partner.get_ValueAsString("phone"));
+		String phone = partner.get_ValueAsString("phone");
+		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.TELEFONO, phone.replace("-", ""));
 		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.CORREO, partner.get_ValueAsString("EMail"));		
 
 		System.out.println("Factura: end collecting JSON data for Receptor");
@@ -382,8 +382,11 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonObjectResumen.put(FacturaSujetoExcluido.IVARETE1, ivaRete1);
 		jsonObjectResumen.put(FacturaSujetoExcluido.MONTOTOTALOPERACION, invoice.getGrandTotal());
 		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALPAGAR, invoice.getGrandTotal());
-		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALLETRAS, totalLetras);		
-		jsonObjectResumen.put(FacturaSujetoExcluido.CONDICIONOPERACION, FacturaSujetoExcluido.CONDICIONOPERACION_A_CREDITO);
+		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALLETRAS, totalLetras);
+		int condicionOperacion = 
+		invoice.getC_PaymentTerm().getNetDays() == 0? FacturaSujetoExcluido.CONDICIONOPERACION_AL_CONTADO:
+			FacturaSujetoExcluido.CONDICIONOPERACION_A_CREDITO;
+		jsonObjectResumen.put(FacturaSujetoExcluido.CONDICIONOPERACION, condicionOperacion);
 		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALDESCU, totalDescu);
 		jsonObjectResumen.put(FacturaSujetoExcluido.DESCU, descu);
 		jsonObjectResumen.put(FacturaSujetoExcluido.RETERENTA, reteRenta);
@@ -395,7 +398,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			JSONObject jsonPago = new JSONObject();
 			jsonPago.put(FacturaSujetoExcluido.CODIGO, "05");
 			jsonPago.put(FacturaSujetoExcluido.MONTOPAGO, invoice.getGrandTotal());
-			jsonPago.put(FacturaSujetoExcluido.REFERENCIA, "Transferencia_ Dep��sito Bancario");
+			jsonPago.put(FacturaSujetoExcluido.REFERENCIA, "Transferencia_ Deposito Bancario");
 			jsonPago.put(FacturaSujetoExcluido.PLAZO, invoice.getC_PaymentTerm().getE_TimeSpan().getValue());
 			jsonPago.put(FacturaSujetoExcluido.PERIODO, invoice.getC_PaymentTerm().getNetDays());
 		jsonArrayPagos.put(jsonPago);
@@ -459,7 +462,12 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
      // Manipulate generated JSON string
         String facturaAsStringFinal = facturaAsJson.toString().
         		replace(":[],", ":null,").
+        		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
         		replace("\"telefono\":\"\"", "\"telefono\":null").
+        		replace("\"descActividad\":\"\"", "\"descActividad\":null").
+        		replace("\"codActividad\":\"\"", "\"codActividad\":null").
+        		replace("\"codEstable\":\"02\"", "\"codEstable\":null").
+        		replace("\"correo\":\"\"", "\"correo\":null").
         		replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
         		replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
         		replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null").
