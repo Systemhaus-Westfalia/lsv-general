@@ -199,7 +199,7 @@ public class Findex implements IDeclarationProvider {
 		//Trx dbTransaction = null;
 		String whereClause = "AD_CLIENT_ID = ?  "
 				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
-				+ " AND processed = 'Y' AND dateacct>=? AND c_Invoice_ID=1281194 "
+				+ " AND processed = 'Y' AND dateacct>=? AND processing = 'N' "
 				+ " AND ei_Processing = 'N' "
 				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
 		MClient client = new MClient(Env.getCtx(),1000001, null);
