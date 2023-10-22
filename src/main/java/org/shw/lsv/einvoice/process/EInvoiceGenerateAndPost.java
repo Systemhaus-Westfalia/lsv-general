@@ -110,11 +110,12 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 			Arrays.stream(invoiceIds)
 			.filter(invoiceId -> invoiceId > 0)
 				.forEach(invoiceId -> {
+					 Trx dbTransaction = null;
 					try {
 						counter.getAndIncrement();
 						System.out.println("Start invoice No. " + counter + " of " + length); 
 						Integer id = (Integer)invoiceId;
-	                    Trx dbTransaction = Trx.get(id.toString(), true);   
+	                    dbTransaction = Trx.get(id.toString(), true);   
 						MInvoice invoice = new MInvoice(Env.getCtx(), invoiceId, dbTransaction.getTrxName());
 						findex.publishDocument(invoice);
 						invoice.set_ValueOfColumn("ei_Processing", false);
@@ -127,6 +128,11 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 					} catch (Exception e) {
 						String error = "Error al procesar documento #" + invoiceId + " " + e;
 						System.out.println(error);
+					}
+					finally {
+						if (dbTransaction != null) {
+	                        dbTransaction.close();
+	                    }
 					}
 					System.out.println("Publish document successful"); 
 				});
