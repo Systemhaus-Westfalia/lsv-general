@@ -18,7 +18,6 @@ package org.shw.lsv.util.support.findex;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -155,10 +154,12 @@ public class Findex implements IDeclarationProvider {
         		invoice.saveEx();
         	}
         	else if (status.equals("Firmado")) {
+        		invoice.set_ValueOfColumn("ei_pdf", jsonoutput.getString("pdf"));
         		invoice.set_ValueOfColumn("ei_Status_Extern", "Firmado");
             	invoice.setei_selloRecibido(jsonoutput.getString("sello_recepcion"));
-            	String datereceived = jsonoutput.getString("fecha");
-            	//invoice.set_ValueOfColumn("ei_dateReceived", datereceived);
+            	String fecha = jsonoutput.getString("fecha");
+            	Timestamp datereceived = Timestamp.valueOf(fecha);
+            invoice.set_ValueOfColumn("ei_dateReceived", datereceived);
             	invoice.saveEx();
         	}
         }

@@ -73,7 +73,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 		Timestamp startdate = (Timestamp)(client.get_Value("ei_Startdate"));
 		String whereClause = "AD_CLIENT_ID = ?  "
 				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
-				+ " AND processed = 'Y' AND dateacct>=?  "
+				+ " AND processed = 'Y' AND dateacct>=?  AND processing = 'N' "
 				+ " AND ei_Processing = 'N' "
 				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
 	
