@@ -518,7 +518,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
         				"\"extension\":null,");
 
 		System.out.println("Credito Fiscal: generated JSON object from Document:");
-		System.out.println(creditoFiscalAsStringFinal);
+		//System.out.println(creditoFiscalAsStringFinal);
 		System.out.println("Credito Fiscal: end generating JSON object from Document");
 		return creditoFiscalAsStringFinal;
 	}
