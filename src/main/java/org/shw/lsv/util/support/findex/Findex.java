@@ -126,41 +126,64 @@ public class Findex implements IDeclarationProvider {
 		String documentAsJsonString = electronicInvoiceModel.getjson();
 		Entity<String> entity = Entity.json(documentAsJsonString);
         Response response = invocationBuilder.post(entity);
-        
+
+		System.out.println("Start post json for " + electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         if(response.getStatus() != HTTP_RESPONSE_201_CREATED
         		&& response.getStatus() != HTTP_RESPONSE_200_OK) {
+        	System.out.println("reponse: Status " +  response.getStatus() + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         	MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
         	invoice.set_ValueOfColumn("ei_Status_Extern", response.getStatus());
         	String output = response.readEntity(String.class);
         	invoice.set_ValueOfColumn("ei_Error_Extern", output);
         	invoice.saveEx();
+        	System.out.println("Return status false");
 			return null;
         }
         else {
         	String output = response.readEntity(String.class);
         	JSONObject jsonoutput = new JSONObject(output);  
-        	String codigoGeneracion = jsonoutput.getString("codigo_generacion");
-
+        	System.out.println("reponse of output " + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo()  + " Output: " + output);
         	MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
         	String status = jsonoutput.getString("estado");
-        	if (status.equals("Rechazado")) {
+
+        	System.out.println("reponse: Status " +  status + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
+        	if (status.equals("Pendiente")) {
+
+            	System.out.println("Save data "+ " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
+    			invoice.set_ValueOfColumn("ei_Status_Extern",status);
+        		JSONArray array = jsonoutput.getJSONArray("error");
+        		String error = array.getString(0);
+        		invoice.set_ValueOfColumn("ei_Error_Extern", error);
+            	System.out.println("Stop " + electronicInvoiceModel.getC_Invoice().getDocumentNo() );
+        	}
+        	else if (status.equals("Rechazado")) {
+            	System.out.println("reponse: Status " +  status + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		JSONArray array = jsonoutput.getJSONArray("error");
         		String error = array.getString(0);
         		if (error.contains("YA EXISTE UN REGISTRO CON ESE VALOR"))
+        		{
         			invoice.set_ValueOfColumn("ei_Status_Extern", "Firmado");
+                	System.out.println("reponse: Status " +  status + " error " + error + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
+        		}
         		else
         			invoice.set_ValueOfColumn("ei_Status_Extern",status);
         		invoice.set_ValueOfColumn("ei_Error_Extern", error);
+            	System.out.println("reponse: Status " +  status + " error " + error + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		invoice.saveEx();
         	}
         	else if (status.equals("Firmado")) {
+        		System.out.println("reponse: Status " +  status + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		invoice.set_ValueOfColumn("ei_pdf", jsonoutput.getString("pdf"));
+
+            	System.out.println("Status Firmado: pdf " + jsonoutput.getString("pdf") + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		invoice.set_ValueOfColumn("ei_Status_Extern", "Firmado");
-            	invoice.setei_selloRecibido(jsonoutput.getString("sello_recepcion"));
-            	String fecha = jsonoutput.getString("fecha");
-            	Timestamp datereceived = Timestamp.valueOf(fecha);
-            invoice.set_ValueOfColumn("ei_dateReceived", datereceived);
-            	invoice.saveEx();
+        		invoice.setei_selloRecibido(jsonoutput.getString("sello_recepcion"));
+        		String fecha = jsonoutput.getString("fecha");
+            	System.out.println("Status Firmado: fecha " + jsonoutput.getString("fecha")+ " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
+        		Timestamp datereceived = Timestamp.valueOf(fecha);
+        		invoice.set_ValueOfColumn("ei_dateReceived", datereceived);
+            	System.out.println("Invoice save" + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
+        		invoice.saveEx();
         	}
         }
 		return null;

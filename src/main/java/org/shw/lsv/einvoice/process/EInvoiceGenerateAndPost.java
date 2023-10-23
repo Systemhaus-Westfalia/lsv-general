@@ -130,7 +130,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 						System.out.println(error);
 					}
 					finally {
-						if (dbTransaction != null) {
+						if (dbTransaction != null) {							
 	                        dbTransaction.close();
 	                    }
 					}

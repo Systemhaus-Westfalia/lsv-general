@@ -71,9 +71,12 @@ public class ElectronicInvoice implements IDeclarationDocument {
 			System.out.println("****************** Error producido en ElectronicInvoice.processElectronicInvoice(): " + errorMsg);
 			return null;
 		}
-
+		System.out.println("Start documentFactory.generateJSONInputData() for invoice " + invoice.getDocumentNo() );
 		documentFactory.generateJSONInputData();
-		documentFactory.generateEDocument();	
+		System.out.println("End documentFactory.generateJSONInputData() for invoice " + invoice.getDocumentNo() );
+		System.out.println("Start documentFactory.generateEDocument() for invoice " + invoice.getDocumentNo() );
+		documentFactory.generateEDocument();
+		System.out.println("End documentFactory.generateEDocument() for invoice " + invoice.getDocumentNo() );	
 		
     	electronicInvoiceModel = new X_E_InvoiceElectronic(invoice.getCtx(), 0, invoice.get_TrxName());
     	electronicInvoiceModel.setC_Invoice_ID(invoice.getC_Invoice_ID());
@@ -90,10 +93,14 @@ public class ElectronicInvoice implements IDeclarationDocument {
 			System.out.println("ElectronicInvoice.processElectronicInvoice(): finished");
     		return null;
     	}	
-    	
+
+		System.out.println("Start documentFactory.createJsonString() for invoice " + invoice.getDocumentNo() );
     	String creditoFiscalAsJsonString = documentFactory.createJsonString();
+		System.out.println("End documentFactory.createJsonString() for invoice " + invoice.getDocumentNo() );
     	String ei_codigoGeneracion = documentFactory.getCodigoGeneracion(creditoFiscalAsJsonString);
     	String ei_numeroControl = "";
+
+		System.out.println("Start " + invoice.getDocumentNo() + " Update ei values" );
     	if (!isreversal) {
     		ei_numeroControl = documentFactory.getNumeroControl(creditoFiscalAsJsonString);
         	invoice.setei_numeroControl(ei_numeroControl);
@@ -102,9 +109,10 @@ public class ElectronicInvoice implements IDeclarationDocument {
     	invoice.setei_codigoGeneracion(ei_codigoGeneracion);
     	invoice.setei_ValidationStatus("01");
     	invoice.saveEx();
+		System.out.println("End " + invoice.getDocumentNo() + " Update ei values" );
        	electronicInvoiceModel.setjson(creditoFiscalAsJsonString);
+		System.out.println("Start electronicInvoiceModel " + invoice.getDocumentNo() + " Update ei values" );
     	electronicInvoiceModel.saveEx();
-		
     	System.out.println("Documento electrónico generado para: " + invoice.getDocumentNo() + ". Estado: " + electronicInvoiceModel.getei_ValidationStatus());
 		System.out.println("ElectronicInvoice.processElectronicInvoice(): finished");
 		
