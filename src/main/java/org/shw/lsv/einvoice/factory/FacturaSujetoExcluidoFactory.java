@@ -22,8 +22,6 @@ import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.shw.lsv.einvoice.feccfcreditofiscalv3.ApendiceItemCreditoFiscal;
-import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.ApendiceItemFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.CuerpoDocumentoItemFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.EmisorFacturaSujetoExcluido;

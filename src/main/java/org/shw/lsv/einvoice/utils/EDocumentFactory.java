@@ -11,13 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
-
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.Language;
-import org.compiere.util.Util;
 import org.json.JSONObject;
 
 /**
