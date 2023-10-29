@@ -6,7 +6,7 @@ package org.shw.lsv.einvoice.utils;
 /**
  * 
  */
-public abstract class ApendiceItem {
+public  class ApendiceItem {
 	static final String VALIDATION_RESULT_OK = "OK";
 	
 	String campo;

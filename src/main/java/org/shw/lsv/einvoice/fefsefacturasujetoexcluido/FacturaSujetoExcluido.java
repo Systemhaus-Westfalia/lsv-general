@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.ApendiceItemCreditoFiscal;
 import org.shw.lsv.einvoice.utils.EDocument;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 import org.shw.lsv.einvoice.utils.PagosItem;
@@ -31,6 +32,7 @@ public class FacturaSujetoExcluido extends EDocument {
 	static final String ERROR_SUJETO_EXCLUIDO_DOCUMENTOS_RELACIONADOS	= "Documento: Sujeto Excluido, error en fillDocumentosRelacionados(): ";
 	static final String ERROR_SUJETO_EXCLUIDO_CUERPO_DOCUMENTO			= "Documento: Sujeto Excluido, error en fillCuerpoDocumento(): ";
 	static final String ERROR_SUJETO_EXCLUIDO_RESUMEN            		= "Documento: Sujeto Excluido, error en fillResumen(): ";
+	static final String ERROR_SUJETO_EXCLUIDo_APENDICE            		= "Documento: Sujeto Excluido, error en fillApendice: ";
 	
 	IdentificacionFacturaSujetoExcluido identificacion;
 	EmisorFacturaSujetoExcluido emisor;
@@ -320,6 +322,23 @@ public class FacturaSujetoExcluido extends EDocument {
 	public void setApendice(List<ApendiceItemFacturaSujetoExcluido> apendice) {
 		this.apendice = apendice;
 	}
+	
+	public StringBuffer fillApendice(JSONObject factoryInput) {
+		JSONObject apendiceJson = factoryInput.getJSONObject(APENDICE);
+		JSONArray apendiceArrayJson = apendiceJson.getJSONArray(APENDICE);
+	
+		for (int i=0; i< apendiceArrayJson.length(); i++) {
+			JSONObject apendiceItemJson = apendiceArrayJson.getJSONObject(i);
+			ApendiceItemFacturaSujetoExcluido apendiceItem = new ApendiceItemFacturaSujetoExcluido();
+			try {apendiceItem.setCampo(apendiceItemJson.getString(CAMPO)) ;} 		catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDo_APENDICE + e);}
+			try {apendiceItem.setEtiqueta(apendiceItemJson.getString(ETIQUETA));} 	catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDo_APENDICE + e);}
+			try {apendiceItem.setValor(apendiceItemJson.getString(VALOR)) ;} 		catch (Exception e) {errorMessages.append(ERROR_SUJETO_EXCLUIDo_APENDICE + e);}
+			apendice.add(apendiceItem);	
+		}
+		System.out.println("End CreditoFiscal.fillApendice()"); 
+		return errorMessages;
+	}
+
 
 
 	public SujetoExcluidoFacturaSujetoExcluido getSujetoExcluido() {

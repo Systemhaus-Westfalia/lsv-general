@@ -1,6 +1,9 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
@@ -11,12 +14,17 @@ import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.Query;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.ApendiceItemCreditoFiscal;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
+import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.ApendiceItemFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.CuerpoDocumentoItemFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.EmisorFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.FacturaSujetoExcluido;
@@ -154,18 +162,18 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 //			}
 //		}
 		
-//		List<ApendiceItem> apendice = facturaNoSujeto.getApendice();
-//		if(apendice!=null) {
-//			facturaNoSujeto.fillApendice(jsonInputToFactory);
-//			
-//			apendice.stream().forEach( apendiceItem -> { 
-//				String resultLambda = apendiceItem.validateValues();
-//					if(! resultLambda.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
-//						errorMessages.append(resultLambda);
-//					}
-//				} 
-//			);
-//		}
+		List<ApendiceItemFacturaSujetoExcluido> apendice = facturaSujetoExcluido.getApendice();
+		if(apendice!=null) {
+			facturaSujetoExcluido.fillApendice(jsonInputToFactory);
+			
+			apendice.stream().forEach( apendiceItem -> { 
+				String resultLambda = apendiceItem.validateValues();
+					if(! resultLambda.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
+						facturaSujetoExcluido.errorMessages.append(resultLambda);
+					}
+				} 
+			);
+		}
 		
 //		Documento documento = eDocument.getDocumento();
 //		if(documento!=null) {
@@ -204,6 +212,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonInputToFactory.put(FacturaSujetoExcluido.EMISOR, generateEmisorInputData());
 		jsonInputToFactory.put(FacturaSujetoExcluido.RESUMEN, generateResumenInputData());
 		jsonInputToFactory.put(FacturaSujetoExcluido.CUERPODOCUMENTO, generateCuerpoDocumentoInputData());
+		jsonInputToFactory.put(FacturaSujetoExcluido.APENDICE, generateApendiceInputData());
 		
 		System.out.println("Generated JSON object from Invoice:");
 		System.out.println(jsonInputToFactory.toString());
@@ -415,40 +424,107 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 	}
 	
 	private JSONObject generateCuerpoDocumentoInputData() {
-		System.out.println("Factura: start collecting JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo());
+
+		System.out.println("CreditoFiscal: start collecting JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo());
 		JSONObject jsonCuerpoDocumento = new JSONObject();
 		JSONArray jsonCuerpoDocumentoArray = new JSONArray();
-		int i=0;
-		for (MInvoiceLine invoiceLine:invoice.getLines()) { 
-			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() );
-			i++;
-			BigDecimal compra 	= Env.ZERO;
-			String description = invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName();
-			String codigo = invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName();
-			int codigolength = codigo.length()>10? 10: codigo.length();
-			
-			compra = invoiceLine.getLineTotalAmt();
-			
-			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
-                
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.NUMITEM, i);
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.TIPOITEM, 2);
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CANTIDAD, invoiceLine.getQtyInvoiced());
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CODIGO, codigo.substring(0,codigolength));
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.UNIMEDIDA, 59);
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.DESCRIPCION, description);
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.PRECIOUNI, invoiceLine.getPriceActual());
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.MONTODESCU, Env.ZERO);
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.COMPRA, compra);
+		int i = 0;
 
-			jsonCuerpoDocumentoArray.put(jsonCuerpoDocumentoItem);
-			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() + " Finished");
+		
+		int lineno = MSysConfig.getIntValue("paramlineno", 10, client.getAD_Client_ID());
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try
+		{
+			pstmt = DB.prepareStatement(sqlCuerpoDocumento, null);
+			pstmt.setInt(1, invoice.getC_Invoice_ID());
+			pstmt.setInt(2, lineno);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+			{
+				i++;
+				JSONObject jsonCuerpoDocumentoItem = new JSONObject();
+				System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + i );
+				
+				String productvalue					= rs.getString(CUERPODOCUMENTO_PRODUCTVALUE);
+				String name							= rs.getString(CUERPODOCUMENTO_PRODUCTNAME);
+				BigDecimal precioUnitario 			= rs.getBigDecimal(CUERPODOCUMENTO_LINETOTALAMT);
+				BigDecimal compra		 			= rs.getBigDecimal(CUERPODOCUMENTO_LINETOTALAMT);						 
+				BigDecimal qtyInvoiced 				= Env.ONE;
+				
+				jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.NUMITEM, i);
+				jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.TIPOITEM, 2);
+				jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CANTIDAD, qtyInvoiced);
+				jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CODIGO, productvalue);
+				jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.UNIMEDIDA, 59);
+				jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.DESCRIPCION, name);
+				jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.PRECIOUNI, precioUnitario);
+				jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.MONTODESCU, Env.ZERO);			
+				jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.COMPRA, compra);
 
-		}  
+				jsonCuerpoDocumentoArray.put(jsonCuerpoDocumentoItem);			
+
+			}
+			rs.close();
+			pstmt.close();
+		}
+		catch (SQLException e)
+		{				
+			System.out.println("SQLException for documento " + invoice.getDocumentNo() + " " + e );			
+		}
+//		System.out.println("Factura: start collecting JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo());
+//		JSONObject jsonCuerpoDocumento = new JSONObject();
+//		JSONArray jsonCuerpoDocumentoArray = new JSONArray();
+//		int i=0;
+//		for (MInvoiceLine invoiceLine:invoice.getLines()) { 
+//			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() );
+//			i++;
+//			BigDecimal compra 	= Env.ZERO;
+//			String description = invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName();
+//			String codigo = invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName();
+//			int codigolength = codigo.length()>10? 10: codigo.length();
+//			
+//			compra = invoiceLine.getLineTotalAmt();
+//			
+//			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
+//                
+//			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.NUMITEM, i);
+//			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.TIPOITEM, 2);
+//			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CANTIDAD, invoiceLine.getQtyInvoiced());
+//			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CODIGO, codigo.substring(0,codigolength));
+//			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.UNIMEDIDA, 59);
+//			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.DESCRIPCION, description);
+//			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.PRECIOUNI, invoiceLine.getPriceActual());
+//			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.MONTODESCU, Env.ZERO);
+//			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.COMPRA, compra);
+//
+//			jsonCuerpoDocumentoArray.put(jsonCuerpoDocumentoItem);
+//			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() + " Finished");
+//
+//		}  
 		jsonCuerpoDocumento.put(FacturaSujetoExcluido.CUERPODOCUMENTO, jsonCuerpoDocumentoArray);
 		System.out.println("Factura: end collecting JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo());
 		
 		return jsonCuerpoDocumento;
+	}
+	
+
+	private JSONObject generateApendiceInputData() {
+//		String sqlSelect = "SELECT (invoiceinfo) as invoiceinfo FROM shw_c_invoice_header_vt i"
+//				+ " WHERE AD_LANGUAGE = 'es_SV' AND C_Invoice_ID=?";
+		String infoInvoice = DB.getSQLValueStringEx(null, sqlApendice, invoice.getC_Invoice_ID());
+		
+		JSONObject jsonApendice = new JSONObject();
+		JSONObject jsonApendiceItem = new JSONObject();
+		jsonApendiceItem.put(FacturaSujetoExcluido.CAMPO, "Info");
+		jsonApendiceItem.put(FacturaSujetoExcluido.ETIQUETA, "Descripcion");
+		int length = infoInvoice.length()>149?149:infoInvoice.length();
+		jsonApendiceItem.put(FacturaSujetoExcluido.VALOR, infoInvoice.substring(0,length));
+		
+		JSONArray jsonTributosArray = new JSONArray();
+		jsonTributosArray.put(jsonApendiceItem);
+		jsonApendice.put(FacturaSujetoExcluido.APENDICE, jsonTributosArray);
+		return jsonApendice;
 	}
 
 	public String createJsonString() throws Exception {

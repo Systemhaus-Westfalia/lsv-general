@@ -155,6 +155,7 @@ public class Findex implements IDeclarationProvider {
         		String error = array.getString(0);
         		invoice.set_ValueOfColumn("ei_Error_Extern", error);
             	System.out.println("Stop " + electronicInvoiceModel.getC_Invoice().getDocumentNo() );
+            	invoice.saveEx();
         	}
         	else if (status.equals("Rechazado")) {
             	System.out.println("reponse: Status " +  status + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
@@ -181,7 +182,7 @@ public class Findex implements IDeclarationProvider {
         		String fecha = jsonoutput.getString("fecha");
             	System.out.println("Status Firmado: fecha " + jsonoutput.getString("fecha")+ " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		Timestamp datereceived = Timestamp.valueOf(fecha);
-        		invoice.set_ValueOfColumn("ei_dateReceived", datereceived);
+        		invoice.set_ValueOfColumn("ei_dateReceived", fecha);
             	System.out.println("Invoice save" + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		invoice.saveEx();
         	}

@@ -25,6 +25,9 @@ public class EDocument {
 	public static final String DOCUMENTO 			= "documento";
 	public static final String MOTIVO 				= "motivo";
 	public static final String SUJETOEXCLUIDO		= "sujetoExcluido";
+	public static final String ETIQUETA				= "etiqueta";
+	public static final String CAMPO				= "campo";
+	
 	
 	public static final String NUMEROCONTROL 		=  "numeroControl";
 	public static final String CODIGOGENERACION 	=  "codigoGeneracion";

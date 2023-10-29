@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrgInfo;
@@ -34,6 +35,25 @@ public abstract class EDocumentFactory {
 	protected Properties contextProperties;
 	protected JSONObject jsonInputToFactory;  // Will contain data passed to factory
 	protected Language languageUsed = null;
+	
+	public static String sqlCuerpoDocumento 		= "SELECT * FROM	EI_Invoiceline_Cumm "
+														+ " WHERE c_invoice_id = ? "
+														+ " AND CASE WHEN invoiceLineNo(c_invoice_ID)<? then type = 'D' else type = 'C' end";
+	public static String sqlApendice 				= "SELECT (invoiceinfo) as invoiceinfo FROM shw_c_invoice_header_vt i"
+														+ " WHERE AD_LANGUAGE = 'es_SV' AND C_Invoice_ID=?";
+	
+	
+	public static String CUERPODOCUMENTO_VENTANOSUJETO				= "ventanosuj";
+	public static String CUERPODOCUMENTO_VENTAEXENTA				= "ventaex";
+	public static String CUERPODOCUMENTO_VENTAGRAVADA				= "ventagravada";
+	public static String CUERPODOCUMENTO_VENTANOGRAVADA				= "cuentaajena";
+	public static String CUERPODOCUMENTO_PRODUCTVALUE				= "productvalue";
+	public static String CUERPODOCUMENTO_PRODUCTNAME				= "name";
+	public static String CUERPODOCUMENTO_PRICEACTUAL				= "priceactual";
+	public static String CUERPODOCUMENTO_QTYINVOICED				= "qtyinvoiced";
+	public static String CUERPODOCUMENTO_LINETOTALAMT   			= "linetotalamt";
+	
+
 	
 	
 	public EDocumentFactory(String trxName, Properties contextProperties, MClient client, MOrgInfo orgInfo) {

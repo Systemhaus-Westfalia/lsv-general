@@ -23,6 +23,7 @@ public class CreditoFiscal extends EDocument {
 	static final String ERROR_CREDITO_FISCAL_RECEPTOR           	= "Documento: Credito Fiscal, error en fillReceptor(): ";
 	static final String ERROR_CREDITO_FISCAL_CUERPO_DOCUMENTO		= "Documento: Credito Fiscal, error en fillCuerpoDocumento(): ";
 	static final String ERROR_CREDITO_FISCAL_RESUMEN            	= "Documento: Credito Fiscal, error en fillResumen(): ";
+	static final String ERROR_CREDITO_FISCAL_APENDICE            	= "Documento: Credito Fiscal, error en fillApendice(): ";
 	
 	IdentificacionCreditoFiscal identificacion;
 	List<DocumentoRelacionadoItemCreditoFiscal> documentoRelacionado = null;
@@ -397,6 +398,22 @@ public class CreditoFiscal extends EDocument {
 	 */
 	public void setApendice(List<ApendiceItemCreditoFiscal> apendice) {		
 		this.apendice = apendice;
+	}
+	
+	public StringBuffer fillApendice(JSONObject factoryInput) {
+		JSONObject apendiceJson = factoryInput.getJSONObject(APENDICE);
+		JSONArray apendiceArrayJson = apendiceJson.getJSONArray(APENDICE);
+	
+		for (int i=0; i< apendiceArrayJson.length(); i++) {
+			JSONObject apendiceItemJson = apendiceArrayJson.getJSONObject(i);
+			ApendiceItemCreditoFiscal apendiceItem = new ApendiceItemCreditoFiscal();
+			try {apendiceItem.setCampo(apendiceItemJson.getString(CAMPO)) ;} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_APENDICE + e);}
+			try {apendiceItem.setEtiqueta(apendiceItemJson.getString(ETIQUETA));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_APENDICE + e);}
+			try {apendiceItem.setValor(apendiceItemJson.getString(VALOR)) ;} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_APENDICE + e);}
+			apendice.add(apendiceItem);	
+		}
+		System.out.println("End CreditoFiscal.fillApendice()"); 
+		return errorMessages;
 	}
 
 
