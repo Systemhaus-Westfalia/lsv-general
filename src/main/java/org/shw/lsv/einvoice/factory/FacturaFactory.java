@@ -25,7 +25,6 @@ import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.IdentificacionFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ReceptorFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ResumenFactura;
-import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.FacturaSujetoExcluido;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
@@ -409,9 +408,9 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonObjectResumen.put(Factura.TOTALLETRAS, totalLetras);
 		jsonObjectResumen.put(Factura.SALDOFAVOR, Env.ZERO);
 		int condicionOperacion = 
-		invoice.getC_PaymentTerm().getNetDays() == 0? FacturaSujetoExcluido.CONDICIONOPERACION_AL_CONTADO:
-			FacturaSujetoExcluido.CONDICIONOPERACION_A_CREDITO;
-		jsonObjectResumen.put(FacturaSujetoExcluido.CONDICIONOPERACION, condicionOperacion);
+		invoice.getC_PaymentTerm().getNetDays() == 0? Factura.CONDICIONOPERACION_AL_CONTADO:
+			Factura.CONDICIONOPERACION_A_CREDITO;
+		jsonObjectResumen.put(Factura.CONDICIONOPERACION, condicionOperacion);
 		jsonObjectResumen.put(Factura.TOTALDESCU, Env.ZERO);
 		jsonObjectResumen.put(Factura.RETERENTA, Env.ZERO);
 		jsonObjectResumen.put(Factura.TOTALIVA, totalIVA);

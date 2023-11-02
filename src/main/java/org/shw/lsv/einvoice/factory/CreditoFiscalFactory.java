@@ -1,9 +1,6 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -16,7 +13,6 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrgInfo;
-import org.compiere.model.MSysConfig;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
@@ -25,14 +21,13 @@ import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.ApendiceItemCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.CuerpoDocumentoItemCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.EmisorCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.IdentificacionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ReceptorCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ResumenCreditoFiscal;
-import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.FacturaSujetoExcluido;
-import org.shw.lsv.einvoice.feccfcreditofiscalv3.ApendiceItemCreditoFiscal;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 

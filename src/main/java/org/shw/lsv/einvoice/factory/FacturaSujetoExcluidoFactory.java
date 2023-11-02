@@ -18,8 +18,6 @@ import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.shw.einvoice.es.fefexfacturaexportacionv1.FacturaExportacion;
-import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.ApendiceItemFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.CuerpoDocumentoItemFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.EmisorFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.FacturaSujetoExcluido;
@@ -452,7 +450,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 
 		}  
 		
-		jsonCuerpoDocumento.put(FacturaExportacion.CUERPODOCUMENTO, jsonCuerpoDocumentoArray);
+		jsonCuerpoDocumento.put(FacturaSujetoExcluido.CUERPODOCUMENTO, jsonCuerpoDocumentoArray);
 		System.out.println("Finish collecting JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo());
 		
 		return jsonCuerpoDocumento;
