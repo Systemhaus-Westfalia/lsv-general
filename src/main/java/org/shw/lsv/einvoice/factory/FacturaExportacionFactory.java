@@ -205,7 +205,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		String documentno = invoice.getDocumentNo().replace(prefix,"");
 		int position = documentno.indexOf("_");
 		documentno = documentno.substring(0,position);
-		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
+		String idIdentification  = StringUtils.leftPad(documentno + "001", 15,"0");
 		String duns = orgInfo.getDUNS().replace("-", "");
 		
 		String numeroControl = "DTE-" + invoice.getC_DocType().getE_DocType().getValue()
@@ -213,7 +213,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		Integer invoiceID = invoice.get_ID();
 		
 		Integer clientID = (Integer)client.getAD_Client_ID();
-		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
+		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0011-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
 		
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		jsonObjectIdentificacion.put(FacturaExportacion.NUMEROCONTROL, numeroControl);
@@ -308,7 +308,9 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		String complemento = "";
 		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)){
 			if (partnerLocation.isBillTo()) {
-				complemento = (partnerLocation.getC_Location().getAddress1() + " " + partnerLocation.getC_Location().getAddress2());
+				String address = partnerLocation.getC_Location().getAddress2() == null?partnerLocation.getC_Location().getAddress1():
+					partnerLocation.getC_Location().getAddress1() + " " + partnerLocation.getC_Location().getAddress2();
+				complemento = (address);
 				jsonObjectReceptor.put(FacturaExportacion.CODPAIS, partnerLocation.getC_Location().getC_Country().getValue());
 				jsonObjectReceptor.put(FacturaExportacion.NOMBREPAIS,  partnerLocation.getC_Location().getC_Country().getName());
 				jsonObjectReceptor.put(FacturaExportacion.COMPLEMENTO, complemento);
@@ -360,7 +362,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			JSONObject jsonPago = new JSONObject();
 			jsonPago.put(FacturaExportacion.CODIGO, "05");
 			jsonPago.put(FacturaExportacion.MONTOPAGO, invoice.getGrandTotal());
-			jsonPago.put(FacturaExportacion.REFERENCIA, "Transferencia_ Dep??sito Bancario");
+			jsonPago.put(FacturaExportacion.REFERENCIA, "Transferencia_ Deposito Bancario");
 			jsonPago.put(FacturaExportacion.PLAZO, invoice.getC_PaymentTerm().getE_TimeSpan().getValue());
 			jsonPago.put(FacturaExportacion.PERIODO, invoice.getC_PaymentTerm().getNetDays());
 		jsonArrayPagos.put(jsonPago);
