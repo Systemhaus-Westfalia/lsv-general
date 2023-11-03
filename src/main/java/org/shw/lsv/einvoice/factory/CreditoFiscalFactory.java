@@ -417,8 +417,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		JSONObject jsonPago = new JSONObject();
 		jsonPago.put(CreditoFiscal.CODIGO, "05");
 		jsonPago.put(CreditoFiscal.MONTOPAGO, invoice.getGrandTotal());
-		jsonPago.put(CreditoFiscal.REFERENCIA, "Transferencia_ Depósito Bancario");
-		if (condicionOperacion == CreditoFiscal.CONDICIONOPERACION_A_CREDITO)
+		jsonPago.put(CreditoFiscal.REFERENCIA, "Transferencia_ Deposito Bancario");
 		jsonPago.put(CreditoFiscal.PLAZO, invoice.getC_PaymentTerm().getE_TimeSpan().getValue());
 		jsonPago.put(CreditoFiscal.PERIODO, invoice.getC_PaymentTerm().getNetDays());
 		jsonArrayPagos.put(jsonPago);

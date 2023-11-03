@@ -75,6 +75,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
 				+ " AND processed = 'Y' AND dateacct>=?  AND processing = 'N' "
 				+ " AND ei_Processing = 'N' "
+				+ " AND (docstatus IN ('CO','CL') OR coalesce(reversal_ID,0) > c_Invoice_ID)"
 				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
 	
 		try {
