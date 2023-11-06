@@ -188,7 +188,7 @@ public class AnulacionFactory extends EDocumentFactory {
 		MUser user = new MUser(contextProperties, invoice.getCreatedBy(), trxName);
 		
 		JSONObject jsonObjectMotivo = new JSONObject();
-		jsonObjectMotivo.put(Anulacion.TIPOANULACION, 3);		
+		jsonObjectMotivo.put(Anulacion.TIPOANULACION, 1);		
 		jsonObjectMotivo.put(Anulacion.MOTIVOANULACION, "Error en generacion");		
 		jsonObjectMotivo.put(Anulacion.NOMBRERESPONSABLE, user.getC_BPartner().getName());	
 		jsonObjectMotivo.put(Anulacion.TIPDOCRESPONSABLE, user.getC_BPartner().getE_Recipient_Identification().getValue());	

@@ -208,9 +208,14 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 
 		String prefix = invoice.getC_DocType().getDefiniteSequence().getPrefix();
 		String documentno = invoice.getDocumentNo().replace(prefix,"");
-		int position = documentno.indexOf("_");
-		documentno = documentno.substring(0,position);
-		String idIdentification  = StringUtils.leftPad(documentno+"004", 15,"0");
+		String suffix = invoice.getC_DocType().getDefiniteSequence().getSuffix();		
+		if (suffix != null && suffix.length()>0) {
+			String firstsuffix = suffix.substring(0,1);
+			int position = documentno.indexOf(firstsuffix);
+			if (position >0)
+				documentno = documentno.substring(0,position);
+		}
+		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
 		String duns = orgInfo.getDUNS().replace("-", "");
 		
 		String numeroControl = "DTE-" + invoice.getC_DocType().getE_DocType().getValue()

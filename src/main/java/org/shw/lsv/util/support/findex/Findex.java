@@ -56,9 +56,15 @@ public class Findex implements IDeclarationProvider {
 	public static final int HTTP_RESPONSE_201_CREATED = 201;
 	private final String PROVIDER_HOST =  "providerhost"; // "https://pruebas.findex.la"
 	private final String TOKEN = "token";
+
+	private final String PATH = "path";
+	private final String PATHVOIDED = "pathVoided";
+	
 	private String token = null;
 	private String providerHost = null;
+	private String path = null;
 	private int registrationId = 0;
+	private boolean voided = false;
 	
 
 	public Findex() {
@@ -75,8 +81,12 @@ public class Findex implements IDeclarationProvider {
 		if(registration == null) {
 			throw new AdempiereException("@AD_AppRegistration_ID@ @NotFound@");
 		}
-		this.token        = registration.getParameterValue(TOKEN);
-		this.providerHost = registration.getParameterValue(PROVIDER_HOST);
+		this.token        	= registration.getParameterValue(TOKEN);
+		this.providerHost 	= registration.getParameterValue(PROVIDER_HOST);
+		if (!isVoided())
+		this.path 			= registration.getParameterValue(PATH);  
+		else
+			this.path 		= registration.getParameterValue(PATHVOIDED);
 	}
 
 	@Override
@@ -101,6 +111,15 @@ public class Findex implements IDeclarationProvider {
 
 	public void setProviderHost(String providerHost) {
 		this.providerHost = providerHost;
+	}	
+	
+
+	public boolean isVoided() {
+		return voided;
+	}
+
+	public void setVoided(boolean voided) {
+		this.voided = voided;
 	}
 
 	@Override
@@ -111,9 +130,10 @@ public class Findex implements IDeclarationProvider {
 			return null;
 		}
 		Invocation.Builder invocationBuilder = getClient().target(providerHost)
-				.path("api")
-				.path("procesar-json")
-				.path("3pl")
+				.path(path)
+				//.path("api")
+				//.path("procesar-json")	
+				//.path("3pl")
     			.request(MediaType.APPLICATION_JSON)
     			.header(HttpHeaders.AUTHORIZATION, token)
     			.header(HttpHeaders.ACCEPT, "application/json");
@@ -151,16 +171,32 @@ public class Findex implements IDeclarationProvider {
 
             	System.out.println("Save data "+ " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
     			invoice.set_ValueOfColumn("ei_Status_Extern",status);
-        		JSONArray array = jsonoutput.getJSONArray("error");
-        		String error = array.getString(0);
+    			String errorCode = isVoided()?"description":"error";
+    			String error = "";
+    			if (isVoided()) {
+    				error = jsonoutput.getString("descripcion");
+    			}
+    			else {
+
+            		JSONArray array = jsonoutput.getJSONArray(errorCode);
+            		error = array.getString(0);
+    			}
         		invoice.set_ValueOfColumn("ei_Error_Extern", error);
             	System.out.println("Stop " + electronicInvoiceModel.getC_Invoice().getDocumentNo() );
             	invoice.saveEx();
         	}
         	else if (status.equals("Rechazado")) {
             	System.out.println("reponse: Status " +  status + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-        		JSONArray array = jsonoutput.getJSONArray("error");
-        		String error = array.getString(0);
+    			String errorCode = isVoided()?"description":"error";
+    			String error = "";
+    			if (isVoided()) {
+    				error = jsonoutput.getString("descripcion");
+    			}
+    			else {
+
+            		JSONArray array = jsonoutput.getJSONArray(errorCode);
+            		error = array.getString(0);
+    			}
         		if (error.contains("YA EXISTE UN REGISTRO CON ESE VALOR"))
         		{
         			invoice.set_ValueOfColumn("ei_Status_Extern", "Firmado");

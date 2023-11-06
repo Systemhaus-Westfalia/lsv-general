@@ -35,9 +35,9 @@ import org.spin.model.MADAppRegistration;
  *  @author ADempiere (generated) 
  *  @version Release 3.9.4
  */
-public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
+public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract implements IGenerateAndPost
 {
-	public static final String APPLICATION_TYPE = "LSV";
+	//public static final String APPLICATION_TYPE = "LSV";
 	public StringBuffer errorMessages = new StringBuffer();
 	
 	@Override
@@ -50,6 +50,8 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 	protected String doIt() throws Exception
 	{
 		String errorMessage= "";
+		String whereClause = IGenerateAndPost.getWhereclause(isvoided());
+		String applicationType = IGenerateAndPost.getApplicationType();
 		MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
 		System.out.println("\n" + "******************************************************");
 		System.out.println("Process EInvoiceGenerateAndPost: started with Client '" + client.getName() + "', ID: " + getClientId());
@@ -58,25 +60,26 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract
 				+ "AND s.ApplicationType = ?"
 				+ "AND s.IsActive = 'Y'"
 				+ "AND s.Classname = ?)", get_TrxName())
-				.setParameters(APPLICATION_TYPE, Findex.class.getName())
+				.setParameters(applicationType, Findex.class.getName())
 				.<MADAppRegistration>first();
 
 		if(registration==null) {
-			errorMessage = "Process EInvoiceGenerateAndPost : no registration for Application Type " + APPLICATION_TYPE;
+			errorMessage = "Process EInvoiceGenerateAndPost : no registration for Application Type " + applicationType;
 			errorMessages.append(errorMessage);
 			System.out.println(errorMessage);
 			return errorMessage.toString();
 		}
 
 		Findex findex = new Findex();
+		findex.setVoided(isvoided());
 		findex.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
 		Timestamp startdate = (Timestamp)(client.get_Value("ei_Startdate"));
-		String whereClause = "AD_CLIENT_ID = ?  "
-				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
-				+ " AND processed = 'Y' AND dateacct>=?  AND processing = 'N' "
-				+ " AND ei_Processing = 'N' "
-				+ " AND (docstatus IN ('CO','CL') OR coalesce(reversal_ID,0) > c_Invoice_ID)"
-				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
+		//String whereClause = "AD_CLIENT_ID = ?  "
+		//		+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
+		//		+ " AND processed = 'Y' AND dateacct>=?  AND processing = 'N' "
+		//		+ " AND ei_Processing = 'N' "
+		//		+ " AND (docstatus IN ('CO','CL') OR coalesce(reversal_ID,0) > c_Invoice_ID)"
+		//		+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
 	
 		try {
 			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)

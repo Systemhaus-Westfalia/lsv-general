@@ -33,12 +33,17 @@ public abstract class EInvoiceGenerateAndPostAbstract extends SvrProcess {
 	private static final int ID_FOR_PROCESS = 3000425;
 	/**	Parameter Name for Client	*/
 	public static final String AD_CLIENT_ID = "AD_Client_ID";
+	/**	Parameter Name for voided	*/
+	public static final String VOIDED = "voided";
 	/**	Parameter Value for Client	*/
 	private int clientId;
+	/**	Parameter Value for voided	*/
+	private boolean isvoided;
 
 	@Override
 	protected void prepare() {
 		clientId = getParameterAsInt(AD_CLIENT_ID);
+		isvoided = getParameterAsBoolean(VOIDED);
 	}
 
 	/**	 Getter Parameter Value for Client	*/
@@ -49,6 +54,16 @@ public abstract class EInvoiceGenerateAndPostAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Client	*/
 	protected void setClientId(int clientId) {
 		this.clientId = clientId;
+	}
+
+	/**	 Getter Parameter Value for voided	*/
+	protected boolean isvoided() {
+		return isvoided;
+	}
+
+	/**	 Setter Parameter Value for voided	*/
+	protected void setvoided(boolean isvoided) {
+		this.isvoided = isvoided;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/
