@@ -517,6 +517,9 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			infoInvoice = " ";
 		ArrayList<String> info = new ArrayList<String>();
 		int part = 150;
+		if (infoInvoice.length()<= 150) {
+			info.add(infoInvoice);
+		}
 		while(infoInvoice.length() > 150) {
 			part = infoInvoice.length()>=150?150:infoInvoice.length();
 			String infopart = infoInvoice.substring(0,part);
