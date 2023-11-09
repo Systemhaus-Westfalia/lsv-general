@@ -214,6 +214,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			int position = documentno.indexOf(firstsuffix);
 			if (position >0)
 				documentno = documentno.substring(0,position);
+			
 		}
 		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
 		String duns = orgInfo.getDUNS().replace("-", "");
@@ -223,7 +224,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		Integer invoiceID = invoice.get_ID();
 		//String numeroControl = getNumeroControl(invoiceID, orgInfo, "DTE-01-");
 		Integer clientID = (Integer)client.getAD_Client_ID();
-		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0011-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
+		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
 		
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		Boolean isContigencia = false;
