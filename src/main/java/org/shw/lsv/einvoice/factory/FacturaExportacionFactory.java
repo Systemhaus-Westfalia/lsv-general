@@ -18,6 +18,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.CuerpoDocumentoItemFacturaExportacion;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.EmisorFacturaExportacion;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.FacturaExportacion;
@@ -229,7 +230,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(FacturaExportacion.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(FacturaExportacion.HOREMI, "00:00:00");
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMONEDA, "USD");
-		jsonObjectIdentificacion.put(FacturaExportacion.AMBIENTE, "00");
+		jsonObjectIdentificacion.put(CreditoFiscal.AMBIENTE, client.getE_Enviroment().getValue());
 
 		System.out.println("Finish collecting JSON data for Identificacion");
 		return jsonObjectIdentificacion;
