@@ -10,12 +10,16 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Properties;
 import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrgInfo;
+import org.compiere.util.DB;
 import org.compiere.util.Language;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 
 /**
  * 
@@ -114,5 +118,41 @@ public abstract class EDocumentFactory {
 			throw new RuntimeException(ex);
 		}
 	}
+	
+
+	public JSONObject generateApendiceInputData(int invoiceID) {
+//		String sqlSelect = "SELECT (invoiceinfo) as invoiceinfo FROM shw_c_invoice_header_vt i"
+//				+ " WHERE AD_LANGUAGE = 'es_SV' AND C_Invoice_ID=?";
+		String infoInvoice = DB.getSQLValueStringEx(null, sqlApendice, invoiceID);
+		if (infoInvoice == null || infoInvoice.length()==0)
+			infoInvoice = " ";
+		ArrayList<String> info = new ArrayList<String>();
+		int part = 150;
+		if (infoInvoice.length()<= 150) {
+			info.add(infoInvoice);
+		}
+		while(infoInvoice.length() > 150) {
+			part = infoInvoice.length()>=150?150:infoInvoice.length();
+			String infopart = infoInvoice.substring(0,part);
+			info.add(infopart);
+			infoInvoice = infoInvoice.substring(part, infoInvoice.length());
+			if (info.size() == 10)
+				break;
+		}
+		JSONObject jsonApendice = new JSONObject();
+		JSONArray jsonTributosArray = new JSONArray();
+		for(int i = 0; i < info.size(); i++) {
+
+			JSONObject jsonApendiceItem = new JSONObject();
+			jsonApendiceItem.put(EDocument.CAMPO, "Info");
+			jsonApendiceItem.put(EDocument.ETIQUETA, "Descripcion");
+			jsonApendiceItem.put(EDocument.VALOR, info.get(i));
+			jsonTributosArray.put(jsonApendiceItem);
+		}
+		
+		jsonApendice.put(CreditoFiscal.APENDICE, jsonTributosArray);
+		return jsonApendice;
+	}
+
 
 }

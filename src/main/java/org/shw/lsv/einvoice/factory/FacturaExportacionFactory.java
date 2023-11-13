@@ -18,7 +18,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
+import org.shw.lsv.einvoice.fefexfacturaexportacionv1.ApendiceItemFacturaExportacion;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.CuerpoDocumentoItemFacturaExportacion;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.EmisorFacturaExportacion;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.FacturaExportacion;
@@ -142,18 +142,18 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 //			}
 //		}
 		
-//		List<ApendiceItem> apendice = factura.getApendice();
-//		if(apendice!=null) {
-//			factura.fillApendice(jsonInputToFactory);
-//			
-//			apendice.stream().forEach( apendiceItem -> { 
-//				String resultLambda = apendiceItem.validateValues();
-//					if(! resultLambda.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
-//						errorMessages.append(resultLambda);
-//					}
-//				} 
-//			);
-//		}
+		List<ApendiceItemFacturaExportacion> apendice = facturaExportacion.getApendice();
+		if(apendice!=null) {
+			facturaExportacion.fillApendice(jsonInputToFactory);
+			
+			apendice.stream().forEach( apendiceItem -> { 
+				String resultLambda = apendiceItem.validateValues();
+					if(! resultLambda.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
+						facturaExportacion.errorMessages.append(resultLambda);
+					}
+				} 
+			);
+		}
 		
 //		Documento documento = eDocument.getDocumento();
 //		if(documento!=null) {
@@ -192,6 +192,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonInputToFactory.put(FacturaExportacion.EMISOR, generateEmisorInputData());
 		jsonInputToFactory.put(FacturaExportacion.RESUMEN, generateResumenInputData());
 		jsonInputToFactory.put(FacturaExportacion.CUERPODOCUMENTO, generateCuerpoDocumentoInputData());
+		jsonInputToFactory.put(FacturaExportacion.APENDICE, generateApendiceInputData(invoice.getC_Invoice_ID()));
 		
 		System.out.println("Generated JSON object from Invoice:");
 		System.out.println(jsonInputToFactory.toString());
@@ -230,7 +231,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(FacturaExportacion.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(FacturaExportacion.HOREMI, "00:00:00");
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMONEDA, "USD");
-		jsonObjectIdentificacion.put(CreditoFiscal.AMBIENTE, client.getE_Enviroment().getValue());
+		jsonObjectIdentificacion.put(FacturaExportacion.AMBIENTE, client.getE_Enviroment().getValue());
 
 		System.out.println("Finish collecting JSON data for Identificacion");
 		return jsonObjectIdentificacion;

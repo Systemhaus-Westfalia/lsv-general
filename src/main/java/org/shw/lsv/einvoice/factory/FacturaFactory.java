@@ -19,6 +19,7 @@ import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ApendiceItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.CuerpoDocumentoItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.EmisorFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
@@ -144,18 +145,18 @@ public class FacturaFactory extends EDocumentFactory {
 //			}
 //		}
 		
-//		List<ApendiceItem> apendice = factura.getApendice();
-//		if(apendice!=null) {
-//			factura.fillApendice(jsonInputToFactory);
-//			
-//			apendice.stream().forEach( apendiceItem -> { 
-//				String resultLambda = apendiceItem.validateValues();
-//					if(! resultLambda.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
-//						errorMessages.append(resultLambda);
-//					}
-//				} 
-//			);
-//		}
+		List<ApendiceItemFactura> apendice = factura.getApendice();
+		if(apendice!=null) {
+			factura.fillApendice(jsonInputToFactory);
+			
+			apendice.stream().forEach( apendiceItem -> { 
+				String resultLambda = apendiceItem.validateValues();
+					if(! resultLambda.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
+						factura.errorMessages.append(resultLambda);
+					}
+				} 
+			);
+		}
 		
 //		Documento documento = eDocument.getDocumento();
 //		if(documento!=null) {
@@ -194,6 +195,7 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonInputToFactory.put(Factura.EMISOR, generateEmisorInputData());
 		jsonInputToFactory.put(Factura.RESUMEN, generateResumenInputData());
 		jsonInputToFactory.put(Factura.CUERPODOCUMENTO, generateCuerpoDocumentoInputData());
+		jsonInputToFactory.put(Factura.APENDICE, generateApendiceInputData(invoice.getC_Invoice_ID()));
 		
 		System.out.println("Generated JSON object from Invoice:");
 		System.out.println(jsonInputToFactory.toString());

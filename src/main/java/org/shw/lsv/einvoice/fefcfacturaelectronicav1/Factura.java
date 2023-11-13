@@ -30,6 +30,7 @@ public class Factura extends EDocument {
 	static final String ERROR_FACTURA_RECEPTOR                = "Documento: Factura, error en fillReceptor(): ";
 	static final String ERROR_FACTURA_CUERPO_DOCUMENTO        = "Documento: Factura, error en fillCuerpoDocumento(): ";
 	static final String ERROR_FACTURA_RESUMEN				  = "Documento: Factura, error en fillResumen(): ";
+	static final String ERROR_FACTURA_APENDICE            	  = "Documento: Credito Fiscal, error en fillApendice(): ";
 	
 	IdentificacionFactura identificacion;
 	EmisorFactura emisor;
@@ -377,7 +378,22 @@ public class Factura extends EDocument {
 		this.apendice = apendice;
 	}
 	
+	public StringBuffer fillApendice(JSONObject factoryInput) {
+		JSONObject apendiceJson = factoryInput.getJSONObject(APENDICE);
+		JSONArray apendiceArrayJson = apendiceJson.getJSONArray(APENDICE);
 	
+		for (int i=0; i< apendiceArrayJson.length(); i++) {
+			JSONObject apendiceItemJson = apendiceArrayJson.getJSONObject(i);
+			ApendiceItemFactura apendiceItem = new ApendiceItemFactura();
+			try {apendiceItem.setCampo(apendiceItemJson.getString(CAMPO)) ;} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_APENDICE + e);}
+			try {apendiceItem.setEtiqueta(apendiceItemJson.getString(ETIQUETA));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_APENDICE + e);}
+			try {apendiceItem.setValor(apendiceItemJson.getString(VALOR)) ;} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_APENDICE + e);}
+			apendice.add(apendiceItem);	
+		}
+		System.out.println("End CreditoFiscal.fillApendice()"); 
+		return errorMessages;
+	}
+
 
 	public List<OtrosDocumentosItemFactura> getOtrosDocumentos() {
 		return otrosDocumentos;
