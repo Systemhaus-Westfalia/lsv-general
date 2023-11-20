@@ -1,6 +1,9 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -118,11 +121,13 @@ public class AnulacionFactory extends EDocumentFactory {
 		codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
 		
 		JSONObject jsonObjectIdentificacion = new JSONObject();
-
+		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String horEmi = timeFormat.format(cal.getTime());
 		jsonObjectIdentificacion.put(Anulacion.AMBIENTE, client.getE_Enviroment().getValue());
 		jsonObjectIdentificacion.put(Anulacion.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(Anulacion.FECANULA, invoice.getDateAcct().toString().substring(0, 10));
-		jsonObjectIdentificacion.put(Anulacion.HORANULA, "00:00:00");
+		jsonObjectIdentificacion.put(Anulacion.HORANULA, horEmi);
 		
 		System.out.println("Factura: end collecting JSON data for Identificacion");
 		return jsonObjectIdentificacion;	
@@ -175,7 +180,7 @@ public class AnulacionFactory extends EDocumentFactory {
 				.list();
 		for (MInvoiceTax invoiceTax:invoiceTaxes) {
 			if (invoiceTax.getC_Tax().getTaxIndicator().equals("IVA"))
-				montoIVA = montoIVA.add(invoiceTax.getTaxAmt().multiply(new BigDecimal(-1)));
+				montoIVA = montoIVA.add(invoiceTax.getTaxAmt().negate());
 		}
 		jsonObjectDocumento.put(Anulacion.MONTOIVA, montoIVA);				
 

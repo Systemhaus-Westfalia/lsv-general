@@ -1,6 +1,9 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -248,7 +251,9 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		Integer invoiceID = invoice.get_ID();
 		Integer clientID = (Integer)client.getAD_Client_ID();
 		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
-		
+		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String horEmi = timeFormat.format(cal.getTime());
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		jsonObjectIdentificacion.put(NotaDeCredito.MOTIVOCONTIN, motivoContin);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOCONTINGENCIA, tipoContingencia);
@@ -257,7 +262,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOMODELO, tipoModelo);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOOPERACION, tipoOperacion);
 		jsonObjectIdentificacion.put(NotaDeCredito.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
-		jsonObjectIdentificacion.put(NotaDeCredito.HOREMI, "00:00:00");
+		jsonObjectIdentificacion.put(NotaDeCredito.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(NotaDeCredito.AMBIENTE, client.getE_Enviroment().getValue());
 

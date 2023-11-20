@@ -1,6 +1,9 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -239,7 +242,9 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=2) {
 			isContigencia = true;
 		}
-
+		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String horEmi = timeFormat.format(cal.getTime());
 		int tipoModelo = isContigencia?FacturaSujetoExcluido.TIPOMODELO_CONTIGENCIA:FacturaSujetoExcluido.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?FacturaSujetoExcluido.TIPOOPERACION_CONTIGENCIA:FacturaSujetoExcluido.TIPOOPERACION_NOCONTIGENCIA;
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.NUMEROCONTROL, numeroControl);
@@ -247,7 +252,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.TIPOMODELO, tipoModelo);
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.TIPOOPERACION, tipoOperacion);
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
-		jsonObjectIdentificacion.put(FacturaSujetoExcluido.HOREMI, "00:00:00");
+		jsonObjectIdentificacion.put(FacturaSujetoExcluido.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.AMBIENTE, client.getE_Enviroment().getValue());
 		

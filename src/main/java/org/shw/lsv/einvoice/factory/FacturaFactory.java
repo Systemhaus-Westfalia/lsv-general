@@ -1,6 +1,9 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -229,7 +232,9 @@ public class FacturaFactory extends EDocumentFactory {
 		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
 			isContigencia = true;
 		}
-
+		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String horEmi = timeFormat.format(cal.getTime());
 		int tipoModelo = isContigencia?Factura.TIPOMODELO_CONTIGENCIA:Factura.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?Factura.TIPOOPERACION_CONTIGENCIA:Factura.TIPOOPERACION_NOCONTIGENCIA;
 		jsonObjectIdentificacion.put(Factura.NUMEROCONTROL, numeroControl);
@@ -237,7 +242,7 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(Factura.TIPOMODELO, tipoModelo);
 		jsonObjectIdentificacion.put(Factura.TIPOOPERACION, tipoOperacion);
 		jsonObjectIdentificacion.put(Factura.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
-		jsonObjectIdentificacion.put(Factura.HOREMI, "00:00:00");
+		jsonObjectIdentificacion.put(Factura.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(Factura.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(Factura.AMBIENTE, client.getE_Enviroment().getValue());
 		
@@ -477,6 +482,19 @@ public class FacturaFactory extends EDocumentFactory {
 			}
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
+
+			String name = "";
+			String description = "";
+			if (invoiceLine.getC_Charge_ID() > 0)
+				name = invoiceLine.getC_Charge().getName();
+			else if (invoiceLine.getM_Product_ID()>0)
+				name = invoiceLine.getM_Product().getName();
+			if (invoiceLine.getDescription() != null && invoiceLine.getDescription().length()>0)
+				description = name + " " + invoiceLine.getDescription();
+			else 
+				description = name;
+			if (description.length()>999)
+				description = description.substring(0, 998);
                 
 			jsonCuerpoDocumentoItem.put(Factura.NUMITEM, i);
 			jsonCuerpoDocumentoItem.put(Factura.TIPOITEM, 2);
@@ -489,7 +507,7 @@ public class FacturaFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem. put( Factura.TRIBUTOS, jsonTributosArray); //tributosItems.add("20");
 			
 			jsonCuerpoDocumentoItem.put(Factura.UNIMEDIDA, 59);
-			jsonCuerpoDocumentoItem.put(Factura.DESCRIPCION, invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName());
+			jsonCuerpoDocumentoItem.put(Factura.DESCRIPCION, description);
 			BigDecimal precioUnitario = ventaNoGravada.compareTo(Env.ZERO)!=0? Env.ZERO: invoiceLine.getPriceActual();
 			jsonCuerpoDocumentoItem.put(Factura.PRECIOUNI, precioUnitario);
 			jsonCuerpoDocumentoItem.put(Factura.MONTODESCU, Env.ZERO);

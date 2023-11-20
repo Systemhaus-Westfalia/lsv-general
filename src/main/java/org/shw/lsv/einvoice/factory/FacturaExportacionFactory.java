@@ -1,6 +1,9 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -221,7 +224,9 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		
 		Integer clientID = (Integer)client.getAD_Client_ID();
 		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
-		
+		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String horEmi = timeFormat.format(cal.getTime());
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		jsonObjectIdentificacion.put(FacturaExportacion.NUMEROCONTROL, numeroControl);
 		
@@ -229,7 +234,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMODELO, 1);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOOPERACION, 1);
 		jsonObjectIdentificacion.put(FacturaExportacion.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
-		jsonObjectIdentificacion.put(FacturaExportacion.HOREMI, "00:00:00");
+		jsonObjectIdentificacion.put(FacturaExportacion.HOREMI,horEmi);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(FacturaExportacion.AMBIENTE, client.getE_Enviroment().getValue());
 
@@ -413,11 +418,24 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
 			
 			JSONArray jsonTributosArray = new JSONArray();
+
+			String name = "";
+			String description = "";
+			if (invoiceLine.getC_Charge_ID() > 0)
+				name = invoiceLine.getC_Charge().getName();
+			else if (invoiceLine.getM_Product_ID()>0)
+				name = invoiceLine.getM_Product().getName();
+			if (invoiceLine.getDescription() != null && invoiceLine.getDescription().length()>0)
+				description = name + " " + invoiceLine.getDescription();
+			else 
+				description = name;
+			if (description.length()>999)
+				description = description.substring(0, 998);
 			jsonTributosArray.put("C3");
 			jsonCuerpoDocumentoItem. put( FacturaExportacion.TRIBUTOS, jsonTributosArray); //tributosItems.add("20");
 			
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.UNIMEDIDA, 59);
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.DESCRIPCION, invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName());
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.DESCRIPCION, description);
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.PRECIOUNI, invoiceLine.getPriceActual());
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.MONTODESCU, Env.ZERO);
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.VENTANOSUJ, ventaNoSuj);

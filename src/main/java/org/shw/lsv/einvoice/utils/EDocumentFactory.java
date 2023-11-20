@@ -38,12 +38,11 @@ public abstract class EDocumentFactory {
 	protected Language languageUsed = null;
 	
 	public static String sqlCuerpoDocumento 		= "SELECT * FROM	EI_Invoiceline_Cumm "
-														+ " WHERE c_invoice_id = ? "
-														+ " AND CASE WHEN invoiceLineNo(c_invoice_ID)<? then type = 'D' else type = 'C' end";
+														+ " WHERE c_invoice_id = ? ";
 	public static String sqlApendice 				= "SELECT (invoiceinfo) as invoiceinfo FROM shw_c_invoice_header_vt i"
 														+ " WHERE AD_LANGUAGE = 'es_SV' AND C_Invoice_ID=?";
 	
-	
+	public static int	lineNo 										= 50;
 	public static String CUERPODOCUMENTO_VENTANOSUJETO				= "ventanosuj";
 	public static String CUERPODOCUMENTO_VENTAEXENTA				= "ventaex";
 	public static String CUERPODOCUMENTO_VENTAGRAVADA				= "ventagravada";
@@ -53,6 +52,15 @@ public abstract class EDocumentFactory {
 	public static String CUERPODOCUMENTO_PRICEACTUAL				= "priceactual";
 	public static String CUERPODOCUMENTO_QTYINVOICED				= "qtyinvoiced";
 	public static String CUERPODOCUMENTO_LINETOTALAMT   			= "linetotalamt";
+	
+
+	public static String TAXINDICATOR_IVA 							= "IVA";
+	public static String TAXINDICATOR_NSUJ 							= "NSUJ";
+	public static String TAXINDICATOR_EXT 							= "EXT";
+	public static String TAXINDICATOR_RET 							= "RET";
+	public static String CHARGETYPE_CTAJ	 						= "CTAJ";
+	
+	
 	
 
 	
