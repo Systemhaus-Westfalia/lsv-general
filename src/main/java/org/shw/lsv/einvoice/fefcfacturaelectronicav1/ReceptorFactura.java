@@ -80,7 +80,7 @@ public class ReceptorFactura {
 	public void setTipoDocumento(String tipoDocumento) {
 		String[] validTipoDocumento = { "36", "13", "02", "03", "37" };
 		
-		if((tipoDocumento==null) || (Arrays.stream(validTipoDocumento).anyMatch(tipoDocumento::equals)) )
+		if((tipoDocumento==null) || tipoDocumento.length()==0 || (Arrays.stream(validTipoDocumento).anyMatch(tipoDocumento::equals)) )
 			this.tipoDocumento = tipoDocumento;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'tipoDocumento' in Factura.Receptor.setTipoDocumento()" + "\n");
@@ -105,7 +105,7 @@ public class ReceptorFactura {
 		final int MAXLENGTH = 20;
 		int length = numDocumento==null?0:numDocumento.length();
 		
-		if( (length>=MINLENGTH && length<=MAXLENGTH) || (numDocumento==null) )
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || numDocumento==null || numDocumento.length()==0 )
 			this.numDocumento = numDocumento;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' in Factura.Receptor.setNumDocumento()" + "\n");

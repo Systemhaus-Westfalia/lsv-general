@@ -76,8 +76,10 @@ public class NotaDeCredito extends EDocument {
 		System.out.println("Start NotaDeCredito.fillIdentificacion()");
 
 		JSONObject identificationJson = factoryInput.getJSONObject(IDENTIFICACION);
-		try {identificacion.setMotivoContin(identificationJson.getString(MOTIVOCONTIN));} 			catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e);}
-		try {identificacion.setTipoContingencia(identificationJson.getInt(TIPOCONTINGENCIA));} 		catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e);}
+		if (!identificationJson.getString(MOTIVOCONTIN).equals("")) {		
+			try {identificacion.setMotivoContin(identificationJson.getString(MOTIVOCONTIN));} 		catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e);}
+			try {identificacion.setTipoContingencia(identificationJson.getInt(TIPOCONTINGENCIA));}	catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e);}
+		}		
 		try {identificacion.setNumeroControl(identificationJson.getString(NUMEROCONTROL));} 		catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e);}
 		try {identificacion.setCodigoGeneracion(identificationJson.getString(CODIGOGENERACION));} 	catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e);}
 		try {identificacion.setTipoModelo(identificationJson.getInt(TIPOMODELO));} 					catch (Exception e) {errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e);}

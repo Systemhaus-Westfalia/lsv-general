@@ -222,8 +222,8 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 	private JSONObject generateIdentificationInputData() {
 		System.out.println("Start collecting JSON data for Identificacion");
 		
-		String motivoContin      = null;
-		Integer tipoContingencia = null;
+		String motivoContin      = "";
+		Integer tipoContingencia = 0;
 		int tipoModelo           = 1;
 		int tipoOperacion        = 1;
 		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
@@ -476,7 +476,9 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			}
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
-            String numerodocumentno = invoiceLine.getRef_InvoiceLine().getC_Invoice().getei_codigoGeneracion();  
+            String numerodocumentno = invoiceLine.getRef_InvoiceLine().getC_Invoice().getei_codigoGeneracion()!=null?
+            		invoiceLine.getRef_InvoiceLine().getC_Invoice().getei_codigoGeneracion():
+            			invoiceLine.getRef_InvoiceLine().getC_Invoice().getDocumentNo();  
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMITEM, i);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.TIPOITEM, 2);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMERODOCUMENTO, numerodocumentno);
@@ -520,8 +522,10 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		for (MInvoice invoiceOrginal : invoiceIds.values()) {
 			JSONObject jsonDocumentoRelacionadoItem = new JSONObject();
 			jsonDocumentoRelacionadoItem.put(NotaDeCredito.TIPODOCUMENTO, invoiceOrginal.getC_DocType().getE_DocType().getValue());
-			jsonDocumentoRelacionadoItem.put(NotaDeCredito.TIPOGENERACION, 1);
-			jsonDocumentoRelacionadoItem.put(NotaDeCredito.NUMERODOCUMENTO, invoiceOrginal.getDocumentNo());
+			int tipoGeneracion = invoiceOrginal.getei_codigoGeneracion() == null? 1:2;
+			jsonDocumentoRelacionadoItem.put(NotaDeCredito.TIPOGENERACION, tipoGeneracion);
+			String documentno = tipoGeneracion==2?invoiceOrginal.getei_codigoGeneracion():invoiceOrginal.getDocumentNo().substring(3,8);
+			jsonDocumentoRelacionadoItem.put(NotaDeCredito.NUMERODOCUMENTO, documentno);
 			jsonDocumentoRelacionadoItem.put(NotaDeCredito.FECEMI, invoiceOrginal.getDateAcct().toString().substring(0, 10));
 			jsonDocumentoRelacionadoArray.put(jsonDocumentoRelacionadoItem);
 		}
@@ -544,6 +548,8 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		String notaDeCreditoAsStringFinal = notaDeCreditoAsJson.toString().
 				replace(":[],", ":null,").
         		replace("\"telefono\":\"\"", "\"telefono\":null").
+        		replace("\"motivoContin\":\"\"", "\"motivoContin\":null").
+        		replace("\"tipoContingencia\":0", "\"tipoContingencia\":null").
         		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
 				replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
 				replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
