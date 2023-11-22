@@ -524,7 +524,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			jsonDocumentoRelacionadoItem.put(NotaDeCredito.TIPODOCUMENTO, invoiceOrginal.getC_DocType().getE_DocType().getValue());
 			int tipoGeneracion = invoiceOrginal.getei_codigoGeneracion() == null? 1:2;
 			jsonDocumentoRelacionadoItem.put(NotaDeCredito.TIPOGENERACION, tipoGeneracion);
-			String documentno = tipoGeneracion==2?invoiceOrginal.getei_codigoGeneracion():invoiceOrginal.getDocumentNo().substring(3,8);
+			String documentno = tipoGeneracion==2?invoiceOrginal.getei_codigoGeneracion():invoiceOrginal.getDocumentNo();
 			jsonDocumentoRelacionadoItem.put(NotaDeCredito.NUMERODOCUMENTO, documentno);
 			jsonDocumentoRelacionadoItem.put(NotaDeCredito.FECEMI, invoiceOrginal.getDateAcct().toString().substring(0, 10));
 			jsonDocumentoRelacionadoArray.put(jsonDocumentoRelacionadoItem);
