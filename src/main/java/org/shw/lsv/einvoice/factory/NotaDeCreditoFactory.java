@@ -413,7 +413,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		jsonObjectResumen.put(NotaDeCredito.DESCUEXENTA, Env.ZERO);
 		jsonObjectResumen.put(NotaDeCredito.DESCUGRAVADA, Env.ZERO);
 		jsonObjectResumen.put(NotaDeCredito.PORCENTAJEDESCUENTO, Env.ZERO);
-		jsonObjectResumen.put(NotaDeCredito.SUBTOTAL, totalGravada.add(totalNoSuj).add(totalExenta).add(totalNoGravada).add(ivaRete1));
+		jsonObjectResumen.put(NotaDeCredito.SUBTOTAL, totalGravada.add(totalNoSuj).add(totalExenta).add(totalNoGravada));
 		jsonObjectResumen.put(NotaDeCredito.IVARETE1, ivaRete1);
 		jsonObjectResumen.put(NotaDeCredito.MONTOTOTALOPERACION, invoice.getGrandTotal());
 		jsonObjectResumen.put(NotaDeCredito.TOTALNOGRAVADO, totalNoGravada);
