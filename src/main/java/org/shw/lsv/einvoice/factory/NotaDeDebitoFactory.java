@@ -354,7 +354,7 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		BigDecimal ivaRete1 	  = Env.ZERO;
 		String numPagoElectronico = "";			// TODO: get correct data for this variable
 
-		String totalLetras=Msg.getAmtInWords(Env.getLanguage(contextProperties), invoice.getGrandTotal().setScale(2).toString());
+		String totalLetras=Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
 
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties , MInvoiceTax.Table_Name , "C_Invoice_ID=?" , trxName)
 				.setParameters(invoice.getC_Invoice_ID())

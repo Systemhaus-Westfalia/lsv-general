@@ -368,9 +368,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		BigDecimal			descu		= Env.ZERO;
 		BigDecimal			subTotal	= invoice.getGrandTotal();
 
-		String 	   			totalLetras;
-		
-		totalLetras=Msg.getAmtInWords(Env.getLanguage(contextProperties), invoice.getGrandTotal().setScale(2).toString());
+		String totalLetras=Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
 
 		
 				

@@ -363,7 +363,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		BigDecimal totalNoGravada = Env.ZERO;	
 		BigDecimal ivaRete1 	= Env.ZERO;
 
-		String totalLetras=Msg.getAmtInWords(Env.getLanguage(contextProperties), invoice.getGrandTotal().setScale(2).toString());
+		String totalLetras=Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
 
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties , MInvoiceTax.Table_Name , "C_Invoice_ID=?" , trxName)
 				.setParameters(invoice.getC_Invoice_ID())
