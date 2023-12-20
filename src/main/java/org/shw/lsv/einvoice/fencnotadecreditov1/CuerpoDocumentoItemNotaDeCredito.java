@@ -85,15 +85,18 @@ public class CuerpoDocumentoItemNotaDeCredito {
 	 * Validate the Schema conditions
 	 */
 	public String validateValues() {
+		
 		if(getVentaGravada()==null) {
 			return VALIDATION_VENTAGRAVADA_IS_NULL;
 		}
 
+		Boolean existsTributo = getTributos() != null && !getTributos().isEmpty();
+		
 		if(getVentaGravada().compareTo(BigDecimal.ZERO)==0) {
-			if (getTributos()!=null)
+			if (existsTributo)
 				return VALIDATION_TRIBUTOS_NOT_NULL;
 		} else {
-			if ( (getTributos()==null) || (getTributos().isEmpty()) )
+			if ( !existsTributo  )
 				return VALIDATION_TRIBUTOS_EMPTY;
 		}
 		
@@ -110,7 +113,8 @@ public class CuerpoDocumentoItemNotaDeCredito {
 			
 			ArrayList<String> expectedValues=  new ArrayList<>(List.of( "20", "C3", "59", "71", "D1", "C8", "D5", "D4"));
 			// Here, is only ONE item expected; where there are MANY items expected, the query must be changed.
-			if ( (getTributos()!=null) && ( (getTributos().isEmpty()) || (expectedValues.indexOf(getTributos().get(0))==-1)) )
+
+			if ( (existsTributo && (expectedValues.indexOf(getTributos().get(0))==-1)) )
 				return VALIDATION_TRIBUTOS_PATTERN_FAILED;			
 		}
 		

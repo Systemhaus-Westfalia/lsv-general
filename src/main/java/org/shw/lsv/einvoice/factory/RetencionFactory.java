@@ -281,7 +281,7 @@ public class RetencionFactory extends EDocumentFactory {
 		System.out.println("Start collecting JSON data for Resumen");
 		BigDecimal totalNoSuj 	= Env.ZERO;
 		BigDecimal totalExenta 	= Env.ZERO;
-		String totalLetras=Msg.getAmtInWords(Env.getLanguage(contextProperties), invoice.getGrandTotal().setScale(2).toString());
+		String totalLetras=Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
 
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties , MInvoiceTax.Table_Name , "C_Invoice_ID=?" , trxName)
 				.setParameters(invoice.getC_Invoice_ID())

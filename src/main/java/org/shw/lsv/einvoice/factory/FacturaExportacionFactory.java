@@ -346,17 +346,33 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties , MInvoiceTax.Table_Name , "C_Invoice_ID=?" , trxName)
 				.setParameters(invoice.getC_Invoice_ID())
 				.list();
-		
+		BigDecimal totalNoGravada = Env.ZERO;
+		BigDecimal totalNoSuj = Env.ZERO;
 		for (MInvoiceTax invoiceTax:invoiceTaxes) {
 			
-				totalGravada = invoiceTax.getTaxBaseAmt();
-				break;
+				//totalGravada = invoiceTax.getTaxBaseAmt();
+				//break;
+					
+				if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_NSUJ)) {
+					if (invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode() != null &&
+							invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode().equals(CHARGETYPE_CTAJ))
+						totalNoGravada = invoiceTax.getTaxBaseAmt();	
+					else {					
+						totalGravada = totalGravada.add(invoiceTax.getTaxBaseAmt());
+					}
+				}
+				else if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_EXT)) {
+					totalGravada = totalGravada.add(invoiceTax.getTaxBaseAmt());
+				}
+				else if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_IVA)) {
+					totalGravada = totalGravada.add(invoiceTax.getTaxBaseAmt());
+				}
 			}
 				
 		JSONObject jsonObjectResumen = new JSONObject();
 		jsonObjectResumen.put(FacturaExportacion.TOTALGRAVADA, totalGravada);
 		jsonObjectResumen.put(FacturaExportacion.PORCENTAJEDESCUENTO, Env.ZERO);
-		jsonObjectResumen.put(FacturaExportacion.TOTALNOGRAVADO, Env.ZERO);
+		jsonObjectResumen.put(FacturaExportacion.TOTALNOGRAVADO, totalNoGravada);
 		jsonObjectResumen.put(FacturaExportacion.TOTALPAGAR, invoice.getGrandTotal());
 		jsonObjectResumen.put(FacturaExportacion.TOTALLETRAS, totalLetras);
 		jsonObjectResumen.put(FacturaExportacion.CONDICIONOPERACION, FacturaExportacion.CONDICIONOPERACION_A_CREDITO);
@@ -393,22 +409,27 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		for (MInvoiceLine invoiceLine:invoice.getLines()) { 
 			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() );
 			i++;
-			BigDecimal ventaNoSuj 	= Env.ZERO;
-			BigDecimal ventaExenta 	= Env.ZERO;
-			BigDecimal ventaGravada = Env.ONEHUNDRED;
-			BigDecimal ivaItem 		= Env.ZERO;
+			BigDecimal ventaGravada = Env.ZERO;
+			BigDecimal ventaNoGravada = Env.ZERO;
+			BigDecimal precioUnitario = Env.ZERO;
 			MTax tax = null;
-			
-			if (invoiceLine.getC_Tax().getTaxIndicator().equals("NSUJ"))
-				ventaNoSuj = invoiceLine.getLineNetAmt();
-			if (invoiceLine.getC_Tax().getTaxIndicator().equals("EXT"))
-				ventaExenta = invoiceLine.getLineNetAmt();
-			if (invoiceLine.getC_Tax().getTaxIndicator().equals("IVA") ) {
-				ventaGravada = invoiceLine.getLineNetAmt(); 
-				tax = (MTax)invoiceLine.getC_Tax();
-				if (invoiceLine.getTaxAmt().compareTo(Env.ZERO) == 0)
-					ivaItem = tax.calculateTax(invoiceLine.getLineNetAmt(), invoice.getM_PriceList().isTaxIncluded(), 2);
+			boolean isVentanoGravada = (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_NSUJ) && 
+					invoiceLine.getC_Charge_ID() > 0 
+					&& invoiceLine.getC_Charge().getC_ChargeType().getValue().equals(CHARGETYPE_CTAJ))?true:false;
+			if (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_NSUJ)) {
+				if (isVentanoGravada) {		
+					ventaNoGravada = invoiceLine.getLineNetAmt();
+				}
+				else {
+					ventaGravada = invoiceLine.getLineNetAmt();					
+				}
 			}
+			else if (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_EXT))
+				ventaGravada = invoiceLine.getLineNetAmt();
+			else if (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_IVA) ) {
+				ventaGravada = invoiceLine.getLineNetAmt(); 
+			}
+			precioUnitario = isVentanoGravada? Env.ZERO:invoiceLine.getPriceActual();
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
                 
@@ -435,12 +456,10 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.UNIMEDIDA, 59);
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.DESCRIPCION, description);
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.PRECIOUNI, invoiceLine.getPriceActual());
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.PRECIOUNI, precioUnitario);
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.MONTODESCU, Env.ZERO);
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.VENTANOSUJ, ventaNoSuj);
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.VENTAEXENTA, ventaExenta);
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.VENTAGRAVADA, ventaGravada);
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.NOGRAVADO, ventaNoSuj.add(ventaNoSuj));
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.NOGRAVADO, ventaNoGravada);
 
 			jsonCuerpoDocumentoArray.put(jsonCuerpoDocumentoItem);
 			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() + " Finished");

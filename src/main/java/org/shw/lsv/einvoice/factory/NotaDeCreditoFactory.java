@@ -378,15 +378,13 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 				continue;
 			}
 			JSONObject jsonTributoItem = new JSONObject();		
-			if (invoiceTax.getC_Tax().getTaxIndicator().equals("NSUJ")) {
-				if (invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode().equals("CTAJ"))
-					totalNoGravada = invoiceTax.getTaxBaseAmt();	
+			if (invoiceTax.getC_Tax().getTaxIndicator().equals("NSUJ")) 
+			{
+				if (invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode() != null &&
+					invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode().equals(CHARGETYPE_CTAJ))
+				totalNoGravada = invoiceTax.getTaxBaseAmt();	
 			else
 				totalNoSuj = invoiceTax.getTaxBaseAmt();	
-				totalNoSuj = invoiceTax.getTaxBaseAmt();		
-				jsonTributoItem.put(NotaDeCredito.CODIGO, invoiceTax.getC_Tax().getE_Duties().getValue());
-				jsonTributoItem.put(NotaDeCredito.DESCRIPCION, invoiceTax.getC_Tax().getE_Duties().getName());
-				jsonTributoItem.put(NotaDeCredito.VALOR, invoiceTax.getTaxAmt());
 			}
 			else if (invoiceTax.getC_Tax().getTaxIndicator().equals("EXT")) {
 				totalExenta = invoiceTax.getTaxBaseAmt();
@@ -399,8 +397,8 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 				jsonTributoItem.put(NotaDeCredito.CODIGO, invoiceTax.getC_Tax().getE_Duties().getValue());
 				jsonTributoItem.put(NotaDeCredito.DESCRIPCION, invoiceTax.getC_Tax().getE_Duties().getName());
 				jsonTributoItem.put(NotaDeCredito.VALOR, invoiceTax.getTaxAmt());
+				jsonTributosArray.put(jsonTributoItem); 
 			}
-			jsonTributosArray.put(jsonTributoItem); //tributosItems.add("20");
 		}
 		jsonObjectResumen.put(NotaDeCredito.TRIBUTOS, jsonTributosArray);
 
@@ -493,10 +491,12 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.VENTAEXENTA, ventaExenta);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NOGRAVADO, ventaNoGravada);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.VENTAGRAVADA, ventaGravada);	
-			
+
 			JSONArray jsonTributosArray = new JSONArray();
-			jsonTributosArray.put(tax.getE_Duties().getValue());
-			jsonCuerpoDocumentoItem. put( NotaDeCredito.TRIBUTOS, jsonTributosArray); //tributosItems.add("20");			
+			if (ventaGravada.compareTo(Env.ZERO) != 0) {
+				jsonTributosArray.put(tax.getE_Duties().getValue());
+			}
+			jsonCuerpoDocumentoItem.put( NotaDeCredito.TRIBUTOS, jsonTributosArray);
 
 			jsonCuerpoDocumentoArray.put(jsonCuerpoDocumentoItem);
 			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() + " Finished");
