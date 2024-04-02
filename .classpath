@@ -6,7 +6,14 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11/"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11/">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/adempiere_General"/>
+	<classpathentry kind="lib" path="/adempiere_General/tools/lib/telegrambots-6.0.1-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="/adempiere_General/tools/lib/commons-lang3-3.13.0.jar"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>
