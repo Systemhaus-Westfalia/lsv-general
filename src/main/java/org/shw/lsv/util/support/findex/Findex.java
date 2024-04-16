@@ -187,10 +187,11 @@ public class Findex implements IDeclarationProvider {
         	}
         	else if (status.equals("Rechazado")) {
             	System.out.println("reponse: Status " +  status + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-    			String errorCode = isVoided()?"description":"error";
+    			String errorCode = "error";
     			String error = "";
     			if (isVoided()) {
-    				error = jsonoutput.getString("descripcion");
+            		JSONArray array = jsonoutput.getJSONArray(errorCode);
+            		error = array.getString(0);
     			}
     			else {
 
@@ -210,13 +211,13 @@ public class Findex implements IDeclarationProvider {
             	System.out.println("reponse: Status " +  status + " error " + error + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		invoice.saveEx();
         	}
-        	else if (status.equals("Firmado")) {
+        	else if (status.equals("Firmado") || status.equals("Anulado")) {
         		System.out.println("reponse: Status " +  status + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		invoice.set_ValueOfColumn("ei_pdf", jsonoutput.getString("pdf"));
 
             	System.out.println("Status Firmado: pdf " + jsonoutput.getString("pdf") + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-        		invoice.set_ValueOfColumn("ei_Status_Extern", "Firmado");
-        		invoice.setei_selloRecibido(jsonoutput.getString("sello_recepcion"));
+        		invoice.set_ValueOfColumn("ei_Status_Extern", status);
+        		invoice.set_ValueOfColumn("ei_selloRecibido",(jsonoutput.getString("sello_recepcion")));
         		String fecha = jsonoutput.getString("fecha");
             	System.out.println("Status Firmado: fecha " + jsonoutput.getString("fecha")+ " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		invoice.set_ValueOfColumn("ei_dateReceived", fecha);

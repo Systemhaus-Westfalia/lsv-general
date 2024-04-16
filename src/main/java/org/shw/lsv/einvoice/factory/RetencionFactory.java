@@ -7,7 +7,9 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MCity;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
@@ -145,7 +147,7 @@ public class RetencionFactory extends EDocumentFactory {
 		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
 		String duns = orgInfo.getDUNS().replace("-", "");
 		
-		String numeroControl = "DTE-" + invoice.getC_DocType().getE_DocType().getValue()
+		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
 				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
 		Integer invoiceID = invoice.get_ID();
 		//String numeroControl = getNumeroControl(invoiceID, orgInfo, "DTE-01-");
@@ -160,8 +162,8 @@ public class RetencionFactory extends EDocumentFactory {
 		int tipoModelo = isContigencia?Retencion.TIPOMODELO_CONTIGENCIA:Retencion.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?Retencion.TIPOOPERACION_CONTIGENCIA:Retencion.TIPOOPERACION_NOCONTIGENCIA;
 		JSONObject jsonObjectIdentificacion = new JSONObject();
-		jsonObjectIdentificacion.put(Retencion.AMBIENTE,client.getE_Enviroment().getValue());									// TODO: korrekte Daten einsetzen
-		jsonObjectIdentificacion.put(Retencion.TIPODTE, invoice.getC_DocType().getE_DocType().getValue());				// TODO: korrekte Daten einsetzen
+		jsonObjectIdentificacion.put(Retencion.AMBIENTE, client_getE_Enviroment(client).getValue());									// TODO: korrekte Daten einsetzen
+		jsonObjectIdentificacion.put(Retencion.TIPODTE, docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue());				// TODO: korrekte Daten einsetzen
 		jsonObjectIdentificacion.put(Retencion.NUMEROCONTROL, numeroControl);
 		jsonObjectIdentificacion.put(Retencion.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(Retencion.TIPOMODELO, tipoModelo);									// TODO: korrekte Daten einsetzen
@@ -189,14 +191,14 @@ public class RetencionFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(Retencion.NIT, orgInfo.getTaxID().replace("-", ""));
 		jsonObjectEmisor.put(Retencion.NRC, StringUtils.leftPad(orgInfo.getDUNS().trim().replace("-", ""), 7));
 		jsonObjectEmisor.put(Retencion.NOMBRE, client.getName());
-		jsonObjectEmisor.put(Retencion.CODACTIVIDAD, client.getE_Activity().getValue());
-		jsonObjectEmisor.put(Retencion.DESCACTIVIDAD, client.getE_Activity().getName());
+		jsonObjectEmisor.put(Retencion.CODACTIVIDAD, client_getE_Activity(client).getValue());
+		jsonObjectEmisor.put(Retencion.DESCACTIVIDAD, client_getE_Activity(client).getName());
 		jsonObjectEmisor.put(Retencion.NOMBRECOMERCIAL, client.getDescription());
-		jsonObjectEmisor.put(Retencion.TIPOESTABLECIMIENTO, client.getE_PlantType().getValue());
+		jsonObjectEmisor.put(Retencion.TIPOESTABLECIMIENTO, client_getE_PlantType(client).getValue());
 
 		JSONObject jsonDireccion = new JSONObject();
-		jsonDireccion.put(Retencion.DEPARTAMENTO, orgInfo.getC_Location().getC_City().getC_Region().getValue());
-		jsonDireccion.put(Retencion.MUNICIPIO, orgInfo.getC_Location().getC_City().getValue());
+		jsonDireccion.put(Retencion.DEPARTAMENTO, city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Retencion.MUNICIPIO, city_getValue((MCity)orgInfo.getC_Location().getC_City()));
 		jsonDireccion.put(Retencion.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
 		jsonObjectEmisor.put(Retencion.DIRECCION, jsonDireccion);
 		
@@ -205,7 +207,7 @@ public class RetencionFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(Retencion.CODIGO, "");				// TODO: korrekte Daten einsetzen
 		jsonObjectEmisor.put(Retencion.PUNTOVENTAMH, "");			// TODO: korrekte Daten einsetzen
 		jsonObjectEmisor.put(Retencion.PUNTOVENTA, "");			// TODO: korrekte Daten einsetzen
-		jsonObjectEmisor.put(Retencion.CORREO, client.getEMail());
+		jsonObjectEmisor.put(Retencion.CORREO, client_getEmail(client));
 
 		System.out.println("Finish collecting JSON data for Emisor");
 		return jsonObjectEmisor;
@@ -216,7 +218,7 @@ public class RetencionFactory extends EDocumentFactory {
 		System.out.println("Retencion: start collecting JSON data for Receptor");
 
 		MBPartner partner = (MBPartner)invoice.getC_BPartner();
-		if (partner.getE_Activity_ID()<=0 || partner.getE_Recipient_Identification_ID() <= 0) {
+		if (bPartner_getE_Activity(partner).getE_Activity_ID()<=0 || bPartner_getE_Recipient_Identification(partner).getE_Recipient_Identification_ID() <= 0) {
 			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta configuracion para Retencion Electronica"; 
 			retencion.errorMessages.append(errorMessage);
 			System.out.println(errorMessage);
@@ -224,7 +226,7 @@ public class RetencionFactory extends EDocumentFactory {
 		
 		JSONObject jsonObjectReceptor = new JSONObject();
 		
-		jsonObjectReceptor.put(Retencion.TIPODOCUMENTO, partner.getE_Recipient_Identification().getValue());
+		jsonObjectReceptor.put(Retencion.TIPODOCUMENTO, bPartner_getE_Recipient_Identification(partner).getValue());
 		if (partner.getTaxID() != null) {
 			jsonObjectReceptor.put(Retencion.NUMDOCUMENTO, partner.getTaxID().replace("-", ""));
 			jsonObjectReceptor.put(Retencion.NRC, partner.getDUNS().trim().replace("-", ""));
@@ -237,9 +239,9 @@ public class RetencionFactory extends EDocumentFactory {
 			System.out.println(errorMessage);
 		}
 		
-		if (partner.getE_Activity_ID()>0) {
-			jsonObjectReceptor.put(Retencion.CODACTIVIDAD, partner.getE_Activity().getValue());
-			jsonObjectReceptor.put(Retencion.DESCACTIVIDAD, partner.getE_Activity().getName());
+		if (bPartner_getE_Activity(partner).getE_Activity_ID()>0) {
+			jsonObjectReceptor.put(Retencion.CODACTIVIDAD, bPartner_getE_Activity(partner).getValue());
+			jsonObjectReceptor.put(Retencion.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
 		} else  {
 			jsonObjectReceptor.put(Retencion.CODACTIVIDAD, "");
 			jsonObjectReceptor.put(Retencion.DESCACTIVIDAD, "");
@@ -251,8 +253,8 @@ public class RetencionFactory extends EDocumentFactory {
 		String complemento = "";
 		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)){
 			if (partnerLocation.isBillTo()) {
-				departamento = partnerLocation.getC_Location().getC_City().getC_Region().getValue();
-				municipio =  partnerLocation.getC_Location().getC_City().getValue();
+				departamento = city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
+				municipio =  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
 				complemento = (partnerLocation.getC_Location().getAddress1() + " " + partnerLocation.getC_Location().getAddress2());
 				jsonDireccion.put(Retencion.DEPARTAMENTO, departamento);
 				jsonDireccion.put(Retencion.MUNICIPIO, municipio);

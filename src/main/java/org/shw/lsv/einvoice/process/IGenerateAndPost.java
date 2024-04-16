@@ -14,7 +14,8 @@ public interface  IGenerateAndPost {
 			+ " AND processed = 'Y' AND dateacct>=?  AND processing = 'N' "
 			+ " AND ei_Processing = 'N' "
 			+ " AND (docstatus IN ('RE','VO') AND reversal_ID is not null and reversal_ID<c_Invoice_ID)"
-			+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
+			+ " AND (select ei_Status_Extern from c_Invoice i where c_Invoice.reversal_ID=i.c_Invoice_ID) = 'Firmado' "
+			+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern not in ('Anulado', 'Firmado'))";
 	
 	public final static String APPLICATIONTYPEINVOICE 	= "LSV";	
 	

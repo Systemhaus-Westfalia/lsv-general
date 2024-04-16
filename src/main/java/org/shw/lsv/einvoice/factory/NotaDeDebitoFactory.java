@@ -8,11 +8,14 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MCity;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
@@ -238,7 +241,7 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
 		String duns = orgInfo.getDUNS().replace("-", "");
 		
-		String numeroControl = "DTE-" + invoice.getC_DocType().getE_DocType().getValue()
+		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
 				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
 		
 		Integer invoiceID = invoice.get_ID();
@@ -255,7 +258,7 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(NotaDeDebito.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(NotaDeDebito.HOREMI, "00:00:00");
 		jsonObjectIdentificacion.put(NotaDeDebito.TIPOMONEDA, "USD");
-		jsonObjectIdentificacion.put(NotaDeDebito.AMBIENTE, client.getE_Enviroment().getValue());
+		jsonObjectIdentificacion.put(NotaDeDebito.AMBIENTE, client_getE_Enviroment(client).getValue());
 
 		System.out.println("Finish collecting JSON data for Identificacion");
 		return jsonObjectIdentificacion;
@@ -269,19 +272,19 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(NotaDeDebito.NIT, orgInfo.getTaxID().replace("-", ""));
 		jsonObjectEmisor.put(NotaDeDebito.NRC, StringUtils.leftPad(orgInfo.getDUNS().trim().replace("-", ""), 7));
 		jsonObjectEmisor.put(NotaDeDebito.NOMBRE, client.getName());
-		jsonObjectEmisor.put(NotaDeDebito.CODACTIVIDAD, client.getE_Activity().getValue());
-		jsonObjectEmisor.put(NotaDeDebito.DESCACTIVIDAD, client.getE_Activity().getName());
+		jsonObjectEmisor.put(NotaDeDebito.CODACTIVIDAD, client_getE_Activity(client).getValue());
+		jsonObjectEmisor.put(NotaDeDebito.DESCACTIVIDAD, client_getE_Activity(client).getName());
 		jsonObjectEmisor.put(NotaDeDebito.NOMBRECOMERCIAL, client.getDescription());
-		jsonObjectEmisor.put(NotaDeDebito.TIPOESTABLECIMIENTO, client.getE_PlantType().getValue());
+		jsonObjectEmisor.put(NotaDeDebito.TIPOESTABLECIMIENTO, client_getE_PlantType(client).getValue());
 
 		JSONObject jsonDireccion = new JSONObject();
-		jsonDireccion.put(NotaDeDebito.DEPARTAMENTO, orgInfo.getC_Location().getC_City().getC_Region().getValue());
-		jsonDireccion.put(NotaDeDebito.MUNICIPIO, orgInfo.getC_Location().getC_City().getValue());
+		jsonDireccion.put(NotaDeDebito.DEPARTAMENTO, city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(NotaDeDebito.MUNICIPIO, city_getValue((MCity)orgInfo.getC_Location().getC_City()));
 		jsonDireccion.put(NotaDeDebito.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
 		jsonObjectEmisor.put(NotaDeDebito.DIRECCION, jsonDireccion);
 		
 		jsonObjectEmisor.put(NotaDeDebito.TELEFONO, client.get_ValueAsString("phone"));
-		jsonObjectEmisor.put(NotaDeDebito.CORREO, client.getEMail());
+		jsonObjectEmisor.put(NotaDeDebito.CORREO, client_getEmail(client));
 
 		System.out.println("Finish collecting JSON data for Emisor");
 		return jsonObjectEmisor;
@@ -293,7 +296,7 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		System.out.println("CreditoFiscal: start collecting JSON data for Receptor");
 
 		MBPartner partner = (MBPartner)invoice.getC_BPartner();
-		if (partner.getE_Activity_ID()<=0 || partner.getE_Recipient_Identification_ID() <= 0) {
+		if (bPartner_getE_Activity(partner).getE_Activity_ID()<=0 || bPartner_getE_Recipient_Identification(partner).getE_Recipient_Identification_ID() <= 0) {
 			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta configuracion para Facturacion Electronica"; 
 			notaDeCredito.errorMessages.append(errorMessage);
 			System.out.println(errorMessage);
@@ -309,9 +312,9 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		jsonObjectReceptor.put(NotaDeDebito.NRC, partner.getDUNS().trim().replace("-", ""));
 		jsonObjectReceptor.put(NotaDeDebito.NOMBRE, partner.getName());
 		
-		if (partner.getE_Activity_ID()>0) {
-			jsonObjectReceptor.put(NotaDeDebito.CODACTIVIDAD, partner.getE_Activity().getValue());
-			jsonObjectReceptor.put(NotaDeDebito.DESCACTIVIDAD, partner.getE_Activity().getName());
+		if (bPartner_getE_Activity(partner).getE_Activity_ID()>0) {
+			jsonObjectReceptor.put(NotaDeDebito.CODACTIVIDAD, bPartner_getE_Activity(partner).getValue());
+			jsonObjectReceptor.put(NotaDeDebito.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
 		}
 
 		JSONObject jsonDireccion = new JSONObject();
@@ -320,8 +323,8 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		String complemento = "";
 		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)){
 			if (partnerLocation.isBillTo()) {
-				departamento = partnerLocation.getC_Location().getC_City().getC_Region().getValue();
-				municipio =  partnerLocation.getC_Location().getC_City().getValue();
+				departamento = city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
+				municipio =  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
 				complemento = (partnerLocation.getC_Location().getAddress1() + " " + partnerLocation.getC_Location().getAddress2());
 				jsonDireccion.put(NotaDeDebito.DEPARTAMENTO, departamento);
 				jsonDireccion.put(NotaDeDebito.MUNICIPIO, municipio);
@@ -370,20 +373,20 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 			JSONObject jsonTributoItem = new JSONObject();		
 			if (invoiceTax.getC_Tax().getTaxIndicator().equals("NSUJ")) {
 				totalNoSuj = invoiceTax.getTaxBaseAmt();		
-				jsonTributoItem.put(NotaDeDebito.CODIGO, invoiceTax.getC_Tax().getE_Duties().getValue());
-				jsonTributoItem.put(NotaDeDebito.DESCRIPCION, invoiceTax.getC_Tax().getE_Duties().getName());
+				jsonTributoItem.put(NotaDeDebito.CODIGO, tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getValue());
+				jsonTributoItem.put(NotaDeDebito.DESCRIPCION,  tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getName());
 				jsonTributoItem.put(NotaDeDebito.VALOR, invoiceTax.getTaxAmt());
 			}
 			else if (invoiceTax.getC_Tax().getTaxIndicator().equals("EXT")) {
 				totalExenta = invoiceTax.getTaxBaseAmt();
-				jsonTributoItem.put(NotaDeDebito.CODIGO, invoiceTax.getC_Tax().getE_Duties().getValue());
-				jsonTributoItem.put(NotaDeDebito.DESCRIPCION, invoiceTax.getC_Tax().getE_Duties().getName());
+				jsonTributoItem.put(NotaDeDebito.CODIGO,  tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getValue());
+				jsonTributoItem.put(NotaDeDebito.DESCRIPCION,  tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getName());
 				jsonTributoItem.put(NotaDeDebito.VALOR, invoiceTax.getTaxAmt());
 			}
 			else if (invoiceTax.getC_Tax().getTaxIndicator().equals("IVA")) {
 				totalGravada = invoiceTax.getTaxBaseAmt();
-				jsonTributoItem.put(NotaDeDebito.CODIGO, invoiceTax.getC_Tax().getE_Duties().getValue());
-				jsonTributoItem.put(NotaDeDebito.DESCRIPCION, invoiceTax.getC_Tax().getE_Duties().getName());
+				jsonTributoItem.put(NotaDeDebito.CODIGO,  tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getValue());
+				jsonTributoItem.put(NotaDeDebito.DESCRIPCION,  tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getName());
 				jsonTributoItem.put(NotaDeDebito.VALOR, invoiceTax.getTaxAmt());
 			}
 			jsonTributosArray.put(jsonTributoItem); //tributosItems.add("20");
@@ -417,7 +420,7 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		jsonPago.put(NotaDeDebito.CODIGO, "05");
 		jsonPago.put(NotaDeDebito.MONTOPAGO, invoice.getGrandTotal());
 		jsonPago.put(NotaDeDebito.REFERENCIA, "Transferencia_ Dep??sito Bancario");
-		jsonPago.put(NotaDeDebito.PLAZO, invoice.getC_PaymentTerm().getE_TimeSpan().getValue());
+		jsonPago.put(NotaDeDebito.PLAZO, paymentterm_getE_TimeSpan((MPaymentTerm)invoice.getC_PaymentTerm()).getValue());
 		jsonPago.put(NotaDeDebito.PERIODO, invoice.getC_PaymentTerm().getNetDays());
 		jsonArrayPagos.put(jsonPago);
 
@@ -470,7 +473,7 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem.put(NotaDeDebito.VENTAGRAVADA, ventaGravada);	
 			
 			JSONArray jsonTributosArray = new JSONArray();
-			jsonTributosArray.put(tax.getE_Duties().getValue());
+			jsonTributosArray.put(tax_getE_Duties(tax).getValue());
 			jsonCuerpoDocumentoItem. put( NotaDeDebito.TRIBUTOS, jsonTributosArray); //tributosItems.add("20");			
 
 			jsonCuerpoDocumentoArray.put(jsonCuerpoDocumentoItem);
@@ -492,11 +495,11 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		HashMap<Integer,MInvoice> invoiceIds = new HashMap<Integer, MInvoice>();
 		for (MInvoiceLine invoiceLine:invoice.getLines()) {
 			MInvoiceLine invoiceLineOrg = new MInvoiceLine(contextProperties, invoiceLine.getRef_InvoiceLine_ID(), null);
-			invoiceIds.put(invoiceLineOrg.getC_Invoice_ID(), (MInvoice)invoiceLine.getRef_InvoiceLine().getC_Invoice());
+			invoiceIds.put(invoiceLineOrg.getC_Invoice_ID(), invoiceLine_getRef_InvoiceLine_getC_Invoice(invoiceLine));
 		}  
 		for (MInvoice invoiceOrginal : invoiceIds.values()) {
 			JSONObject jsonDocumentoRelacionadoItem = new JSONObject();
-			jsonDocumentoRelacionadoItem.put(NotaDeDebito.TIPODOCUMENTO, invoiceOrginal.getC_DocType().getE_DocType().getValue());
+			jsonDocumentoRelacionadoItem.put(NotaDeDebito.TIPODOCUMENTO, docType_getE_DocType((MDocType)invoiceOrginal.getC_DocType()).getValue());
 			jsonDocumentoRelacionadoItem.put(NotaDeDebito.TIPOGENERACION, 1);
 			jsonDocumentoRelacionadoItem.put(NotaDeDebito.NUMERODOCUMENTO, invoiceOrginal.getDocumentNo());
 			jsonDocumentoRelacionadoItem.put(NotaDeDebito.FECEMI, invoiceOrginal.getDateAcct().toString().substring(0, 10));

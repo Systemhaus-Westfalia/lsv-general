@@ -10,11 +10,15 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MCity;
 import org.compiere.model.MClient;
+import org.compiere.model.MCountry;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
@@ -218,7 +222,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		String idIdentification  = StringUtils.leftPad(documentno , 15,"0");
 		String duns = orgInfo.getDUNS().replace("-", "");
 		
-		String numeroControl = "DTE-" + invoice.getC_DocType().getE_DocType().getValue()
+		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
 				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
 		Integer invoiceID = invoice.get_ID();
 		
@@ -236,7 +240,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(FacturaExportacion.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(FacturaExportacion.HOREMI,horEmi);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMONEDA, "USD");
-		jsonObjectIdentificacion.put(FacturaExportacion.AMBIENTE, client.getE_Enviroment().getValue());
+		jsonObjectIdentificacion.put(FacturaExportacion.AMBIENTE,  client_getE_Enviroment(client).getValue());
 
 		System.out.println("Finish collecting JSON data for Identificacion");
 		return jsonObjectIdentificacion;
@@ -250,19 +254,19 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(FacturaExportacion.NIT, orgInfo.getTaxID().replace("-", ""));
 		jsonObjectEmisor.put(FacturaExportacion.NRC, StringUtils.leftPad(orgInfo.getDUNS().trim().replace("-", ""), 7));
 		jsonObjectEmisor.put(FacturaExportacion.NOMBRE, client.getDescription());
-		jsonObjectEmisor.put(FacturaExportacion.CODACTIVIDAD, client.getE_Activity().getValue());
-		jsonObjectEmisor.put(FacturaExportacion.DESCACTIVIDAD, client.getE_Activity().getName());
+		jsonObjectEmisor.put(FacturaExportacion.CODACTIVIDAD, client_getE_Activity(client).getValue());
+		jsonObjectEmisor.put(FacturaExportacion.DESCACTIVIDAD, client_getE_Activity(client).getName());
 		jsonObjectEmisor.put(FacturaExportacion.NOMBRECOMERCIAL, client.getName());
-		jsonObjectEmisor.put(FacturaExportacion.TIPOESTABLECIMIENTO, client.getE_PlantType().getValue());
+		jsonObjectEmisor.put(FacturaExportacion.TIPOESTABLECIMIENTO,  client_getE_PlantType(client).getValue());
 
 		JSONObject jsonDireccion = new JSONObject();
-		jsonDireccion.put(FacturaExportacion.DEPARTAMENTO, orgInfo.getC_Location().getC_City().getC_Region().getValue());
-		jsonDireccion.put(FacturaExportacion.MUNICIPIO, orgInfo.getC_Location().getC_City().getValue());
+		jsonDireccion.put(FacturaExportacion.DEPARTAMENTO,  city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(FacturaExportacion.MUNICIPIO,  city_getValue((MCity)orgInfo.getC_Location().getC_City()) );
 		jsonDireccion.put(FacturaExportacion.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
 		jsonObjectEmisor.put(FacturaExportacion.DIRECCION, jsonDireccion);
 		
 		jsonObjectEmisor.put(FacturaExportacion.TELEFONO, client.get_ValueAsString("phone"));
-		jsonObjectEmisor.put(FacturaExportacion.CORREO, client.getEMail());
+		jsonObjectEmisor.put(FacturaExportacion.CORREO,   client_getEmail(client));
 		jsonObjectEmisor.put(FacturaExportacion.TIPOITEMEXPOR, 2);
 
 		System.out.println("Finish collecting JSON data for Emisor");
@@ -274,7 +278,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		System.out.println("Start collecting JSON data for Receptor");
 
 		MBPartner partner = (MBPartner)invoice.getC_BPartner();
-		if (partner.getE_Activity_ID()<=0 || partner.getE_Recipient_Identification_ID() <= 0) {
+		if (bPartner_getE_Activity(partner).getE_Activity_ID()    <=0 || bPartner_getE_Recipient_Identification(partner).getE_Recipient_Identification_ID() <= 0) {
 			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta configuracion para Facturacion Electronica"; 
 			facturaExportacion.errorMessages.append(errorMessage);
 			System.out.println(errorMessage);
@@ -283,8 +287,8 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 
 		JSONObject jsonObjectReceptor = new JSONObject();
 
-		jsonObjectReceptor.put(FacturaExportacion.TIPODOCUMENTO, partner.getE_Recipient_Identification().getValue());
-		if (partner.getE_Recipient_Identification().getValue().equals("36"))
+		jsonObjectReceptor.put(FacturaExportacion.TIPODOCUMENTO, bPartner_getE_Recipient_Identification(partner).getValue());
+		if (bPartner_getE_Recipient_Identification(partner).getValue().equals("36"))
 		{
 			if (partner.getTaxID() == null) {
 				String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta NIT"; 
@@ -308,11 +312,11 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 
 		jsonObjectReceptor.put(FacturaExportacion.NOMBRE, partner.getName());
 		jsonObjectReceptor.put(FacturaExportacion.NOMBRECOMERCIAL, partner.getName());
-		jsonObjectReceptor.put(FacturaExportacion.TIPOPERSONA, Integer.valueOf(partner.getE_BPType().getValue()));
+		jsonObjectReceptor.put(FacturaExportacion.TIPOPERSONA, Integer.valueOf(bPartner_getE_BPType(partner).getValue()));
 		
 
-		if (partner.getE_Activity_ID()>0) {
-			jsonObjectReceptor.put(FacturaExportacion.DESCACTIVIDAD, partner.getE_Activity().getName());
+		if (bPartner_getE_Activity(partner).getE_Activity_ID()>0) {
+			jsonObjectReceptor.put(FacturaExportacion.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
 		} else  {
 			jsonObjectReceptor.put(FacturaExportacion.DESCACTIVIDAD, "");
 		}
@@ -323,7 +327,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 				String address = partnerLocation.getC_Location().getAddress2() == null?partnerLocation.getC_Location().getAddress1():
 					partnerLocation.getC_Location().getAddress1() + " " + partnerLocation.getC_Location().getAddress2();
 				complemento = (address);
-				jsonObjectReceptor.put(FacturaExportacion.CODPAIS, partnerLocation.getC_Location().getC_Country().getValue());
+				jsonObjectReceptor.put(FacturaExportacion.CODPAIS, country_getValue((MCountry)partnerLocation.getC_Location().getC_Country()));
 				jsonObjectReceptor.put(FacturaExportacion.NOMBREPAIS,  partnerLocation.getC_Location().getC_Country().getName());
 				jsonObjectReceptor.put(FacturaExportacion.COMPLEMENTO, complemento);
 				break;
@@ -390,7 +394,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			jsonPago.put(FacturaExportacion.CODIGO, "05");
 			jsonPago.put(FacturaExportacion.MONTOPAGO, invoice.getGrandTotal());
 			jsonPago.put(FacturaExportacion.REFERENCIA, "Transferencia_ Deposito Bancario");
-			jsonPago.put(FacturaExportacion.PLAZO, invoice.getC_PaymentTerm().getE_TimeSpan().getValue());
+			jsonPago.put(FacturaExportacion.PLAZO,  paymentterm_getE_TimeSpan((MPaymentTerm)invoice.getC_PaymentTerm()).getValue());
 			jsonPago.put(FacturaExportacion.PERIODO, invoice.getC_PaymentTerm().getNetDays());
 		jsonArrayPagos.put(jsonPago);
 

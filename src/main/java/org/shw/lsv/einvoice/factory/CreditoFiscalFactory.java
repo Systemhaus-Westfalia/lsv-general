@@ -11,14 +11,18 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempiere.core.domains.models.X_E_Activity;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MCity;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
@@ -226,7 +230,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
 		String duns = orgInfo.getDUNS().replace("-", "");
 		
-		String numeroControl = "DTE-" + invoice.getC_DocType().getE_DocType().getValue()
+		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
 				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
 		Integer invoiceID = invoice.get_ID();
 		//String numeroControl = getNumeroControl(invoiceID, orgInfo, "DTE-01-");
@@ -250,7 +254,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(CreditoFiscal.FECEMI,  invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(CreditoFiscal.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(CreditoFiscal.TIPOMONEDA, "USD");
-		jsonObjectIdentificacion.put(CreditoFiscal.AMBIENTE, client.getE_Enviroment().getValue());
+		jsonObjectIdentificacion.put(CreditoFiscal.AMBIENTE, client_getE_Enviroment(client).getValue());
 		
 		if (isContigencia) {
 			jsonObjectIdentificacion.put(CreditoFiscal.MOTIVOCONTIN, "Contigencia por fecha de factura");
@@ -269,23 +273,25 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 	private JSONObject generateEmisorInputData() {
 		System.out.println("CreditoFiscal: start collecting JSON data for Emisor");
 		
+		int activityID = client.get_ValueAsInt(Columnname_E_Activity_ID);
+		X_E_Activity e_Activity = new X_E_Activity(Env.getCtx(), activityID, trxName);
 		JSONObject jsonObjectEmisor = new JSONObject();
 		jsonObjectEmisor.put(CreditoFiscal.NIT, orgInfo.getTaxID().replace("-", ""));
 		jsonObjectEmisor.put(CreditoFiscal.NRC, StringUtils.leftPad(orgInfo.getDUNS().trim().replace("-", ""), 7));
 		jsonObjectEmisor.put(CreditoFiscal.NOMBRE, client.getDescription());
-		jsonObjectEmisor.put(CreditoFiscal.CODACTIVIDAD, client.getE_Activity().getValue());
-		jsonObjectEmisor.put(CreditoFiscal.DESCACTIVIDAD, client.getE_Activity().getName());
+		jsonObjectEmisor.put(CreditoFiscal.CODACTIVIDAD, e_Activity.getValue());
+		jsonObjectEmisor.put(CreditoFiscal.DESCACTIVIDAD, e_Activity.getName());
 		jsonObjectEmisor.put(CreditoFiscal.NOMBRECOMERCIAL, client.getName());
-		jsonObjectEmisor.put(CreditoFiscal.TIPOESTABLECIMIENTO, client.getE_PlantType().getValue());
+		jsonObjectEmisor.put(CreditoFiscal.TIPOESTABLECIMIENTO, client_getE_PlantType(client).getValue());
 
 		JSONObject jsonDireccion = new JSONObject();
-		jsonDireccion.put(CreditoFiscal.DEPARTAMENTO, orgInfo.getC_Location().getC_City().getC_Region().getValue());
-		jsonDireccion.put(CreditoFiscal.MUNICIPIO, orgInfo.getC_Location().getC_City().getValue());
+		jsonDireccion.put(CreditoFiscal.DEPARTAMENTO, city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(CreditoFiscal.MUNICIPIO, city_getValue((MCity)orgInfo.getC_Location().getC_City()) );
 		jsonDireccion.put(CreditoFiscal.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
 		jsonObjectEmisor.put(CreditoFiscal.DIRECCION, jsonDireccion);
 		
 		jsonObjectEmisor.put(CreditoFiscal.TELEFONO, client.get_ValueAsString("phone"));
-		jsonObjectEmisor.put(CreditoFiscal.CORREO, client.getEMail());
+		jsonObjectEmisor.put(CreditoFiscal.CORREO, client_getEmail(client));
 
 		System.out.println("CreditoFiscal: end collecting JSON data for Emisor");
 		return jsonObjectEmisor;
@@ -296,7 +302,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		System.out.println("CreditoFiscal: start collecting JSON data for Receptor");
 
 		MBPartner partner = (MBPartner)invoice.getC_BPartner();
-		if (partner.getE_Activity_ID()<=0 || partner.getE_Recipient_Identification_ID() <= 0) {
+		if (bPartner_getE_Activity(partner).getE_Activity_ID()    <=0 || bPartner_getE_Recipient_Identification(partner).getE_Recipient_Identification_ID() <= 0) {
 			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta configuracion para Facturacion Electronica"; 
 			creditoFiscal.errorMessages.append(errorMessage);
 			System.out.println(errorMessage);
@@ -312,9 +318,9 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		jsonObjectReceptor.put(CreditoFiscal.NRC, partner.getDUNS().trim().replace("-", ""));
 		jsonObjectReceptor.put(CreditoFiscal.NOMBRE, partner.getName());
 		
-		if (partner.getE_Activity_ID()>0) {
-			jsonObjectReceptor.put(CreditoFiscal.CODACTIVIDAD, partner.getE_Activity().getValue());
-			jsonObjectReceptor.put(CreditoFiscal.DESCACTIVIDAD, partner.getE_Activity().getName());
+		if (bPartner_getE_Activity(partner).getE_Activity_ID()>0) {
+			jsonObjectReceptor.put(CreditoFiscal.CODACTIVIDAD, bPartner_getE_Activity(partner).getValue());
+			jsonObjectReceptor.put(CreditoFiscal.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
 		}
 
 		JSONObject jsonDireccion = new JSONObject();
@@ -323,8 +329,8 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		String complemento = "";
 		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)){
 			if (partnerLocation.isBillTo()) {
-				departamento = partnerLocation.getC_Location().getC_City().getC_Region().getValue();
-				municipio =  partnerLocation.getC_Location().getC_City().getValue();
+				departamento = city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
+				municipio =  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
 				String address = partnerLocation.getC_Location().getAddress2() == null?partnerLocation.getC_Location().getAddress1():
 					partnerLocation.getC_Location().getAddress1() + " " + partnerLocation.getC_Location().getAddress2();
 				complemento = (address);
@@ -388,8 +394,8 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			else if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_IVA)) {
 				totalGravada = invoiceTax.getTaxBaseAmt();
 				montotributos = montotributos.add(invoiceTax.getTaxAmt());
-				jsonTributoItem.put(CreditoFiscal.CODIGO, invoiceTax.getC_Tax().getE_Duties().getValue());
-				jsonTributoItem.put(CreditoFiscal.DESCRIPCION, invoiceTax.getC_Tax().getE_Duties().getName());
+				jsonTributoItem.put(CreditoFiscal.CODIGO, tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getValue());
+				jsonTributoItem.put(CreditoFiscal.DESCRIPCION, tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getName());
 				jsonTributoItem.put(CreditoFiscal.VALOR, invoiceTax.getTaxAmt());
 				jsonTributosArray.put(jsonTributoItem); 
 			}
@@ -425,7 +431,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		jsonPago.put(CreditoFiscal.CODIGO, "05");
 		jsonPago.put(CreditoFiscal.MONTOPAGO, invoice.getGrandTotal());
 		jsonPago.put(CreditoFiscal.REFERENCIA, "Transferencia_ Deposito Bancario");
-		jsonPago.put(CreditoFiscal.PLAZO, invoice.getC_PaymentTerm().getE_TimeSpan().getValue());
+		jsonPago.put(CreditoFiscal.PLAZO, paymentterm_getE_TimeSpan((MPaymentTerm)invoice.getC_PaymentTerm()).getValue());
 		jsonPago.put(CreditoFiscal.PERIODO, invoice.getC_PaymentTerm().getNetDays());
 		jsonArrayPagos.put(jsonPago);
 
@@ -558,7 +564,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 
 			JSONArray jsonTributosArray = new JSONArray();
 			if (ventaGravada.compareTo(Env.ZERO) != 0) {
-				jsonTributosArray.put(tax.getE_Duties().getValue());
+				jsonTributosArray.put(tax_getE_Duties(tax).getValue());
 			}
 			jsonCuerpoDocumentoItem.put( CreditoFiscal.TRIBUTOS, jsonTributosArray);
 

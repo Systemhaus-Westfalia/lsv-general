@@ -10,10 +10,13 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
+import org.compiere.model.MCity;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
@@ -230,7 +233,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
 		String duns = orgInfo.getDUNS().replace("-", "");
 		
-		String numeroControl = "DTE-" + invoice.getC_DocType().getE_DocType().getValue()
+		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
 				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
 		Integer invoiceID = invoice.get_ID();
 		//String numeroControl = getNumeroControl(invoiceID, orgInfo, "DTE-01-");
@@ -254,7 +257,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.TIPOMONEDA, "USD");
-		jsonObjectIdentificacion.put(FacturaSujetoExcluido.AMBIENTE, client.getE_Enviroment().getValue());
+		jsonObjectIdentificacion.put(FacturaSujetoExcluido.AMBIENTE, client_getE_Enviroment(client).getValue());
 		
 		if (isContigencia) {
 			jsonObjectIdentificacion.put(FacturaSujetoExcluido.MOTIVOCONTIN, "Contigencia por fecha de facturaNoSujeto");
@@ -273,23 +276,23 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(FacturaSujetoExcluido.NIT, orgInfo.getTaxID().replace("-", ""));
 		jsonObjectEmisor.put(FacturaSujetoExcluido.NRC, StringUtils.leftPad(orgInfo.getDUNS().trim().replace("-", ""), 7));
 		jsonObjectEmisor.put(FacturaSujetoExcluido.NOMBRE, client.getName());
-		jsonObjectEmisor.put(FacturaSujetoExcluido.CODACTIVIDAD, client.getE_Activity().getValue());
-		jsonObjectEmisor.put(FacturaSujetoExcluido.DESCACTIVIDAD, client.getE_Activity().getName());
+		jsonObjectEmisor.put(FacturaSujetoExcluido.CODACTIVIDAD, client_getE_Activity(client).getValue());
+		jsonObjectEmisor.put(FacturaSujetoExcluido.DESCACTIVIDAD, client_getE_Activity(client).getName());
 
 		JSONObject jsonDireccion = new JSONObject();
-		jsonDireccion.put(FacturaSujetoExcluido.DEPARTAMENTO, orgInfo.getC_Location().getC_City().getC_Region().getValue());
-		jsonDireccion.put(FacturaSujetoExcluido.MUNICIPIO, orgInfo.getC_Location().getC_City().getValue());
+		jsonDireccion.put(FacturaSujetoExcluido.DEPARTAMENTO, city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(FacturaSujetoExcluido.MUNICIPIO, city_getValue((MCity)orgInfo.getC_Location().getC_City()));
 		jsonDireccion.put(FacturaSujetoExcluido.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
 		jsonObjectEmisor.put(FacturaSujetoExcluido.DIRECCION, jsonDireccion);
 		
 		jsonObjectEmisor.put(FacturaSujetoExcluido.TELEFONO, client.get_ValueAsString("phone"));
-		jsonObjectEmisor.put(FacturaSujetoExcluido.CORREO, client.getEMail());
+		jsonObjectEmisor.put(FacturaSujetoExcluido.CORREO, client_getEmail(client));
 		jsonObjectEmisor.put(FacturaSujetoExcluido.CODESTABLEMH, "");								
-		jsonObjectEmisor.put(FacturaSujetoExcluido.CODESTABLE, client.getE_PlantType().getValue());								
+		jsonObjectEmisor.put(FacturaSujetoExcluido.CODESTABLE,  client_getE_PlantType(client).getValue());								
 		jsonObjectEmisor.put(FacturaSujetoExcluido.CODPUNTOVENTAMH, "");							
 		jsonObjectEmisor.put(FacturaSujetoExcluido.CODPUNTOVENTA, "");							
 		jsonObjectEmisor.put(FacturaSujetoExcluido.TELEFONO, client.get_ValueAsString("phone"));
-		jsonObjectEmisor.put(FacturaSujetoExcluido.CORREO, client.getEMail());
+		jsonObjectEmisor.put(FacturaSujetoExcluido.CORREO, client_getEmail(client));
 
 
 		System.out.println("Factura: end collecting JSON data for Emisor");
@@ -300,7 +303,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		System.out.println("Factura: start collecting JSON data for Sujeto Excluido");
 
 		MBPartner partner = (MBPartner)invoice.getC_BPartner();
-		if (partner.getE_Recipient_Identification_ID() <= 0) {
+		if ( bPartner_getE_Recipient_Identification(partner).getE_Recipient_Identification_ID() <= 0) {
 			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta configuracion para Facturacion Electronica"; 
 			facturaSujetoExcluido.errorMessages.append(errorMessage);
 			System.out.println(errorMessage);
@@ -308,7 +311,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		
 		JSONObject jsonObjectSujetoExcluido = new JSONObject();
 		
-		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.TIPODOCUMENTO, partner.getE_Recipient_Identification().getValue());
+		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.TIPODOCUMENTO, bPartner_getE_Recipient_Identification(partner).getValue());
 		if (partner.getTaxID() != null) {
 			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.NUMDOCUMENTO, partner.getTaxID().replace("-", ""));
 			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.NOMBRE, partner.getName());			
@@ -319,9 +322,9 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			System.out.println(errorMessage);
 		}
 		
-		if (partner.getE_Activity_ID()>0) {
-			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.CODACTIVIDAD, partner.getE_Activity().getValue());
-			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.DESCACTIVIDAD, partner.getE_Activity().getName());
+		if (bPartner_getE_Activity(partner).getE_Activity_ID()>0) {
+			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.CODACTIVIDAD, bPartner_getE_Activity(partner).getValue());
+			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
 		} else  {
 			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.CODACTIVIDAD, "");
 			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.DESCACTIVIDAD, "");
@@ -333,8 +336,8 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		String complemento = "";
 		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)){
 			if (partnerLocation.isBillTo()) {
-				departamento = partnerLocation.getC_Location().getC_City().getC_Region().getValue();
-				municipio =  partnerLocation.getC_Location().getC_City().getValue();
+				departamento =  city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
+				municipio =     city_getValue((MCity)partnerLocation.getC_Location().getC_City());
 				complemento = (partnerLocation.getC_Location().getAddress1() + " " + partnerLocation.getC_Location().getAddress2());
 				jsonDireccion.put(FacturaSujetoExcluido.DEPARTAMENTO, departamento);
 				jsonDireccion.put(FacturaSujetoExcluido.MUNICIPIO, municipio);
@@ -409,7 +412,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			jsonPago.put(FacturaSujetoExcluido.CODIGO, "05");
 			jsonPago.put(FacturaSujetoExcluido.MONTOPAGO, invoice.getGrandTotal());
 			jsonPago.put(FacturaSujetoExcluido.REFERENCIA, "Transferencia_ Deposito Bancario");
-			jsonPago.put(FacturaSujetoExcluido.PLAZO, invoice.getC_PaymentTerm().getE_TimeSpan().getValue());
+			jsonPago.put(FacturaSujetoExcluido.PLAZO, paymentterm_getE_TimeSpan((MPaymentTerm)invoice.getC_PaymentTerm()).getValue());
 			jsonPago.put(FacturaSujetoExcluido.PERIODO, invoice.getC_PaymentTerm().getNetDays());
 		jsonArrayPagos.put(jsonPago);
 		

@@ -148,7 +148,7 @@ public class Anulacion extends EDocument {
 		try {documento.setNumeroControl(documentoJson.getString(NUMEROCONTROL));} 			catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
 		try {documento.setFecEmi(documentoJson.getString(FECEMI));} 						catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
 		try {documento.setMontoIva(documentoJson.getBigDecimal(MONTOIVA));} 				catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
-		try {documento.setCodigoGeneracionR(documentoJson.getString(CODIGOGENERACIONR));}	catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
+		//try {documento.setCodigoGeneracionR(documentoJson.getString(CODIGOGENERACIONR));}	catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
 		try {documento.setTipoDocumento(documentoJson.getString(TIPODOCUMENTO));} 			catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
 		try {documento.setNumDocumento(documentoJson.getString(NUMDOCUMENTO));} 			catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}
 		try {documento.setNombre(documentoJson.getString(NOMBRE));} 						catch (Exception e) {errorMessages.append(ERROR_ANULACION_DOCUMENTO + e);}

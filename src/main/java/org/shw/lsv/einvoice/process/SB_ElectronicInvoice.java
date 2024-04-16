@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.adempiere.core.domains.models.*;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
@@ -55,7 +56,7 @@ public class SB_ElectronicInvoice extends SB_ElectronicInvoiceAbstract
 
 		invoicesList.forEach((key, invoice) -> {
 			MDocType docType = (MDocType)invoice.getC_DocType();
-			if (docType.getE_DocType_ID() > 0) {
+			if (docType.get_ValueAsInt(X_E_DocType.COLUMNNAME_E_DocType_ID)> 0) {
 				
 				processingInvoice(invoice);
 			}

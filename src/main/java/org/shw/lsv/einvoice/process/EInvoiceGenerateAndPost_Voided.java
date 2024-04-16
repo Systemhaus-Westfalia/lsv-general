@@ -75,7 +75,9 @@ public class EInvoiceGenerateAndPost_Voided extends EInvoiceGenerateAndPost_Void
 				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
 				+ " AND processed = 'Y' AND dateacct>=?  AND processing = 'N' "
 				+ " AND ei_Processing = 'N' "
-				+ " AND (docstatus IN ('VO','RE') AND reversal_ID is not null and reversal_ID<c_INvoice_ID) "
+				+ " AND ((docstatus IN ('CO','CL') OR coalesce(reversal_ID,0) > c_Invoice_ID) "
+				+ "	OR (docstatus in ('VO','RE') AND coalesce(reversal_ID,0) < c_Invoice_ID " 
+				+ "	AND (select ei_Status_Extern from c_Invoice i where c_Invoice.reversal_ID=i.c_Invoice_ID) = 'Firmado')) "
 				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
 	
 		try {

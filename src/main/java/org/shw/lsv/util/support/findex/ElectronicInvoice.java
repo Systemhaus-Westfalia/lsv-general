@@ -15,10 +15,13 @@
  ************************************************************************************/
 package org.shw.lsv.util.support.findex;
 
+import org.adempiere.core.domains.models.X_E_DocType;
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MOrgInfo;
+import org.compiere.util.Env;
 import org.shw.lsv.einvoice.factory.AnulacionFactory;
 import org.shw.lsv.einvoice.factory.CreditoFiscalFactory;
 import org.shw.lsv.einvoice.factory.FacturaExportacionFactory;
@@ -41,16 +44,19 @@ public class ElectronicInvoice implements IDeclarationDocument {
 	private EDocumentFactory documentFactory = null;
 	private X_E_InvoiceElectronic electronicInvoiceModel = null;
 	private String errorMsg = null;
+	private X_E_DocType e_DocType = null;
 	
 	public ElectronicInvoice(MInvoice document) {
 		this.invoice = document;
+		MDocType docType = (MDocType)invoice.getC_DocType();
+		e_DocType = new X_E_DocType(Env.getCtx()	, docType.get_ValueAsInt(X_E_DocType.COLUMNNAME_E_DocType_ID), null);
 	}
 	
 	@Override
 	public X_E_InvoiceElectronic processElectronicInvoice() throws Exception {
 		System.out.println("ElectronicInvoice.processElectronicInvoice(): Started with Invoice " + invoice.getDocumentNo());
 		Boolean iscorrectDocType = 
-				invoice.getC_DocType().getE_DocType_ID()>0 ;
+				e_DocType.getE_DocType_ID()>0 ;
 		if (!iscorrectDocType) {
 			errorMsg = "El documento " + invoice.getDocumentNo() + " no es Factura, Credito Fiscal, Nota de Credito u otro documento permitido. Aquí se interrumpe el proceso";
 			System.out.println(errorMsg);
@@ -67,7 +73,7 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		orgInfo= MOrgInfo.get(invoice.getCtx(), orgID, invoice.get_TrxName());
 		documentFactory = getDocumentFactory(invoice, isreversal, existsWithholding);
 		if (documentFactory == null) {
-			errorMsg = "El documento " + invoice.getDocumentNo() + " no pertenece a un tipo de documento valido: " + invoice.getC_DocType().getE_DocType().getValue() ;
+			errorMsg = "El documento " + invoice.getDocumentNo() + " no pertenece a un tipo de documento valido: " + e_DocType.getValue() ;
 			System.out.println("****************** Error producido en ElectronicInvoice.processElectronicInvoice(): " + errorMsg);
 			return null;
 		}
@@ -85,7 +91,7 @@ public class ElectronicInvoice implements IDeclarationDocument {
 			errorMsg = documentFactory.getEDocumentErrorMessages().toString();
     		electronicInvoiceModel.seterrMsgIntern(errorMsg);
     		electronicInvoiceModel.setei_ValidationStatus("02");
-    		invoice.setei_ValidationStatus("02");
+    		invoice.set_ValueOfColumn("ei_ValidationStatus",  "02"); 
         	electronicInvoiceModel.saveEx();
         	invoice.saveEx();
 			System.out.println("****************** ElectronicInvoice.processElectronicInvoice(): produced the following errors:");
@@ -103,11 +109,14 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		System.out.println("Start " + invoice.getDocumentNo() + " Update ei values" );
     	if (!isreversal) {
     		ei_numeroControl = documentFactory.getNumeroControl(creditoFiscalAsJsonString);
-        	invoice.setei_numeroControl(ei_numeroControl);
+    		invoice.set_ValueOfColumn("ei_numeroControl", ei_numeroControl); 
     	}
     	
-    	invoice.setei_codigoGeneracion(ei_codigoGeneracion);
-    	invoice.setei_ValidationStatus("01");
+    	invoice.set_ValueOfColumn("ei_numeroControl", ei_numeroControl); 
+    	invoice.set_ValueOfColumn("ei_codigoGeneracion", ei_codigoGeneracion);
+    	invoice.set_ValueOfColumn("ei_numeroControl", ei_numeroControl);      
+    	
+    	invoice.set_ValueOfColumn("ei_ValidationStatus",  "01");
     	invoice.saveEx();
 		System.out.println("End " + invoice.getDocumentNo() + " Update ei values" );
        	electronicInvoiceModel.setjson(creditoFiscalAsJsonString);
@@ -127,19 +136,19 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		} else if (existsWithholding) {
 			documentFactory = new RetencionFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Retencion'");
-		} else if (invoice.getC_DocType().getE_DocType().getValue().equals("03")) {		//Credito Fiscal
+		} else if (e_DocType.getValue().equals("03")) {		//Credito Fiscal
 			documentFactory = new CreditoFiscalFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Credito Fiscal'");
-		} else if (invoice.getC_DocType().getE_DocType().getValue().equals("05")) {		//Nota de Credito
+		} else if (e_DocType.getValue().equals("05")) {		//Nota de Credito
 			documentFactory = new NotaDeCreditoFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Nota de Credito'");
-		} else if (invoice.getC_DocType().getE_DocType().getValue().equals("01")) {		//Factura Comsumidor Final
+		} else if (e_DocType.getValue().equals("01")) {		//Factura Comsumidor Final
 			documentFactory = new FacturaFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Factura'");
-		} else if (invoice.getC_DocType().getE_DocType().getValue().equals("11")) {		//Factura Exportacion
+		} else if (e_DocType.getValue().equals("11")) {		//Factura Exportacion
 			documentFactory = new FacturaExportacionFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Factura de Exportacion'");
-		} else if (invoice.getC_DocType().getE_DocType().getValue().equals("14")) {		// Factura Sujeto Excluido
+		} else if (e_DocType.getValue().equals("14")) {		// Factura Sujeto Excluido
 			documentFactory = new FacturaSujetoExcluidoFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Sujeto Excluido'");
 		}

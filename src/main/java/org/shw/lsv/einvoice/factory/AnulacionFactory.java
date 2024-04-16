@@ -7,8 +7,11 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempiere.core.domains.models.X_E_Recipient_Identification;
 import org.apache.commons.lang3.StringUtils;
+import org.compiere.model.MBPartner;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrgInfo;
@@ -124,7 +127,7 @@ public class AnulacionFactory extends EDocumentFactory {
 		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String horEmi = timeFormat.format(cal.getTime());
-		jsonObjectIdentificacion.put(Anulacion.AMBIENTE, client.getE_Enviroment().getValue());
+		jsonObjectIdentificacion.put(Anulacion.AMBIENTE, client_getE_Enviroment(client).getValue());
 		jsonObjectIdentificacion.put(Anulacion.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(Anulacion.FECANULA, invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(Anulacion.HORANULA, horEmi);
@@ -138,15 +141,15 @@ public class AnulacionFactory extends EDocumentFactory {
 		
 		JSONObject jsonObjectEmisor = new JSONObject();
 		jsonObjectEmisor.put(Anulacion.NIT, orgInfo.getTaxID().replace("-", ""));
-		jsonObjectEmisor.put(Anulacion.NOMBRE, client.getName());
-		jsonObjectEmisor.put(Anulacion.TIPOESTABLECIMIENTO, client.getE_PlantType().getValue());
-		jsonObjectEmisor.put(Anulacion.NOMESTABLECIMIENTO, client.getE_PlantType().getName());						// TODO: korrekte Daten einsetzen
+		jsonObjectEmisor.put(Anulacion.NOMBRE, client.getDescription());
+		jsonObjectEmisor.put(Anulacion.TIPOESTABLECIMIENTO, client_getE_PlantType(client).getValue());
+		jsonObjectEmisor.put(Anulacion.NOMESTABLECIMIENTO, client.getName());						// TODO: korrekte Daten einsetzen
 		//jsonObjectEmisor.put(Anulacion.CODESTABLEMH, "");								// TODO: korrekte Daten einsetzen
 		//jsonObjectEmisor.put(Anulacion.CODESTABLE, client.getE_PlantType().getValue());								// TODO: korrekte Daten einsetzen
 		//jsonObjectEmisor.put(Anulacion.CODPUNTOVENTAMH, "");							// TODO: korrekte Daten einsetzen
 		//jsonObjectEmisor.put(Anulacion.CODPUNTOVENTA, "");							// TODO: korrekte Daten einsetzen
 		jsonObjectEmisor.put(Anulacion.TELEFONO, client.get_ValueAsString("phone"));
-		jsonObjectEmisor.put(Anulacion.CORREO, client.getEMail());
+		jsonObjectEmisor.put(Anulacion.CORREO, client_getEmail(client));
 
 		System.out.println("Factura: end collecting JSON data for Emisor");
 		return jsonObjectEmisor;	
@@ -157,22 +160,24 @@ public class AnulacionFactory extends EDocumentFactory {
 		System.out.println("Start collecting JSON data for Documento");
 		
 		JSONObject jsonObjectDocumento = new JSONObject();
-		jsonObjectDocumento.put(Anulacion.TIPODTE, invoice.getReversal().getC_DocType().getE_DocType().getValue());			
-		jsonObjectDocumento.put(Anulacion.CODIGOGENERACION, invoice.getReversal().getei_codigoGeneracion());		
-		jsonObjectDocumento.put(Anulacion.SELLORECIBIDO, invoice.getReversal().getei_selloRecibido());			// TODO: korrekte Daten einsetzen
-		jsonObjectDocumento.put(Anulacion.NUMEROCONTROL, invoice.getReversal().getei_numeroControl());			
+		jsonObjectDocumento.put(Anulacion.TIPODTE, docType_getE_DocType((MDocType)invoice.getReversal().getC_DocType()).getValue());					
+		jsonObjectDocumento.put(Anulacion.CODIGOGENERACION, invoice_ei_codigoGeneracion((MInvoice)invoice.getReversal()));		
+		jsonObjectDocumento.put(Anulacion.SELLORECIBIDO, invoice_ei_selloRecibido((MInvoice)invoice.getReversal()));			
+		jsonObjectDocumento.put(Anulacion.NUMEROCONTROL, invoice_ei_numeroControl((MInvoice)invoice.getReversal()));
+			
 		jsonObjectDocumento.put(Anulacion.FECEMI, invoice.getReversal().getDateAcct().toString().substring(0, 10));
-		jsonObjectDocumento.put(Anulacion.CODIGOGENERACIONR, codigoGeneracion);		
-		jsonObjectDocumento.put(Anulacion.TIPODOCUMENTO, invoice.getReversal().getC_BPartner().getE_Recipient_Identification().getValue());
-		String numDocumento = invoice.getC_BPartner().getTaxID();
-		if (!invoice.getC_BPartner().getE_Recipient_Identification().getValue().equals("36"))
+		X_E_Recipient_Identification recipient_Identification =  bPartner_getE_Recipient_Identification((MBPartner)invoice.getReversal().getC_BPartner());
+		//jsonObjectDocumento.put(Anulacion.CODIGOGENERACIONR, codigoGeneracion);		
+		jsonObjectDocumento.put(Anulacion.TIPODOCUMENTO, recipient_Identification.getValue());
+		String numDocumento = invoice.getC_BPartner().getTaxID().replace("-", "");
+		if (!recipient_Identification.getValue().equals("36"))
 			numDocumento = invoice.getC_BPartner().getDUNS();
 		jsonObjectDocumento.put(Anulacion.NUMDOCUMENTO, numDocumento);			
 		jsonObjectDocumento.put(Anulacion.NOMBRE, invoice.getReversal().getC_BPartner().getName());
-		String phone = invoice.getReversal().getC_BPartner().getPhone().replace("-", "").trim();
+		String phone = bPartner_getPhone((MBPartner)invoice.getReversal().getC_BPartner()).replace("-", "").trim();
 		phone = phone.length()==8?phone:"";
 		jsonObjectDocumento.put(Anulacion.TELEFONO, phone);
-		jsonObjectDocumento.put(Anulacion.CORREO, invoice.getReversal().getC_BPartner().getEMail());
+		jsonObjectDocumento.put(Anulacion.CORREO, bPartner_getEmail((MBPartner)invoice.getReversal().getC_BPartner()));
 		
 		BigDecimal montoIVA = Env.ZERO;
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties , MInvoiceTax.Table_Name , "C_Invoice_ID=?" , trxName)
@@ -193,14 +198,14 @@ public class AnulacionFactory extends EDocumentFactory {
 		MUser user = new MUser(contextProperties, invoice.getCreatedBy(), trxName);
 		
 		JSONObject jsonObjectMotivo = new JSONObject();
-		jsonObjectMotivo.put(Anulacion.TIPOANULACION, 1);		
-		jsonObjectMotivo.put(Anulacion.MOTIVOANULACION, "Error en generacion");		
-		jsonObjectMotivo.put(Anulacion.NOMBRERESPONSABLE, user.getC_BPartner().getName());	
-		jsonObjectMotivo.put(Anulacion.TIPDOCRESPONSABLE, user.getC_BPartner().getE_Recipient_Identification().getValue());	
-		jsonObjectMotivo.put(Anulacion.NUMDOCRESPONSABLE, user.getC_BPartner().getTaxID().replace("-", ""));	
-		jsonObjectMotivo.put(Anulacion.NOMBRESOLICITA, user.getC_BPartner().getName());		// TODO: korrekte Daten einsetzen
-		jsonObjectMotivo.put(Anulacion.TIPDOCSOLICITA, user.getC_BPartner().getE_Recipient_Identification().getValue());		// TODO: korrekte Daten einsetzen
-		jsonObjectMotivo.put(Anulacion.NUMDOCSOLICITA, user.getC_BPartner().getTaxID().replace("-", ""));		// TODO: korrekte Daten einsetzen
+		jsonObjectMotivo.put(Anulacion.TIPOANULACION, 2);		
+		jsonObjectMotivo.put(Anulacion.MOTIVOANULACION, "Rescindir de la operación realizada.");		
+		jsonObjectMotivo.put(Anulacion.NOMBRERESPONSABLE, client.getDescription());	
+		jsonObjectMotivo.put(Anulacion.TIPDOCRESPONSABLE, "36");	
+		jsonObjectMotivo.put(Anulacion.NUMDOCRESPONSABLE, orgInfo.getTaxID().replace("-", ""));	
+		jsonObjectMotivo.put(Anulacion.NOMBRESOLICITA, invoice.getC_BPartner().getName());		
+		jsonObjectMotivo.put(Anulacion.TIPDOCSOLICITA, bPartner_getE_Recipient_Identification((MBPartner)invoice.getC_BPartner()).getValue());		// TODO: korrekte Daten einsetzen
+		jsonObjectMotivo.put(Anulacion.NUMDOCSOLICITA, invoice.getC_BPartner().getTaxID().replace("-", ""));		// TODO: korrekte Daten einsetzen
 
 		System.out.println("Finish collecting JSON data for Maotivo");
 		return jsonObjectMotivo;
