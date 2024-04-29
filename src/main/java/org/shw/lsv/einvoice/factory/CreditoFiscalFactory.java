@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_E_Activity;
@@ -216,17 +217,10 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 	
 	private JSONObject generateIdentificationInputData() {
 		System.out.println("CreditoFiscal: start collecting JSON data for Identificacion");
-
-		String prefix = invoice.getC_DocType().getDefiniteSequence().getPrefix();
+		String prefix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getPrefix()).orElse("");
 		String documentno = invoice.getDocumentNo().replace(prefix,"");
-		String suffix = invoice.getC_DocType().getDefiniteSequence().getSuffix();		
-		if (suffix != null && suffix.length()>0) {
-			String firstsuffix = suffix.substring(0,1);
-			int position = documentno.indexOf(firstsuffix);
-			if (position >0)
-				documentno = documentno.substring(0,position);
-			
-		}
+		String suffix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getSuffix()).orElse("");	
+		documentno = invoice.getDocumentNo().replace(suffix,"");
 		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
 		String duns = orgInfo.getDUNS().replace("-", "");
 		
@@ -315,7 +309,8 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			System.out.println(errorMessage);
 		}
 		jsonObjectReceptor.put(CreditoFiscal.NIT, partner.getTaxID().replace("-", ""));
-		jsonObjectReceptor.put(CreditoFiscal.NRC, partner.getDUNS().trim().replace("-", ""));
+		String duns = Optional.ofNullable(partner.getDUNS()).orElse("");
+		jsonObjectReceptor.put(CreditoFiscal.NRC, duns.trim().replace("-", ""));
 		jsonObjectReceptor.put(CreditoFiscal.NOMBRE, partner.getName());
 		
 		if (bPartner_getE_Activity(partner).getE_Activity_ID()>0) {

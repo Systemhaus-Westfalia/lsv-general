@@ -29,18 +29,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
 import org.adempiere.core.domains.models.X_C_Invoice;
-import org.adempiere.core.domains.models.X_C_Payment;
-import org.adempiere.core.domains.models.X_C_TaxDefinition;
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.acct.Doc;
-import org.compiere.acct.Fact;
-import org.compiere.acct.FactLine;
 import org.compiere.model.MAllocationHdr;
-import org.compiere.model.MBPartner;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MBankStatement;
 import org.compiere.model.MBankStatementLine;
@@ -49,10 +41,8 @@ import org.compiere.model.MClient;
 import org.compiere.model.MCommissionAmt;
 import org.compiere.model.MCommissionDetail;
 import org.compiere.model.MCostDetail;
-import org.compiere.model.MCurrency;
 import org.compiere.model.MDocType;
 import org.compiere.model.MElementValue;
-import org.compiere.model.MFactAcct;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInOutLine;
 import org.compiere.model.MInventory;
@@ -77,7 +67,6 @@ import org.compiere.model.MProductionLine;
 import org.compiere.model.MProject;
 import org.compiere.model.MProjectIssue;
 import org.compiere.model.MProjectLine;
-import org.compiere.model.MRequisition;
 import org.compiere.model.MTax;
 import org.compiere.model.MTaxCategory;
 import org.compiere.model.MTimeExpense;
@@ -86,18 +75,11 @@ import org.compiere.model.MUOM;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
-import org.compiere.model.Query;
-import org.compiere.process.DocAction;
 import org.compiere.util.CLogger;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Language;
 import org.compiere.util.Msg;
-//import org.eevolution.hr.model.MHRAttribute;
-//import org.eevolution.hr.model.MHRConcept;
-//import org.eevolution.hr.model.MHREmployee;
-//import org.eevolution.manufacturing.model.MPPOrder;
-
 
 /**
  *	Validator for Customization Central America
@@ -189,49 +171,43 @@ public class CAValidator implements ModelValidator
 	{
 		String error = "";
 		log.info(po.get_TableName() + " Type: "+type);
-		
+
 		if (type == ModelValidator.TYPE_BEFORE_NEW || type == ModelValidator.TYPE_BEFORE_CHANGE ){
 			if (po.get_TableName().equals(MOrder.Table_Name)) {
 				error = User4Mandatory(po);
 				if (po.is_ValueChanged(MOrder.COLUMNNAME_C_DocTypeTarget_ID) || po.is_ValueChanged(MOrder.COLUMNNAME_M_PriceList_ID))
 					error = controlPriceListDocType(po);
-					;
-				
-			}
-			if(po.get_TableName().equals(MInvoice.Table_Name)) {
-}
-			if (po.get_TableName().equals(MTimeExpenseLine.Table_Name))
-			
+				;
 
-			
-			 
-			 if (po instanceof MProductPO) {
-				 error = productPOCheckCurrentVendor(po);
-			 }
-			 
+			}			
+
+			if (po instanceof MProductPO) {
+				error = productPOCheckCurrentVendor(po);
+			}
+
 		}
 
-		 if (po instanceof MOrderLine) 
-		 {
-			 if (type == ModelValidator.TYPE_AFTER_NEW) {
-				 error = updateCreditLimitControl(po);
-			 }
-			 else if (type == ModelValidator.TYPE_AFTER_CHANGE)				 
-			 {
-				 if ( (po.is_ValueChanged(MOrderLine.COLUMNNAME_M_Product_ID)
-						 || po.is_ValueChanged(MOrderLine.COLUMNNAME_PriceEntered)
-						 ||po.is_ValueChanged(MOrderLine.COLUMNNAME_QtyEntered))) {
-					 error = updateCreditLimitControl(po);
-				 }			 
-			 }		 
-		 }
+		if (po instanceof MOrderLine) 
+		{
+			if (type == ModelValidator.TYPE_AFTER_NEW) {
+				error = updateCreditLimitControl(po);
+			}
+			else if (type == ModelValidator.TYPE_AFTER_CHANGE)				 
+			{
+				if ( (po.is_ValueChanged(MOrderLine.COLUMNNAME_M_Product_ID)
+						|| po.is_ValueChanged(MOrderLine.COLUMNNAME_PriceEntered)
+						||po.is_ValueChanged(MOrderLine.COLUMNNAME_QtyEntered))) {
+					error = updateCreditLimitControl(po);
+				}			 
+			}		 
+		}
 
 		if (type == ModelValidator.TYPE_AFTER_CHANGE ){
 			if (po.get_TableName().equals(MOrder.Table_Name))
 				error = updateOrderLines(po);
 			if(po.get_TableName().equals(MInvoice.Table_Name)) {
 				error = updateInvoiceLines(po);	
-				
+
 			}
 			if (po.get_TableName().equals(MCommissionDetail.Table_Name)) {
 				error = commissionAmtUpdate(po);
@@ -240,36 +216,33 @@ public class CAValidator implements ModelValidator
 					|| po instanceof MElementValue || po instanceof MTax || po instanceof MTaxCategory || po instanceof MPaymentTerm) {
 				error = updateTranslation(po);
 			}
-			
-			
-			
+
+
+
 		}
 		if (type == ModelValidator.TYPE_BEFORE_NEW ) {
 			if( po.get_TableName().equals(MOrder.Table_Name)) {
 				error = UpdatePaymentRule(po);
-				if (po.get_TableName().equals(MPaySelectionLine.Table_Name)) {
-					error = C_PayselectionLine_GetPaymentRuleFromHeader(po);						
-				}
 				if (po.is_ValueChanged(MOrder.COLUMNNAME_DateOrdered))
 					UpdateDatePromised(po);
 			}
 			if (po instanceof MPaySelectionLine)
 				error = paySelectionLineUpdatebpartnerName(po);
 		}
-		
+
 		if (type == ModelValidator.TYPE_BEFORE_CHANGE && po.get_TableName().equals(MProductionLine.Table_Name))
 			if (po.is_ValueChanged(MProductionLine.COLUMNNAME_QtyUsed)){
-			error = productionLineUpdateMovementQtyFromQtyUsed(po);
-		}
-		
+				error = productionLineUpdateMovementQtyFromQtyUsed(po);
+			}
+
 		if (type == ModelValidator.TYPE_BEFORE_DELETE) {
 			if (po instanceof MAllocationHdr)
 				error = allocationHdrBeforeDelete(po);
 		}
-		
+
 		if (type == ModelValidator.TYPE_BEFORE_CHANGE || type == ModelValidator.TYPE_BEFORE_NEW) {
 			if ((po.get_ColumnIndex("C_BPartner_ID") > 0 && po.is_ValueChanged("C_BPartner_ID")) 
-				&& po.get_ColumnIndex(X_C_Invoice.COLUMNNAME_User2_ID) > 0) {
+					&& po.get_ColumnIndex(X_C_Invoice.COLUMNNAME_User2_ID) > 0) {
 				int C_BPartner_ID = po.get_ValueAsInt("C_BPartner_ID");
 				ArrayList<Object> params = new ArrayList<>();
 				params.add(C_BPartner_ID);
@@ -308,21 +281,6 @@ public class CAValidator implements ModelValidator
 			}
 		 return "";
 	 }	//	modelChange
-
-	/**
-	 * 
-	 */private String C_PayselectionLine_GetPaymentRuleFromHeader(PO po){
-		 
-		 MPaySelectionLine paySelectionLine =  (MPaySelectionLine)po;
-		 MPaySelection paySelection = paySelectionLine.getParent();
-
-		 Boolean isSoTrx = paySelection.get_ValueAsBoolean("IsSOTrx");
-		 if (!isSoTrx)
-			 return "";
-		 paySelectionLine.setPaymentRule(paySelection.get_ValueAsString(MPaySelectionLine.COLUMNNAME_PaymentRule));
-		 return "";
-	 }
-	 
 
 
 	private String User4Mandatory(PO po) {
@@ -457,21 +415,6 @@ public class CAValidator implements ModelValidator
 		return "";
 	}
 	
-	private String updatePriceLimitControl(PO po) {	
-		MOrderLine orderLine = (MOrderLine)po;
-		if (!orderLine.getParent().isSOTrx())
-			return "";	
-		if(orderLine.is_ValueChanged(MOrderLine.COLUMNNAME_PriceEntered)) {
-		Boolean controlPriceLimit =	orderLine.getPriceActual().compareTo(orderLine.getPriceLimit())< 0?true:false;			
-				orderLine.set_ValueOfColumn("isControlLimitPrice", controlPriceLimit);
-				orderLine.getParent().set_ValueOfColumn("isControlLimitPrice", controlPriceLimit);
-				orderLine.getParent().saveEx();		
-							
-		}
-		return "";
-	}
-	
-	
 	private String beforeCompleteOrderControlCreditStop(PO po) {  
 		MOrder order = (MOrder)po;
 		String result = "";
@@ -557,247 +500,6 @@ public class CAValidator implements ModelValidator
 	}
 	
 
-	private String calculateLabourCost(PO A_PO) {
-		/*
-		 * Boolean changed = false; MTimeExpenseLine expenseLine =
-		 * (MTimeExpenseLine)A_PO; if(expenseLine.is_ValueChanged("FeeAmt") ||
-		 * expenseLine.is_ValueChanged("TravelCost") ||
-		 * expenseLine.is_ValueChanged("HR_Concept_ID") ||
-		 * expenseLine.is_ValueChanged(MTimeExpenseLine.COLUMNNAME_Qty) ||
-		 * expenseLine.is_ValueChanged(MTimeExpenseLine.COLUMNNAME_Description) )
-		 * changed = true; if (!changed) return ""; MHRConcept conceptProduct = new
-		 * MHRConcept(expenseLine.getCtx(),
-		 * expenseLine.get_ValueAsInt(MHRConcept.COLUMNNAME_HR_Concept_ID),
-		 * expenseLine.get_TrxName()); MHRAttribute productattribute =
-		 * MHRAttribute.getByConceptAndEmployee(conceptProduct, null, 0,
-		 * expenseLine.getParent().getDateReport(),
-		 * expenseLine.getParent().getDateReport()); BigDecimal factor =
-		 * productattribute.getAmount();
-		 * 
-		 * MHRConcept salaryConcept = MHRConcept.getByValue(expenseLine.getCtx(),
-		 * "Salarios", expenseLine.get_TrxName()); MHREmployee employee =
-		 * MHREmployee.getActiveEmployee(A_PO.getCtx(), expenseLine.getC_BPartner_ID(),
-		 * A_PO.get_TrxName()); if (employee == null) { employee = new
-		 * Query(expenseLine.getCtx(), MHREmployee.Table_Name, "C_BPartner_ID=?",
-		 * expenseLine.get_TrxName()) .setParameters(expenseLine.getC_BPartner_ID())
-		 * .setOrderBy("HR_Employee_ID desc ") .first(); if (employee == null) return
-		 * expenseLine.getC_BPartner().getName() + " no esta en planilla"; } if
-		 * (employee.getHR_Payroll_ID() == 0) return
-		 * expenseLine.getC_BPartner().getName() + " sin contrato"; MHRAttribute
-		 * salaryAttribute = MHRAttribute.getByConceptAndEmployee(salaryConcept,
-		 * employee, employee.getHR_Payroll_ID(),
-		 * expenseLine.getParent().getDateReport(),
-		 * expenseLine.getParent().getDateReport());
-		 * 
-		 * if (salaryAttribute == null || salaryAttribute.getAmount().signum()==0)
-		 * return expenseLine.getC_BPartner().getName() +
-		 * " Falta definir el sueldo b�sico para este empleado"; int precision =
-		 * salaryConcept.getStdPrecision() > 0? salaryConcept.getStdPrecision() :
-		 * expenseLine.getC_Currency().getStdPrecision(); BigDecimal salaryhour =
-		 * salaryAttribute.getAmount().divide(new BigDecimal(30.00), precision,
-		 * BigDecimal.ROUND_HALF_UP);
-		 * 
-		 * salaryhour = salaryhour.divide(new BigDecimal(8.00), precision,
-		 * BigDecimal.ROUND_HALF_UP); salaryhour = salaryhour.multiply(factor);
-		 * BigDecimal costtotal = salaryhour.multiply(expenseLine.getQty());
-		 * expenseLine.setExpenseAmt(salaryhour);
-		 * 
-		 * if (expenseLine.getC_Currency_ID() == expenseLine.getC_Currency_Report_ID())
-		 * expenseLine.setConvertedAmt(costtotal); else {
-		 * expenseLine.setConvertedAmt(MConversionRate.convert (expenseLine.getCtx(),
-		 * costtotal, expenseLine.getC_Currency_ID(),
-		 * expenseLine.getC_Currency_Report_ID(), expenseLine.getDateExpense(), 0,
-		 * getAD_Client_ID(), expenseLine.getAD_Org_ID()) ); } BigDecimal feeAmt =
-		 * (BigDecimal)expenseLine.get_Value("FeeAmt"); BigDecimal travelCost =
-		 * (BigDecimal)expenseLine.get_Value("TravelCost"); BigDecimal prepaymentAmt =
-		 * (BigDecimal)expenseLine.get_Value("PrepaymentAmt");
-		 * expenseLine.setQtyReimbursed(Env.ONE);
-		 * expenseLine.setPriceReimbursed(feeAmt.add(travelCost).subtract(prepaymentAmt)
-		 * ); if (!expenseLine.getParent().getDocStatus().equals("CO")) return "";
-		 * String sqlUpdate =
-		 * "update c_ProjectLine pl  set committedamt = (select coalesce(convertedamt,0) + coalesce(pricereimbursed,0) from s_timeexpenseline where s_Timeexpenseline_ID=pl.s_Timeexpenseline_ID)"
-		 * + " where pl.s_timeexpenseline_ID = " +
-		 * expenseLine.getS_TimeExpenseLine_ID(); int no = DB.executeUpdateEx(sqlUpdate,
-		 * expenseLine.get_TrxName());
-		 * 
-		 * return "";
-		 */
-		return "";}
-	
-	private String PayselectionGeneratePayment(PO po) { 
-		
-		AtomicInteger lastDocumentNo = new AtomicInteger();
-		List<MPaySelectionCheck> paySelectionChecks = MPaySelectionCheck.get(po.getCtx(), po.get_ID(), po.get_TrxName());
-		//paySelectionChecks.stream().filter(psc -> psc != null && 
-			//	!psc.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_Check))
-		//.forEach(paySelectionCheck ->
-		for (MPaySelectionCheck paySelectionCheck:paySelectionChecks)
-		{
-			MPayment payment = new MPayment(paySelectionCheck.getCtx(), paySelectionCheck.getC_Payment_ID(), paySelectionCheck.get_TrxName());
-			
-			//	Existing Payment
-			if (paySelectionCheck.getC_Payment_ID() != 0
-					&& (payment.getDocStatus().equals(DocAction.STATUS_Completed)
-								|| payment.getDocStatus().equals(DocAction.STATUS_Closed)))
-			{
-				//	Update check number
-				if (paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_Check))
-				{
-					payment.setCheckNo(paySelectionCheck.getParent().get_ValueAsString("CheckNo"));
-					payment.saveEx();
-				}
-				else if (paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_DirectDeposit))
-				{
-					payment.setR_AuthCode(paySelectionCheck.getParent().get_ValueAsString("R_AuthCode"));
-					payment.saveEx();
-				}
-			} else {	//	New Payment
-				MPaySelection paySelection =  paySelectionCheck.getParent();
-
-				Boolean payInmediate = true;
-				if (paySelection.getC_DocType().isSOTrx()) {
-					//String TransactionCode = paySelectionCheck.get_ValueAsString("TransactionCode");
-					//if (paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_Check) && TransactionCode.length()>0)
-						payInmediate = true;
-				}
-				else {
-					if ((paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_Check) ) ||
-							paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_DirectDeposit))
-						payInmediate = false;
-				}
-				if (!payInmediate)
-					continue;
-				MDocType documentType = MDocType.get(paySelectionCheck.getCtx(), paySelection.getC_DocType_ID());
-				int docTypeId = documentType.getC_DocTypePayment_ID();
-				//	
-				payment = new MPayment(paySelectionCheck.getCtx(), 0, paySelectionCheck.get_TrxName());
-				payment.setAD_Org_ID(paySelectionCheck.getAD_Org_ID());
-				if (paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_Check)
-						|| paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_Cash)) {
-					payment.setBankCheck (paySelectionCheck.getParent().getC_BankAccount_ID(), false, paySelectionCheck.getDocumentNo());
-					payment.setCheckNo(paySelection.get_ValueAsString("CheckNo"));
-					payment.setVoiceAuthCode(paySelectionCheck.get_ValueAsString("TransactionCode"));
-					if (paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_Cash))
-						payment.setTenderType(MPayment.TENDERTYPE_Cash);
-				} else if (paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_CreditCard)) {
-					payment.setTenderType(X_C_Payment.TENDERTYPE_CreditCard);
-				} else if (paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_DirectDeposit)
-					|| paySelectionCheck.getPaymentRule().equals(MPaySelectionCheck.PAYMENTRULE_DirectDebit)) {
-					payment.setBankACH(paySelectionCheck);
-				} else {
-					//logger.log(Level.SEVERE, "Unsupported Payment Rule=" + paySelectionCheck.getPaymentRule());
-					throw  new AdempiereException("Unsupported Payment Rule=" + paySelectionCheck.getPaymentRule());
-					//continue;
-				}
-				payment.setTrxType(X_C_Payment.TRXTYPE_CreditPayment);
-				if (docTypeId > 0) {
-					payment.setC_DocType_ID(docTypeId);
-				}
-				payment.setAmount(paySelectionCheck.getParent().getC_Currency_ID(), paySelectionCheck.getPayAmt());
-				payment.setDiscountAmt(paySelectionCheck.getDiscountAmt());
-				payment.setDateTrx(paySelectionCheck.getParent().getPayDate());
-				payment.setDateAcct(payment.getDateTrx()); // globalqss [ 2030685 ]
-				payment.setC_BPartner_ID(paySelectionCheck.getC_BPartner_ID());
-				List<MPaySelectionLine> paySelectionLines = paySelectionCheck.getPaySelectionLinesAsList(false);
-				//logger.fine("confirmPrint - " + paySelectionCheck + " (#SelectionLines=" + (paySelectionLines != null? paySelectionLines.size(): 0) + ")");
-				//	For bank Transfer
-				if(documentType.isBankTransfer()) {
-					payment.setC_Invoice_ID(-1);
-					payment.setC_Order_ID(-1);
-					//payment.setTenderType(MPayment.TENDERTYPE_DirectDeposit);
-					payment.saveEx();
-					if(paySelectionLines != null) {
-						for(MPaySelectionLine line : paySelectionLines) {
-							if (payment.getC_Charge_ID() ==0)
-								payment.setC_Charge_ID(line.getC_Charge_ID());
-							if(line.getC_BankAccountTo_ID() == 0) {
-								throw new AdempiereException("@C_BankAccountTo_ID@ @NotFound@");
-							}
-							//	For all
-							MPayment receiptAccount = new MPayment(paySelectionCheck.getCtx(), 0, paySelectionCheck.get_TrxName());
-							PO.copyValues(payment, receiptAccount);
-							//	Set default values
-							receiptAccount.setC_BankAccount_ID(line.getC_BankAccountTo_ID());
-							receiptAccount.setIsReceipt(!payment.isReceipt());
-							receiptAccount.setC_DocType_ID(!payment.isReceipt());
-							receiptAccount.setRelatedPayment_ID(payment.getC_Payment_ID());
-							receiptAccount.setTenderType(payment.getTenderType());
-							receiptAccount.setC_Charge_ID(payment.getC_Charge_ID());
-							receiptAccount.saveEx();
-							receiptAccount.processIt(DocAction.ACTION_Complete);
-							receiptAccount.saveEx();
-							payment.setRelatedPayment_ID(receiptAccount.getC_Payment_ID());
-						}
-					}
-				} else {
-					//	Link to Invoice
-					if (paySelectionCheck.getQty() == 1 && paySelectionLines != null && paySelectionLines.size() == 1) {
-						MPaySelectionLine paySelectionLine = paySelectionLines.get(0);
-						//logger.fine("Map to Invoice " + paySelectionLine);
-						//
-						//	FR [ 297 ]
-						//	For Order
-						if(paySelectionLine.getC_Order_ID() != 0) {
-							payment.setC_Order_ID (paySelectionLine.getC_Order_ID());
-						}
-						//	For Charge
-						if (paySelectionLine.getC_Charge_ID() != 0) {
-							payment.setC_Charge_ID(paySelectionLine.getC_Charge_ID());
-							if (paySelectionLine.getHR_Movement_ID() > 0) {
-								payment.setC_Project_ID(paySelectionLine.getHRMovement().getC_Project_ID());
-							}
-
-						}
-						//	For Conversion Type
-						if(paySelectionLine.getC_ConversionType_ID() != 0) {
-							payment.setC_ConversionType_ID(paySelectionLine.getC_ConversionType_ID());
-						}
-						//	For Invoice
-						if(paySelectionLine.getC_Invoice_ID() != 0) {
-							payment.setC_Invoice_ID (paySelectionLine.getC_Invoice_ID());
-						}
-						//	For all
-						payment.setIsPrepayment(paySelectionLine.isPrepayment());
-						//	
-						payment.setDiscountAmt (paySelectionLine.getDiscountAmt());
-						payment.setWriteOffAmt(paySelectionLine.getDifferenceAmt());
-						BigDecimal overUnder = paySelectionLine.getOpenAmt().subtract(paySelectionLine.getPayAmt())
-							.subtract(paySelectionLine.getDiscountAmt()).subtract(paySelectionLine.getDifferenceAmt());
-						payment.setOverUnderAmt(overUnder);
-					} else {
-						payment.setDiscountAmt(Env.ZERO);
-					}
-				}
-				payment.setWriteOffAmt(Env.ZERO);
-				payment.saveEx();
-				//	
-				paySelectionCheck.setC_Payment_ID (payment.getC_Payment_ID());
-				paySelectionCheck.saveEx();	//	Payment process needs it
-				//	Should start WF
-				payment.processIt(DocAction.ACTION_Complete);
-				payment.saveEx();
-			}	//	new Payment
-
-			//	Get Check Document No
-			try
-			{
-				int no = Integer.parseInt(paySelectionCheck.getDocumentNo());
-				if (lastDocumentNo.get() < no)
-					lastDocumentNo.set(no);
-			}
-			catch (NumberFormatException ex)
-			{
-				//logger.log(Level.SEVERE, "DocumentNo=" + paySelectionCheck.getDocumentNo(), ex);
-			}
-			paySelectionCheck.setIsPrinted(true);
-			paySelectionCheck.setProcessed(true);
-			paySelectionCheck.saveEx();
-		}
-		//);	//	all checks
-
-		//logger.fine("Last Document No = " + lastDocumentNo.get());
-		return "";
-	}
 	
 
 	public String toString ()
@@ -949,61 +651,6 @@ public class CAValidator implements ModelValidator
 	}	//	docValidate
 	
 
-	private MPayment createPayment (MBankStatementLine bankStatementLine)
-		{
-			//	Trx Amount = Payment overwrites Statement Amount if defined
-			BigDecimal PayAmt = bankStatementLine.getTrxAmt();
-			if (PayAmt == null || Env.ZERO.compareTo(PayAmt) == 0)
-				PayAmt = bankStatementLine.getStmtAmt();
-			if (bankStatementLine.getC_Invoice_ID() == 0
-				&& (PayAmt == null || Env.ZERO.compareTo(PayAmt) == 0))
-				throw new IllegalStateException ("@PayAmt@ = 0");
-			if (PayAmt == null)
-				PayAmt = Env.ZERO;
-			//
-			MPayment payment = new MPayment (bankStatementLine.getCtx(), 0, bankStatementLine.get_TrxName());
-			payment.setAD_Org_ID(bankStatementLine.getAD_Org_ID());
-			payment.setC_BankAccount_ID(bankStatementLine.getC_BankStatement().getC_BankAccount_ID());
-			payment.setTenderType(MPayment.TENDERTYPE_Check);
-			if (bankStatementLine.getStatementLineDate()!= null)
-				payment.setDateTrx(bankStatementLine.getStatementLineDate());
-			else if (bankStatementLine.getStatementLineDate() != null)
-				payment.setDateTrx(bankStatementLine.getStatementLineDate());
-			if (bankStatementLine.getDateAcct() != null)
-				payment.setDateAcct(bankStatementLine.getDateAcct());
-			else
-				payment.setDateAcct(payment.getDateTrx());
-			payment.setDescription(bankStatementLine.getDescription());
-			int C_BPartner_ID=0;
-			 if (bankStatementLine.getC_BPartner_ID() != 0){
-				 C_BPartner_ID = bankStatementLine.getC_BPartner_ID();
-			 }
-			 else
-				 C_BPartner_ID = bankStatementLine.getC_BankStatement().getC_BankAccount().getC_Bank().getC_BPartner_ID();
-			 if (C_BPartner_ID !=0)
-			{
-				payment.setC_BPartner_ID(bankStatementLine.getC_BPartner_ID());
-				payment.setC_Currency_ID(bankStatementLine.getC_Currency_ID());
-				if (PayAmt.signum() < 0)	//	Payment
-				{
-					payment.setPayAmt(PayAmt.abs());
-					payment.setC_DocType_ID(false);
-				}
-				else	//	Receipt
-				{
-					payment.setPayAmt(PayAmt);
-					payment.setC_DocType_ID(true);
-				}
-			}
-			else
-				return null;
-			payment.saveEx();
-			//
-			payment.processIt(MPayment.DOCACTION_Complete);
-			payment.saveEx();
-			return payment;		
-		}	//	createPayment
-	
 
 	private String commissionAmtUpdate(PO A_PO)
 	{
@@ -1096,185 +743,7 @@ public class CAValidator implements ModelValidator
 		//return "@Created@ " + counter.get();		
 	}
 	
-	private void updateLine(MTimeExpenseLine timeExpenseLine) {
-		//	Create Issue
 
-		if (!timeExpenseLine.getParent().getDocStatus().equals("CO"))		
-			return ;
-		String sqlUpdate = 
-				"update c_ProjectLine pl  set committedamt = (select coalesce(convertedamt,0) + coalesce(pricereimbursed,0) from s_timeexpenseline where s_Timeexpenseline_ID=pl.s_Timeexpenseline_ID)" + 
-				" where pl.s_timeexpenseline_ID = " + timeExpenseLine.getS_TimeExpenseLine_ID();
-		int no = DB.executeUpdateEx(sqlUpdate,  timeExpenseLine.get_TrxName());
-		
-	}
-	
-
-	private String factAcct_UpdateDocumentNO(PO A_PO)
-
-	{	
-		Doc doc = A_PO.getDoc();
-		String dateacct = "DateAcct";
-		String Documentno = "";
-		if (A_PO instanceof MInventory
-				|| A_PO instanceof MMovement
-				|| A_PO instanceof MProjectIssue
-				|| A_PO instanceof MProduction)
-			dateacct = "MovementDate";
-		else if (A_PO instanceof MBankStatement)
-			dateacct = "StatementDate";
-		else if (A_PO instanceof MRequisition)
-			dateacct = "DateRequired";
-		Timestamp date = (Timestamp)A_PO.get_Value(dateacct);
-		String whereClause = "dateacct =? and documentno is not null and documentno <> ''  and postingtype = 'A' ";
-		MFactAcct factacct = new Query(A_PO.getCtx(), MFactAcct.Table_Name, whereClause, A_PO.get_TrxName())
-				.setParameters(A_PO.get_Value(dateacct))
-				.setClient_ID()
-				.first();
-		if (factacct != null)
-			Documentno = factacct.get_ValueAsString("DocumentNo");
-		else
-		{
-			Documentno = DB.getDocumentNo(A_PO.getAD_Client_ID(), MFactAcct.Table_Name, A_PO.get_TrxName());			
-		}
-
-
-		ArrayList<Fact> facts = doc.getFacts();
-		// one fact per acctschema
-		for (Fact fact:facts)
-		{
-			for (FactLine fLine:fact.getLines())
-			{
-				fLine.set_ValueOfColumn("DocumentNo", Documentno);
-			}
-		}		
-		return "";
-	}
-	
-	private String factAcct_DeleteNullLines(PO A_PO)
-
-	{	
-		Doc doc = A_PO.getDoc();
-		String dateacct = "DateAcct";
-		String Documentno = "";
-		
-		String whereClause = "AD_Table_ID=? AND record_ID=?";
-		
-		ArrayList<Fact> facts = doc.getFacts();
-		// one fact per acctschema
-		for (Fact fact:facts)
-		{
-			for (FactLine fLine:fact.getLines())
-			{
-				if (fLine.getAmtSourceDr().compareTo(Env.ZERO)==0 &&  fLine.getAmtSourceCr().compareTo(Env.ZERO)==0)
-					fLine.deleteEx(true, A_PO.get_TrxName());
-			}
-		}		
-		return "";
-	}
-	
-	private String setOrderLineTax(PO A_PO) {
-
-		//import org.compoere.model.MProduct;
-		//import org.compoere.model.MBPartner;
-		//import org.compoere.model.MCharge;
-		//import org.compoere.model.X_C_TaxDefinition;
-		//import org.compoere.model.Query;
-
-		//import java.util.ArrayList;
-		MOrderLine orderLine = (MOrderLine)A_PO;
-		Boolean	isSOTrx = orderLine.getParent().isSOTrx();
-		int shipC_BPartner = orderLine.getParent().getC_BPartner_ID();
-		if (orderLine.getM_Product_ID() == 0 && orderLine.getC_Charge_ID() == 0)
-			return "";		//
-		ArrayList<Object> params = new ArrayList<Object>();
-		params.add(isSOTrx);
-		//	Check Partner Location
-		StringBuffer whereClause = new StringBuffer();
-		whereClause.append("c_Tax_ID in (select c_Tax_ID from c_Tax t where case when ? = 'Y' then t.sopotype in ('B','S') else t.sopotype in('B','P') end)");
-		whereClause.append(" and (c_taxgroup_ID =? or c_taxgroup_ID is null)");
-		MBPartner bpartner = new MBPartner(Env.getCtx(), shipC_BPartner, null);
-		params.add(bpartner.getC_TaxGroup_ID());
-		if (orderLine.getC_Charge_ID() != 0)
-		{
-			whereClause.append(" AND (c_taxtype_ID =? or c_taxtype_ID is null)");
-			params.add(orderLine.getC_Charge().getC_TaxType_ID());
-		}
-		else if (orderLine.getM_Product_ID() != 0)
-		{
-			whereClause.append(" AND (C_Taxtype_ID =? or C_TaxType_ID is null)");
-			params.add(orderLine.getM_Product().getC_TaxType_ID());
-		}
-		X_C_TaxDefinition taxdefinition = new Query(Env.getCtx(), X_C_TaxDefinition.Table_Name, whereClause.toString(), null)
-				.setClient_ID()
-				.setOnlyActiveRecords(true)
-				.setParameters(params)
-				.setOrderBy("seqNo")
-				.first();
-		if (taxdefinition == null || taxdefinition.getC_Tax_ID() == 0) {
-			return "";		}
-		else {
-			orderLine.setC_Tax_ID(taxdefinition.getC_Tax_ID());
-		}
-		Integer i = orderLine.get_ID();
-		Object object  = (Object)i;
-		//
-		return "";
-	}
-	
-
-	
-	private String setInvoiceLineTax(PO A_PO) {
-
-		//import org.compoere.model.MProduct;
-		//import org.compoere.model.MBPartner;
-		//import org.compoere.model.MCharge;
-		//import org.compoere.model.X_C_TaxDefinition;
-		//import org.compoere.model.Query;
-
-		//import java.util.ArrayList;
-		MInvoiceLine invoiceLine = (MInvoiceLine)A_PO;
-		if (invoiceLine.getC_OrderLine_ID() >0)
-			return "";
-		Boolean	isSOTrx = invoiceLine.getParent().isSOTrx();
-		int shipC_BPartner = invoiceLine.getParent().getC_BPartner_ID();
-		if (invoiceLine.getM_Product_ID() == 0 && invoiceLine.getC_Charge_ID() == 0)
-			return "";		//
-		ArrayList<Object> params = new ArrayList<Object>();
-		params.add(isSOTrx);
-		//	Check Partner Location
-		StringBuffer whereClause = new StringBuffer();
-		whereClause.append("c_Tax_ID in (select c_Tax_ID from c_Tax t where case when ? = 'Y' then t.sopotype in ('B','S') else t.sopotype in('B','P') end)");
-		whereClause.append(" and (c_taxgroup_ID =? or c_taxgroup_ID is null)");
-		MBPartner bpartner = new MBPartner(Env.getCtx(), shipC_BPartner, null);
-		params.add(bpartner.getC_TaxGroup_ID());
-		if (invoiceLine.getC_Charge_ID() != 0)
-		{
-			whereClause.append(" AND (c_taxtype_ID =? or c_taxtype_ID is null)");
-			params.add(invoiceLine.getC_Charge().getC_TaxType_ID());
-		}
-		else if (invoiceLine.getM_Product_ID() != 0)
-		{
-			whereClause.append(" AND (C_Taxtype_ID =? or C_TaxType_ID is null)");
-			params.add(invoiceLine.getM_Product().getC_TaxType_ID());
-		}
-		X_C_TaxDefinition taxdefinition = new Query(Env.getCtx(), X_C_TaxDefinition.Table_Name, whereClause.toString(), null)
-				.setClient_ID()
-				.setOnlyActiveRecords(true)
-				.setParameters(params)
-				.setOrderBy("seqNo")
-				.first();
-		if (taxdefinition == null || taxdefinition.getC_Tax_ID() == 0) {
-			return "";		}
-		else
-			invoiceLine.setC_Tax_ID(taxdefinition.getC_Tax_ID());
-		//
-		return "";
-	}
-	
-	private String UpdatePaymentWithholing(PO A_PO) {
-		return "";
-	}
-	
 
 	private String UpdateCreditMemo(PO A_PO) {
 		MInvoice invoice = (MInvoice)A_PO;
@@ -1282,17 +751,6 @@ public class CAValidator implements ModelValidator
 				|| invoice.getM_RMA_ID() ==0)
 			return "";
 		invoice.setPOReference(getInvoiceDocNo(invoice));
-		return "";
-	}
-	
-	private String UpdateCreditMemoLine(PO A_PO) {
-		MInvoiceLine invoiceLine = (MInvoiceLine)A_PO;
-		if (!invoiceLine.getC_Invoice().getC_DocTypeTarget().getDocBaseType().equals(MDocType.DOCBASETYPE_ARCreditMemo)
-				|| invoiceLine.getC_Invoice().getM_RMA_ID() ==0)
-			return "";
-		if (invoiceLine.getM_Product_ID() > 0)
-			invoiceLine.setDescription(invoiceLine.getM_Product().getValue() + "; " + invoiceLine.getM_Product().getName() + "; " 
-					+ invoiceLine.getPriceActual().toString());
 		return "";
 	}
 	
@@ -1340,19 +798,6 @@ public class CAValidator implements ModelValidator
 				pstmt = null;
 			}
 		return docNoList + ";" + dateList;
-	}
-	
-	private String controlInvoiceTax(PO po) {
-		MInvoice invoice = (MInvoice)po;
-		BigDecimal totallines = invoice.getTotalLines().setScale(2);
-		String sql = "select sum(round(linenetamt, 2)) from c_INvoiceline ivl where ivl.c_INvoice_ID=?";
-		BigDecimal totallines_Rounded = 
-				DB.getSQLValueBDEx(po.get_TrxName(), sql, invoice.getC_Invoice_ID());
-		BigDecimal diff = totallines.subtract(totallines_Rounded);
-		if (diff.compareTo(Env.ZERO) == 0)
-			return "";
-		
-		return "";		
 	}
 
 	private String testQtyOnhand(PO po) {
@@ -1542,51 +987,6 @@ public class CAValidator implements ModelValidator
 			 error = "Lista de Precio y Tipo de documento no coinciden ";
 		 return error;
 	 }
-	 
-	 private String OrderBeforePrepare(PO po) {
-		 MOrder order = (MOrder)po;
-		 int stdPrecision = MCurrency.getStdPrecision(po.getCtx(), order.getC_Currency_ID());
-		 if (order.getTotalLines().scale() > stdPrecision) {
-			 BigDecimal totalLinesRounded = Env.ZERO;
-			 for (MOrderLine orderLine: order.getLines()) {
-				 BigDecimal linenetamt = orderLine.getLineNetAmt().setScale(stdPrecision, BigDecimal.ROUND_HALF_UP);
-				 orderLine.saveEx();
-				 totalLinesRounded = totalLinesRounded.add(linenetamt);
-			 }
-			 order.setTotalLines(totalLinesRounded);
-		 }
-		 return "";
-	 }
-	 
-	 private Boolean checkQtyOnHand(MMovementLine movementLine) {
-			// Begin Armen 2006/10/01
-			if (movementLine.getM_Product_ID() != 0) {
-				if (movementLine.getM_Product().isStocked()) {					
-					int M_Locator_ID = movementLine.getM_Locator_ID();
-					BigDecimal qtyOnHand = getQtyOnHand(M_Locator_ID, movementLine.getM_Product_ID(), 
-							movementLine.getM_AttributeSetInstance_ID(), movementLine.get_TrxName());
-					if (qtyOnHand == null)
-						qtyOnHand = Env.ZERO;
-					if (qtyOnHand.compareTo(movementLine.getMovementQty()) < 0)
-						return false;
-				}
-			}
-			return true;
-	 }
-	 
-
-		
-		/**
-		 * Get Warehouse/Locator Available Qty.
-		 * The call is accurate only if there is a storage record 
-		 * and assumes that the product is stocked 
-		 * @param M_Warehouse_ID wh (if the M_Locator_ID!=0 then M_Warehouse_ID is ignored)
-		 * @param M_Locator_ID locator (if 0, the whole warehouse will be evaluated)
-		 * @param M_Product_ID product
-		 * @param M_AttributeSetInstance_ID masi
-		 * @param trxName transaction
-		 * @return qty available (QtyOnHand-QtyReserved) or null if error
-		 */
 		public  BigDecimal getQtyOnHand (int M_Locator_ID, 
 			int M_Product_ID, int M_AttributeSetInstance_ID, String trxName)
 		{

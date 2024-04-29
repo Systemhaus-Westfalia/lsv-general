@@ -59,7 +59,7 @@ public abstract class EDocumentFactory {
 	
 	public static String sqlCuerpoDocumento 		= "SELECT * FROM	EI_Invoiceline_Cumm "
 														+ " WHERE c_invoice_id = ? ";
-	public static String sqlApendice 				= "SELECT (invoiceinfo) as invoiceinfo FROM shw_c_invoice_header_vt i"
+	public static String sqlApendice 				= "SELECT (description) as invoiceinfo FROM shw_c_invoice_header_vt i"
 														+ " WHERE AD_LANGUAGE = 'es_SV' AND C_Invoice_ID=?";
 	
 	public static int	lineNo 										= 50;
