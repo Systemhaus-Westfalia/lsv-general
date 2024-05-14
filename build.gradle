@@ -100,8 +100,8 @@ publishing {
 			version = patchVersion
            	from components.java
            	pom {
-                name = 'Localización El Salvador (General)'
-                description = 'Localización para El salvador (General) de Systemhaus Westfalia'
+                name = 'Localización El Salvador General'
+                description = 'Localización para El salvador General de Systemhaus Westfalia'
                 url = 'http://adempiere.io/'
                 licenses {
                     license {
