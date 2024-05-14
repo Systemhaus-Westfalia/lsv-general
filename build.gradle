@@ -1,0 +1,122 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'signing'
+}
+
+ext {
+    libraryRepo  = "https://maven.pkg.github.com/Systemhaus-Westfalia/shw-customizations"
+    patchVersion = System.getenv("ADEMPIERE_LIBRARY_VERSION") ?: "local-1.0.1"
+    baseVersion  = "3.9.4.001"
+    baseGroupId  = "io.github.adempiere"
+    publishGroupId  = "org.shw"
+}
+
+sourceCompatibility = 1.11
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+allprojects {
+    tasks.withType(Javadoc) {
+    	options.addStringOption('Xdoclint:none', '-quiet')
+   	}
+}
+
+compileJava { 
+  options.encoding = "UTF-8" 
+}
+
+javadoc {
+    options.charSet = 'UTF-8'
+}
+
+dependencies {
+   api fileTree(
+        dir: 'lib',
+        include: [
+            '*.jar'
+        ]
+    )
+    //	ADempiere Core
+    api "${baseGroupId}:base:${baseVersion}"
+    api "${baseGroupId}:human-resource-and-payroll:${baseVersion}"
+    api "${baseGroupId}:cashflow:${baseVersion}"
+    // Jakarta RESTful Web Services
+	// https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api
+	api 'javax.ws.rs:javax.ws.rs-api:2.1.1'
+	// Jersey core client implementation
+	// https://mvnrepository.com/artifact/  org.glassfish.jersey.core/jersey-client
+	api 'org.glassfish.jersey.core:jersey-client:2.34'
+	// https://mvnrepository.com/artifact/org.glassfish.jersey.inject/jersey-hk2
+	api 'org.glassfish.jersey.inject:jersey-hk2:2.34'
+
+	// JSON in Java
+	// https://mvnrepository.com/artifact/org.json/json
+	api 'org.json:json:20211205'
+	
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	api 'org.apache.commons:commons-lang3:3.0'
+
+}
+
+sourceSets {
+    main {
+         java {
+            srcDirs = ['src/main/java']
+         }
+    }
+}
+
+jar {
+	manifest {
+		attributes(
+			"Implementation-Title": "Localización El Salvador (General)",
+			"Implementation-Version": patchVersion,
+			"EntityType": "LSV"
+		)
+    }
+}
+
+
+publishing {
+    repositories {
+		mavenLocal()
+        maven {
+            url = libraryRepo
+            credentials {
+                username = System.getenv("GITHUB_DEPLOY_USER") ?: System.properties['deploy.user']
+                password = System.getenv("GITHUB_DEPLOY_TOKEN") ?: System.properties['deploy.token'] 
+            }
+        }
+    }
+    
+    publications {
+        maven(MavenPublication) {
+			groupId = publishGroupId
+			artifactId = 'lsv-general'
+			version = patchVersion
+           	from components.java
+           	pom {
+                name = 'Localización El Salvador (General)'
+                description = 'Localización para El salvador de Systemhaus Westfalia'
+                url = 'http://adempiere.io/'
+                licenses {
+                    license {
+                        name = 'GNU General Public License, version 2'
+                        url = 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'mariocalderon'
+                        name = 'Mario Calderon'
+                        email = 'mcalderon@westfalia-it.com'
+                    }
+                }
+            }
+		}
+	}
+}
