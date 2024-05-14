@@ -56,7 +56,16 @@ import org.compiere.model.MTax;
 import org.compiere.model.MTaxCategory;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
-//import org.shw.model.I_LCO_TaxPayerType;
+import org.shw.model.I_LCO_TaxPayerType;
+import org.shw.model.I_LCO_WithholdingCalc;
+import org.shw.model.I_LCO_WithholdingRule;
+import org.shw.model.I_LCO_WithholdingRuleConf;
+import org.shw.model.I_LCO_WithholdingType;
+import org.shw.model.X_LCO_TaxPayerType;
+import org.shw.model.X_LCO_WithholdingCalc;
+import org.shw.model.X_LCO_WithholdingRule;
+import org.shw.model.X_LCO_WithholdingRuleConf;
+import org.shw.model.X_LCO_WithholdingType;
 //import org.shw.model.I_LCO_WithholdingCalc;
 //import org.shw.model.I_LCO_WithholdingRule;
 //import org.shw.model.I_LCO_WithholdingRuleConf;
@@ -331,75 +340,75 @@ public class CopySODefinitions extends CopySODefinitionsAbstract {
 				  copy.saveReference(currenttaxDefinition, newTaxDefinition);
 				 });
 ////			TaxPayerType
-//			copy.getTemplateReferencesOnlyNewIds(I_LCO_TaxPayerType.Table_Name).forEach(currentTaxPayerTypeId -> {
-//				X_LCO_TaxPayerType currentTaxpayerType = new X_LCO_TaxPayerType(getCtx(), currentTaxPayerTypeId, get_TrxName()); 
-//				X_LCO_TaxPayerType newTaxPayerType = new X_LCO_TaxPayerType(getCtx(), 0, get_TrxName());
-//				copy.copyCurrentValues(currentTaxpayerType, newTaxPayerType);
-//				newTaxPayerType.setAD_Org_ID(0);
-//				newTaxPayerType.saveEx();
-//				copy.saveReference(currentTaxpayerType, newTaxPayerType);
-//			});
+			copy.getTemplateReferencesOnlyNewIds(I_LCO_TaxPayerType.Table_Name).forEach(currentTaxPayerTypeId -> {
+				X_LCO_TaxPayerType currentTaxpayerType = new X_LCO_TaxPayerType(getCtx(), currentTaxPayerTypeId, get_TrxName()); 
+				X_LCO_TaxPayerType newTaxPayerType = new X_LCO_TaxPayerType(getCtx(), 0, get_TrxName());
+				copy.copyCurrentValues(currentTaxpayerType, newTaxPayerType);
+				newTaxPayerType.setAD_Org_ID(0);
+				newTaxPayerType.saveEx();
+				copy.saveReference(currentTaxpayerType, newTaxPayerType);
+			});
 ////			LCO_WithholdingType 
-//			copy.getTemplateReferencesOnlyNewIds(I_LCO_WithholdingType.Table_Name).forEach(currentWithholdingTypeId -> {
-//				X_LCO_WithholdingType currentWithholdingType = new X_LCO_WithholdingType(getCtx(), currentWithholdingTypeId, get_TrxName()); 
-//				X_LCO_WithholdingType newWithholdingType = new X_LCO_WithholdingType(getCtx(), 0, get_TrxName());
-//				copy.copyCurrentValues(currentWithholdingType, newWithholdingType);
-//				newWithholdingType.setAD_Org_ID(0);
-//				newWithholdingType.saveEx();
-//				copy.saveReference(currentWithholdingType, newWithholdingType);
-//			});
+			copy.getTemplateReferencesOnlyNewIds(I_LCO_WithholdingType.Table_Name).forEach(currentWithholdingTypeId -> {
+				X_LCO_WithholdingType currentWithholdingType = new X_LCO_WithholdingType(getCtx(), currentWithholdingTypeId, get_TrxName()); 
+				X_LCO_WithholdingType newWithholdingType = new X_LCO_WithholdingType(getCtx(), 0, get_TrxName());
+				copy.copyCurrentValues(currentWithholdingType, newWithholdingType);
+				newWithholdingType.setAD_Org_ID(0);
+				newWithholdingType.saveEx();
+				copy.saveReference(currentWithholdingType, newWithholdingType);
+			});
 //
 ////			LCO_WithholdingRuleConf 
-//			copy.getTemplateReferencesOnlyNewIds(I_LCO_WithholdingRuleConf.Table_Name).forEach(currentWithholdingRuleConfigId -> {
-//				X_LCO_WithholdingRuleConf currentWithholdingRuleConfig= new X_LCO_WithholdingRuleConf(getCtx(), currentWithholdingRuleConfigId, get_TrxName()); 
-//				X_LCO_WithholdingRuleConf newWithholdingRuleConfig = new X_LCO_WithholdingRuleConf(getCtx(), 0, get_TrxName());
-//				copy.copyCurrentValues(currentWithholdingRuleConfig, newWithholdingRuleConfig);
-//
-//				int newwithholidingType_ID = copy.getReferenceId(X_LCO_WithholdingType.Table_Name, currentWithholdingRuleConfig.getLCO_WithholdingType_ID());
-//				newWithholdingRuleConfig.setAD_Org_ID(0);
-//				newWithholdingRuleConfig.setLCO_WithholdingType_ID(newwithholidingType_ID);
-//				newWithholdingRuleConfig.saveEx();
-//				copy.saveReference(currentWithholdingRuleConfig, newWithholdingRuleConfig);
-//			});
+			copy.getTemplateReferencesOnlyNewIds(I_LCO_WithholdingRuleConf.Table_Name).forEach(currentWithholdingRuleConfigId -> {
+				X_LCO_WithholdingRuleConf currentWithholdingRuleConfig= new X_LCO_WithholdingRuleConf(getCtx(), currentWithholdingRuleConfigId, get_TrxName()); 
+				X_LCO_WithholdingRuleConf newWithholdingRuleConfig = new X_LCO_WithholdingRuleConf(getCtx(), 0, get_TrxName());
+				copy.copyCurrentValues(currentWithholdingRuleConfig, newWithholdingRuleConfig);
+
+				int newwithholidingType_ID = copy.getReferenceId(X_LCO_WithholdingType.Table_Name, currentWithholdingRuleConfig.getLCO_WithholdingType_ID());
+				newWithholdingRuleConfig.setAD_Org_ID(0);
+				newWithholdingRuleConfig.setLCO_WithholdingType_ID(newwithholidingType_ID);
+				newWithholdingRuleConfig.saveEx();
+				copy.saveReference(currentWithholdingRuleConfig, newWithholdingRuleConfig);
+			});
 //			
 //
 ////			LCO_WithholdingCalc 
-//			copy.getTemplateReferencesOnlyNewIds(I_LCO_WithholdingCalc.Table_Name).forEach(currentWithholdingCalcId -> {
-//				X_LCO_WithholdingCalc currentWithholdingCalc= new X_LCO_WithholdingCalc(getCtx(), currentWithholdingCalcId, get_TrxName()); 
-//				X_LCO_WithholdingCalc newWithholdingCalc = new X_LCO_WithholdingCalc(getCtx(), 0, get_TrxName());
-//				copy.copyCurrentValues(currentWithholdingCalc, newWithholdingCalc);
-//				newWithholdingCalc.setAD_Org_ID(0);
-//				int newwithholidingType_ID = copy.getReferenceId(X_LCO_WithholdingType.Table_Name, currentWithholdingCalc.getLCO_WithholdingType_ID());
-//				int newwithholidingtax_ID = copy.getReferenceId(X_C_Tax.Table_Name, currentWithholdingCalc.getC_Tax_ID());
-//				int newwithholidingbasetax_ID = copy.getReferenceId(X_C_Tax.Table_Name, currentWithholdingCalc.getC_BaseTax_ID());
-//				newWithholdingCalc.setLCO_WithholdingType_ID(newwithholidingType_ID);
-//
-//				if (newwithholidingtax_ID>0)
-//					newWithholdingCalc.setC_Tax_ID(newwithholidingtax_ID);
-//				if (newwithholidingbasetax_ID>0)
-//					newWithholdingCalc.setC_BaseTax_ID(newwithholidingbasetax_ID);
-//				newWithholdingCalc.saveEx();
-//				copy.saveReference(currentWithholdingCalc, newWithholdingCalc);
-//			});
+			copy.getTemplateReferencesOnlyNewIds(I_LCO_WithholdingCalc.Table_Name).forEach(currentWithholdingCalcId -> {
+				X_LCO_WithholdingCalc currentWithholdingCalc= new X_LCO_WithholdingCalc(getCtx(), currentWithholdingCalcId, get_TrxName()); 
+				X_LCO_WithholdingCalc newWithholdingCalc = new X_LCO_WithholdingCalc(getCtx(), 0, get_TrxName());
+				copy.copyCurrentValues(currentWithholdingCalc, newWithholdingCalc);
+				newWithholdingCalc.setAD_Org_ID(0);
+				int newwithholidingType_ID = copy.getReferenceId(X_LCO_WithholdingType.Table_Name, currentWithholdingCalc.getLCO_WithholdingType_ID());
+				int newwithholidingtax_ID = copy.getReferenceId(X_C_Tax.Table_Name, currentWithholdingCalc.getC_Tax_ID());
+				int newwithholidingbasetax_ID = copy.getReferenceId(X_C_Tax.Table_Name, currentWithholdingCalc.getC_BaseTax_ID());
+				newWithholdingCalc.setLCO_WithholdingType_ID(newwithholidingType_ID);
+
+				if (newwithholidingtax_ID>0)
+					newWithholdingCalc.setC_Tax_ID(newwithholidingtax_ID);
+				if (newwithholidingbasetax_ID>0)
+					newWithholdingCalc.setC_BaseTax_ID(newwithholidingbasetax_ID);
+				newWithholdingCalc.saveEx();
+				copy.saveReference(currentWithholdingCalc, newWithholdingCalc);
+			});
 //			
 //
 ////			LCO_WithholdingRule 
-//			copy.getTemplateReferencesOnlyNewIds(I_LCO_WithholdingRule.Table_Name).forEach(currentWithholdingRuleId -> {
-//				X_LCO_WithholdingRule currentWithholdingRule= new X_LCO_WithholdingRule(getCtx(), currentWithholdingRuleId,  get_TrxName());
-//				X_LCO_WithholdingRule newWithholdingRule = new X_LCO_WithholdingRule(getCtx(), 0, get_TrxName());
-//				copy.copyCurrentValues(currentWithholdingRule, newWithholdingRule);
-//				newWithholdingRule.setAD_Org_ID(0);
-//				int newwithholidingType_ID = copy.getReferenceId(X_LCO_WithholdingType.Table_Name, currentWithholdingRule.getLCO_WithholdingType_ID());
-//				newWithholdingRule.setLCO_WithholdingType_ID(newwithholidingType_ID);
-//				int newwithholidingCalc_ID = copy.getReferenceId(X_LCO_WithholdingCalc.Table_Name, currentWithholdingRule.getLCO_WithholdingCalc_ID());
-//				if (newwithholidingCalc_ID>0)
-//					newWithholdingRule.setLCO_WithholdingCalc_ID(newwithholidingCalc_ID);
-//				int newwithholidingTaxpayerType_ID = copy.getReferenceId(X_LCO_TaxPayerType.Table_Name, currentWithholdingRule.getLCO_BP_TaxPayerType_ID());
-//				if (newwithholidingTaxpayerType_ID>0);
-//					newWithholdingRule.setLCO_BP_TaxPayerType_ID(newwithholidingTaxpayerType_ID);
-//				newWithholdingRule.saveEx();
-//				copy.saveReference(currentWithholdingRule, newWithholdingRule);
-//			});
+			copy.getTemplateReferencesOnlyNewIds(I_LCO_WithholdingRule.Table_Name).forEach(currentWithholdingRuleId -> {
+				X_LCO_WithholdingRule currentWithholdingRule= new X_LCO_WithholdingRule(getCtx(), currentWithholdingRuleId,  get_TrxName());
+				X_LCO_WithholdingRule newWithholdingRule = new X_LCO_WithholdingRule(getCtx(), 0, get_TrxName());
+				copy.copyCurrentValues(currentWithholdingRule, newWithholdingRule);
+				newWithholdingRule.setAD_Org_ID(0);
+				int newwithholidingType_ID = copy.getReferenceId(X_LCO_WithholdingType.Table_Name, currentWithholdingRule.getLCO_WithholdingType_ID());
+				newWithholdingRule.setLCO_WithholdingType_ID(newwithholidingType_ID);
+				int newwithholidingCalc_ID = copy.getReferenceId(X_LCO_WithholdingCalc.Table_Name, currentWithholdingRule.getLCO_WithholdingCalc_ID());
+				if (newwithholidingCalc_ID>0)
+					newWithholdingRule.setLCO_WithholdingCalc_ID(newwithholidingCalc_ID);
+				int newwithholidingTaxpayerType_ID = copy.getReferenceId(X_LCO_TaxPayerType.Table_Name, currentWithholdingRule.getLCO_BP_TaxPayerType_ID());
+				if (newwithholidingTaxpayerType_ID>0);
+					newWithholdingRule.setLCO_BP_TaxPayerType_ID(newwithholidingTaxpayerType_ID);
+				newWithholdingRule.saveEx();
+				copy.saveReference(currentWithholdingRule, newWithholdingRule);
+			});
 //			
 
 

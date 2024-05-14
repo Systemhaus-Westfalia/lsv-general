@@ -19,6 +19,8 @@ package org.shw.process;
 
 import java.math.BigDecimal;
 
+import org.adempiere.core.domains.models.I_C_ProjectIssue;
+import org.adempiere.core.domains.models.X_C_ProjectIssue;
 import org.compiere.model.MCostDetail;
 import org.compiere.model.MInOutLine;
 import org.compiere.model.MProject;
@@ -73,7 +75,7 @@ public class SBProcess_ProjectIssueFromInventory extends SBProcess_ProjectIssueF
 		projectIssue.saveEx();
 		projectIssue.processIt(getDocAction());
 		
-		if (getDocAction().equals(MProjectIssue.DOCACTION_Complete)) {
+		if (getDocAction().equals(X_C_ProjectIssue.DOCACTION_Complete)) {
 			
 		
 		//	Create Project Line
