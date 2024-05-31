@@ -976,7 +976,7 @@ public class CAValidator implements ModelValidator
 	 private String controlPriceListDocType(PO po) {
 		 String error = "";
 		 MOrder order = (MOrder)po;
-		 if (!order.isSOTrx())
+		 if (!order.isSOTrx() || order.getC_POS_ID() >0)
 			 return "";
 		 MDocType docType = (MDocType)order.getC_DocTypeTarget();
 		 if (docType.getDocSubTypeSO().equals(MDocType.DOCSUBTYPESO_WarehouseOrder)
