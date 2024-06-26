@@ -20,85 +20,45 @@ package org.shw.process;
 
 import org.compiere.process.SvrProcess;
 
-/** Generated Process for (SBP_GenerateLandedCost_InvoiceLine)
+/** Generated Process for (C_Project_GenerateOrder_POSO)
  *  @author ADempiere (generated) 
  *  @version Release 3.9.4
  */
-public abstract class SBP_GenerateLandedCost_InvoiceLineAbstract extends SvrProcess {
+public abstract class Project_CreateOrderAbstract extends SvrProcess {
 	/** Process Value 	*/
-	private static final String VALUE_FOR_PROCESS = "SBP_GenerateLandedCost_InvoiceLine";
+	private static final String VALUE_FOR_PROCESS = "C_Project_GenerateOrder_POSO";
 	/** Process Name 	*/
-	private static final String NAME_FOR_PROCESS = "SBP_GenerateLandedCost_InvoiceLine";
+	private static final String NAME_FOR_PROCESS = "C_Project_GenerateOrder_POSO";
 	/** Process Id 	*/
-	private static final int ID_FOR_PROCESS = 54346;
-	/**	Parameter Name for User List 4	*/
-	public static final String C_PROJECT_ID = "C_Project_ID";
-	/**	Parameter Name for Cost Distribution	*/
-	public static final String LANDEDCOSTDISTRIBUTION = "LandedCostDistribution";
-	/**	Parameter Name for Cost Element	*/
-	public static final String M_COSTELEMENT_ID = "M_CostElement_ID";
-	/**	Parameter Name for Landed Cost Type	*/
-	public static final String C_LANDEDCOSTTYPE_ID = "C_LandedCostType_ID";
+	private static final int ID_FOR_PROCESS = 54639;
+	/**	Parameter Name for Sales Transaction	*/
+	public static final String ISSOTRX = "IsSOTrx";
 	/**	Parameter Name for Business Partner 	*/
 	public static final String C_BPARTNER_ID = "C_BPartner_ID";
-	/**	Parameter Value for User List 4	*/
-	private int projectId;
-	/**	Parameter Value for Cost Distribution	*/
-	private String landedCostDistribution;
-	/**	Parameter Value for Cost Element	*/
-	private int costElementId;
-	/**	Parameter Value for Landed Cost Type	*/
-	private int landedCostTypeId;
+	/**	Parameter Name for Document Type	*/
+	public static final String C_DOCTYPE_ID = "C_DocType_ID";
+	/**	Parameter Value for Sales Transaction	*/
+	private boolean isSOTrx;
 	/**	Parameter Value for Business Partner 	*/
 	private int bPartnerId;
+	/**	Parameter Value for Document Type	*/
+	private int docTypeId;
 
 	@Override
 	protected void prepare() {
-		projectId = getParameterAsInt(C_PROJECT_ID);
-		landedCostDistribution = getParameterAsString(LANDEDCOSTDISTRIBUTION);
-		costElementId = getParameterAsInt(M_COSTELEMENT_ID);
-		landedCostTypeId = getParameterAsInt(C_LANDEDCOSTTYPE_ID);
+		isSOTrx = getParameterAsBoolean(ISSOTRX);
 		bPartnerId = getParameterAsInt(C_BPARTNER_ID);
+		docTypeId = getParameterAsInt(C_DOCTYPE_ID);
 	}
 
-	/**	 Getter Parameter Value for User List 4	*/
-	protected int getProjectId() {
-		return projectId;
+	/**	 Getter Parameter Value for Sales Transaction	*/
+	protected boolean isSOTrx() {
+		return isSOTrx;
 	}
 
-	/**	 Setter Parameter Value for User List 4	*/
-	protected void setProjectId(int projectId) {
-		this.projectId = projectId;
-	}
-
-	/**	 Getter Parameter Value for Cost Distribution	*/
-	protected String getLandedCostDistribution() {
-		return landedCostDistribution;
-	}
-
-	/**	 Setter Parameter Value for Cost Distribution	*/
-	protected void setLandedCostDistribution(String landedCostDistribution) {
-		this.landedCostDistribution = landedCostDistribution;
-	}
-
-	/**	 Getter Parameter Value for Cost Element	*/
-	protected int getCostElementId() {
-		return costElementId;
-	}
-
-	/**	 Setter Parameter Value for Cost Element	*/
-	protected void setCostElementId(int costElementId) {
-		this.costElementId = costElementId;
-	}
-
-	/**	 Getter Parameter Value for Landed Cost Type	*/
-	protected int getLandedCostTypeId() {
-		return landedCostTypeId;
-	}
-
-	/**	 Setter Parameter Value for Landed Cost Type	*/
-	protected void setLandedCostTypeId(int landedCostTypeId) {
-		this.landedCostTypeId = landedCostTypeId;
+	/**	 Setter Parameter Value for Sales Transaction	*/
+	protected void setIsSOTrx(boolean isSOTrx) {
+		this.isSOTrx = isSOTrx;
 	}
 
 	/**	 Getter Parameter Value for Business Partner 	*/
@@ -109,6 +69,16 @@ public abstract class SBP_GenerateLandedCost_InvoiceLineAbstract extends SvrProc
 	/**	 Setter Parameter Value for Business Partner 	*/
 	protected void setBPartnerId(int bPartnerId) {
 		this.bPartnerId = bPartnerId;
+	}
+
+	/**	 Getter Parameter Value for Document Type	*/
+	protected int getDocTypeId() {
+		return docTypeId;
+	}
+
+	/**	 Setter Parameter Value for Document Type	*/
+	protected void setDocTypeId(int docTypeId) {
+		this.docTypeId = docTypeId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

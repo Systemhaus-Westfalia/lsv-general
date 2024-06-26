@@ -113,9 +113,9 @@ public class CopyOrganizationDefinition extends CopyOrganizationDefinitionAbstra
 			copyLinkedBusinessPartner();
 			copyDocumentTypes();
 			copyWarehouses();
-			copyPointOfSales();
 			copyBanks();
-			copyCashAccounts();	
+			//copyCashAccounts();	
+			//copyPointOfSales();
 		} catch (Exception e) {
 			throw new AdempiereException(e);
 		} finally {

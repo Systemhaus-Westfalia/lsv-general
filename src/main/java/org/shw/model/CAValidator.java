@@ -33,6 +33,7 @@ import java.util.logging.Level;
 
 import org.adempiere.core.domains.models.X_C_Invoice;
 import org.compiere.model.MAllocationHdr;
+import org.compiere.model.MAllocationLine;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MBankStatement;
 import org.compiere.model.MBankStatementLine;
