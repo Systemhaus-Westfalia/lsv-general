@@ -143,14 +143,16 @@ public class Doc_ProjectIssue extends Doc
 		BigDecimal total = Env.ZERO;
 		if (m_issue.getM_InOutLine_ID() != 0) {
 
-			/*
-			 * for (MCostDetail cost : m_line.getCostDetail(as, true)) { if
-			 * (!MCostDetail.existsCost(cost)) continue;
-			 * 
-			 * costs = MCostDetail.getTotalCost(cost, as); total = total.add(costs); }
-			 */
-			costs = getPOCost(as).multiply(m_issue.getMovementQty());
-			total = costs;
+			
+			 for (MCostDetail cost : m_line.getCostDetail(as, true)) { if
+			 (!MCostDetail.existsCost(cost)) continue;
+			 
+			 costs = MCostDetail.getTotalCost(cost, as);
+			 total = total.add(costs); }
+			if (costs == null) {
+				costs = getPOCost(as).multiply(m_issue.getMovementQty());
+				total = costs;				
+			}
 		}
 		else if (m_issue.getS_TimeExpenseLine_ID() != 0) {
 

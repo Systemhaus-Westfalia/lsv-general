@@ -175,7 +175,6 @@ public class CAValidator implements ModelValidator
 
 		if (type == ModelValidator.TYPE_BEFORE_NEW || type == ModelValidator.TYPE_BEFORE_CHANGE ){
 			if (po.get_TableName().equals(MOrder.Table_Name)) {
-				error = User4Mandatory(po);
 				if (po.is_ValueChanged(MOrder.COLUMNNAME_C_DocTypeTarget_ID) || po.is_ValueChanged(MOrder.COLUMNNAME_M_PriceList_ID))
 					error = controlPriceListDocType(po);
 				;
@@ -284,14 +283,6 @@ public class CAValidator implements ModelValidator
 	 }	//	modelChange
 
 
-	private String User4Mandatory(PO po) {
-		MOrder order = (MOrder)po;
-		if(order.getC_DocTypeTarget().isHasCharges() && order.getUser4_ID() <=0)
-		{
-			return "EL campo retaceo es obligatorio";
-		}
-		return "";
-	}
 	
 
 	

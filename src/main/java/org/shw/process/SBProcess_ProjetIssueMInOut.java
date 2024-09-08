@@ -143,7 +143,8 @@ public class SBProcess_ProjetIssueMInOut extends SBProcess_ProjetIssueMInOutAbst
 	}	//	projectIssueHasReceipt
 	
 	private String checkStock(MInOutLine inOutLine) {
-
+		if (inOutLine.getM_Product_ID()>0  && !inOutLine.getM_Product().isStocked())
+			return "";
 		// Check if Production only possible when sufficient quantity in stock
 		String whereClause = "M_Product_ID=? and M_Locator_ID=? and Movementdate<=? ";
 		ArrayList <Object> params = new ArrayList<>();
