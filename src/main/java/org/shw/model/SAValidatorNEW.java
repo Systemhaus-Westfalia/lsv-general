@@ -408,6 +408,7 @@ public class SAValidatorNEW implements ModelValidator {
 
 		// Example - if you want your user inherit ALWAYS the show accounting from role
 		Ini.setProperty(Ini.P_SHOW_ACCT, role.isShowAcct());
+		Ini.setProperty(Ini.P_TRACELEVEL, true);
 
 		// Example - if you want to avoid your user from changing the working date
 		/*

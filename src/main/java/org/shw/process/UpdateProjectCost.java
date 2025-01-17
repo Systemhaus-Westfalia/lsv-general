@@ -61,6 +61,13 @@ public class UpdateProjectCost extends UpdateProjectCostAbstract
 	@Override
 	protected String doIt() throws Exception
 	{
+
+		if (getProjectId()>0) {
+			projectID = getProjectId();
+			projectInicial = new MProject(getCtx(), projectID, get_TrxName());
+			updateProjectPerformanceCalculationSons( projectID);
+			return "";
+		}
 		if (getRecord_ID()>0) {
 			projectID = getRecord_ID();
 			projectInicial = new MProject(getCtx(), projectID, get_TrxName());

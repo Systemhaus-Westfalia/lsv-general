@@ -798,7 +798,7 @@ public class CAValidator implements ModelValidator
 			return "";
 		String error = "";
 		Boolean nottest = (order.getC_DocType().getDocSubTypeSO().equals(MOrder.DocSubTypeSO_RMA) ||
-				order.getC_DocType().getDocSubTypeSO().equals(MOrder.DocSubTypeSO_Standard) );
+				order.getC_DocType().getDocSubTypeSO().equals(MOrder.DocSubTypeSO_Standard) || order.getDeliveryRule().equals(MOrder.DELIVERYRULE_Force));
 		if (nottest)
 			return "";
 		StringBuffer sql = new StringBuffer("SELECT COALESCE(SUM(s.QtyOnHand),0)")
