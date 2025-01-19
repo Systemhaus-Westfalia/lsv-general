@@ -63,6 +63,10 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.telegram/telegrambots
 	api 'org.telegram:telegrambots:6.0.1'
 
+	// https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+        api 'com.itextpdf:itextpdf:5.5.2'
+
+
 
 }
 
