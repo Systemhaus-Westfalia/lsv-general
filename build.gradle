@@ -60,6 +60,10 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 	api 'org.apache.commons:commons-lang3:3.0'
 
+	// https://mvnrepository.com/artifact/org.telegram/telegrambots
+	api 'org.telegram:telegrambots:6.0.1'
+
+
 }
 
 sourceSets {
