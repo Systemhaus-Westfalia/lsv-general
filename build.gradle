@@ -45,7 +45,7 @@ dependencies {
     api "${baseGroupId}:human-resource-and-payroll:${baseVersion}"
     api "${baseGroupId}:cashflow:${baseVersion}"
     // https://mvnrepository.com/artifact/io.github.adempiere/swing
-    api 'io.github.adempiere:swing:v3.9.4.001'
+    //api 'io.github.adempiere:swing:v3.9.4.001'
     // Jakarta RESTful Web Services
 	// https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api
 	api 'javax.ws.rs:javax.ws.rs-api:2.1.1'
@@ -83,7 +83,7 @@ sourceSets {
 jar {
 	manifest {
 		attributes(
-			"Implementation-Title": "Localización El Salvador (General)",
+			"Implementation-Title": "Localizacion El Salvador (General)",
 			"Implementation-Version": patchVersion,
 			"EntityType": "LSV"
 		)
