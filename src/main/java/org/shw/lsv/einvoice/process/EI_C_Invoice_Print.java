@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.Arrays;
 
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.compiere.model.MBPartner;
@@ -30,20 +29,15 @@ import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MMailText;
-import org.compiere.model.MUser;
 import org.compiere.model.Query;
-import org.compiere.print.ReportCtl;
-import org.compiere.print.ReportEngine;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.Env;
 import org.eevolution.services.dsl.ProcessBuilder;
 import org.json.JSONObject;
-import org.shw.lsv.util.support.provider.ElectronicInvoice;
 import org.spin.queue.notification.DefaultNotifier;
 import org.spin.queue.util.QueueLoader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 /** Generated Process for (EI_C_Invoice_Print)
