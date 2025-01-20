@@ -20,14 +20,9 @@ package org.shw.process;
 
 import java.util.List;
 
-import org.adempiere.core.domains.models.I_C_InvoiceLine;
 import org.adempiere.core.domains.models.X_HR_ListLine;
 import org.adempiere.core.domains.models.X_HR_ListVersion;
-import org.compiere.model.MInvoiceLine;
 import org.compiere.model.Query;
-import org.compiere.print.ReportCtl;
-import org.compiere.print.ReportEngine;
-import org.compiere.util.Env;
 
 /** Generated Process for (HR_ListLines_Copy)
  *  @author ADempiere (generated) 
