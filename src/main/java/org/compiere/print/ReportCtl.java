@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 import java.util.Properties;
 
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.apps.ADialog;
 import org.compiere.model.MPInstance;
 import org.compiere.model.MPaySelectionCheck;
 import org.compiere.model.MProcess;
@@ -335,7 +334,8 @@ public class ReportCtl
 		{
 			if (Ini.isClient())
 			{
-				ADialog.error(0, null, "NoDocPrintFormat");
+				//ADialog.error(0, null, "NoDocPrintFormat");
+				;
 			}
 			else
 			{
