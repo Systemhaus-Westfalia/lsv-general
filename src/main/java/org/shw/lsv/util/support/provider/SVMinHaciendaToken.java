@@ -153,7 +153,14 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
         	client.set_ValueOfColumn("ei_jwt", token);
         	client.saveEx();     
 		}
+		
+		
 		else {
+			int status = response.getStatus();
+			String error = "error " + status ;
+			client.set_ValueOfColumn("ei_jwt", error);
+        	client.saveEx();     
+			
 			return "No token";
 		}
 		return null;
