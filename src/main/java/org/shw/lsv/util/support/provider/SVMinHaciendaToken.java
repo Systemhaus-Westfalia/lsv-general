@@ -138,10 +138,13 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
 		Form form = new Form();
 		form.param(PWD, this.pwd);
 		form.param(USER, this.user);
+		System.out.println("Form with parameter PWD: " + pwd + ": User: " + user);
 
 		//form.param("pwd", "Qazxsw369!");
 		//form.param("user", "06140904181038");
 		Entity<Form> entity = Entity.form(form);
+		System.out.println("Response: Post" );
+
 		Response response = invocationBuilder.post(entity);
 		if (response.getStatus()==HTTP_RESPONSE_200_OK) {
 
@@ -151,7 +154,8 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
         	String token = body.getString("token");
         	token = token.trim();
         	client.set_ValueOfColumn("ei_jwt", token);
-        	client.saveEx();     
+        	client.saveEx();  
+        	System.out.println("reponse: Status " +  response.getStatus() );
 		}
 		
 		
@@ -160,7 +164,8 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
 			String error = "error " + status ;
 			client.set_ValueOfColumn("ei_jwt", error);
         	client.saveEx();     
-			
+        	System.out.println("reponse: Status " +  response.getStatus() );
+
 			return "No token";
 		}
 		return null;

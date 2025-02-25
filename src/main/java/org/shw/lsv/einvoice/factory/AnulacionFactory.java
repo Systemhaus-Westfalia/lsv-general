@@ -128,7 +128,7 @@ public class AnulacionFactory extends EDocumentFactory {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
 		String horEmi = timeFormat.format(cal.getTime());
-		String dateEmi = dateFormat.format(cal);
+		String dateEmi = dateFormat.format(cal.getTime());
 		jsonObjectIdentificacion.put(Anulacion.AMBIENTE, client_getE_Enviroment(client).getValue());
 		jsonObjectIdentificacion.put(Anulacion.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(Anulacion.FECANULA, dateEmi);

@@ -228,7 +228,11 @@ public class SVMinHacienda implements IDeclarationProvider {
 		jsonSello.put(TIPODTE, tipoDte);
 		jsonSello.put(CODIGOGENERATION, codigoGeneracion);
 		jsonSello.put(DOCUMENTO, signature);
+    	System.out.println("Signature: " + signature);
+
 		String jsonSelloString = jsonSello.toString();
+
+    	System.out.println("Signature: " + jsonSelloString);
 		Entity<String> entity = Entity.json(jsonSelloString);
 		Response response = invocationBuilder.post(entity);
 		
