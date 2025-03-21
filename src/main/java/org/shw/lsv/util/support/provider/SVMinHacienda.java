@@ -27,34 +27,16 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.file.Files; 
-import java.nio.file.Path; 
-import java.nio.file.Paths; 
-import java.nio.file.StandardOpenOption; 
-
 import org.adempiere.core.domains.models.I_C_Invoice;
-import org.adempiere.core.domains.models.I_HR_Process;
-import org.adempiere.core.domains.models.X_C_Invoice;
-import org.adempiere.core.domains.models.X_E_Enviroment;
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
-import org.adempiere.core.domains.models.X_HR_Process;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.Adempiere;
 import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
-import org.compiere.model.MPInstance;
-import org.compiere.model.MPInstancePara;
-import org.compiere.model.MProcess;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
-import org.compiere.print.MPrintFormat;
-import org.compiere.process.ProcessInfo;
 import org.compiere.util.Env;
 import org.compiere.util.Trx;
-import org.eevolution.services.dsl.ProcessBuilder;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 import org.json.JSONArray;
@@ -176,6 +158,7 @@ public class SVMinHacienda implements IDeclarationProvider {
 	public String publishDocument(PO document) throws Exception {
 		
 		IDeclarationDocument declarationDocument = getDeclarationDocument(document);
+		MInvoice invoice = (MInvoice)document;
 		if(declarationDocument == null) {
 			return null;
 		}
@@ -241,7 +224,7 @@ public class SVMinHacienda implements IDeclarationProvider {
 		int status = response.getStatus();
     	String output = response.readEntity(String.class);
     	if (response.getStatus() == 403 || status == 401) {
-    		MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
+    		//MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
     		invoice.set_ValueOfColumn("ei_Status_Extern", status);
     		invoice.saveEx();
     		return "";
@@ -250,7 +233,7 @@ public class SVMinHacienda implements IDeclarationProvider {
         if(response.getStatus() !=200 && response.getStatus() != 201) {
         		
         	System.out.println("reponse: Status " +  response.getStatus() + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-        	MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
+        	//MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
 
         	if (jsonOutput.getString("estado") == null) {
         		invoice.set_ValueOfColumn("ei_Status_Extern",response.getStatus());
@@ -293,7 +276,7 @@ public class SVMinHacienda implements IDeclarationProvider {
         }
         else if (response.getStatus() ==200 ) 
         {
-        	MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
+        	//MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
         	String estado = jsonOutput.getString("estado");
         	String descriptionMsg = jsonOutput.getString("descripcionMsg");
         	Boolean completed = estado.equals("PROCESADO");
@@ -316,7 +299,7 @@ public class SVMinHacienda implements IDeclarationProvider {
         
         else{
         	System.out.println("reponse of output " + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo()  + " Output: " + output);
-        	MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
+        	//MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
         	String estado = jsonOutput.getString("estado");
 
         	System.out.println("reponse: Status " +  status + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );

@@ -16,32 +16,19 @@
  *****************************************************************************/
 package org.shw.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.compiere.acct.Doc;
-import org.compiere.acct.Fact;
-import org.compiere.acct.FactLine;
-import org.compiere.model.MAccount;
-import org.compiere.model.MAcctSchema;
-import org.compiere.model.MAllocationHdr;
-import org.compiere.model.MAllocationLine;
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
-import org.compiere.model.MInOut;
-import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoice;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.MPayment;
-import org.compiere.model.MPaymentAllocate;
+import org.compiere.model.MProcess;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
-import org.compiere.model.Query;
+import org.compiere.process.ProcessInfo;
 import org.compiere.util.CLogger;
-import org.compiere.util.DB;
-import org.compiere.util.Env;
+import org.compiere.util.Trx;
+import org.eevolution.services.dsl.ProcessBuilder;
+import org.shw.lsv.einvoice.process.EInvoiceGenerateAndPost;
 
 /**
  *	Validator Example Implementation
@@ -85,9 +72,8 @@ public class SHWValidator_BASICSNEW implements ModelValidator
 		}
 
 		//	We want to be informed when C_Order is created/changed
-		engine.addDocValidate(MPayment.Table_Name, this);
-		engine.addDocValidate(MAllocationHdr.Table_Name, this);
-
+		engine.addDocValidate(MInvoice.Table_Name, this);
+		engine.addModelChange(MInvoice.Table_Name, this);
 
 	}	//	initialize
 
@@ -102,7 +88,21 @@ public class SHWValidator_BASICSNEW implements ModelValidator
 	 */
 	public String modelChange (PO po, int type) throws Exception
 	{
-		String error = null;
+		String error = null;		
+
+		if (po.get_TableName().equals(MInvoice.Table_Name))
+		{
+			if (type == ModelValidator.TYPE_BEFORE_NEW) {
+				MInvoice invoice = (MInvoice)po;
+				if (invoice.getReversal_ID()>0) {
+					invoice.set_ValueOfColumn("ei_Status_Extern", null);
+					invoice.set_ValueOfColumn("ei_selloRecibido", null);
+					invoice.set_ValueOfColumn("ei_dateReceived", null);
+
+				}
+			}
+		}
+		
 
 
 
@@ -122,13 +122,34 @@ public class SHWValidator_BASICSNEW implements ModelValidator
 	{
 		String error = null;		
 
-		if (po.get_TableName().equals(MAllocationHdr.Table_Name))
+		if (po.get_TableName().equals(MInvoice.Table_Name))
 		{
 			if (timing == TIMING_BEFORE_POST)
-			{
-				//error = updatePostingAllocation(po);
-				error = AfterPost_CorrectGL_Category(po);
-			}
+			{				
+				  MInvoice invoice = (MInvoice)po; 
+				  if (invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado"))
+					  return "";
+				 // Trx transaction = Trx.get(invoice.get_TrxName(), false);
+				 // transaction.commit();
+				  MDocType docType = (MDocType)invoice.getC_DocType();				  
+				  
+				  if (docType.get_ValueAsInt("E_DocType_ID") <= 0) return ""; 
+				  ProcessInfo  processInfo =
+				  ProcessBuilder.create(invoice.getCtx())
+				  .process(EInvoiceGenerateAndPost.getProcessId())
+				  .withTitle(EInvoiceGenerateAndPost.getProcessName())
+				  .withRecordId(MInvoice.Table_ID , invoice.getC_Invoice_ID())
+				  .withParameter(MProcess.COLUMNNAME_IsDirectPrint, true)
+				  .withParameter(MInvoice.COLUMNNAME_AD_Client_ID, invoice.getAD_Client_ID())
+				  .withParameter(MInvoice.COLUMNNAME_C_Invoice_ID, invoice.getC_Invoice_ID())
+				  .withoutTransactionClose()
+				  .execute(invoice.get_TrxName()); 
+				  if (processInfo.isError())
+					  throw new AdempiereException(processInfo.getSummary());
+				  
+				  return "";
+				 }
+			
 		}
 
 
@@ -234,100 +255,5 @@ public class SHWValidator_BASICSNEW implements ModelValidator
 
 
 
-	public String AfterPost_CorrectGL_Category(PO po)	
-	{
-		MAllocationHdr ah = (MAllocationHdr)po;
-
-		Doc doc = ah.getDoc();
-
-		ArrayList<Fact> facts = doc.getFacts();
-		// one fact per acctschema
-		String description = "";
-		for (Fact fact:facts)
-		{
-			for (FactLine fLine:fact.getLines())
-			{
-				description = "";
-				Boolean isPayment = false;
-				MAllocationLine alo = new MAllocationLine(po.getCtx(), fLine.getLine_ID(), po.get_TrxName());
-				if (alo.getC_Payment_ID() !=0)
-				{
-					fLine.setGL_Category_ID(alo.getC_Payment().getC_DocType().getGL_Category_ID());
-
-					description = "Pago: " + alo.getC_Payment().getDocumentNo();
-					continue;
-				}
-				else if (alo.getC_CashLine_ID()!=0)
-				{
-					if (alo.getC_CashLine().getC_Invoice_ID() != 0)
-						isPayment = alo.getC_Invoice().getC_DocType().getDocBaseType().equals(MDocType.DOCBASETYPE_APPayment)?
-								true:false;
-					else 
-					{
-						isPayment = alo.getAmount().compareTo(Env.ZERO)>=0?true:false;
-					}
-
-				}
-				MDocType dt = null;
-				if (isPayment)
-					dt = new Query(po.getCtx(), MDocType.Table_Name, "Docbasetype = 'APP'", null)
-					.first();
-				else
-					dt = new Query(po.getCtx(), MDocType.Table_Name, "Docbasetype = 'ARR'", null)
-					.first();
-				fLine.setGL_Category_ID(dt.getGL_Category_ID());
-				if (alo.getC_Invoice_ID() != 0)
-					description = description + " Factura: " + alo.getC_Invoice().getDocumentNo();
-				else if (alo.getC_Charge_ID() != 0)
-					description = description + " Cargo: " + alo.getC_Charge().getName();
-			}
-		}	
-		return "";
-	}
-
-	public String PaymentCompleteNote(PO A_PO, int A_Type)
-	{
-		MPayment pay = (MPayment)A_PO;
-		if (pay.getC_Charge_ID() != 0)
-			return "";
-		String note = "";
-		if (pay.getC_Invoice_ID() !=0)
-		{
-			note = "Factura # " + pay.getC_Invoice().getDocumentNo() + " de " + pay.getC_BPartner().getName();
-			pay.set_ValueOfColumn("Note", note);
-		}
-		String whereClause = "C_Payment_ID=?";
-		List< MAllocationLine> alos = new Query(A_PO.getCtx(), MAllocationLine.Table_Name, whereClause, A_PO.get_TrxName())
-				.list();
-		for (MAllocationLine alo:alos)
-		{
-			note = "Facturas # ";
-			if (alo.getC_Invoice_ID() !=0)
-				note = note + ", "  + alo.getC_Invoice().getDocumentNo() + " de " + alo.getC_BPartner().getName();
-		}
-		pay.set_ValueOfColumn("Note", note);
-		return "";
-	
-	}
-	
-	public String InvoiceUpdateActivity(PO A_PO)
-	{
-		MAllocationHdr ah = (MAllocationHdr)A_PO;
-		for (MAllocationLine alo:ah.getLines(true))
-		{
-			if (alo.getC_Invoice_ID() ==0 || alo.getC_Invoice()== null)
-				return "";
-			if (alo.getC_Invoice().getDateAcct() == ah.getDateAcct())
-			{
-				MInvoice invoice = (MInvoice)alo.getC_Invoice();
-				int no = DB.executeUpdateEx("Delete from fact_Acct where ad_table_ID = 318 and record_ID = " + invoice.getC_Invoice_ID(), alo.get_TrxName());
-				invoice.setPosted(false);
-				invoice.setC_Activity_ID(1000145);
-				invoice.saveEx();
-			}
-		}
-		return "";
-	}
-	
 
 }	//	MyValidator

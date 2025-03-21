@@ -65,7 +65,7 @@ public class ElectronicInvoice implements IDeclarationDocument {
 			System.out.println("****************** ElectronicInvoice.processElectronicInvoice(): finished with errors");
 			return null;
 		}
-		boolean isreversal = ((invoice.getDocStatus().equals("VO")) || invoice.getDocStatus().equals("RE"))
+		boolean isreversal = ((invoice.getDocStatus().equals("VO")) || invoice.getDocStatus().equals("RE") || invoice.getDocStatus().equals("CO"))
 				&& invoice.getReversal_ID() > 0
 				&& invoice.getReversal_ID() < invoice.getC_Invoice_ID();
 				
