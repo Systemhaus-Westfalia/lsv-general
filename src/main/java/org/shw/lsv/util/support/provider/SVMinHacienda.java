@@ -57,7 +57,6 @@ public class SVMinHacienda implements IDeclarationProvider {
 	private final String PROVIDER_HOST =  "providerhost"; 
 
 	private final String PROVIDER_HOST_SIGNATURE =  "providerhost_signature"; 
-	private final String TOKEN = "token";
 
 	private final String PATH = "path";
 	private final String PATH_SIGNATURE = "path_signature";
@@ -69,7 +68,6 @@ public class SVMinHacienda implements IDeclarationProvider {
 	private final String TIPODTE = "tipoDte";
 	private final String CODIGOGENERATION = "codigoGeneracion"; 
 	private final String DOCUMENTO = "documento";
-	private final String TIPOCONTINGENCIA = "tipoContingencia";
 
 	
 	private String token = null;
@@ -80,8 +78,6 @@ public class SVMinHacienda implements IDeclarationProvider {
 	private int idEnvio = 0;
 	private String tipoDte = null;
 	private String codigoGeneracion = null;
-	private String documento = null;
-	private int tipoContingencia = 0;
 	private int registrationId = 0;
 	private boolean voided = false;
 	private int ADClientId = 0;
@@ -245,7 +241,6 @@ public class SVMinHacienda implements IDeclarationProvider {
 		if (estado.equals("RECHAZADO"))
 		{
         	System.out.println("reponse: Status " +  status + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-			String errorCode = "descriptionMsg";
 			String descriptionMsg = "";
 			if (isVoided()) {
 				descriptionMsg = jsonOutput.getString("descripcionMsg");

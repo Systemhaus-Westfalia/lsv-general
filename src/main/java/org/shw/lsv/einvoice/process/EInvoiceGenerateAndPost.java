@@ -317,6 +317,12 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	protected String processInvoiceDirect(MInvoice invoice) throws Exception{
 
 
+		Boolean isvoided = isVoided(invoice);
+		if (isvoided ) {
+			MInvoice orgInvoice = (MInvoice)invoice.getReversal();
+			if (orgInvoice.get_ValueAsString("ei_selloRecibido") == null|| orgInvoice.get_ValueAsString("ei_selloRecibido").equals(""))
+				return "";			
+		}
 		StringBuffer errorMessages = new StringBuffer();
 		int noCompletados = 0;
 		String applicationType = IGenerateAndPost.getApplicationType();
@@ -345,13 +351,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 		}
 
 		SVMinHacienda sv_minhacienda = new SVMinHacienda();
-		if (invoice.getReversal_ID()>0 || invoice.getC_Invoice_ID()>invoice.getReversal_ID()) {
-			MInvoice orgInvoice = (MInvoice)invoice.getReversal();
-			if (orgInvoice.get_ValueAsString("ei_selloRecibido") == null|| orgInvoice.get_ValueAsString("ei_selloRecibido").equals(""))
-				return "";
-			
-		}
-		sv_minhacienda.setVoided(invoice.getReversal_ID()>0? true:false);
+		sv_minhacienda.setVoided(isvoided);
 		sv_minhacienda.setADClientID(client.getAD_Client_ID());
 		sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
 
@@ -395,6 +395,13 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 
 
 
+	}
+	
+	private Boolean isVoided(MInvoice invoice) {
+		if (invoice.getReversal_ID() <= 0 ) return false;
+		if (invoice.getReversal_ID() < invoice.getC_Invoice_ID()) return true;
+		return false;
+		
 	}
 	
 	
