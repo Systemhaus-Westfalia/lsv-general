@@ -67,7 +67,11 @@ public class EI_C_Invoice_Print extends EI_C_Invoice_PrintAbstract
         if (client.getSMTPHost() == null || client.getSMTPHost().length() == 0)
             throw new Exception("@SMTPHost@  @NotFound@ ");
         //
-        MInvoice invoice = new MInvoice(getCtx(), getRecordId(), get_TrxName());
+        MInvoice invoice = null;
+        if (getRecord_ID()>0)
+        	invoice = new MInvoice(getCtx(), getRecord_ID(), get_TrxName());
+        else
+        	invoice = new MInvoice(getCtx(), getInvoiceId(), get_TrxName());
         sendEMail(mailText,invoice);
         return "@Created@=" ;
     }
@@ -98,7 +102,7 @@ public class EI_C_Invoice_Print extends EI_C_Invoice_PrintAbstract
 			//	Send notification to queue
 			notifier
 				.clearMessage()
-				.withApplicationType(DefaultNotifier.DefaultNotificationType_UserDefined)
+				.withApplicationType(DefaultNotifier.DefaultNotificationType_EMail)
 				.withText(message)
 				.withUserId(Env.getAD_User_ID(getCtx()))
 				.withDescription(mailText.getMailHeader())
@@ -114,7 +118,7 @@ public class EI_C_Invoice_Print extends EI_C_Invoice_PrintAbstract
             
 			File jsonfile = File.createTempFile("json", ".txt");
 			
-			String jsonwhereClause = "C_Invoice_ID=? AND json is not null";
+			String jsonwhereClause = "C_Invoice_ID=? AND json is not null AND ei_Validationstatus = '01'";
 			
 			X_E_InvoiceElectronic invoiceElectronic = new Query(getCtx(), X_E_InvoiceElectronic.Table_Name, jsonwhereClause, get_TrxName())
                     .setOnlyActiveRecords(true)
@@ -122,6 +126,8 @@ public class EI_C_Invoice_Print extends EI_C_Invoice_PrintAbstract
                     .setOrderBy(" created desc")
                     .first();
 
+			if (invoiceElectronic == null)
+				return false;
 			JSONObject jsonorg = new JSONObject(invoiceElectronic.getjson());
 
 			ObjectMapper mapper = new ObjectMapper();

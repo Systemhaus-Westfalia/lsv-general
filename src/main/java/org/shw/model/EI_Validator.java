@@ -21,9 +21,11 @@ import java.sql.Timestamp;
 
 import org.adempiere.core.domains.models.X_AD_Client;
 import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.MBPartner;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MOrder;
 import org.compiere.model.MProcess;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
@@ -79,7 +81,9 @@ public class EI_Validator implements ModelValidator
 
 		//	We want to be informed when C_Order is created/changed
 		engine.addDocValidate(MInvoice.Table_Name, this);
+		engine.addDocValidate(MOrder.Table_Name, this);
 		engine.addModelChange(MInvoice.Table_Name, this);
+		engine.addModelChange(MBPartner.Table_Name, this);
 
 	}	//	initialize
 
@@ -101,12 +105,21 @@ public class EI_Validator implements ModelValidator
 			if (type == ModelValidator.TYPE_BEFORE_NEW) {
 				MInvoice invoice = (MInvoice)po;
 				if (invoice.getReversal_ID()>0) {
-					invoice.set_ValueOfColumn("ei_Status_Extern", null);
-					invoice.set_ValueOfColumn("ei_selloRecibido", null);
-					invoice.set_ValueOfColumn("ei_dateReceived", null);
-
+					if (po.get_TableName().equals(MInvoice.Table_Name)) {
+						po.set_ValueOfColumn("ei_codigoGeneracion", null);
+						po.set_ValueOfColumn("ei_dateReceived", null);
+						po.set_ValueOfColumn("ei_Error_Extern", null);
+						po.set_ValueOfColumn("ei_numeroControl", null);
+						po.set_ValueOfColumn("ei_output", null);
+						po.set_ValueOfColumn("ei_selloRecibido", null);
+						po.set_ValueOfColumn("ei_Status_Extern", null);
+					}			
+				
 				}
 			}
+		}
+		if (po instanceof MBPartner) {
+			
 		}
 		
 
@@ -128,7 +141,7 @@ public class EI_Validator implements ModelValidator
 	{
 		String error = null;		
 		System.out.println(" ei_validator docvalidate" );
-		if (po.get_TableName().equals(MInvoice.Table_Name))
+		if (po instanceof MInvoice)
 		{
 			if (timing == TIMING_BEFORE_POST)
 			{		
@@ -137,8 +150,8 @@ public class EI_Validator implements ModelValidator
 				  Timestamp startdate = (Timestamp)MClient.get(po.getCtx()).get_Value("ei_startdate");
 				  if (startdate == null || startdate.after(invoice.getDateAcct()))
 					  return "";
-				  if (invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado"))
-					  return "";
+				 // if (invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado"))
+				//	  return "";
 				 // Trx transaction = Trx.get(invoice.get_TrxName(), false);
 				 // transaction.commit();
 				  MDocType docType = (MDocType)invoice.getC_DocType();				  
@@ -160,8 +173,35 @@ public class EI_Validator implements ModelValidator
 					  throw new AdempiereException(processInfo.getSummary());
 				  
 				  return "";
-				 }
-			
+				 }			
+		}
+		
+		if (po instanceof MOrder) {
+			error = "";
+			MOrder order = (MOrder)po;
+			if (!order.isSOTrx())
+				return "";             
+			MDocType invoicedocType = (MDocType)order.getC_DocTypeTarget().getC_DocTypeInvoice();
+			if (invoicedocType.get_ValueAsInt("E_DocType_ID") <=0)
+				return "";
+			MClient client = new MClient(order.getCtx(), order.get_TrxName());
+			Timestamp startdate = (Timestamp)client.get_Value("ei_Startdate");
+			if (startdate == null)
+				return "";
+			if (order.getDateAcct().before(startdate))
+				return "";
+			MBPartner partner = (MBPartner)order.getC_BPartner();
+			Boolean eiCorrect =  (partner.get_ValueAsInt( "E_Activity_ID") >0 &&
+					partner.get_ValueAsInt( "E_BPType_ID") > 0 &&
+					partner.get_ValueAsInt( "E_Recipient_Identification_ID") > 0);
+			if (!eiCorrect)
+				return "Socio de Negocio: Configuracion factura electronica ";
+			Boolean addressCorrect = (order.getBill_Location().getC_Location().getC_City_ID()>0
+					&& order.getBill_Location().getC_Location().getC_Region_ID()>0
+					&& order.getBill_Location().getC_Location().getAddress1()!="NN");
+			if (!addressCorrect)
+				return "Socio de Negocio: Dirección";
+			return error;
 		}
 
 

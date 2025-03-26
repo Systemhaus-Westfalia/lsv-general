@@ -84,6 +84,8 @@ public class SVMinHacienda implements IDeclarationProvider {
 	private MClient client = null;
 	private MADAppRegistration registration = null;
 	
+	private Boolean testlocal = true;
+	
 
 	public SVMinHacienda() {
 	}
@@ -165,6 +167,14 @@ public class SVMinHacienda implements IDeclarationProvider {
 		String documentAsJsonString = electronicInvoiceModel.getjson();
 		JSONObject jsonorg = new JSONObject(documentAsJsonString);
 		JSONObject identificacion =  jsonorg.getJSONObject("identificacion");
+		
+
+		testlocal = invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado");
+		if (testlocal)
+			return "";
+		
+		
+		
 		JSONObject documento = null;
 		if (voided)
 			documento = jsonorg.getJSONObject("documento");
@@ -174,8 +184,8 @@ public class SVMinHacienda implements IDeclarationProvider {
 		
 			
 		codigoGeneracion = identificacion.getString("codigoGeneracion");
-
-
+		
+		
 		String signature = getSignature(jsonorg);
 		if (!voided) {
 			tipoDte = identificacion.getString("tipoDte");

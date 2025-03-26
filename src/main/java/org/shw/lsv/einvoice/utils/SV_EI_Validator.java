@@ -139,7 +139,7 @@ public class SV_EI_Validator implements ModelValidator
 
 	public String docValidate (PO po, int timing)
 	{
-		if (po instanceof MClient && timing ==TIMING_AFTER_POST) {
+		if (po instanceof MClient && timing ==TIMING_BEFORE_POST) {
 
 			MInvoice invoice = (MInvoice)po;
             if (invoice.get_ValueAsString("ei_selloRecibido") != null && invoice.get_ValueAsString("ei_selloRecibido").length() >0 && invoice.isPrinted())

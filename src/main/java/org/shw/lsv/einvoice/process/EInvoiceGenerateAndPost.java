@@ -22,8 +22,11 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.adempiere.core.domains.models.X_C_DocType;
+import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MMailText;
 import org.compiere.model.MMovement;
@@ -301,11 +304,17 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	}
 	
 	protected String printAndSendInvoices(MInvoice invoice) throws Exception{
-
+		MDocType docType = (MDocType)invoice.getC_DocType();
+		
+		if (!docType.get_ValueAsBoolean("SendEMail"))
+			return "";
+		int mailID = docType.get_ValueAsInt("R_MailText_ID");
+		if (mailID<=0)
+			return"";
 		ProcessInfo processInfo = ProcessBuilder.create(getCtx()).process(EI_C_Invoice_Print.getProcessId())
 				.withTitle(EI_C_Invoice_Print.getProcessName())
 				.withRecordId(MInvoice.Table_ID	, invoice.getC_Invoice_ID())
-				.withParameter(MMailText.COLUMNNAME_R_MailText_ID, getMailTextId())
+				.withParameter(MMailText.COLUMNNAME_R_MailText_ID, mailID)
 				.withoutTransactionClose()
 				.execute(get_TrxName());
 		if (processInfo.isError())
@@ -316,11 +325,22 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	
 	protected String processInvoiceDirect(MInvoice invoice) throws Exception{
 
+		String jsonwhereClause = "C_Invoice_ID=? AND json is not null  AND ei_Validationstatus = '01'";
+		X_E_InvoiceElectronic invoiceElectronic = new Query(getCtx(), X_E_InvoiceElectronic.Table_Name, jsonwhereClause, get_TrxName())
+                .setOnlyActiveRecords(true)
+                .setParameters(invoice.getC_Invoice_ID())
+                .setOrderBy(" created desc")
+                .first();
+		if (invoiceElectronic !=null &&  invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado")) {
+			printAndSendInvoices(invoice);
+			return"";
+		}
 
 		Boolean isvoided = isVoided(invoice);
 		if (isvoided ) {
 			MInvoice orgInvoice = (MInvoice)invoice.getReversal();
-			if (orgInvoice.get_ValueAsString("ei_selloRecibido") == null|| orgInvoice.get_ValueAsString("ei_selloRecibido").equals(""))
+			if (orgInvoice.get_ValueAsString("ei_selloRecibido") == null|| orgInvoice.get_ValueAsString("ei_selloRecibido").equals("")) {
+			}
 				return "";			
 		}
 		StringBuffer errorMessages = new StringBuffer();
@@ -376,8 +396,9 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 			sv_minhacienda.publishDocument(invoice);
 			invoice.set_ValueOfColumn("ei_Processing", false);
 			invoice.saveEx();
-			if (invoice.get_ValueAsString("ei_selloRecibido") != null) {
-				//printAndSendInvoices(invoice);
+			if (invoice.get_ValueAsString("ei_selloRecibido") != null && invoice.get_ValueAsString("ei_selloRecibido").length()>0) {
+				//commitEx();
+				printAndSendInvoices(invoice);
 				//sendIndividualMail(null, invoice);
 				System.out.println("End invoice No. " + invoice.getDocumentNo());
 
