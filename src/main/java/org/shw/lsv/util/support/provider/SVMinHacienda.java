@@ -170,8 +170,9 @@ public class SVMinHacienda implements IDeclarationProvider {
 		
 
 		testlocal = invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado");
-		if (testlocal)
+		if (testlocal) {
 			return "";
+		}
 		
 		
 		

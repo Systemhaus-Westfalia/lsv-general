@@ -145,35 +145,35 @@ public class EI_Validator implements ModelValidator
 		{
 			if (timing == TIMING_BEFORE_POST)
 			{		
-				  MInvoice invoice = (MInvoice)po; 
-				  System.out.println(" ei_validator docvalidate_beforePost evaluate evaluate for "  + invoice.getDocumentNo());	
-				  Timestamp startdate = (Timestamp)MClient.get(po.getCtx()).get_Value("ei_startdate");
-				  if (startdate == null || startdate.after(invoice.getDateAcct()))
-					  return "";
-				 // if (invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado"))
+				MInvoice invoice = (MInvoice)po; 				
+				System.out.println(" ei_validator docvalidate_beforePost evaluate evaluate for "  + invoice.getDocumentNo());	
+				Timestamp startdate = (Timestamp)MClient.get(po.getCtx()).get_Value("ei_startdate");
+				if (startdate == null || startdate.after(invoice.getDateAcct()))
+					return "";
+				// if (invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado"))
 				//	  return "";
-				 // Trx transaction = Trx.get(invoice.get_TrxName(), false);
-				 // transaction.commit();
-				  MDocType docType = (MDocType)invoice.getC_DocType();				  
-				  
-				  if (docType.get_ValueAsInt("E_DocType_ID") <= 0) return ""; 
+				// Trx transaction = Trx.get(invoice.get_TrxName(), false);
+				// transaction.commit();
+				MDocType docType = (MDocType)invoice.getC_DocType();				  
 
-				  System.out.println(" ei_validator docvalidate_beforePost start publish for "  + invoice.getDocumentNo());					 
-				  ProcessInfo  processInfo =
-				  ProcessBuilder.create(invoice.getCtx())
-				  .process(EInvoiceGenerateAndPost.getProcessId())
-				  .withTitle(EInvoiceGenerateAndPost.getProcessName())
-				  .withRecordId(MInvoice.Table_ID , invoice.getC_Invoice_ID())
-				  .withParameter(MProcess.COLUMNNAME_IsDirectPrint, true)
-				  .withParameter(MInvoice.COLUMNNAME_AD_Client_ID, invoice.getAD_Client_ID())
-				  .withParameter(MInvoice.COLUMNNAME_C_Invoice_ID, invoice.getC_Invoice_ID())
-				  .withoutTransactionClose()
-				  .execute(invoice.get_TrxName()); 
-				  if (processInfo.isError())
-					  throw new AdempiereException(processInfo.getSummary());
-				  
-				  return "";
-				 }			
+				if (docType.get_ValueAsInt("E_DocType_ID") <= 0) return ""; 
+
+				System.out.println(" ei_validator docvalidate_beforePost start publish for "  + invoice.getDocumentNo());					 
+				ProcessInfo  processInfo =
+						ProcessBuilder.create(invoice.getCtx())
+						.process(EInvoiceGenerateAndPost.getProcessId())
+						.withTitle(EInvoiceGenerateAndPost.getProcessName())
+						.withRecordId(MInvoice.Table_ID , invoice.getC_Invoice_ID())
+						.withParameter(MProcess.COLUMNNAME_IsDirectPrint, true)
+						.withParameter(MInvoice.COLUMNNAME_AD_Client_ID, invoice.getAD_Client_ID())
+						.withParameter(MInvoice.COLUMNNAME_C_Invoice_ID, invoice.getC_Invoice_ID())
+						.withoutTransactionClose()
+						.execute(invoice.get_TrxName()); 
+				if (processInfo.isError())
+					throw new AdempiereException(processInfo.getSummary());
+
+				return "";
+			}			
 		}
 		
 		if (po instanceof MOrder) {

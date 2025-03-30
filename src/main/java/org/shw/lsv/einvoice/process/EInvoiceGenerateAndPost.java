@@ -22,24 +22,18 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.adempiere.core.domains.models.X_C_DocType;
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MMailText;
-import org.compiere.model.MMovement;
 import org.compiere.model.Query;
-import org.compiere.process.DocAction;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Trx;
-import org.eevolution.distribution.model.MDDOrder;
-import org.eevolution.distribution.process.GenerateMovement;
 import org.eevolution.services.dsl.ProcessBuilder;
-import org.shw.lsv.util.support.provider.Findex;
 import org.shw.lsv.util.support.provider.SVMinHacienda;
 import org.spin.model.MADAppRegistration;
 
@@ -62,14 +56,14 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 		StringBuffer result = new StringBuffer();
 		if (isDirectPrint()) {
 		Integer id = (Integer)getRecord_ID();
-        // Trx   dbTransaction = Trx.get(id.toString(), true);   
+        
 			MInvoice invoice = new MInvoice(getCtx(), getRecord_ID(), get_TrxName());
 					processInvoiceDirect(invoice);
 		}
 		else {
 			result.append(processInvoices());
 			result.append(processVoided());
-
+			result.append(printInvoices());
 		}
 		return result.toString();
 	}
@@ -303,7 +297,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 		
 	}
 	
-	protected String printAndSendInvoices(MInvoice invoice) throws Exception{
+	protected String printAndSendInvoice(MInvoice invoice) throws Exception{
 		MDocType docType = (MDocType)invoice.getC_DocType();
 		
 		if (!docType.get_ValueAsBoolean("SendEMail"))
@@ -332,7 +326,9 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
                 .setOrderBy(" created desc")
                 .first();
 		if (invoiceElectronic !=null &&  invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado")) {
-			printAndSendInvoices(invoice);
+			Trx trx = Trx.get(get_TrxName(), false);
+			trx.commit();
+			//printAndSendInvoices(invoice);
 			return"";
 		}
 
@@ -347,11 +343,9 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 		int noCompletados = 0;
 		String applicationType = IGenerateAndPost.getApplicationType();
 		MADAppRegistration registration = null;
-		Timestamp startdate = null;
 		String errorMessage= "";
 		MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
 
-		startdate = (Timestamp)(client.get_Value("ei_Startdate"));
 		System.out.println("\n" + "******************************************************");
 		System.out.println("Process EInvoiceGenerateAndPost: started with Client '" + client.getName() + "', ID: " + getClientId());
 		registration = new Query(getCtx(), MADAppRegistration.Table_Name, " AD_Client_ID=? AND EXISTS(SELECT 1 FROM AD_AppSupport s "
@@ -387,19 +381,13 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 			updateTransaction.commit(true);
 			updateTransaction.close();
 		}
-
 		AtomicInteger counter = new AtomicInteger(0);
-
-
 		try {
 			System.out.println("Start invoice No. " + invoice.getDocumentInfo()); 
 			sv_minhacienda.publishDocument(invoice);
 			invoice.set_ValueOfColumn("ei_Processing", false);
 			invoice.saveEx();
 			if (invoice.get_ValueAsString("ei_selloRecibido") != null && invoice.get_ValueAsString("ei_selloRecibido").length()>0) {
-				//commitEx();
-				printAndSendInvoices(invoice);
-				//sendIndividualMail(null, invoice);
 				System.out.println("End invoice No. " + invoice.getDocumentNo());
 
 			}
@@ -423,6 +411,57 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 		if (invoice.getReversal_ID() < invoice.getC_Invoice_ID()) return true;
 		return false;
 		
+	}
+	
+	private String printInvoices () {
+		
+		String whereClause = "c_INvoice_ID IN (select i.c_INvoice_ID from c_Invoice i "
+				+ "INNER JOIN c_Doctype dt ON i.c_Doctype_ID=dt.c_Doctype_ID "
+				+ "WHERE dt.sendEMail = 'Y' AND i.docstatus in ('CO','CL') "
+				+ "AND i.AD_CLient_ID=? "
+				+ "AND i.ei_sellorecibido is not null AND i.isprinted = 'N')";
+		
+		try {
+			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)
+						.setParameters(getClientId())
+						.getIDs();
+			final int length = invoiceIds.length;
+			int noCompletados = length;
+			if(length==0) {
+				System.out.println("****************** Process EInvoiceGenerateAndPost: There is no invoice to process!!!");
+				System.out.println("Process EInvoiceGenerateAndPost: finished" + "\n");
+				return "No hay documentos completados pendientes ";
+			}
+			System.out.println("Collecting invoices to be processed..."); 
+			AtomicInteger counter = new AtomicInteger(0);
+
+			Arrays.stream(invoiceIds)
+			.filter(invoiceId -> invoiceId > 0)
+			.forEach(invoiceId -> {
+				try {
+					counter.getAndIncrement();
+					System.out.println("Start invoice No. " + counter + " of " + length); 
+					Integer id = (Integer)invoiceId;
+					MInvoice invoice = new MInvoice(Env.getCtx(), invoiceId, get_TrxName());
+					printAndSendInvoice(invoice);
+				} catch (Exception e) {
+					String error = "Error al procesar documento #" + invoiceId + " " + e;
+					System.out.println(error);
+				}
+				finally {
+					;
+				}
+				System.out.println("Publish document successful"); 
+			});
+		}
+		catch (Exception e) {
+			System.out.println("Process EInvoiceGenerateAndPost: error " + e);
+		}
+		System.out.println("Process PrintInvoices: finished");
+		System.out.println("******************************************************" + "\n");		
+		return "Documentos sent: "  ;
+	
+	
 	}
 	
 	

@@ -23,10 +23,12 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import org.adempiere.core.domains.models.I_AD_PrintFormat;
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MMailText;
 import org.compiere.model.Query;
@@ -160,9 +162,9 @@ public class EI_C_Invoice_Print extends EI_C_Invoice_PrintAbstract
     private File getPDF(MInvoice invoice) {
     	
 		//ReportCtl.startDocumentPrint(ReportEngine.INVOICE, invoice.getC_Invoice_ID(),false);
-
-
-        ProcessInfo processInfo = ProcessBuilder.create(getCtx()).process(invoice.getC_DocType().getAD_PrintFormat().getJasperProcess_ID())
+    	MDocType docType = (MDocType)invoice.getC_DocType();
+    	int jasperProcessID = docType.get_ValueAsInt(I_AD_PrintFormat.COLUMNNAME_JasperProcess_ID);
+        ProcessInfo processInfo = ProcessBuilder.create(getCtx()).process(jasperProcessID)
                 .withTitle(getProcessName())
                 .withRecordId(MInvoice.Table_ID, invoice.getC_Invoice_ID())
                // .withPrintPreview()
