@@ -172,6 +172,7 @@ public class EI_Validator implements ModelValidator
 				if (processInfo.isError())
 					throw new AdempiereException(processInfo.getSummary());
 
+				invoice.set_ValueOfColumn("ei_Processing", false);
 				return "";
 			}			
 		}

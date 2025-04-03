@@ -326,8 +326,6 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
                 .setOrderBy(" created desc")
                 .first();
 		if (invoiceElectronic !=null &&  invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado")) {
-			Trx trx = Trx.get(get_TrxName(), false);
-			trx.commit();
 			//printAndSendInvoices(invoice);
 			return"";
 		}
@@ -373,19 +371,17 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 
 
 		System.out.println("Collecting invoices to be processed..."); 
-		Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
-		StringBuffer sqlUpdate = new StringBuffer("UPDATE C_Invoice set ei_Processing = 'Y' WHERE c_INvoice_ID = " + invoice.getC_Invoice_ID());
+		/*Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
+		StringBuffer sqlUpdate = new StringBuffer("UPDATE C_Invoice set ei_Processing = 'N' WHERE c_INvoice_ID = " + invoice.getC_Invoice_ID());
 		System.out.println("Set 'processing' flag so invoices cannot be processed by other processes..."+ "\n"); 
 		DB.executeUpdateEx(sqlUpdate.toString(),  invoice.get_TrxName());
 		if (updateTransaction != null) {
 			updateTransaction.commit(true);
 			updateTransaction.close();
-		}
-		AtomicInteger counter = new AtomicInteger(0);
+		}*/
 		try {
 			System.out.println("Start invoice No. " + invoice.getDocumentInfo()); 
 			sv_minhacienda.publishDocument(invoice);
-			invoice.set_ValueOfColumn("ei_Processing", false);
 			invoice.saveEx();
 			if (invoice.get_ValueAsString("ei_selloRecibido") != null && invoice.get_ValueAsString("ei_selloRecibido").length()>0) {
 				System.out.println("End invoice No. " + invoice.getDocumentNo());

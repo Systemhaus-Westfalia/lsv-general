@@ -65,7 +65,7 @@ public class EInvoiceGetToken extends EInvoiceGetTokenAbstract
 		sv_minhaciendaToken.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
 		
 		try {
-			sv_minhaciendaToken.publishDocument(null);
+			errorMessage = sv_minhaciendaToken.publishDocument(null);
 		} catch (Exception e) {
 			String error = "Error al procesar documento #" + " " + e;
 			System.out.println(error);
@@ -76,6 +76,6 @@ public class EInvoiceGetToken extends EInvoiceGetTokenAbstract
 
 
 
-		return "";
+		return errorMessage;
 	}
 }

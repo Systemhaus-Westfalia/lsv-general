@@ -18,6 +18,7 @@ package org.shw.lsv.util.support.provider;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -144,20 +145,38 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
 		//form.param("user", "06140904181038");
 		Entity<Form> entity = Entity.form(form);
 		System.out.println("Response: Post" );
-
+		String result = "";
 		Response response = invocationBuilder.post(entity);
 		if (response.getStatus()==HTTP_RESPONSE_200_OK) {
 
 			String output = response.readEntity(String.class);
 			JSONObject jsonoutput = new JSONObject(output); 	
 			JSONObject body = jsonoutput.getJSONObject("body");
-        	String token = body.getString("token");
-        	token = token.trim();
-        	client.set_ValueOfColumn("ei_jwt", token);
-        	client.saveEx();  
-        	System.out.println("reponse: Status " +  response.getStatus() );
-		}
-		
+			Iterator<String> keys = body.keys();
+			Boolean hastoken = false;
+			while(keys.hasNext()) {
+			    String key = keys.next();
+			    if (key.equals("token")) {
+			    	hastoken = true;
+			    	break;
+			    }
+			}
+			if (!hastoken) {
+				String status = body.getString("estado");
+				if (status.equals("RECHAZADO")) {
+					result = body.getString("descripcionMsg") + " clasificaMsg: " +  body.getString("clasificaMsg");
+					client.set_ValueOfColumn("ei_jwt", result);
+					return result;
+				}
+			}
+			else {
+				String token = body.getString("token");
+				token = token.trim();
+				client.set_ValueOfColumn("ei_jwt", token);
+				client.saveEx();  
+				System.out.println("reponse: Status " +  response.getStatus() );
+			}
+		}	
 		
 		else {
 			int status = response.getStatus();
@@ -168,7 +187,7 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
 
 			return "No token";
 		}
-		return null;
+		return "Token generado";
 	}
 
 	/**
