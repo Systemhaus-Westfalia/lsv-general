@@ -70,10 +70,12 @@ public class ElectronicInvoice implements IDeclarationDocument {
 				&& invoice.getReversal_ID() < invoice.getC_Invoice_ID();
 				
 		boolean existsWithholding = false;	
+
+		boolean isContingencia = true;
 		client = new MClient(invoice.getCtx(), invoice.getAD_Client_ID(), invoice.get_TrxName());
 		int orgID = invoice.getAD_Org_ID();		
 		orgInfo= MOrgInfo.get(invoice.getCtx(), orgID, invoice.get_TrxName());
-		documentFactory = getDocumentFactory(invoice, isreversal, existsWithholding);
+		documentFactory = getDocumentFactory(invoice, isreversal, existsWithholding, isContingencia);
 		if (documentFactory == null) {
 			errorMsg = "El documento " + invoice.getDocumentNo() + " no pertenece a un tipo de documento valido: " + e_DocType.getValue() ;
 			System.out.println("****************** Error producido en ElectronicInvoice.processElectronicInvoice(): " + errorMsg);
@@ -141,7 +143,7 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		return electronicInvoiceModel;
 	}
 
-	private EDocumentFactory getDocumentFactory(MInvoice invoice, boolean isreversal, boolean existsWithholding) {
+	private EDocumentFactory getDocumentFactory(MInvoice invoice, boolean isreversal, boolean existsWithholding, boolean isContingencia) {
 		EDocumentFactory documentFactory = null;
 		if (isreversal) {
 			documentFactory = new AnulacionFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);

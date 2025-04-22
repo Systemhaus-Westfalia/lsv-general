@@ -411,11 +411,10 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	
 	private String printInvoices () {
 		
-		String whereClause = "c_INvoice_ID IN (select i.c_INvoice_ID from c_Invoice i "
-				+ "INNER JOIN c_Doctype dt ON i.c_Doctype_ID=dt.c_Doctype_ID "
-				+ "WHERE dt.sendEMail = 'Y' AND i.docstatus in ('CO','CL') "
-				+ "AND i.AD_CLient_ID=? "
-				+ "AND i.ei_sellorecibido is not null AND i.isprinted = 'N')";
+		String whereClause = 
+				"invoicetosend(C_Invoice_ID) = 'Y' AND docstatus in ('CO','CL') "
+				+ "AND AD_CLient_ID=? "
+				+ "AND ei_sellorecibido is not null";
 		
 		try {
 			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)

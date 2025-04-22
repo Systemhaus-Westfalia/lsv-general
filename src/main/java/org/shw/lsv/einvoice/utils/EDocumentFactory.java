@@ -18,6 +18,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.adempiere.core.domains.models.X_C_Region;
+import org.adempiere.core.domains.models.X_C_UOM;
 import org.adempiere.core.domains.models.X_E_Activity;
 import org.adempiere.core.domains.models.X_E_BPType;
 import org.adempiere.core.domains.models.X_E_DocType;
@@ -157,8 +158,8 @@ public abstract class EDocumentFactory {
 					|| directoryPath.endsWith("\\"))
 					? directoryPath:directoryPath + "/"; 
 			
-			// Path filepath = Paths.get(directoryPath);  // nicht nÃ¶tig
-			//Files.createDirectories(filepath);  // nicht nÃ¶tig
+			// Path filepath = Paths.get(directoryPath);  // nicht nötig
+			//Files.createDirectories(filepath);  // nicht nötig
 			File readableFile = new File (fullPathFileName);
 			long fileLength = readableFile.length();
 			byte[] fileContent = new byte[(int) fileLength];
@@ -371,7 +372,17 @@ public abstract class EDocumentFactory {
 		X_E_TimeSpan e_TimeSpan = new X_E_TimeSpan(Env.getCtx()	, paymentTerm.get_ValueAsInt(X_E_TimeSpan.COLUMNNAME_E_TimeSpan_ID), null);
 		return e_TimeSpan;
 	}
-	
+	public int uom_getValue(X_C_UOM uom) {	
+		String value = uom.get_ValueAsString("Value");
+		int valueint = 59;
+		try {
+			valueint = Integer.parseInt(value);
+		}
+		catch (NumberFormatException e) {
+			valueint = 59;
+		}
+		return valueint;
+	}
 	public String getSignature() {
 		return signature;
 	}

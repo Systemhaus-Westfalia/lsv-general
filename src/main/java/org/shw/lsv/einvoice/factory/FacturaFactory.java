@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+import org.adempiere.core.domains.models.X_C_UOM;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -495,18 +496,19 @@ public class FacturaFactory extends EDocumentFactory {
 				description = description.substring(0, 998);
                 
 			jsonCuerpoDocumentoItem.put(Factura.NUMITEM, i);
-			jsonCuerpoDocumentoItem.put(Factura.TIPOITEM, 2);
+			jsonCuerpoDocumentoItem.put(Factura.TIPOITEM, 3);
 			//jsonCuerpoDocumentoItem.put(Factura.NUMERODOCUMENTO, getNumeroControl(invoice.get_ID(), orgInfo, "DTE-01-"));
-			jsonCuerpoDocumentoItem.put(Factura.CANTIDAD, invoiceLine.getQtyInvoiced());
+			jsonCuerpoDocumentoItem.put(Factura.CANTIDAD, invoiceLine.getQtyEntered());
 			jsonCuerpoDocumentoItem.put(Factura.CODIGO, codigo);
 			jsonCuerpoDocumentoItem.put(Factura.CODIGOTRIBUTO,  tax_getE_Duties((MTax)invoiceLine.getC_Tax()).getValue());  // String codTributo = "20";
 			
 			JSONArray jsonTributosArray = new JSONArray();
 			jsonCuerpoDocumentoItem. put( Factura.TRIBUTOS, jsonTributosArray); //tributosItems.add("20");
-			
+			X_C_UOM uom = (X_C_UOM)invoiceLine.getC_UOM();
+			//jsonCuerpoDocumentoItem.put(Factura.UNIMEDIDA, uom_getValue(uom));
 			jsonCuerpoDocumentoItem.put(Factura.UNIMEDIDA, 59);
 			jsonCuerpoDocumentoItem.put(Factura.DESCRIPCION, description);
-			BigDecimal precioUnitario = ventaNoGravada.compareTo(Env.ZERO)!=0? Env.ZERO: invoiceLine.getPriceActual();
+			BigDecimal precioUnitario = ventaNoGravada.compareTo(Env.ZERO)!=0? Env.ZERO: invoiceLine.getPriceEntered();
 			jsonCuerpoDocumentoItem.put(Factura.PRECIOUNI, precioUnitario);
 			jsonCuerpoDocumentoItem.put(Factura.MONTODESCU, Env.ZERO);
 			jsonCuerpoDocumentoItem.put(Factura.VENTANOSUJ, ventaNoSuj);
