@@ -23,6 +23,7 @@ public class EDocument {
 	public static final String EXTENSION 			= "extension";
 	public static final String APENDICE 			= "apendice";
 	public static final String DOCUMENTO 			= "documento";
+	public static final String DETALLEDTE 			= "detalleDTE";
 	public static final String MOTIVO 				= "motivo";
 	public static final String SUJETOEXCLUIDO		= "sujetoExcluido";
 	public static final String ETIQUETA				= "etiqueta";
@@ -42,7 +43,7 @@ public class EDocument {
 	public static final String CODACTIVIDAD 		=  "codActividad";
 	public static final String DESCACTIVIDAD 		=  "descActividad";
 	public static final String NOMBRECOMERCIAL 		=  "nombreComercial";
-	public static final String TIPOESTABLECIMIENTO =  "tipoEstablecimiento";
+	public static final String TIPOESTABLECIMIENTO  =  "tipoEstablecimiento";
 	public static final String TIPOPERSONA 			=  "tipoPersona";
 	public static final String DEPARTAMENTO 		=  "departamento";
 	public static final String MUNICIPIO 			=  "municipio";
@@ -50,6 +51,7 @@ public class EDocument {
 	public static final String TELEFONO 			=  "telefono";
 	public static final String CORREO 				=  "correo";
 	public static final String TIPODOCUMENTO 		=  "tipoDocumento";
+	public static final String NOITEM 				= "noItem";
 	public static final String NUMDOCUMENTO 		=  "numDocumento";
 	public static final String NUMITEM 				= "numItem";
 	public static final String TIPOITEM 			= "tipoItem";
@@ -113,6 +115,7 @@ public class EDocument {
 	public static final String ERRORMESSAGES 		  = "errorMessages";
 	public static final String MOTIVOCONTIN			  = "motivoContin";
 	public static final String TIPOCONTINGENCIA		  = "tipoContingencia";
+	public static final String MOTIVOCONTINGENCIA	  = "motivoContingencia";
 	public static final String VALOR				  = "valor";
 	public static final String TIPOITEMEXPOR		  = "tipoItemExpor";
 	public static final String CODPAIS				  = "codPais";
@@ -122,6 +125,12 @@ public class EDocument {
 	public static final String NUMPAGOELECTRONICO	  = "numPagoElectronico";
 	public static final String FECANULA				  = "fecAnula";
 	public static final String HORANULA				  = "horAnula";
+	public static final String FTRANSMISION			  = "fTransmision";
+	public static final String HTRANSMISION			  = "hTransmision";
+	public static final String FINICIO				  = "fInicio";
+	public static final String FFIN				      = "fFin";
+	public static final String HINICIO				  = "hInicio";
+	public static final String HFIN				      = "hFin";
 	public static final String NOMESTABLECIMIENTO	  = "nomEstablecimiento";
 	public static final String CODESTABLEMH			  = "codEstableMH";
 	public static final String CODPUNTOVENTAMH		  = "codPuntoVentaMH";
@@ -134,6 +143,7 @@ public class EDocument {
 	public static final String NOMBRERESPONSABLE	  = "nombreResponsable";
 	public static final String TIPDOCRESPONSABLE	  = "tipDocResponsable";
 	public static final String NUMDOCRESPONSABLE	  = "numDocResponsable";
+	public static final String NUMERODOCRESPONSABLE	  = "numeroDocResponsable";
 	public static final String NOMBRESOLICITA		  = "nombreSolicita";
 	public static final String TIPDOCSOLICITA		  = "tipDocSolicita";
 	public static final String NUMDOCSOLICITA		  = "numDocSolicita";
