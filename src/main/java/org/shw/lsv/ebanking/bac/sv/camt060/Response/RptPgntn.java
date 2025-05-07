@@ -4,15 +4,30 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RptPgntn {
+                      
+    @JsonProperty(value = "PgNb", required = true)
+    String PgNb;
 
-    @JsonProperty("PgNb")
-    String PgNb;                // ToDo: check the correct values in the JSON
-
-    @JsonProperty("LastPgInd")  // ToDo: check the correct values in the JSON
+                      
+    @JsonProperty(value = "LastPgInd", required = true)
     String LastPgInd;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=RptPgntn.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=RptPgntn.class.getName();
+
+    /**
+	 * @param pgNb the PgNb to be set<br>
+	 * @param lastPgInd the LastPgInd to be set<br>
+	 * Both @pgNb and @lastPgInd are mandatory in the JSON definition.
+     * 
+     * Constructor with parameters
+     * For using the Constructor at deserialization time, it has to be of the form:
+     * public RptPgntn(@JsonProperty(value = "PgNb", required = true) String pgNb,.....)
+     */
+    public RptPgntn(String pgNb, String lastPgInd) {
+        setPgNb(pgNb);
+        setLastPgInd(lastPgInd);
+    }
     
 
     public String getPgNb() {
@@ -21,7 +36,7 @@ public class RptPgntn {
 
     public void setPgNb(String pgNb) {
         if (PgNb == null || PgNb.isEmpty()) {
-            throw new IllegalArgumentException("Wrong parameter 'PgNb' (" + PgNb + ") in " +  fullyQualifiedClassName + ".setPgNb()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'PgNb' (" + PgNb + ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setPgNb()" + "\n");
         }
         this.PgNb = pgNb;
     }
@@ -36,7 +51,7 @@ public class RptPgntn {
      */
     public void setLastPgInd(String lastPgInd) {
         if (LastPgInd == null || LastPgInd.isEmpty()) {
-            throw new IllegalArgumentException("Wrong parameter 'LastPgInd' (" + LastPgInd + ") in " +  fullyQualifiedClassName + ".setLastPgInd()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'LastPgInd' (" + LastPgInd + ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setLastPgInd()" + "\n");
         }
         this.LastPgInd = lastPgInd;
     }

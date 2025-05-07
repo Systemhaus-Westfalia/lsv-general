@@ -11,7 +11,7 @@ public class PtyId {
     OrgId OrgId;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=PtyId.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=PtyId.class.getName();
 
 
     public OrgId getOrgId() {
@@ -20,7 +20,7 @@ public class PtyId {
 
     public void setOrgId(OrgId orgId) {
         if (orgId == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'orgId' in " +  fullyQualifiedClassName + ".setOrgId()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'orgId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setOrgId()" + "\n");
         }
         this.OrgId = orgId;
     }

@@ -9,7 +9,7 @@ public class Tp {
     CdOrPrtry CdOrPrtry;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=Tp.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=Tp.class.getName();
 
 
     /**
@@ -26,7 +26,7 @@ public class Tp {
      */
     public void setCdOrPrtry(CdOrPrtry cdOrPrtry) {
         if (cdOrPrtry == null) {
-            throw new IllegalArgumentException("Wrong parameter 'cdOrPrtry' in " +  fullyQualifiedClassName + ".setCdOrPrtry() \n");
+            throw new IllegalArgumentException("Wrong parameter 'cdOrPrtry' in " +  FULLY_QUALIFIED_CLASSNAME + ".setCdOrPrtry() \n");
         }
         this.CdOrPrtry = cdOrPrtry;
     }

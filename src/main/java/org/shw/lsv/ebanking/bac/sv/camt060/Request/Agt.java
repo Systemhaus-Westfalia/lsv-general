@@ -10,13 +10,12 @@ public class Agt {
     FinInstnId FinInstnId;  // BICFI (Bank Identifier Code)
 
     @JsonIgnore
-    final String fullyQualifiedClassName=Agt.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=Agt.class.getName();
 
 
 	/**
 	 * @return the FinInstnId object<br>
 	 */
-
     public FinInstnId getFinInstnId() {
         return FinInstnId;
     }
@@ -29,7 +28,7 @@ public class Agt {
 
     public void setFinInstnId(FinInstnId finInstnId) {
         if (finInstnId == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'finInstnId' in " +  fullyQualifiedClassName + ".setFinInstnId()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'finInstnId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setFinInstnId()" + "\n");
         }
         this.FinInstnId = finInstnId;
     }

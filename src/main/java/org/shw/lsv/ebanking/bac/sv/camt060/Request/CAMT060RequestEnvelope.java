@@ -17,7 +17,7 @@ public class CAMT060RequestEnvelope {
      CAMT060RequestDocument CAMT060RequestDocument;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=CAMT060RequestEnvelope.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=CAMT060RequestEnvelope.class.getName();
 
         
     /**
@@ -34,7 +34,7 @@ public class CAMT060RequestEnvelope {
       */
      public void setAppHdr(AppHdr appHdr) {
         if (appHdr == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'appHdr' in " +  fullyQualifiedClassName + ".setAppHdr()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'appHdr' in " +  FULLY_QUALIFIED_CLASSNAME + ".setAppHdr()" + "\n");
         }
          this.appHdr = appHdr;
      }
@@ -54,7 +54,7 @@ public class CAMT060RequestEnvelope {
       */
      public void setCAMT060RequestDocument(CAMT060RequestDocument documentCAMT060Request) {
         if (documentCAMT060Request == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'documentCAMT060Request' in " +  fullyQualifiedClassName + ".setCAMT060RequestDocument()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'documentCAMT060Request' in " +  FULLY_QUALIFIED_CLASSNAME + ".setCAMT060RequestDocument()" + "\n");
         }
          this.CAMT060RequestDocument = documentCAMT060Request;
      }

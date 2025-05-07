@@ -9,7 +9,7 @@ public class Pty {
     PtyId PtyId;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=PtyId.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=PtyId.class.getName();
 
 
     /**
@@ -25,7 +25,7 @@ public class Pty {
      */
     public void setPtyId(PtyId ptyId) {
         if (ptyId == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'ptyId' in " +  fullyQualifiedClassName + ".setPtyId()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'ptyId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setPtyId()" + "\n");
         }
         this.PtyId = ptyId;
     }

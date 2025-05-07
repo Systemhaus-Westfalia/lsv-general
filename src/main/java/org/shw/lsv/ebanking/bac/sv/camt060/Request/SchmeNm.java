@@ -10,7 +10,7 @@ public class SchmeNm {
     String Prtry;  // "Name of the identification scheme, in a free text form."
 
     @JsonIgnore
-    final String fullyQualifiedClassName=SchmeNm.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=SchmeNm.class.getName();
 
 
 	/**
@@ -39,7 +39,7 @@ public class SchmeNm {
 		if((length>=MINLENGTH && length<=MAXLENGTH) && patternOK)
 			this.Prtry = prtry;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'Id' (" + prtry +  ") in " +  fullyQualifiedClassName + ".setId()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'Id' (" + prtry +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setId()" + "\n");
     }
 
 }

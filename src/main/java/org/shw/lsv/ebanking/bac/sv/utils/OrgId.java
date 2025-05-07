@@ -21,7 +21,7 @@ public class OrgId {
     IdOthr IdOthr=null;  // Choice AcctOwnr_OrgId_2: Identification assigned by an institution.
 
     @JsonIgnore
-    final String fullyQualifiedClassName=OrgId.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=OrgId.class.getName();
 
 
     /**
@@ -45,7 +45,7 @@ public class OrgId {
 		if(patternOK)
 			this.AnyBIC = anyBIC;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'Id' (" + anyBIC +  ") in " +  fullyQualifiedClassName + ".setAnyBIC()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'Id' (" + anyBIC +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setAnyBIC()" + "\n");
     }
 
 	public IdOthr getIdOthr() {
@@ -55,7 +55,7 @@ public class OrgId {
 
     public void setIdOthr(IdOthr idOthr) {
         if (idOthr == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'idOthr' in " +  fullyQualifiedClassName + ".setIdOthr()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'idOthr' in " +  FULLY_QUALIFIED_CLASSNAME + ".setIdOthr()" + "\n");
         }
         this.IdOthr = idOthr;
     }

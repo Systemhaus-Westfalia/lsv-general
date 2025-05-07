@@ -6,15 +6,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class BkToCstmrAcctRpt {
-    
-    @JsonProperty("GrpHdr")
+                      
+    @JsonProperty(value = "GrpHdr", required = true)
     GrpHdr GrpHdr;
     
     @JsonProperty("Rpt")
     Rpt Rpt;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=BkToCstmrAcctRpt.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=BkToCstmrAcctRpt.class.getName();
+
+
+    /*
+     * Constructor with parameters
+     * For using the Constructor at deserialization time, it has to be of the form:
+     * public BkToCstmrAcctRpt(@JsonProperty(value = "GrpHdr", required = true) GrpHdr grpHdr,.....)
+     */
+    public BkToCstmrAcctRpt(GrpHdr grpHdr) {
+        setGrpHdr(grpHdr);
+    }
 
 
     /**
@@ -31,7 +41,7 @@ public class BkToCstmrAcctRpt {
      */
     public void setGrpHdr(GrpHdr grpHdr) {
         if (grpHdr == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'grpHdr' in " +  fullyQualifiedClassName + ".setGrpHdr()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'grpHdr' in " +  FULLY_QUALIFIED_CLASSNAME + ".setGrpHdr()" + "\n");
         }
         this.GrpHdr = grpHdr;
     }
@@ -51,7 +61,7 @@ public class BkToCstmrAcctRpt {
      */
     public void setRpt(Rpt Rpt) {  
         if (Rpt == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'Rpt' in " +  fullyQualifiedClassName + ".setRpt()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'Rpt' in " +  FULLY_QUALIFIED_CLASSNAME + ".setRpt()" + "\n");
         } 
         this.Rpt = Rpt;
     }

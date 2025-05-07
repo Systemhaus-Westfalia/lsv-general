@@ -18,7 +18,7 @@ public class AcctOwnr {
     Agt Agt= null;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=AcctOwnr.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=AcctOwnr.class.getName();
     
 
     public Pty getPty() {
@@ -28,7 +28,7 @@ public class AcctOwnr {
 
     public void setPty(Pty pty) {
         if (pty == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'pty' in " +  fullyQualifiedClassName + ".setPty()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'pty' in " +  FULLY_QUALIFIED_CLASSNAME + ".setPty()" + "\n");
         }
         this.Pty = pty;
     }
@@ -48,7 +48,7 @@ public class AcctOwnr {
 	 */
     public void setAgt(Agt agt) {
         if (agt == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'agt' in " +  fullyQualifiedClassName + ".setAgt()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'agt' in " +  FULLY_QUALIFIED_CLASSNAME + ".setAgt()" + "\n");
         }
         this.Agt = agt;
     }

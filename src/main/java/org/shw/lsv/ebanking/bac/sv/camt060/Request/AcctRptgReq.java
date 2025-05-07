@@ -14,7 +14,7 @@ public class AcctRptgReq {
     RptgReq RptgReq;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=AcctRptgReq.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=AcctRptgReq.class.getName();
 
     /**
      * @return the GrpHdr object<br>
@@ -29,7 +29,7 @@ public class AcctRptgReq {
      */
     public void setGrpHdr(GrpHdr grpHdr) {
         if (grpHdr == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'grpHdr' in " +  fullyQualifiedClassName + ".setGrpHdr()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'grpHdr' in " +  FULLY_QUALIFIED_CLASSNAME + ".setGrpHdr()" + "\n");
         }
         this.GrpHdr = grpHdr;
     }
@@ -48,7 +48,7 @@ public class AcctRptgReq {
      */
     public void setRptgReq(RptgReq rptgReq) {  
         if (rptgReq == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'rptgReq' in " +  fullyQualifiedClassName + ".setRptgReq()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'rptgReq' in " +  FULLY_QUALIFIED_CLASSNAME + ".setRptgReq()" + "\n");
         } 
         this.RptgReq = rptgReq;
     }

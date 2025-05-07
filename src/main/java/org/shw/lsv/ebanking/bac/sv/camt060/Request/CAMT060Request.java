@@ -11,7 +11,7 @@ public class CAMT060Request {
     CAMT060RequestEnvelope envelopeCAMT060Request;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=CAMT060Request.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=CAMT060Request.class.getName();
 
 
     public CAMT060RequestEnvelope getEnvelopeCAMT060Request() {
@@ -25,7 +25,7 @@ public class CAMT060Request {
 	 */
     public void setEnvelopeCAMT060Request(CAMT060RequestEnvelope envelopeCAMT060Request) {
         if (envelopeCAMT060Request == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'envelopeCAMT060Request' in " +  fullyQualifiedClassName + ".setEnvelopeCAMT060Request()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'envelopeCAMT060Request' in " +  FULLY_QUALIFIED_CLASSNAME + ".setEnvelopeCAMT060Request()" + "\n");
         }
         this.envelopeCAMT060Request = envelopeCAMT060Request;
     }

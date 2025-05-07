@@ -20,7 +20,7 @@ public class Fr {
     OrgId OrgId=null;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=Fr.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=Fr.class.getName();
 
 
     /**
@@ -37,7 +37,7 @@ public class Fr {
 	 */
     public void setFIId(FIId fIId) {
         if (fIId == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'fIId' in " +  fullyQualifiedClassName + ".setFIId()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'fIId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setFIId()" + "\n");
         }
         FIId = fIId;
     }
@@ -57,7 +57,7 @@ public class Fr {
      */
     public void setOrgId(OrgId orgId) {
         if (orgId == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'orgId' in " +  fullyQualifiedClassName + ".setOrgId()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'orgId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setOrgId()" + "\n");
         }
         this.OrgId = orgId;
     }

@@ -20,7 +20,7 @@ public class To {
     IDOrgID IDOrgID=null;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=To.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=To.class.getName();
 
 
 	/**
@@ -37,7 +37,7 @@ public class To {
 	 */
     public void setFIId(FIId fIId) {
         if (fIId == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'fIId' in " +  fullyQualifiedClassName + ".setFIId()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'fIId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setFIId()" + "\n");
         }
         FIId = fIId;
     }
@@ -57,7 +57,7 @@ public class To {
      */
     public void setIDOrgID(IDOrgID IDOrgID) {
         if (IDOrgID == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'IDOrgID' in " +  fullyQualifiedClassName + ".setIDOrgID()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'IDOrgID' in " +  FULLY_QUALIFIED_CLASSNAME + ".setIDOrgID()" + "\n");
         }
         this.IDOrgID = IDOrgID;
     }

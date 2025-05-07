@@ -11,7 +11,7 @@ public class RptgPrd {
     String Tp;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=RptgPrd.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=RptgPrd.class.getName();
 
 
     public FrToDt getFrToDt() {
@@ -26,7 +26,7 @@ public class RptgPrd {
      */
     public void setFrToDt(FrToDt frToDt) {
         if (frToDt == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'frToDt' in " +  fullyQualifiedClassName + ".setFrToDt()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'frToDt' in " +  FULLY_QUALIFIED_CLASSNAME + ".setFrToDt()" + "\n");
         }
         this.FrToDt = frToDt;
     }
@@ -45,7 +45,7 @@ public class RptgPrd {
      */
     public void setTp(String tp) {
         if (tp == null || tp.isEmpty()) {
-            throw new IllegalArgumentException("Wrong parameter 'tp' (" + tp + ") in " +  fullyQualifiedClassName + ".setTp()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'tp' (" + tp + ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setTp()" + "\n");
         }
         this.Tp = tp;
     }

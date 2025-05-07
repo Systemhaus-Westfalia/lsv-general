@@ -13,7 +13,7 @@ public class FrToDt {
     String ToDt;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=FrToDt.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=FrToDt.class.getName();
 
 
 	/**
@@ -37,7 +37,7 @@ public class FrToDt {
 		if(patternOK)
 			this.FrDt = frDt;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'frDt' (" + frDt +  ") in " +  fullyQualifiedClassName + ".setFrDt()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'frDt' (" + frDt +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setFrDt()" + "\n");
     }
 
 
@@ -62,7 +62,7 @@ public class FrToDt {
 		if(patternOK)
 			this.ToDt = toDt;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'toDt' (" + toDt +  ") in " +  fullyQualifiedClassName + ".setToDt()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'toDt' (" + toDt +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setToDt()" + "\n");
     }
 
 }

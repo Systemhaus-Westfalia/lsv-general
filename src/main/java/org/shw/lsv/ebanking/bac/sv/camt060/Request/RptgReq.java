@@ -25,7 +25,7 @@ public class RptgReq {
     RptgSeq RptgSeq;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=RptgReq.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=RptgReq.class.getName();
 
 
     /**
@@ -54,7 +54,7 @@ public class RptgReq {
 		if((length>=MINLENGTH && length<=MAXLENGTH) && patternOK)
             this.ReqdMsgNmId = reqdMsgNmId;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'reqdMsgNmId' (" + reqdMsgNmId +  ") in " +  fullyQualifiedClassName + ".setReqdMsgNmId()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'reqdMsgNmId' (" + reqdMsgNmId +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setReqdMsgNmId()" + "\n");
     }
 
 
@@ -72,7 +72,7 @@ public class RptgReq {
      */
     public void setAcct(Acct acct) {
         if (acct == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'acct' in " +  fullyQualifiedClassName + ".setAcct()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'acct' in " +  FULLY_QUALIFIED_CLASSNAME + ".setAcct()" + "\n");
         }
         this.Acct = acct;
     }
@@ -92,7 +92,7 @@ public class RptgReq {
      */
     public void setAcctOwnr(AcctOwnr acctOwnr) {
         if (acctOwnr == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'acctOwnr' in " +  fullyQualifiedClassName + ".setAcctOwnr()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'acctOwnr' in " +  FULLY_QUALIFIED_CLASSNAME + ".setAcctOwnr()" + "\n");
         }
         this.AcctOwnr = acctOwnr;
     }
@@ -112,7 +112,7 @@ public class RptgReq {
      */
     public void setRptgPrd(RptgPrd rptgPrd) {
         if (rptgPrd == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'rptgPrd' in " +  fullyQualifiedClassName + ".setRptgPrd()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'rptgPrd' in " +  FULLY_QUALIFIED_CLASSNAME + ".setRptgPrd()" + "\n");
         }
         this.RptgPrd = rptgPrd;
     }
@@ -132,7 +132,7 @@ public class RptgReq {
      */
     public void setRptgSeq(RptgSeq rptgSeq) {
         if (rptgSeq == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'rptgSeq' in " +  fullyQualifiedClassName + ".setRptgSeq()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'rptgSeq' in " +  FULLY_QUALIFIED_CLASSNAME + ".setRptgSeq()" + "\n");
         }
         this.RptgSeq = rptgSeq;
     }

@@ -6,11 +6,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AcctIdOthr {
-    @JsonProperty("Id")
+                      
+    @JsonProperty(value = "Id", required = true)
     String Id;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=AcctIdOthr.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=AcctIdOthr.class.getName();
+
+
+    /*
+     * Constructor with parameters
+     * For using the Constructor at deserialization time, it has to be of the form:
+     * public AcctIdOthr(@JsonProperty(value = "Id", required = true) String id,.....)
+     */
+    public AcctIdOthr(String id) {
+        setId(id);
+    }
 
 
 	/**
@@ -39,6 +50,6 @@ public class AcctIdOthr {
 		if((length>=MINLENGTH && length<=MAXLENGTH) && patternOK)
 			this.Id = id;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'Id' (" + id +  ") in " +  fullyQualifiedClassName + ".setId()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'Id' (" + id +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setId()" + "\n");
     }
 }

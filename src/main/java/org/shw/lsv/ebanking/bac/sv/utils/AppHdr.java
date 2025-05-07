@@ -31,7 +31,7 @@ public class AppHdr {
     String CreDt;     			// Creation Date and Time
 
     @JsonIgnore
-    final String fullyQualifiedClassName=AppHdr.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=AppHdr.class.getName();
 
 
     /**
@@ -48,7 +48,7 @@ public class AppHdr {
 	 */
     public void setFr(Fr fr) {
         if (fr == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'fr' in " +  fullyQualifiedClassName + ".setFr()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'fr' in " +  FULLY_QUALIFIED_CLASSNAME + ".setFr()" + "\n");
         }
         this.fr = fr;
     }
@@ -68,7 +68,7 @@ public class AppHdr {
 	 */
     public void setTo(To to) {
         if (to == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'to' in " +  fullyQualifiedClassName + ".setTo()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'to' in " +  FULLY_QUALIFIED_CLASSNAME + ".setTo()" + "\n");
         }
         this.to = to;
     }
@@ -95,7 +95,7 @@ public class AppHdr {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.BizMsgIdr = bizMsgIdr;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'bizMsgIdr' (" + bizMsgIdr +  ") in " +  fullyQualifiedClassName + ".setBizMsgIdr()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'bizMsgIdr' (" + bizMsgIdr +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setBizMsgIdr()" + "\n");
     }
 
 
@@ -120,7 +120,7 @@ public class AppHdr {
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.MsgDefIdr = msgDefIdr;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'msgDefIdr' (" + msgDefIdr +  ") in " +  fullyQualifiedClassName + ".setMsgDefIdr()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'msgDefIdr' (" + msgDefIdr +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setMsgDefIdr()" + "\n");
     }
 
 
@@ -150,7 +150,7 @@ public class AppHdr {
 		if((length>=MINLENGTH && length<=MAXLENGTH) && patternOK)
 			this.BizSvc = bizSvc;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'bizSvc' (" + bizSvc +  ") in " +  fullyQualifiedClassName + ".setBizSvc()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'bizSvc' (" + bizSvc +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setBizSvc()" + "\n");
     }
 
 
@@ -176,7 +176,7 @@ public class AppHdr {
 		if(patternOK)
 			this.CreDt = creDt;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'creDt' (" + creDt +  ") in " +  fullyQualifiedClassName + ".setCreDt()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'creDt' (" + creDt +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setCreDt()" + "\n");
     }
 
 

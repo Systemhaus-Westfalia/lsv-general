@@ -12,7 +12,7 @@ public class CAMT052ResponseDocument {
     BkToCstmrAcctRpt BkToCstmrAcctRpt;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=CAMT052ResponseDocument.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=CAMT052ResponseDocument.class.getName();
 
         
     /**
@@ -29,7 +29,7 @@ public class CAMT052ResponseDocument {
      */
     public void setBkToCstmrAcctRpt(BkToCstmrAcctRpt bkToCstmrAcctRpt) {
         if (bkToCstmrAcctRpt == null) {
-            throw new IllegalArgumentException("Wrong parameter 'bkToCstmrAcctRpt' in " +  fullyQualifiedClassName + ".setBkToCstmrAcctRpt()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'bkToCstmrAcctRpt' in " +  FULLY_QUALIFIED_CLASSNAME + ".setBkToCstmrAcctRpt()" + "\n");
         }
         this.BkToCstmrAcctRpt   = bkToCstmrAcctRpt;
     }

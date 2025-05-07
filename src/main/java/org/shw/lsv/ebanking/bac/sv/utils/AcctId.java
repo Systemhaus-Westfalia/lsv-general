@@ -19,7 +19,17 @@ public class AcctId {
     AcctIdOthr AcctIdOthr=null;  // Choice Acct_Id_2: Unique identification of an account, as assigned by the account servicer, using an identification scheme.
 
     @JsonIgnore
-    final String fullyQualifiedClassName=AcctId.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=AcctId.class.getName();
+
+    
+    public AcctId(String iban) {
+		setIBAN(iban);
+    }
+
+    
+    public AcctId(AcctIdOthr acctIdOthr) {
+		setAcctIdOthr(acctIdOthr);
+    }
 
 
 	/**
@@ -44,7 +54,7 @@ public class AcctId {
 		if(patternOK)
 			this.IBAN = IBAN;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'IBAN' (" + IBAN +  ") in " +  fullyQualifiedClassName + ".setIBAN()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'IBAN' (" + IBAN +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setIBAN()" + "\n");
     }
 
 
@@ -62,7 +72,7 @@ public class AcctId {
 	 */
     public void setAcctIdOthr(AcctIdOthr acctIdOthr) {
         if (acctIdOthr == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'acctIdOthr' in " +  fullyQualifiedClassName + ".setAcctIdOthr()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'acctIdOthr' in " +  FULLY_QUALIFIED_CLASSNAME + ".setAcctIdOthr()" + "\n");
         }
         this.AcctIdOthr = acctIdOthr;
     }

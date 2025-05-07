@@ -1,4 +1,4 @@
-package org.shw.lsv.ebanking.bac.sv.utils;
+package     org.shw.lsv.ebanking.bac.sv.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -20,7 +20,7 @@ public class Acct {
     String Ccy= null;  // ToDo: check actual Ccy values.
 
     @JsonIgnore
-    final String fullyQualifiedClassName=Acct.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=Acct.class.getName();
 
 
     /**
@@ -37,7 +37,7 @@ public class Acct {
      */
     public void setAcctId(AcctId acctId) {
         if (acctId == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'acctId' in " +  fullyQualifiedClassName + ".setAcctId()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'acctId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setAcctId()" + "\n");
         }
         this.AcctId = acctId;
     }
@@ -56,7 +56,7 @@ public class Acct {
      */
     public void setCcy(String ccy) {
         if (ccy == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'ccy' (" + ccy + ") in " +  fullyQualifiedClassName + ".setCcy()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'ccy' (" + ccy + ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setCcy()" + "\n");
         }
         this.Ccy = ccy;
     }

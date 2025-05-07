@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * 
  */
-public class CAMT060RequestDocument {
+public class    CAMT060RequestDocument {
 
     @JsonProperty("AcctRptgReq")  // "AcctRptgReq" is the name of the field in the JSON
     AcctRptgReq AcctRptgReq;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=CAMT060RequestDocument.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=CAMT060RequestDocument.class.getName();
 
         
     /**
@@ -29,7 +29,7 @@ public class CAMT060RequestDocument {
      */
     public void setAcctRptgReq(AcctRptgReq acctRptgReq) {
         if (acctRptgReq == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'acctRptgReq' in " +  fullyQualifiedClassName + ".setAcctRptgReq()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'acctRptgReq' in " +  FULLY_QUALIFIED_CLASSNAME + ".setAcctRptgReq()" + "\n");
         }
         this.AcctRptgReq = acctRptgReq;
     }

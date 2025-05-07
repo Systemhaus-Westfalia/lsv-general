@@ -10,7 +10,7 @@ public class RptgSeq {
     String EQSeq;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=RptgSeq.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=RptgSeq.class.getName();
 
 
 	/**
@@ -34,7 +34,7 @@ public class RptgSeq {
 		if(patternOK)
 			this.EQSeq = eQSeq;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'eQSeq' (" + eQSeq +  ") in " +  fullyQualifiedClassName + ".setEQSeq()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'eQSeq' (" + eQSeq +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setEQSeq()" + "\n");
     }
 
 }

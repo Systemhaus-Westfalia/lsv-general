@@ -12,7 +12,7 @@ public class FIId {
     FinInstnId FinInstnId;  // BICFI (Bank Identifier Code)
 
     @JsonIgnore
-    final String fullyQualifiedClassName=FIId.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=FIId.class.getName();
 
 
 	/**
@@ -31,7 +31,7 @@ public class FIId {
 
     public void setFinInstnId(FinInstnId finInstnId) {
         if (finInstnId == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'finInstnId' in " +  fullyQualifiedClassName + ".setFinInstnId()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'finInstnId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setFinInstnId()" + "\n");
         }
         this.FinInstnId = finInstnId;
     }

@@ -17,7 +17,7 @@ public class CAMT052ResponseEnvelope {
      CAMT052ResponseDocument CAMT052ResponseDocument;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=CAMT052ResponseEnvelope.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=CAMT052ResponseEnvelope.class.getName();
 
         
     /**
@@ -34,7 +34,7 @@ public class CAMT052ResponseEnvelope {
       */
      public void setAppHdr(AppHdr appHdr) {
         if (appHdr == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'appHdr' in " +  fullyQualifiedClassName + ".setAppHdr()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'appHdr' in " +  FULLY_QUALIFIED_CLASSNAME + ".setAppHdr()" + "\n");
         }
          this.appHdr = appHdr;
      }
@@ -54,7 +54,7 @@ public class CAMT052ResponseEnvelope {
       */
      public void setCAMT052ResponseDocument(CAMT052ResponseDocument documentCAMT052Response) {
         if (documentCAMT052Response == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'documentCAMT052Response' in " +  fullyQualifiedClassName + ".setDocumentCAMT060Request()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'documentCAMT052Response' in " +  FULLY_QUALIFIED_CLASSNAME + ".setDocumentCAMT060Request()" + "\n");
         }
          this.CAMT052ResponseDocument = documentCAMT052Response;
      }

@@ -9,14 +9,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Common information for the message.
  */
 public class GrpHdr {
-    @JsonProperty("MsgId")
+                      
+    @JsonProperty(value = "MsgId", required = true)
     String MsgId;  // Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message.
-
-    @JsonProperty("CreDtTm")
+                      
+    @JsonProperty(value = "CreDtTm", required = true)
     String CreDtTm;  // Date and time at which the message was created.
 
     @JsonIgnore
-    final String fullyQualifiedClassName=GrpHdr.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=GrpHdr.class.getName();
+
+    /**
+	 * @param msgId the MsgId to be set<br>
+	 * @param creDtTm the CreDtTm to be set<br>
+	 * Both @msgId and @creDtTm are mandatory in the JSON definition.
+	 * 
+     * Constructor with parameters
+     * For using the Constructor at deserialization time, it has to be of the form:
+     * public GrpHdr(@JsonProperty(value = "MsgId", required = true) String msgId,.....)
+     */
+    public GrpHdr(String msgId, String creDtTm) {
+		setMsgId(msgId);
+        setCreDtTm(creDtTm);
+    }
 
 
 	/**
@@ -45,7 +60,7 @@ public class GrpHdr {
 		if((length>=MINLENGTH && length<=MAXLENGTH) && patternOK)
 			this.MsgId = msgId;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'msgId' (" + msgId +  ") in " +  fullyQualifiedClassName + ".setMsgId()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'msgId' (" + msgId +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setMsgId()" + "\n");
     }
 
 
@@ -71,8 +86,12 @@ public class GrpHdr {
 		if(patternOK)
 			this.CreDtTm = creDtTm;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'creDtTm' (" + creDtTm +  ") in " +  fullyQualifiedClassName + ".setCreDtTm()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'creDtTm' (" + creDtTm +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setCreDtTm()" + "\n");
     }
+	
 
+    public static void main(String[] args) {
+        System.out.println(GrpHdr.class.getName());
+    }
 
 }

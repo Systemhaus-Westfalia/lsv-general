@@ -9,7 +9,7 @@ public class IDOrgID {
     OrgId OrgId;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=IDOrgID.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=IDOrgID.class.getName();
     
 
     /**
@@ -26,7 +26,7 @@ public class IDOrgID {
      */
     public void setOrgId(OrgId orgId) {
         if (orgId == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'orgId' in " +  fullyQualifiedClassName + ".setOrgId()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'orgId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setOrgId()" + "\n");
         }
         this.OrgId = orgId;
     }

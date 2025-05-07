@@ -6,12 +6,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Dt {
-
-    @JsonProperty("DtTm")
-    String DtTm;  // ToDo: check correct pattern in schema.
+                      
+    @JsonProperty(value = "DtTm", required = true)
+    String DtTm;  // DateTime with timezone
 
     @JsonIgnore
-    final String fullyQualifiedClassName=Dt.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=Dt.class.getName();
+
+
+    /*
+     * Constructor with parameters
+     * For using the Constructor at deserialization time, it has to be of the form:
+     * public Dt(@JsonProperty(value = "DtTm", required = true) String dtTm,.....)
+     */
+    public Dt(String dtTm) {
+        setDtTm(dtTm);
+    }
 
 
 	/**
@@ -36,7 +46,7 @@ public class Dt {
 		if(patternOK)
 			this.DtTm = dtTm;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'creDt' (" + dtTm +  ") in " +  fullyQualifiedClassName + ".setCreDt()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'creDt' (" + dtTm +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setCreDt()" + "\n");
     }
 
 

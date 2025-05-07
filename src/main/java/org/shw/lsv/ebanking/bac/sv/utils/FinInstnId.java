@@ -10,12 +10,22 @@ public class FinInstnId {
 
     /**
      * Code allocated to a financial institution by the ISO 9362 - Business identifier code (BIC). Multiplicity [1..1]
-     */
-    @JsonProperty("BICFI")
+     */                         
+    @JsonProperty(value = "BICFI", required = true)
 	String BICFI;  // BICFI (Bank Identifier Code)
 
     @JsonIgnore
-    final String fullyQualifiedClassName=FinInstnId.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=FinInstnId.class.getName();
+
+
+    /*
+     * Constructor with parameters
+     * For using the Constructor at deserialization time, it has to be of the form:
+     * public FinInstnId(@JsonProperty(value = "BICFI", required = true) String BICFI,.....)
+     */
+    public FinInstnId(String BICFI) {
+        setBICFI(BICFI);
+    }
 
 
 	/**
@@ -32,7 +42,7 @@ public class FinInstnId {
 	 */
     public void setBICFI(String BICFI) {
         if (BICFI == null || BICFI.isEmpty()) {
-            throw new IllegalArgumentException("Wrong parameter 'BICFI' (" + BICFI + ") in " +  fullyQualifiedClassName + ".setBICFI()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'BICFI' (" + BICFI + ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setBICFI()" + "\n");
         }
         this.BICFI = BICFI;
     }

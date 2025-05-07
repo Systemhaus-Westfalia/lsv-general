@@ -15,7 +15,7 @@ public class IdOthr {
 	SchmeNm SchmeNm;
 
     @JsonIgnore
-    final String fullyQualifiedClassName=IdOthr.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=IdOthr.class.getName();
 
 
 	/**
@@ -39,7 +39,7 @@ public class IdOthr {
 		if(patternOK)
 			this.Id = id;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'Id' (" + id +  ") in " +  fullyQualifiedClassName + ".setId()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'Id' (" + id +  ") in " +  FULLY_QUALIFIED_CLASSNAME + ".setId()" + "\n");
     }
 
 
@@ -54,7 +54,7 @@ public class IdOthr {
 	 */
 	public void setSchmeNm(SchmeNm schmeNm) {
         if (schmeNm == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'fIId' in " +  fullyQualifiedClassName + ".setSchmeNm()" + "\n");
+            throw new IllegalArgumentException("Wrong parameter 'fIId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setSchmeNm()" + "\n");
         }
 		this.SchmeNm = schmeNm;
 	}
