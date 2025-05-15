@@ -42,7 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class FacturaFactory extends EDocumentFactory {
 	Factura factura;
 	MInvoice invoice;
-	
+	FacturaFactory
 	public FacturaFactory(String trxName, Properties contextProperties, MClient client, MOrgInfo orgInfo, MInvoice invoice) {
 		super(trxName, contextProperties, client, orgInfo);
 		this.invoice = invoice;
