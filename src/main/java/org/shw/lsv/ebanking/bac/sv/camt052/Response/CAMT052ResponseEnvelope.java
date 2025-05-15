@@ -1,6 +1,6 @@
-package org.shw.lsv.ebanking.bac.sv.camt060.Request;
+package org.shw.lsv.ebanking.bac.sv.camt052.Response;
 
-import org.shw.lsv.ebanking.bac.sv.utils.AppHdr;
+import org.shw.lsv.ebanking.bac.sv.misc.AppHdr;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,16 +8,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * 
  */
-public class CAMT060RequestEnvelope {
+public class CAMT052ResponseEnvelope {
     
     @JsonProperty("AppHdr")
      AppHdr appHdr;
     
      @JsonProperty("Document")    // "Document" is the name of the field in the JSON
-     CAMT060RequestDocument CAMT060RequestDocument;
+     CAMT052ResponseDocument CAMT052ResponseDocument;
 
     @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=CAMT060RequestEnvelope.class.getName();
+    final String FULLY_QUALIFIED_CLASSNAME=CAMT052ResponseEnvelope.class.getName();
 
         
     /**
@@ -38,25 +38,25 @@ public class CAMT060RequestEnvelope {
         }
          this.appHdr = appHdr;
      }
-
+     
 
     /**
     * @return the CAMT060RequestDocument object<br>
     */
-     public CAMT060RequestDocument getCAMT060RequestDocument() {
-         return CAMT060RequestDocument;
+     public CAMT052ResponseDocument getCAMT052ResponseDocument() {
+         return CAMT052ResponseDocument;
      }
 
 
      /**
-      * @param documentCAMT060Request the CAMT060RequestDocument to be set<br>
+      * @param documentCAMT052Response the CAMT052ResponseDocument to be set<br>
       * The parameter is validated: null not allowed.<br>
       */
-     public void setCAMT060RequestDocument(CAMT060RequestDocument documentCAMT060Request) {
-        if (documentCAMT060Request == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'documentCAMT060Request' in " +  FULLY_QUALIFIED_CLASSNAME + ".setCAMT060RequestDocument()" + "\n");
+     public void setCAMT052ResponseDocument(CAMT052ResponseDocument documentCAMT052Response) {
+        if (documentCAMT052Response == null ) {
+            throw new IllegalArgumentException("Wrong parameter 'documentCAMT052Response' in " +  FULLY_QUALIFIED_CLASSNAME + ".setDocumentCAMT060Request()" + "\n");
         }
-         this.CAMT060RequestDocument = documentCAMT060Request;
+         this.CAMT052ResponseDocument = documentCAMT052Response;
      }
 
 }
