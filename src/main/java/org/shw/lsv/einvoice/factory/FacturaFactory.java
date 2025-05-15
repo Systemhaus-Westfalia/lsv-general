@@ -357,6 +357,7 @@ public class FacturaFactory extends EDocumentFactory {
 		BigDecimal totalGravada 	= Env.ZERO;		
 		BigDecimal totalNoGravada 	= Env.ZERO;		
 		BigDecimal totalIVA 		= Env.ZERO;
+		BigDecimal ivaRete1 		= Env.ZERO;
 		String totalLetras=Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
 
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties , MInvoiceTax.Table_Name , "C_Invoice_ID=?" , trxName)
@@ -369,8 +370,10 @@ public class FacturaFactory extends EDocumentFactory {
 
 		JSONArray jsonTributosArray = new JSONArray();
 		for (MInvoiceTax invoiceTax:invoiceTaxes) {
-			if (invoiceTax.getC_Tax().getTaxIndicator().equals("RET"))
+			if (invoiceTax.getC_Tax().getTaxIndicator().equals("RET")) {
+				ivaRete1 = ivaRete1.add(invoiceTax.getTaxAmt().multiply(new BigDecimal(-1)));
 				continue;
+			}
 			JSONObject jsonTributoItem = new JSONObject();		
 			if (invoiceTax.getC_Tax().getTaxIndicator().equals("NSUJ")) {
 				if (invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode() != null &&
@@ -412,7 +415,7 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonObjectResumen.put(Factura.DESCUGRAVADA, Env.ZERO);
 		jsonObjectResumen.put(Factura.PORCENTAJEDESCUENTO, Env.ZERO);
 		jsonObjectResumen.put(Factura.SUBTOTAL, totalGravada.add(totalNoSuj).add(totalExenta));
-		jsonObjectResumen.put(Factura.IVARETE1, Env.ZERO);
+		jsonObjectResumen.put(Factura.IVARETE1, ivaRete1);
 		jsonObjectResumen.put(Factura.MONTOTOTALOPERACION, totalGravada.add(totalNoSuj).add(totalExenta));
 		jsonObjectResumen.put(Factura.TOTALNOGRAVADO, totalNoGravada);
 		jsonObjectResumen.put(Factura.TOTALPAGAR, invoice.getGrandTotal());
