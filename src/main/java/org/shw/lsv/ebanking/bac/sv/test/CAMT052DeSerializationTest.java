@@ -1,6 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.test;
 
-import org.shw.lsv.ebanking.bac.sv.camt052.Request.CAMT052Request;
+import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
@@ -60,10 +60,10 @@ public class CAMT052DeSerializationTest {
 
     private static void printRequestSummary(CAMT052Request request) {
         // Implement meaningful object inspection
-        System.out.println("Envelope present: " + (request.getEnvelopeCAMT060Request() != null));
-        if (request.getEnvelopeCAMT060Request() != null) {
+        System.out.println("Envelope present: " + (request.getEnvelopeCAMT052Request() != null));
+        if (request.getEnvelopeCAMT052Request() != null) {
             System.out.println("Document present: " + 
-                (request.getEnvelopeCAMT060Request().getCAMT060RequestDocument() != null));
+                (request.getEnvelopeCAMT052Request().getCAMT052RequestDocument() != null));
             // Add more details as needed
         }
     }

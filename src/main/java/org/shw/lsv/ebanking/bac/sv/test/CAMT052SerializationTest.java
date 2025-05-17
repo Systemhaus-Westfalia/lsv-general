@@ -1,6 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.test;
 
-import org.shw.lsv.ebanking.bac.sv.camt052.Request.CAMT052Request;
+import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
