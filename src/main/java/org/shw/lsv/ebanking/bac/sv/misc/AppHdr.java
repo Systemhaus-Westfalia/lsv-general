@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -32,9 +31,6 @@ public class AppHdr {
     @JsonProperty("CreDt")
     String CreDt;     			// Creation Date and Time
 
-    @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=AppHdr.class.getName();
-
 
     /**
 	 * @return the Fr object<br>
@@ -45,25 +41,28 @@ public class AppHdr {
 
 
 	/**
-	 * @param fr the Fr object to be set.
-	 * The parameter is validated: null not allowed.
+	 * @param fr the Fr object to be set<br>
+	 * The parameter is validated: null not allowed.<br>
 	 */
-    public void setFr(Fr fr, JsonValidationExceptionCollector collector) {
-        try {
-            if (fr == null) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'fr' in " + FULLY_QUALIFIED_CLASSNAME + ".setFr()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setFr()";
-            collector.addError(context, e);
+	public void setFr(Fr fr) {
+		if (fr == null) {
+			throw new IllegalArgumentException("Wrong parameter 'fr' in setFr()");
+		}
+		this.fr = fr;
+	}
 
-            throw e;
-        }
-
-        this.fr = fr;
-    }
+	/**
+	 * @param fr the Fr object to be set<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setFr(Fr fr, JsonValidationExceptionCollector collector) {
+		try {
+			setFr(fr);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+			//throw e;
+		}
+	}
 
 
     /**
@@ -75,25 +74,28 @@ public class AppHdr {
 
 
 	/**
-	 * @param to the To object to be set.
-	 * The parameter is validated: null not allowed.
+	 * @param to the To object to be set<br>
+	 * The parameter is validated: null not allowed.<br>
 	 */
-    public void setTo(To to, JsonValidationExceptionCollector collector) {
-        try {
-            if (to == null) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'to' in " + FULLY_QUALIFIED_CLASSNAME + ".setTo()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setTo()";
-            collector.addError(context, e);
+	public void setTo(To to) {
+		if (to == null) {
+			throw new IllegalArgumentException("Wrong parameter 'to' in setTo()");
+		}
+		this.to = to;
+	}
 
-            throw e;
-        }
-
-        this.to = to;
-    }
+	/**
+	 * @param to the To object to be set<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setTo(To to, JsonValidationExceptionCollector collector) {
+		try {
+			setTo(to);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+			//throw e;
+		}
+	}
 
 
 	/**
@@ -105,30 +107,35 @@ public class AppHdr {
 
 
 	/**
-	 * @param bizMsgIdr the bizMsgIdr to be set.
-	 * The parameter is validated.
-	 * "minLength" : 1, "maxLength" : 35; null not allowed.
+	 * @param bizMsgIdr the BizMsgIdr to be set<br>
+	 * The parameter is validated.<br>
+	 * "minLength" : 1, "maxLength" : 35; null not allowed.<br>
 	 */
-    public void setBizMsgIdr(String bizMsgIdr, JsonValidationExceptionCollector collector) {
-        try {
-            final int MINLENGTH = 1;
-            final int MAXLENGTH = 35;
-            int length = (bizMsgIdr == null || bizMsgIdr.isEmpty()) ? 0 : bizMsgIdr.length();
+	public void setBizMsgIdr(String bizMsgIdr) {
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 35;
+		int length = (bizMsgIdr == null || bizMsgIdr.isEmpty()) ? 0 : bizMsgIdr.length();
 
-            if (length < MINLENGTH || length > MAXLENGTH) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'bizMsgIdr' (" + bizMsgIdr + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setBizMsgIdr()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setBizMsgIdr()";
-            collector.addError(context, e);
+		if (length < MINLENGTH || length > MAXLENGTH) {
+			throw new IllegalArgumentException(
+				"Wrong parameter 'bizMsgIdr' (" + bizMsgIdr + ") in setBizMsgIdr()"
+			);
+		}
+		this.BizMsgIdr = bizMsgIdr;
+	}
 
-            throw e;
-        }
-
-        this.BizMsgIdr = bizMsgIdr;
-    }
+	/**
+	 * @param bizMsgIdr the BizMsgIdr to be set<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setBizMsgIdr(String bizMsgIdr, JsonValidationExceptionCollector collector) {
+		try {
+			setBizMsgIdr(bizMsgIdr);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_WRONG_LENGTH, e);
+			//throw e;
+		}
+	}
 
 
 	/**
@@ -140,30 +147,35 @@ public class AppHdr {
 
 
 	/**
-	 * @param msgDefIdr the msgDefIdr to be set.
-	 * The parameter is validated.
-	 * "minLength" : 1, "maxLength" : 35; null not allowed.
+	 * @param msgDefIdr the MsgDefIdr to be set<br>
+	 * The parameter is validated.<br>
+	 * "minLength" : 1, "maxLength" : 35; null not allowed.<br>
 	 */
-    public void setMsgDefIdr(String msgDefIdr, JsonValidationExceptionCollector collector) {
-        try {
-            final int MINLENGTH = 1;
-            final int MAXLENGTH = 35;
-            int length = (msgDefIdr == null || msgDefIdr.isEmpty()) ? 0 : msgDefIdr.length();
+	public void setMsgDefIdr(String msgDefIdr) {
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 35;
+		int length = (msgDefIdr == null || msgDefIdr.isEmpty()) ? 0 : msgDefIdr.length();
 
-            if (length < MINLENGTH || length > MAXLENGTH) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'msgDefIdr' (" + msgDefIdr + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setMsgDefIdr()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setMsgDefIdr()";
-            collector.addError(context, e);
+		if (length < MINLENGTH || length > MAXLENGTH) {
+			throw new IllegalArgumentException(
+				"Wrong parameter 'msgDefIdr' (" + msgDefIdr + ") in setMsgDefIdr()"
+			);
+		}
+		this.MsgDefIdr = msgDefIdr;
+	}
 
-            throw e;
-        }
-
-        this.MsgDefIdr = msgDefIdr;
-    }
+	/**
+	 * @param msgDefIdr the MsgDefIdr to be set<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setMsgDefIdr(String msgDefIdr, JsonValidationExceptionCollector collector) {
+		try {
+			setMsgDefIdr(msgDefIdr);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_WRONG_LENGTH, e);
+			//throw e;
+		}
+	}
 
 
 	/**
@@ -175,35 +187,37 @@ public class AppHdr {
 
 
 	/**
-	 * @param bizSvc the BizSvc to be set.
-	 * The parameter is validated.
-	 * "minLength" : 6, "maxLength" : 35; null not allowed.
-	 * "pattern" : "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+dd".
-     * e.g.: "swift.cbprplus.01".
+	 * @param bizSvc the BizSvc to be set<br>
+	 * The parameter is validated.<br>
+	 * "minLength" : 6, "maxLength" : 35; null not allowed.<br>
+	 * "pattern" : "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+dd".<br>
+	 * e.g.: "swift.cbprplus.01".
 	 */
-    public void setBizSvc(String bizSvc, JsonValidationExceptionCollector collector) {
-        try {
-            final int MINLENGTH = 6;
-            final int MAXLENGTH = 35;
-            final String PATTERN = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+dd";
+	public void setBizSvc(String bizSvc) {
+		final int MINLENGTH = 6;
+		final int MAXLENGTH = 35;
 
-            int length = (bizSvc == null || bizSvc.isEmpty()) ? 0 : bizSvc.length();
-            boolean patternOK = (bizSvc != null) && Pattern.matches(PATTERN, bizSvc);
+		int length = (bizSvc == null || bizSvc.isEmpty()) ? 0 : bizSvc.length();
+		boolean patternOK = (bizSvc != null) && Pattern.matches(EBankingConstants.PATTERN_BIZSVC, bizSvc);
 
-            if (!(length >= MINLENGTH && length <= MAXLENGTH && patternOK)) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'bizSvc' (" + bizSvc + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setBizSvc()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setBizSvc()";
-            collector.addError(context, e);
+		if (!(length >= MINLENGTH && length <= MAXLENGTH && patternOK)) {
+			throw new IllegalArgumentException("Wrong parameter 'bizSvc' (" + bizSvc + ") in setBizSvc()");
+		}
+		this.BizSvc = bizSvc;
+	}
 
-            throw e;
-        }
-
-        this.BizSvc = bizSvc;
-    }
+	/**
+	 * @param bizSvc the BizSvc to be set<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setBizSvc(String bizSvc, JsonValidationExceptionCollector collector) {
+		try {
+			setBizSvc(bizSvc);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+			//throw e;
+		}
+	}
 
 
 	/**
@@ -213,32 +227,34 @@ public class AppHdr {
         return CreDt;
     }
 	
+
 	/**
-     * @param creDt the CreDt to be set.
-     * The parameter is validated.
-     * "pattern" : ".*(+|-)((0[0-9])|(1[0-3])):[0-5][0-9]"
-     * pattern copilot: "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9])$".
-     * e.g.: "2020-09-08T18:00:00+02:00".
-     */
-    public void setCreDt(String creDt, JsonValidationExceptionCollector collector) {
-        try {
-            final String PATTERN = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
-            boolean patternOK = (creDt != null) && Pattern.matches(PATTERN, creDt);
+	 * @param creDt the CreDt to be set<br>
+	 * The parameter is validated: null not allowed.<br>
+	 * "pattern" : ".*(+|-)((0[0-9])|(1[0-3])):[0-5][0-9]"
+	 * pattern copilot: "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9])$".
+	 */
+	public void setCreDt(String creDt) {
+		boolean patternOK = (creDt != null) && Pattern.matches(EBankingConstants.PATTERN_CREDT, creDt);
 
-            if (!patternOK) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'creDt' (" + creDt + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setCreDt()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setCreDt()";
-            collector.addError(context, e);
+		if (!patternOK) {
+			throw new IllegalArgumentException("Wrong parameter 'creDt' (" + creDt + ") in setCreDt()");
+		}
+		this.CreDt = creDt;
+	}
 
-            throw e;
-        }
-
-        this.CreDt = creDt;
-    }
+	/**
+	 * @param creDt the CreDt to be set<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setCreDt(String creDt, JsonValidationExceptionCollector collector) {
+		try {
+			setCreDt(creDt);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+			//throw e;
+		}
+	}
 
 
     public static void main(String[] args) {

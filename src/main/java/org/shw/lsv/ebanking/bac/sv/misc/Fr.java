@@ -2,7 +2,6 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,9 +20,6 @@ public class Fr {
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
     OrgId OrgId=null;
 
-    @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=Fr.class.getName();
-
 
     /**
 	 * @return the FIId object<br>
@@ -32,26 +28,29 @@ public class Fr {
         return FIId;
     }
 
+    
+    /**
+     * @param fIId the FIId object to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setFIId(FIId fIId) {
+        if (fIId == null) {
+            throw new IllegalArgumentException("Wrong parameter 'fIId' in setFIId()");
+        }
+        this.FIId = fIId;
+    }
 
-	/**
-	 * @param fIId the FIId object to be set.
-	 * The parameter is validated: null not allowed.
-	 */
+    /**
+     * @param fIId the FIId object to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
     public void setFIId(FIId fIId, JsonValidationExceptionCollector collector) {
         try {
-            if (fIId == null) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'fIId' in " + FULLY_QUALIFIED_CLASSNAME + ".setFIId()\n"
-                );
-            }
+            setFIId(fIId);
         } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setFIId()";
-            collector.addError(context, e);
-
-            throw e;
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+            //throw e;
         }
-
-        this.FIId = fIId;
     }
 
 
@@ -64,24 +63,27 @@ public class Fr {
 
 
     /**
-     * @param orgId the OrgId to be set.
-     * The parameter is validated: null not allowed.
+     * @param orgId the OrgId to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setOrgId(OrgId orgId) {
+        if (orgId == null) {
+            throw new IllegalArgumentException("Wrong parameter 'orgId' in setOrgId()");
+        }
+        this.OrgId = orgId;
+    }
+
+    /**
+     * @param orgId the OrgId to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
     public void setOrgId(OrgId orgId, JsonValidationExceptionCollector collector) {
         try {
-            if (orgId == null) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'orgId' in " + FULLY_QUALIFIED_CLASSNAME + ".setOrgId()\n"
-                );
-            }
+            setOrgId(orgId);
         } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setOrgId()";
-            collector.addError(context, e);
-
-            throw e;
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+            //throw e;
         }
-
-        this.OrgId = orgId;
     }
 
 

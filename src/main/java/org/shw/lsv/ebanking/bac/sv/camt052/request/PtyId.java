@@ -1,19 +1,18 @@
-package org.shw.lsv.ebanking.bac.sv.misc;
+package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.misc.OrgId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class IDOrgID {
-
-    @JsonProperty("OrgId")  // "OrgId" is the name of the field in the JSON
-    OrgId OrgId;
+public class PtyId {
     
+    @JsonProperty("OrgId")    // "OrgId" is the name of the field in the JSON
+    OrgId OrgId;
 
-    /**
-     * @return the OrgId object<br>
-     */
-	public OrgId getOrgId() {
+
+    public OrgId getOrgId() {
         return OrgId;
     }
 

@@ -1,0 +1,53 @@
+		/**
+ * 
+ */
+package org.shw.lsv.ebanking.bac.sv.misc;
+
+/**
+ * 
+ */
+public class EBankingConstants {
+	public StringBuffer errorMessages = new StringBuffer();
+	
+	public static final String ITAV 		= "ITAV";  // InterimAvailable
+	public static final String ITBD 		= "ITBD";  // InterimBooked
+	public static final String OPAV 		= "OPAV";  // OpeningAvailable
+	public static final String OPBD 		= "OPBD";  // OpeningBooked
+
+	public static final String CRDT 		= "CRDT";  // Credit (T (zero balance is considered to be a credit balance))
+	public static final String DBIT 		= "DBIT";  // Debit
+
+	
+	public static final int		IRGEND_EIN_INTEGER			=1;
+
+	public static final String ERROR_NULL_NOT_ALLOWED          = "Parameter with value 'null' is not allowed";
+	public static final String ERROR_EMPTY_OR_NULL_NOT_ALLOWED = "Parameter with empty string or with value 'null' is not allowed";
+	public static final String ERROR_PATTERN_MISMATCH          = "Parameter value does not match pattern";
+	public static final String ERROR_WRONG_LENGTH              = "Parameter length not in required boundaries";
+	public static final String ERROR_INVALID_CD_VALUE          = "The Cd value can only be one of the following: ITAV, ITBD, OPAV, OPBD";
+	public static final String ERROR_INVALID_DTTM              = "The Dttm value is invalid";
+	public static final String ERROR_INVALID_AMT_FORMAT        = "The Amt format is invalid";
+	public static final String ERROR_INVALID_CCY_FORMAT        = "The Ccy format is invalid";
+
+	public static final String PATTERN_BIZSVC      = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+dd";
+	public static final String PATTERN_CREDT       = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
+	public static final String PATTERN_BICFI       = "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}";
+	public static final String PATTERN_TODT        = "^\\d{4}-\\d{2}-\\d{2}$";
+	public static final String PATTERN_FRDT        = "^\\d{4}-\\d{2}-\\d{2}$";
+	public static final String PATTERN_ANYBIC      = "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}";
+	public static final String PATTERN_OTHER_ID    = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
+	public static final String PATTERN_PRTRY       = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
+	public static final String PATTERN_CREDTM      = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
+	public static final String PATTERN_MSG_ID      = "[0-9a-zA-Z/\\-\\?:\\(\\)\\.,'\\+ ]+";
+	public static final String PATTERN_REQDMSGNMID = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
+	public static final String PATTERN_IBAN        = "[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}";
+	public static final String PATTERN_ACCT_ID     = "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)";
+	public static final String PATTERN_TP          = "ALLL";
+	public static final String PATTERN_EQSEQ       = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
+	public static final String PATTERN_RPTID       = "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)";
+	public static final String PATTERN_DTTM        = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9])$";
+	public static final String PATTERN_AMT         = "^\\d+\\.\\d{2}$";
+	public static final String PATTERN_CCY         = "^[A-Z]{3}$";
+
+	
+}

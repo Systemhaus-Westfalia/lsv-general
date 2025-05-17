@@ -1,6 +1,7 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,9 +20,6 @@ public class To {
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
     IDOrgID IDOrgID=null;
 
-    @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=To.class.getName();
-
 
 	/**
 	 * @return the FIId object
@@ -30,16 +28,28 @@ public class To {
         return FIId;
     }
 
-
-	/**
-	 * @param fIId the FIId to be set<br>
-	 * The parameter is validated: null not allowed.<br>
-	 */
+    /**
+     * @param fIId the FIId to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
     public void setFIId(FIId fIId) {
-        if (fIId == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'fIId' in " +  FULLY_QUALIFIED_CLASSNAME + ".setFIId()" + "\n");
+        if (fIId == null) {
+            throw new IllegalArgumentException("Wrong parameter 'fIId' in setFIId()");
         }
-        FIId = fIId;
+        this.FIId = fIId;
+    }
+
+    /**
+     * @param fIId the FIId to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setFIId(FIId fIId, JsonValidationExceptionCollector collector) {
+        try {
+            setFIId(fIId);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+            //throw e;
+        }
     }
     
 
@@ -56,10 +66,23 @@ public class To {
      * The parameter is validated: null not allowed.<br>
      */
     public void setIDOrgID(IDOrgID IDOrgID) {
-        if (IDOrgID == null ) {
-            throw new IllegalArgumentException("Wrong parameter 'IDOrgID' in " +  FULLY_QUALIFIED_CLASSNAME + ".setIDOrgID()" + "\n");
+        if (IDOrgID == null) {
+            throw new IllegalArgumentException("Wrong parameter 'IDOrgID' in setIDOrgID()");
         }
         this.IDOrgID = IDOrgID;
+    }
+
+    /**
+     * @param IDOrgID the IDOrgID to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setIDOrgID(IDOrgID IDOrgID, JsonValidationExceptionCollector collector) {
+        try {
+            setIDOrgID(IDOrgID);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+            //throw e;
+        }
     }
 
 

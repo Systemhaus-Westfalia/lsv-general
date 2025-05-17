@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,9 +21,6 @@ public class OrgId {
     @JsonProperty("Othr")      // "Othr" is the name of the field in the JSON
     IdOthr IdOthr=null;  // Choice AcctOwnr_OrgId_2: Identification assigned by an institution.
 
-    @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=OrgId.class.getName();
-
 
     /**
 	 * @return the AnyBIC
@@ -34,30 +30,32 @@ public class OrgId {
     }
 
 
-	/**
-	 * @param anyBIC the AnyBIC to be set.
-	 * The parameter is validated.
-	 * "pattern" : "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}".
-     * e.g.: "BSNJCRSJ".
-	 */
+    /**
+     * @param anyBIC the AnyBIC to be set<br>
+     * The parameter is validated.<br>
+     * Pattern: "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}".<br>
+     * Example: "BSNJCRSJ".
+     */
+    public void setAnyBIC(String anyBIC) {
+        boolean patternOK = (anyBIC != null && !anyBIC.isEmpty()) && Pattern.matches(EBankingConstants.PATTERN_ANYBIC, anyBIC);
+
+        if (!patternOK) {
+            throw new IllegalArgumentException("Wrong parameter 'anyBIC' (" + anyBIC + ") in setAnyBIC()");
+        }
+        this.AnyBIC = anyBIC;
+    }
+
+    /**
+     * @param anyBIC the AnyBIC to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
     public void setAnyBIC(String anyBIC, JsonValidationExceptionCollector collector) {
         try {
-            final String PATTERN = "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}";
-            boolean patternOK = (anyBIC != null && !anyBIC.isEmpty()) && Pattern.matches(PATTERN, anyBIC);
-
-            if (!patternOK) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'anyBIC' (" + anyBIC + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setAnyBIC()\n"
-                );
-            }
+            setAnyBIC(anyBIC);
         } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setAnyBIC()";
-            collector.addError(context, e);
-
-            throw e;
+            collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+            //throw e;
         }
-
-        this.AnyBIC = anyBIC;
     }
 
 	public IdOthr getIdOthr() {
@@ -66,24 +64,27 @@ public class OrgId {
 
 
     /**
-    * @param idOthr the IdOthr to be set.
-    * The parameter is validated: null not allowed.
-    */
-    public void setIdOthr(IdOthr idOthr, JsonValidationExceptionCollector collector) {
-        try {
-            if (idOthr == null) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'idOthr' in " + FULLY_QUALIFIED_CLASSNAME + ".setIdOthr()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setIdOthr()";
-            collector.addError(context, e);
-
-            throw e;
+     * @param idOthr the IdOthr to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setIdOthr(IdOthr idOthr) {
+        if (idOthr == null) {
+            throw new IllegalArgumentException("Wrong parameter 'idOthr' in setIdOthr()");
         }
-
         this.IdOthr = idOthr;
     }
+
+    /**
+     * @param idOthr the IdOthr to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setIdOthr(IdOthr idOthr, JsonValidationExceptionCollector collector) {
+        try {
+            setIdOthr(idOthr);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+            //throw e;
+        }
+}
 
 }

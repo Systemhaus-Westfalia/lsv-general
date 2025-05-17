@@ -2,7 +2,6 @@ package     org.shw.lsv.ebanking.bac.sv.misc;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,9 +20,6 @@ public class Acct {
     @JsonInclude(JsonInclude.Include.NON_NULL)// Exclude fields with null values
     String Ccy= null;  // ToDo: check actual Ccy values.
 
-    @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=Acct.class.getName();
-
 
     /**
      * @return the AcctId object<br>
@@ -31,27 +27,30 @@ public class Acct {
     public AcctId getAcctId() {
         return AcctId;
     }
-    
+
 
     /**
-     * @param acctId the AcctId to be set.
-	 * The parameter is validated: null not allowed.
+     * @param acctId the AcctId to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setAcctId(AcctId acctId) {
+        if (acctId == null) {
+            throw new IllegalArgumentException("Wrong parameter 'acctId' in setAcctId()");
+        }
+        this.AcctId = acctId;
+    }
+
+    /**
+     * @param acctId the AcctId to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
     public void setAcctId(AcctId acctId, JsonValidationExceptionCollector collector) {
         try {
-            if (acctId == null) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'acctId' in " + FULLY_QUALIFIED_CLASSNAME + ".setAcctId()\n"
-                );
-            }
+            setAcctId(acctId);
         } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setAcctId()";
-            collector.addError(context, e);
-
-            throw e;
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+            //throw e;
         }
-
-        this.AcctId = acctId;
     }
 
 
@@ -62,26 +61,29 @@ public class Acct {
         return Ccy;
     }
 
+
     /**
-     * @param ccy the Ccy to be set.
-     * The parameter is validated: null not allowed.
+     * @param ccy the Ccy to be set.<br>
+     * The parameter is validated: null or empty not allowed.<br>
+     */
+    public void setCcy(String ccy) {
+        if (ccy == null || ccy.isEmpty()) {
+            throw new IllegalArgumentException("Wrong parameter 'ccy' (" + ccy + ") in setCcy()");
+        }
+        this.Ccy = ccy;
+    }
+
+    /**
+     * @param ccy the Ccy to be set.<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
     public void setCcy(String ccy, JsonValidationExceptionCollector collector) {
         try {
-            if ((ccy == null) || (ccy.isEmpty()) ) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'ccy' (" + ccy + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setCcy()\n"
-                );
-            }
+            setCcy(ccy);
         } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setCcy()";
-            collector.addError(context, e);
-
-            throw e;
+            collector.addError(EBankingConstants.ERROR_EMPTY_OR_NULL_NOT_ALLOWED, e);
+            //throw e;
         }
-
-        // Set the Ccy field
-        this.Ccy = ccy;
     }
     
     

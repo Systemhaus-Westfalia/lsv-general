@@ -1,8 +1,9 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
+import java.util.regex.Pattern;
+
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,9 +16,6 @@ public class FinInstnId {
      */                         
     @JsonProperty(value = "BICFI", required = true)
 	String BICFI;  // BICFI (Bank Identifier Code)
-
-    @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=FinInstnId.class.getName();
 
 
     /*
@@ -38,25 +36,31 @@ public class FinInstnId {
     }
 
 
-	/**
-	 * @param BICFI the BICFI to be set.
-	 * The parameter is validated: null not allowed.
-	 */
+    /**
+     * @param BICFI the BICFI to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     * Pattern: "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}".
+     */
+    public void setBICFI(String BICFI) {
+        boolean patternOK = (BICFI != null) && Pattern.matches(EBankingConstants.PATTERN_BICFI, BICFI);
+
+        if (!patternOK) {
+            throw new IllegalArgumentException("Wrong parameter 'BICFI' (" + BICFI + ") in setBICFI()");
+        }
+        this.BICFI = BICFI;
+    }
+
+    /**
+     * @param BICFI the BICFI to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
     public void setBICFI(String BICFI, JsonValidationExceptionCollector collector) {
         try {
-            if (BICFI == null || BICFI.isEmpty()) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'BICFI' (" + BICFI + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setBICFI()\n"
-                );
-            }
+            setBICFI(BICFI);
         } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setBICFI()";
-            collector.addError(context, e);
-
-            throw e;
+            collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+            //throw e;
         }
-
-        this.BICFI = BICFI;
     }
 
 

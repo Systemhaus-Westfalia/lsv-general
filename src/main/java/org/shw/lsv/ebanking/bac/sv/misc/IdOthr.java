@@ -2,10 +2,9 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 
 import java.util.regex.Pattern;
 
-import org.shw.lsv.ebanking.bac.sv.camt052.Request.SchmeNm;
+import org.shw.lsv.ebanking.bac.sv.camt052.request.SchmeNm;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class IdOthr {
@@ -14,9 +13,6 @@ public class IdOthr {
 
     @JsonProperty("SchmeNm")
 	SchmeNm SchmeNm;
-
-    @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=IdOthr.class.getName();
 
 
 	/**
@@ -28,30 +24,32 @@ public class IdOthr {
 
 
 	/**
-	 * @param id the Id to be set.
-	 * The parameter is validated.
-	 * "pattern" : "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+".
-     * e.g.: "ALIASXXX".
+	 * @param id the Id to be set<br>
+	 * The parameter is validated.<br>
+	 * Pattern: "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+".<br>
+	 * Example: "ALIASXXX".
 	 */
-    public void setId(String id, JsonValidationExceptionCollector collector) {
-        try {
-            final String PATTERN = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
-            boolean patternOK = (id != null && !id.isEmpty()) && Pattern.matches(PATTERN, id);
+	public void setId(String id) {
+		boolean patternOK = (id != null && !id.isEmpty()) && Pattern.matches(EBankingConstants.PATTERN_OTHER_ID, id);
 
-            if (!patternOK) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'Id' (" + id + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setId()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setId()";
-            collector.addError(context, e);
+		if (!patternOK) {
+			throw new IllegalArgumentException("Wrong parameter 'Id' (" + id + ") in setId()");
+		}
+		this.Id = id;
+	}
 
-            throw e;
-        }
-
-        this.Id = id;
-    }
+	/**
+	 * @param id the Id to be set<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setId(String id, JsonValidationExceptionCollector collector) {
+		try {
+			setId(id);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+			//throw e;
+		}
+	}
 
 
 	public SchmeNm getSchmeNm() {
@@ -60,23 +58,26 @@ public class IdOthr {
 
 
 	/**
-	 * @param schmeNm the SchmeNm to be set.
-	 * The parameter is validated: null not allowed.
+	 * @param schmeNm the SchmeNm to be set<br>
+	 * The parameter is validated: null not allowed.<br>
 	 */
-    public void setSchmeNm(SchmeNm schmeNm, JsonValidationExceptionCollector collector) {
-        try {
-            if (schmeNm == null) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'schmeNm' in " + FULLY_QUALIFIED_CLASSNAME + ".setSchmeNm()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setSchmeNm()";
-            collector.addError(context, e);
+	public void setSchmeNm(SchmeNm schmeNm) {
+		if (schmeNm == null) {
+			throw new IllegalArgumentException("Wrong parameter 'schmeNm' in setSchmeNm()");
+		}
+		this.SchmeNm = schmeNm;
+	}
 
-            throw e;
-        }
-
-        this.SchmeNm = schmeNm;
-    }
+	/**
+	 * @param schmeNm the SchmeNm to be set<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setSchmeNm(SchmeNm schmeNm, JsonValidationExceptionCollector collector) {
+		try {
+			setSchmeNm(schmeNm);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+			//throw e;
+		}
+	}
 }

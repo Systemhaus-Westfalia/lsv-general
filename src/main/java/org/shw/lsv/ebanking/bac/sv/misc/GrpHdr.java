@@ -4,22 +4,18 @@ import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Common information for the message.
  */
 public class GrpHdr {
-                      
+
     @JsonProperty(value = "MsgId", required = true)
     String MsgId;  // Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message.
-                      
+
     @JsonProperty(value = "CreDtTm", required = true)
     String CreDtTm;  // Date and time at which the message was created.
-
-    @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=GrpHdr.class.getName();
 
     /**
 	 * @param msgId the MsgId to be set<br>
@@ -45,39 +41,39 @@ public class GrpHdr {
 
 
 	/**
-	 * @param msgId the MsgId to be set.
-	 * The parameter is validated.
-	 * "minLength" : 1, "maxLength" : 35; null not allowed.
-	 * "pattern" : "[0-9a-zA-Z/\\-\\?:\\(\\)\\.,'\\+ ]+".
-     * e.g.: "ABNA202009081223".
+	 * @param msgId the MsgId to be set.<br>
+	 * The parameter is validated.<br>
+	 * "minLength" : 1, "maxLength" : 35; null not allowed.<br>
+	 * "pattern" : "[0-9a-zA-Z/\\-\\?:\\(\\)\\.,'\\+ ]+".<br>
+	 * Example: "ABNA202009081223".
 	 */
-    public void setMsgId(String msgId, JsonValidationExceptionCollector collector) {
-        try {
-            // Validate the msgId parameter
-            final int MINLENGTH = 1;
-            final int MAXLENGTH = 35;
-            final String PATTERN = "[0-9a-zA-Z/\\-\\?:\\(\\)\\.,'\\+ ]+";
+	public void setMsgId(String msgId) {
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 35;
 
-            int length = (msgId == null || msgId.isEmpty()) ? 0 : msgId.length();
-            boolean patternOK = (msgId != null) && Pattern.matches(PATTERN, msgId);
+		int length = (msgId == null || msgId.isEmpty()) ? 0 : msgId.length();
+		boolean patternOK = (msgId != null) && Pattern.matches(EBankingConstants.PATTERN_MSG_ID, msgId);
 
-            if (!(length >= MINLENGTH && length <= MAXLENGTH && patternOK)) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'msgId' (" + msgId + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setMsgId()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            // Add error to the collector
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setMsgId()";
-            collector.addError(context, e);
+		if (!(length >= MINLENGTH && length <= MAXLENGTH && patternOK)) {
+			throw new IllegalArgumentException(
+				"Wrong parameter 'msgId' (" + msgId + ") in setMsgId()"
+			);
+		}
+		this.MsgId = msgId;
+	}
 
-            // Re-throw the exception to stop processing
-            throw e;
-        }
-
-        // Set the MsgId field
-        this.MsgId = msgId;
-    }
+	/**
+	 * @param msgId the MsgId to be set.<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setMsgId(String msgId, JsonValidationExceptionCollector collector) {
+		try {
+			setMsgId(msgId);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+			//throw e;
+		}
+	}
 
 
 	/**
@@ -89,31 +85,35 @@ public class GrpHdr {
 
 
 	/**
-	 * @param creDtTm the CreDtTm to be set.
-	 * The parameter is validated.
-	 * "pattern" : ".*(+|-)((0[0-9])|(1[0-3])):[0-5][0-9]".
-     * pattern copilot: "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9])$".
-     * e.g.: "2020-09-08T18:00:00+02:00".
+	 * @param creDtTm the CreDtTm to be set.<br>
+	 * The parameter is validated.<br>
+	 * "pattern" : ".*(+|-)((0[0-9])|(1[0-3])):[0-5][0-9]".<br>
+		 * pattern copilot: "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9])$".
+	 * Example: "2020-09-08T18:00:00+02:00".
 	 */
-    public void setCreDtTm(String creDtTm, JsonValidationExceptionCollector collector) {
-        try {
-            final String PATTERN = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
-            boolean patternOK = (creDtTm != null) && Pattern.matches(PATTERN, creDtTm);
+	public void setCreDtTm(String creDtTm) {
+		boolean patternOK = (creDtTm != null) && Pattern.matches(EBankingConstants.PATTERN_CREDTM, creDtTm);
 
-            if (!patternOK) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'creDtTm' (" + creDtTm + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setCreDtTm()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setCreDtTm()";
-            collector.addError(context, e);
+		if (!patternOK) {
+			throw new IllegalArgumentException(
+				"Wrong parameter 'creDtTm' (" + creDtTm + ") in setCreDtTm()"
+			);
+		}
+		this.CreDtTm = creDtTm;
+	}
 
-            throw e;
-        }
-
-        this.CreDtTm = creDtTm;
-    }
+	/**
+	 * @param creDtTm the CreDtTm to be set.<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setCreDtTm(String creDtTm, JsonValidationExceptionCollector collector) {
+		try {
+			setCreDtTm(creDtTm);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+			//throw e;
+		}
+	}
 	
 
     public static void main(String[] args) {

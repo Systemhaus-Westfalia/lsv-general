@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,8 +19,6 @@ public class AcctId {
     @JsonProperty("Othr")        // Das Json-Feld heisst nur "Othr"
     AcctIdOthr AcctIdOthr=null;  // Choice Acct_Id_2: Unique identification of an account, as assigned by the account servicer, using an identification scheme.
 
-    @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=AcctId.class.getName();
 
     
     public AcctId(String iban, JsonValidationExceptionCollector collector) {
@@ -42,30 +39,32 @@ public class AcctId {
     }
 
 
-	/**
-	 * @param IBAN the IBAN to be set.
-	 * The parameter is validated.
-	 * "pattern" : "[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}".
-     * e.g.: "CR05011111111111111111".
-	 */
+    /**
+     * @param IBAN the IBAN to be set.<br>
+     * The parameter is validated.<br>
+     * "pattern" : "[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}".<br>
+     * Example: "CR05011111111111111111".
+     */
+    public void setIBAN(String IBAN) {
+        boolean patternOK = (IBAN != null && !IBAN.isEmpty()) && Pattern.matches(EBankingConstants.PATTERN_IBAN, IBAN);
+
+        if (!patternOK) {
+            throw new IllegalArgumentException("Wrong parameter 'IBAN' (" + IBAN + ") in setIBAN()");
+        }
+        this.IBAN = IBAN;
+    }
+
+    /**
+     * @param IBAN the IBAN to be set.<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
     public void setIBAN(String IBAN, JsonValidationExceptionCollector collector) {
         try {
-            final String PATTERN = "[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}";
-            boolean patternOK = (IBAN != null && !IBAN.isEmpty()) && Pattern.matches(PATTERN, IBAN);
-
-            if (!patternOK) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'IBAN' (" + IBAN + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setIBAN()\n"
-                );
-            }
+            setIBAN(IBAN);
         } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setIBAN()";
-            collector.addError(context, e);
-
-            throw e;
+            collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+            //throw e;
         }
-
-        this.IBAN = IBAN;
     }
 
 
@@ -77,24 +76,27 @@ public class AcctId {
     }
 
 
-	/**
-	 * @param acctIdOthr the AcctIdOthr object to be set.
-	 * The parameter is validated: null not allowed.
-	 */
+    /**
+     * @param acctIdOthr the AcctIdOthr object to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setAcctIdOthr(AcctIdOthr acctIdOthr) {
+        if (acctIdOthr == null) {
+            throw new IllegalArgumentException("Wrong parameter 'acctIdOthr' in setAcctIdOthr()");
+        }
+        this.AcctIdOthr = acctIdOthr;
+    }
+
+    /**
+     * @param acctIdOthr the AcctIdOthr object to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
     public void setAcctIdOthr(AcctIdOthr acctIdOthr, JsonValidationExceptionCollector collector) {
         try {
-            if (acctIdOthr == null) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'acctIdOthr' in " + FULLY_QUALIFIED_CLASSNAME + ".setAcctIdOthr()\n"
-                );
-            }
+            setAcctIdOthr(acctIdOthr);
         } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setAcctIdOthr()";
-            collector.addError(context, e);
-
-            throw e;
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+            //throw e;
         }
-
-        this.AcctIdOthr = acctIdOthr;
     }
 }

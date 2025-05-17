@@ -4,16 +4,12 @@ import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AcctIdOthr {
                       
     @JsonProperty(value = "Id", required = true)
     String Id;
-
-    @JsonIgnore
-    final String FULLY_QUALIFIED_CLASSNAME=AcctIdOthr.class.getName();
 
 
     /*
@@ -35,33 +31,37 @@ public class AcctIdOthr {
 
 
 	/**
-	 * @param id the Id to be set.
-	 * The parameter is validated.
-	 * "minLength" : 1, "maxLength" : 34; null not allowed.
-	 * "pattern" : "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)".
-     * e.g.: "ABNA202009081223".
+	 * @param id the Id to be set.<br>
+	 * The parameter is validated.<br>
+	 * "minLength" : 1, "maxLength" : 34; null not allowed.<br>
+	 * "pattern" : "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)".<br>
+	* Example: "ABNA202009081223".
+	*/
+	public void setId(String id) {
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 34;
+
+		int length = (id == null || id.isEmpty()) ? 0 : id.length();
+		boolean patternOK = (id != null) && Pattern.matches(EBankingConstants.PATTERN_ACCT_ID, id);
+
+		if (!(length >= MINLENGTH && length <= MAXLENGTH && patternOK)) {
+			throw new IllegalArgumentException(
+				"Wrong parameter 'Id' (" + id + ") in setId()"
+			);
+		}
+		this.Id = id;
+	}
+
+	/**
+	 * @param id the Id to be set.<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
 	 */
-    public void setId(String id, JsonValidationExceptionCollector collector) {
-        try {
-            final int MINLENGTH = 1;
-            final int MAXLENGTH = 34;
-            final String PATTERN = "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)";
-
-            int length = (id == null || id.isEmpty()) ? 0 : id.length();
-            boolean patternOK = (id != null) && Pattern.matches(PATTERN, id);
-
-            if (!(length >= MINLENGTH && length <= MAXLENGTH && patternOK)) {
-                throw new IllegalArgumentException(
-                    "Wrong parameter 'Id' (" + id + ") in " + FULLY_QUALIFIED_CLASSNAME + ".setId()\n"
-                );
-            }
-        } catch (IllegalArgumentException e) {
-            String context = FULLY_QUALIFIED_CLASSNAME + ".setId()";
-            collector.addError(context, e);
-
-            throw e;
-        }
-
-        this.Id = id;
-    }
+	public void setId(String id, JsonValidationExceptionCollector collector) {
+		try {
+			setId(id);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+			//throw e;
+		}
+	}
 }

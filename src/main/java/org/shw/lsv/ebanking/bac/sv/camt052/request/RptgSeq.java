@@ -1,0 +1,53 @@
+package org.shw.lsv.ebanking.bac.sv.camt052.request;
+
+import java.util.regex.Pattern;
+
+import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class RptgSeq {
+    @JsonProperty("EQSeq")
+    String EQSeq;
+
+
+	/**
+	 * @return the EQSeq
+	 */
+    public String getEQSeq() {
+        return EQSeq;
+    }
+
+
+	/**
+	 * @param eQSeq the EQSeq to be set.<br>
+	 * The parameter is validated.<br>
+	 * Pattern: "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+".<br>
+	 * Example: "1", "abc123", "A-Z/?", "Hello, World!", "1+2-3", "abc/def\\ghi".
+	 */
+	public void setEQSeq(String eQSeq) {
+		boolean patternOK = (eQSeq != null) && Pattern.matches(EBankingConstants.PATTERN_EQSEQ, eQSeq);
+
+		if (!patternOK) {
+			throw new IllegalArgumentException(
+				"Wrong parameter 'eQSeq' (" + eQSeq + ") in setEQSeq()"
+			);
+		}
+		this.EQSeq = eQSeq;
+	}
+
+	/**
+	 * @param eQSeq the EQSeq to be set.<br>
+	 * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 */
+	public void setEQSeq(String eQSeq, JsonValidationExceptionCollector collector) {
+		try {
+			setEQSeq(eQSeq);
+		} catch (IllegalArgumentException e) {
+			collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+			//throw e;
+		}
+	}
+
+}

@@ -1,0 +1,109 @@
+package org.shw.lsv.ebanking.bac.sv.camt052.response;
+
+import java.util.regex.Pattern;
+
+import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class Amt {
+
+    @JsonProperty("Ccy")  // "Ccy" is optional in the JSON definition
+    String Ccy= null;
+
+    @JsonProperty(value = "Amt", required = true)
+    String Amt= null;
+
+   /*
+    * Constructor with parameters
+    * For using the Constructor at deserialization time, it has to be of the form:
+    * public Amt(@JsonProperty(value = "Ccy", required = true) String ccy,.....)
+    */
+    public Amt(String ccy, String amt) {
+        setCcy(ccy);
+        setAmt(amt);
+    }
+
+    
+    public Amt(String amt) {
+        setAmt(amt);
+    }
+
+
+    /**
+     * @return the Ccy object<br>
+     */
+    public String getCcy() {
+        return Ccy;
+    }
+
+
+    /**
+     * @param ccy the Ccy to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     * pattern BAC onboarding documentation: "[A-Z]{3,3]"
+     * e.g.: "EUR", "USD", "GBP"
+     */
+    public void setCcy(String ccy) {
+        boolean patternOK = (ccy != null) && Pattern.matches(EBankingConstants.PATTERN_CCY, ccy);
+
+        if (patternOK) {
+            this.Ccy = ccy;
+        } else {
+            throw new IllegalArgumentException("Wrong parameter 'ccy' (" + ccy + ") in setCcy()");
+        }
+    }
+
+    /**
+     * @param ccy the Ccy to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setCcy(String ccy, JsonValidationExceptionCollector collector) {
+        try {
+            setCcy(ccy);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_INVALID_CCY_FORMAT, e);
+            //throw e;
+        }
+    }
+
+    /**
+     * @return the Amt<br>
+     */
+    public String getAmt() {
+        return Amt;
+    }
+
+
+    /**
+     * @param amt the Amt to be set<br>
+     * The parameter is validated.<br>
+     * pattern: "^\d+\.\d{2}$"<br>
+     * e.g.: "999994769.99"
+     */
+    public void setAmt(String amt) {
+        boolean patternOK = (amt != null) && Pattern.matches(EBankingConstants.PATTERN_AMT, amt);
+
+        if (patternOK) {
+            this.Amt = amt;
+        } else {
+            throw new IllegalArgumentException("Wrong parameter 'amt' (" + amt + ") in setAmt()");
+        }
+    }
+
+    /**
+     * @param amt the Amt to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setAmt(String amt, JsonValidationExceptionCollector collector) {
+        try {
+            setAmt(amt);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_INVALID_AMT_FORMAT, e);
+            //throw e;
+        }
+    }
+
+
+}

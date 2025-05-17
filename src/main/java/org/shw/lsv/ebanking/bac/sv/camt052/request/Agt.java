@@ -1,14 +1,12 @@
-package org.shw.lsv.ebanking.bac.sv.misc;
+package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.misc.FinInstnId;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
-/**
- * Identification of a financial institution
- */
-public class FIId {
+public class Agt {
     @JsonProperty("FinInstnId")
     FinInstnId FinInstnId;  // BICFI (Bank Identifier Code)
 
@@ -16,12 +14,11 @@ public class FIId {
 	/**
 	 * @return the FinInstnId object<br>
 	 */
-
     public FinInstnId getFinInstnId() {
         return FinInstnId;
     }
 
-    
+
     /**
      * @param finInstnId the FinInstnId object to be set<br>
      * The parameter is validated: null not allowed.<br>
