@@ -2,6 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 
 import java.util.regex.Pattern;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,14 +23,20 @@ public class FinInstnId {
     }
 
 
-    /*
-     * Constructor with parameters
-     * For using the Constructor at deserialization time, it has to be of the form:
-     * public FinInstnId(@JsonProperty(value = "BICFI", required = true) String BICFI,.....)
-     */
-    public FinInstnId(String BICFI, JsonValidationExceptionCollector collector) {
-        setBICFI(BICFI, collector);
+    public FinInstnId(String bicfi) {
+        setBICFI(bicfi);
     }
+
+
+    public FinInstnId(String BICFI, JsonValidationExceptionCollector collector) {
+        try {
+            setBICFI(BICFI, collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_FININSTN_INIT, e);
+        }
+    }
+
+    
 
 
 	/**

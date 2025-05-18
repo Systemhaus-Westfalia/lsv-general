@@ -15,7 +15,7 @@ public class JsonValidationExceptionCollector {
                                           timestamp, 
                                           context, 
                                           e.getMessage());
-        errorBuffer.append(errorMessage);
+        errorBuffer.insert(0, errorMessage);
         if (printImmediately) {
             System.err.print(errorMessage);
         }

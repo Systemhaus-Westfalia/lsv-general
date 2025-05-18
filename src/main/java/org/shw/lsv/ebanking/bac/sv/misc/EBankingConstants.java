@@ -29,6 +29,14 @@ public class EBankingConstants {
 	public static final String ERROR_INVALID_AMT_FORMAT        = "The Amt format is invalid";
 	public static final String ERROR_INVALID_CCY_FORMAT        = "The Ccy format is invalid";
 
+	public static final String ERROR_CAMT052REQUEST_BUILDING   = "Error while building the CAMT052 Request";
+	public static final String ERROR_CAMT052REQUEST_PARAM      = "One or more parameters for the CAMT052 Request are invalid";
+	public static final String ERROR_CAMT052REQUEST_INIT       = "CAMT052Request initialization";
+	public static final String ERROR_ENVELOP_INIT              = "Envelope initialization";
+	public static final String ERROR_APPHDR_INIT               = "AppHdr initialization";
+	public static final String ERROR_FIID_INIT                 = "FIId initialization";
+	public static final String ERROR_FININSTN_INIT             = "FinInstnId initialization";
+
 	public static final String PATTERN_BIZSVC      = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+dd";
 	public static final String PATTERN_CREDT       = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
 	public static final String PATTERN_BICFI       = "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}";

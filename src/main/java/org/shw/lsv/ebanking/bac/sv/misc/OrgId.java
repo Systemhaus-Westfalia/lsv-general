@@ -2,6 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 
 import java.util.regex.Pattern;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,6 +24,11 @@ public class OrgId {
 
 
     public OrgId() {
+    }
+
+
+    public OrgId(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        //TODO Auto-generated constructor stub
     }
 
 

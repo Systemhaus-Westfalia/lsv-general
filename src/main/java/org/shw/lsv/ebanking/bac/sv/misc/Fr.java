@@ -1,5 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,7 +22,17 @@ public class Fr {
     OrgId OrgId=null;
 
 
-    public Fr() {
+    public Fr() {}
+
+    public Fr(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        try {
+            setFIId(new FIId(params, collector), collector);
+            
+            // TODO: nach Implementierung, auskommentieren, denn es wohl nicht verwendet!!!!
+            setOrgId(new OrgId(params, collector), collector);
+        } catch (Exception e) {
+            collector.addError("Fr initialization", e);
+        }
     }
 
 

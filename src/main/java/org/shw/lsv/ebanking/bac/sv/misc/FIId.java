@@ -1,5 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +14,15 @@ public class FIId {
     FinInstnId FinInstnId;  // BICFI (Bank Identifier Code)
 
 
-	public FIId() {
+	public FIId() {}
+
+
+    public FIId(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        try {
+            setFinInstnId(new FinInstnId(params.getBicfi(), collector), collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_FIID_INIT, e);
+        }
     }
 
 

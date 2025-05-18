@@ -16,6 +16,11 @@ public class JsonValidationException extends RuntimeException {
         this.validationErrors = errors;
     }
     
+    public JsonValidationException(String errors, String allErrors) {
+        super("JSON validation failed");
+        this.validationErrors = errors + ": " + allErrors;
+    }
+
     public String getValidationErrors() {
         return validationErrors;
     }

@@ -1,5 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -22,6 +23,10 @@ public class To {
 
 
 	public To() {
+    }
+
+    public To(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        //TODO Auto-generated constructor stub
     }
 
     /**

@@ -2,6 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 
 import java.util.regex.Pattern;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -32,7 +33,21 @@ public class AppHdr {
     String CreDt;     			// Creation Date and Time
 
 
-    public AppHdr() {
+    public AppHdr() {}
+
+
+	public AppHdr(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+		try {
+			setFr(new Fr(params, collector), collector);
+			setTo(new To(params, collector), collector);
+			
+            setBizMsgIdr(params.getBizMsgIdr(), collector);
+            setMsgDefIdr(params.getMsgDefIdr(), collector);
+            setBizSvc   (params.getBizSvc(),    collector);
+            setCreDt    (params.getCreDt(),     collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_APPHDR_INIT, e);
+        }
 	}
 
 

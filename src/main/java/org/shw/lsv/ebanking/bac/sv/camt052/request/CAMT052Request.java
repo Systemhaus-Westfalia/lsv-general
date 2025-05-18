@@ -1,5 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
@@ -14,6 +15,17 @@ public class CAMT052Request implements Validatable {
     @JsonProperty("Envelope")    // "Envelope" is the name of the field in the JSON
     CAMT052RequestEnvelope envelopeCAMT052Request;
     
+    public CAMT052Request() {}
+
+    public CAMT052Request(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        try {
+            setEnvelopeCAMT052Request(new CAMT052RequestEnvelope(params, collector), collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_CAMT052REQUEST_INIT, e);
+        }
+    }
+
+
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {

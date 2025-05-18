@@ -2,6 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
 import org.shw.lsv.ebanking.bac.sv.misc.AppHdr;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 
@@ -18,7 +19,16 @@ public class CAMT052RequestEnvelope implements Validatable {
      @JsonProperty("Document")    // "Document" is the name of the field in the JSON
      CAMT052RequestDocument CAMT052RequestDocument;
     
-    public CAMT052RequestEnvelope() {
+    public CAMT052RequestEnvelope() {}
+
+
+    public CAMT052RequestEnvelope(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        try {
+            setAppHdr(new AppHdr(params, collector), collector);
+            setCAMT052RequestDocument(new CAMT052RequestDocument(params, collector), collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_ENVELOP_INIT, e);
+        }
     }
 
 

@@ -1,5 +1,6 @@
     package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
@@ -15,6 +16,11 @@ public class CAMT052RequestDocument implements Validatable {
     AcctRptgReq AcctRptgReq;
     
     public CAMT052RequestDocument() {
+    }
+
+
+    public CAMT052RequestDocument(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        //TODO Auto-generated constructor stub
     }
 
 
