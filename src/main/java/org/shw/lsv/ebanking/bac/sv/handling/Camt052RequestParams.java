@@ -1,5 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.handling;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Camt052RequestParams {
     // No validation here - just data transfer
@@ -12,6 +13,8 @@ public class Camt052RequestParams {
     private String anyBIC;
     private String id;
     private String prtry;
+    private String msgId;
+    private String creDtTm;
 
 
     public String getBicfi()     { return bicfi;     }
@@ -23,6 +26,8 @@ public class Camt052RequestParams {
     public String getAnyBIC()    { return anyBIC;    }
     public String getId()        { return id;        }
     public String getPrtry()     { return prtry;     }
+    public String getMsgId()     { return msgId;     }
+    public String getCreDtTm()   { return creDtTm;   }
 
 
     public Camt052RequestParams setBicfi(String bicfi) {
@@ -67,6 +72,16 @@ public class Camt052RequestParams {
 
     public Camt052RequestParams setPrtry(String prtry) {
         this.prtry = prtry;
+        return this;
+    }
+
+    public Camt052RequestParams setMsgId(String msgId) {
+        this.msgId = msgId;
+        return this;
+    }
+    
+    public Camt052RequestParams setCreDtTm(String creDtTm) {
+        this.creDtTm = creDtTm;
         return this;
     }
 

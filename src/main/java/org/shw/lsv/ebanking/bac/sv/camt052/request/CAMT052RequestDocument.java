@@ -20,7 +20,11 @@ public class CAMT052RequestDocument implements Validatable {
 
 
     public CAMT052RequestDocument(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
-        //TODO Auto-generated constructor stub
+        try {
+            setAcctRptgReq(new AcctRptgReq(params, collector), collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_CAMT052REQUEST_INIT, e);
+        }
     }
 
 

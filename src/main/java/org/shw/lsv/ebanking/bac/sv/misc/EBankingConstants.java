@@ -40,6 +40,7 @@ public class EBankingConstants {
 	public static final String ERROR_IDOTHR_INIT               = "IdOthr initialization";
 	public static final String ERROR_IDORGID_INIT              = "IDOrgID initialization";
 	public static final String ERROR_ORGID_INIT                = "OrgId initialization";
+	public static final String ERROR_ACCTRPTGREQ_INIT          = "AcctRptgReq initialization";
 
 	public static final String PATTERN_BIZSVC      = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+dd";
 	public static final String PATTERN_CREDT       = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";

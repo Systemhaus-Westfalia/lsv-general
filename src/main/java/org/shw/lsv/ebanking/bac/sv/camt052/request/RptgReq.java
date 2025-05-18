@@ -2,6 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
 import java.util.regex.Pattern;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.Acct;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
@@ -27,6 +28,11 @@ public class RptgReq {
 
 
     public RptgReq() {
+    }
+
+
+    public RptgReq(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        //TODO Auto-generated constructor stub
     }
 
 
