@@ -1,6 +1,8 @@
 package org.shw.lsv.ebanking.bac.sv.test;
 
 import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
+import org.shw.lsv.ebanking.bac.sv.handling.CamtRequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
@@ -53,13 +55,15 @@ public class CAMT052SerializationTest {
     }
     
     private static CAMT052Request createTestRequest() {
-        CAMT052Request request = new CAMT052Request();
-        
-        // Build your test object here
-        // This should trigger validation errors if fields are missing/null
-        // Example:
-        // request.setEnvelopeCAMT060Request(new CAMT060RequestEnvelope());
-        // request.getEnvelopeCAMT060Request().setCAMT060RequestDocument(...);
+
+        Camt052RequestParams params = new Camt052RequestParams()
+            .setBicfi("BANKDEFFXXX")
+            .setBizMsgIdr("MSG123")
+            .setCreDt("2023-11-16T10:30:00Z");
+
+        CAMT052Request request = CamtRequestBuilder.build(params);
+
+
         
         return request;
     }
