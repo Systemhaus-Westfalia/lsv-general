@@ -28,7 +28,15 @@ public class OrgId {
 
 
     public OrgId(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
-        //TODO Auto-generated constructor stub
+        
+		try {
+            setAnyBIC(params.getAnyBIC(), collector);
+
+			setIdOthr(new IdOthr(params, collector), collector);
+			
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_ORGID_INIT, e);
+        }
     }
 
 

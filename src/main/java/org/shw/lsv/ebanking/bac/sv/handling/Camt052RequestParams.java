@@ -9,9 +9,22 @@ public class Camt052RequestParams {
     private String currency;
     private String msgDefIdr;
     private String bizSvc;
+    private String anyBIC;
+    private String id;
+    private String prtry;
 
 
-    // Fluent setters
+    public String getBicfi()     { return bicfi;     }
+    public String getBizMsgIdr() { return bizMsgIdr; }
+    public String getCreDt()     { return creDt;     }
+    public String getCurrency()  { return currency;  }
+    public String getMsgDefIdr() { return msgDefIdr; }
+    public String getBizSvc()    { return bizSvc;    }
+    public String getAnyBIC()    { return anyBIC;    }
+    public String getId()        { return id;        }
+    public String getPrtry()     { return prtry;     }
+
+
     public Camt052RequestParams setBicfi(String bicfi) {
         this.bicfi = bicfi;
         return this;
@@ -42,15 +55,21 @@ public class Camt052RequestParams {
         return this;
     }
 
+    public Camt052RequestParams setAnyBIC(String anyBIC) {
+        this.anyBIC = anyBIC;
+        return this;
+    }
 
+    public Camt052RequestParams setId(String id) {
+        this.id = id;
+        return this;
+    }
 
-    // Getters
-    public String getBicfi()     { return bicfi; }
-    public String getBizMsgIdr() { return bizMsgIdr; }
-    public String getCreDt()     { return creDt; }
-    public String getCurrency()  { return currency; }
-    public String getMsgDefIdr() { return msgDefIdr; }
-    public String getBizSvc()    { return bizSvc; }
+    public Camt052RequestParams setPrtry(String prtry) {
+        this.prtry = prtry;
+        return this;
+    }
+
 
 
 

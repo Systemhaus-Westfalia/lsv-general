@@ -28,9 +28,9 @@ public class FinInstnId {
     }
 
 
-    public FinInstnId(String BICFI, JsonValidationExceptionCollector collector) {
+    public FinInstnId(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setBICFI(BICFI, collector);
+            setBICFI(params.getBicfi(), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_FININSTN_INIT, e);
         }

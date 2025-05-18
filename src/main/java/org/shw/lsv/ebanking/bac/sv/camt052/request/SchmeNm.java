@@ -2,6 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
 import java.util.regex.Pattern;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
@@ -13,6 +14,15 @@ public class SchmeNm {
 
 
 	public SchmeNm() {
+    }
+
+
+    public SchmeNm(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        try {
+            setPrtry(params.getPrtry(), collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_FININSTN_INIT, e);
+        }
     }
 
 

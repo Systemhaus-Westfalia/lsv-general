@@ -26,12 +26,12 @@ public class Fr {
 
     public Fr(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
         try {
+            // TODO: Sicherstellen, daß es nur eines der beiden geht!
             setFIId(new FIId(params, collector), collector);
             
-            // TODO: nach Implementierung, auskommentieren, denn es wohl nicht verwendet!!!!
-            setOrgId(new OrgId(params, collector), collector);
+            //setOrgId(new OrgId(params, collector), collector);
         } catch (Exception e) {
-            collector.addError("Fr initialization", e);
+            collector.addError(EBankingConstants.ERROR_FR_INIT, e);
         }
     }
 

@@ -3,6 +3,7 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.camt052.request.SchmeNm;
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,6 +17,19 @@ public class IdOthr {
 
 
 	public IdOthr() {
+	}
+
+
+	public IdOthr(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+		
+		try {
+            setId(params.getId(), collector);
+
+			setSchmeNm(new SchmeNm(params, collector), collector);
+			
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_IDOTHR_INIT, e);
+        }
 	}
 
 

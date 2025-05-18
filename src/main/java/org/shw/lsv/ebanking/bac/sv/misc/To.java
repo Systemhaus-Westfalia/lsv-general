@@ -26,7 +26,14 @@ public class To {
     }
 
     public To(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
-        //TODO Auto-generated constructor stub
+        try {
+            // TODO: Sicherstellen, daß es nur eines der beiden geht!
+            setFIId(new FIId(params, collector), collector);
+            
+            //setIDOrgID(new IDOrgID(params, collector), collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_FR_INIT, e);
+        }
     }
 
     /**
