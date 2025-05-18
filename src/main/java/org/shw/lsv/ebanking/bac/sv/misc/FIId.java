@@ -19,7 +19,7 @@ public class FIId {
 
     public FIId(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setFinInstnId(new FinInstnId(params.getBicfi(), collector), collector);
+            setFinInstnId(new FinInstnId(params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_FIID_INIT, e);
         }
