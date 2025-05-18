@@ -23,6 +23,10 @@ public class Rpt {
     Bal Bal;
 
 
+    public Rpt() {
+    }
+
+
     /*
      * Constructor with parameters
      * For using the Constructor at deserialization time, it has to be of the form:

@@ -20,7 +20,11 @@ public class Bal  {
     Amt Amt;
 
 
-   /*
+   public Bal() {
+    }
+
+
+    /*
     * Constructor with parameters
     * For using the Constructor at deserialization time, it has to be of the form:
     * public Bal(@JsonProperty(value = "Dt", required = true) Dt dt,.....)

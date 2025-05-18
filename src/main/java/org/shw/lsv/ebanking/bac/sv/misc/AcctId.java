@@ -21,6 +21,10 @@ public class AcctId {
 
 
     
+    public AcctId() {
+    }
+
+
     public AcctId(String iban, JsonValidationExceptionCollector collector) {
 		setIBAN(iban, collector);
     }

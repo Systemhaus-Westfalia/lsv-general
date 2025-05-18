@@ -15,6 +15,10 @@ public class FrToDt {
     String ToDt;
 
 
+	public FrToDt() {
+	}
+
+
 	/**
 	 * @return the FrDt
 	 */

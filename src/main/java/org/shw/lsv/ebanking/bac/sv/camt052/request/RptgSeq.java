@@ -12,6 +12,10 @@ public class RptgSeq {
     String EQSeq;
 
 
+	public RptgSeq() {
+	}
+
+
 	/**
 	 * @return the EQSeq
 	 */

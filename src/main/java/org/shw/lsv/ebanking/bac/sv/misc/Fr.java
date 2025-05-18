@@ -21,6 +21,10 @@ public class Fr {
     OrgId OrgId=null;
 
 
+    public Fr() {
+    }
+
+
     /**
 	 * @return the FIId object<br>
 	 */

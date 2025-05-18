@@ -11,6 +11,10 @@ public class CdOrPrtry {
     String Cd;  // ToDo: check pattern
 
 
+    public CdOrPrtry() {
+    }
+
+
     /*
      * Constructor with parameters
      * For using the Constructor at deserialization time, it has to be of the form:

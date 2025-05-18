@@ -32,7 +32,11 @@ public class AppHdr {
     String CreDt;     			// Creation Date and Time
 
 
-    /**
+    public AppHdr() {
+	}
+
+
+	/**
 	 * @return the Fr object<br>
 	 */
     public Fr getFr() {

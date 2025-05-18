@@ -15,7 +15,11 @@ public class Amt {
     @JsonProperty(value = "Amt", required = true)
     String Amt= null;
 
-   /*
+   public Amt() {
+    }
+
+
+    /*
     * Constructor with parameters
     * For using the Constructor at deserialization time, it has to be of the form:
     * public Amt(@JsonProperty(value = "Ccy", required = true) String ccy,.....)

@@ -13,7 +13,11 @@ public class FIId {
     FinInstnId FinInstnId;  // BICFI (Bank Identifier Code)
 
 
-	/**
+	public FIId() {
+    }
+
+
+    /**
 	 * @return the FinInstnId object<br>
 	 */
 

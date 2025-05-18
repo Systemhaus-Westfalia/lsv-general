@@ -14,6 +14,10 @@ public class Dt {
 
 
 
+    public Dt() {
+    }
+
+
     /*
      * Constructor with parameters
      * For using the Constructor at deserialization time, it has to be of the form:

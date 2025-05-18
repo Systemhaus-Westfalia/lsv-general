@@ -18,6 +18,10 @@ public class CAMT052RequestEnvelope implements Validatable {
      @JsonProperty("Document")    // "Document" is the name of the field in the JSON
      CAMT052RequestDocument CAMT052RequestDocument;
     
+    public CAMT052RequestEnvelope() {
+    }
+
+
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {

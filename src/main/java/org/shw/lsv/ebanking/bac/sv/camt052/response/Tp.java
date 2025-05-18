@@ -10,6 +10,10 @@ public class Tp {
     CdOrPrtry CdOrPrtry;
 
 
+    public Tp() {
+    }
+
+
     /**
      * @return the CdOrPrtry object<br>
      */

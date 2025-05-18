@@ -21,7 +21,10 @@ public class To {
     IDOrgID IDOrgID=null;
 
 
-	/**
+	public To() {
+    }
+
+    /**
 	 * @return the FIId object
 	 */
     public FIId getFIId() {

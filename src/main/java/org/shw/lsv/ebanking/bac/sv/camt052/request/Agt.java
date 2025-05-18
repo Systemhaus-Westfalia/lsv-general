@@ -11,7 +11,11 @@ public class Agt {
     FinInstnId FinInstnId;  // BICFI (Bank Identifier Code)
 
 
-	/**
+	public Agt() {
+    }
+
+
+    /**
 	 * @return the FinInstnId object<br>
 	 */
     public FinInstnId getFinInstnId() {

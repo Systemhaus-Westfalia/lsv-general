@@ -14,6 +14,10 @@ public class AcctRptgReq {
     @JsonProperty("RptgReq")
     RptgReq RptgReq;
 
+    public AcctRptgReq() {
+    }
+
+
     /**
      * @return the GrpHdr object<br>
      */

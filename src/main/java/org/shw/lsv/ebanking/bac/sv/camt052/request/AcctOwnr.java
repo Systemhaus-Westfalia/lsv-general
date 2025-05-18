@@ -20,9 +20,14 @@ public class AcctOwnr {
     Agt Agt= null;
     
 
+    public AcctOwnr() {
+    }
+
+
     public Pty getPty() {
         return Pty;
     }
+
 
 
     /**

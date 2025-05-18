@@ -14,6 +14,10 @@ public class CAMT052ResponseDocument {
     BkToCstmrAcctRpt BkToCstmrAcctRpt;
 
         
+    public CAMT052ResponseDocument() {
+    }
+
+
     /**
     * @return the BkToCstmrAcctRpt object<br>
     */

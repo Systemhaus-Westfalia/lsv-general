@@ -7,12 +7,16 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AcctIdOthr {
-                      
+
     @JsonProperty(value = "Id", required = true)
     String Id;
 
 
-    /*
+    public AcctIdOthr() {
+	}
+
+
+	/*
      * Constructor with parameters
      * For using the Constructor at deserialization time, it has to be of the form:
      * public AcctIdOthr(@JsonProperty(value = "Id", required = true) String id,.....)

@@ -21,6 +21,10 @@ public class Acct {
     String Ccy= null;  // ToDo: check actual Ccy values.
 
 
+    public Acct() {
+    }
+
+
     /**
      * @return the AcctId object<br>
      */

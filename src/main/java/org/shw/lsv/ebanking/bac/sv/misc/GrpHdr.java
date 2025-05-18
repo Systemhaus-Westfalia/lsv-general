@@ -17,7 +17,11 @@ public class GrpHdr {
     @JsonProperty(value = "CreDtTm", required = true)
     String CreDtTm;  // Date and time at which the message was created.
 
-    /**
+    public GrpHdr() {
+	}
+
+
+	/**
 	 * @param msgId the MsgId to be set<br>
 	 * @param creDtTm the CreDtTm to be set<br>
 	 * Both @msgId and @creDtTm are mandatory in the JSON definition.

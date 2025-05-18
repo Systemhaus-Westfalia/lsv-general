@@ -22,6 +22,10 @@ public class OrgId {
     IdOthr IdOthr=null;  // Choice AcctOwnr_OrgId_2: Identification assigned by an institution.
 
 
+    public OrgId() {
+    }
+
+
     /**
 	 * @return the AnyBIC
 	 */

@@ -13,6 +13,10 @@ public class RptgPrd {
     String Tp;
 
 
+    public RptgPrd() {
+    }
+
+
     public FrToDt getFrToDt() {
         return FrToDt;
 

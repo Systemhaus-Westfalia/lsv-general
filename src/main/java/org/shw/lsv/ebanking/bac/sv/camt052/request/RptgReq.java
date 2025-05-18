@@ -26,6 +26,10 @@ public class RptgReq {
     RptgSeq RptgSeq;
 
 
+    public RptgReq() {
+    }
+
+
     /**
      * @return the ReqdMsgNmId
      */    

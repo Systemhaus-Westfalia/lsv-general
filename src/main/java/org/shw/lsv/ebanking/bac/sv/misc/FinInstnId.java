@@ -18,6 +18,10 @@ public class FinInstnId {
 	String BICFI;  // BICFI (Bank Identifier Code)
 
 
+    public FinInstnId() {
+    }
+
+
     /*
      * Constructor with parameters
      * For using the Constructor at deserialization time, it has to be of the form:

@@ -10,6 +10,10 @@ public class IDOrgID {
     OrgId OrgId;
     
 
+    public IDOrgID() {
+    }
+
+
     /**
      * @return the OrgId object<br>
      */

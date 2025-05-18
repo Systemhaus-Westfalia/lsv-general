@@ -12,6 +12,10 @@ public class PtyId {
     OrgId OrgId;
 
 
+    public PtyId() {
+    }
+
+
     public OrgId getOrgId() {
         return OrgId;
     }

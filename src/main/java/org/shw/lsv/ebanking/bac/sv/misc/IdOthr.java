@@ -15,6 +15,10 @@ public class IdOthr {
 	SchmeNm SchmeNm;
 
 
+	public IdOthr() {
+	}
+
+
 	/**
 	 * @return the Id
 	 */

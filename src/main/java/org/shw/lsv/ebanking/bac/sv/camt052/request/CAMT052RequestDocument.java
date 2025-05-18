@@ -14,6 +14,10 @@ public class CAMT052RequestDocument implements Validatable {
     @JsonProperty("AcctRptgReq")  // "AcctRptgReq" is the name of the field in the JSON
     AcctRptgReq AcctRptgReq;
     
+    public CAMT052RequestDocument() {
+    }
+
+
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {

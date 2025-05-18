@@ -14,6 +14,10 @@ public class RptPgntn {
     @JsonProperty(value = "LastPgInd", required = true)
     String LastPgInd;
 
+    public RptPgntn() {
+    }
+
+
     /**
 	 * @param pgNb the PgNb to be set<br>
 	 * @param lastPgInd the LastPgInd to be set<br>

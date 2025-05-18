@@ -11,6 +11,10 @@ public class Pty {
     PtyId PtyId;
 
 
+    public Pty() {
+    }
+
+
     /**
      * @return the PtyId object<br>
      */

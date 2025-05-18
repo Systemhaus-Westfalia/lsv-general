@@ -15,6 +15,10 @@ public class BkToCstmrAcctRpt {
     Rpt Rpt;
 
 
+    public BkToCstmrAcctRpt() {
+    }
+
+
     /*
      * Constructor with parameters
      * For using the Constructor at deserialization time, it has to be of the form:

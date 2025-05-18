@@ -12,7 +12,11 @@ public class SchmeNm {
     String Prtry;  // "Name of the identification scheme, in a free text form."
 
 
-	/**
+	public SchmeNm() {
+    }
+
+
+    /**
 	 * @return the Prtry
 	 */
     public String getPrtry() {

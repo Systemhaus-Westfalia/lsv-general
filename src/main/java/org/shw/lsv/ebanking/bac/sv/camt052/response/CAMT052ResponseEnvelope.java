@@ -18,6 +18,10 @@ public class CAMT052ResponseEnvelope {
      CAMT052ResponseDocument CAMT052ResponseDocument;
 
         
+    public CAMT052ResponseEnvelope() {
+    }
+
+
     /**
     * @return the AppHdr object<br>
     */
