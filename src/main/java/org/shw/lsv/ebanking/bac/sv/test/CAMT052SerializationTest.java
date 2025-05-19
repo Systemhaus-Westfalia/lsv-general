@@ -9,62 +9,46 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 
 public class CAMT052SerializationTest {
-    public static void main(String[] args) {
+public static void main(String[] args) {
+    String jsonOutput = "";
 
-        // 1. Create collector with explicit settings
+        // 1. Create collector for test diagnostics
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
-        collector.setPrintImmediately(true); // Print errors as they occur
+        collector.setPrintImmediately(true); // See errors as they happen
 
-        // 2. Inject collector into processor
-        JsonProcessor processor = new JsonProcessor(collector);
-
-        // 3. Prepare test data
-        CAMT052Request request = createTestRequest();
+        // 2. Build test parameters
+        Camt052RequestParams params = createTestParams();
         
         try {
-            // 4. Serialize to JSON with validation
-            System.out.println("Starting serialization test...");
-            String jsonOutput = processor.serialize(request);
+            // 3. Build request with test's collector
+            CAMT052Request request = CamtRequestBuilder.build(params, collector);
+            
+            // 4. Serialization test
+            JsonProcessor processor = new JsonProcessor(collector);
+            jsonOutput = processor.serialize(request);
+            
+            System.out.println("Serialization succeeded without errors:\n");
 
-            // 5. Check for non-fatal warnings (even if serialization succeeded)
-            if (collector.hasErrors()) {
-                System.out.println("\nSerialization succeeded with warnings:");
-                System.out.println(collector.getAllErrors());
-            } else {
-                System.out.println("Serialization completed without errors");
-            }
+        } catch (JsonValidationException e) {
+            System.err.println("Validation failed during build:");
+            System.err.println(e.getValidationErrors());
+        }
 
+        // 5. Post-validation check (even if no exception)
+        if (collector.hasErrors()) {
+            System.out.println("\nTest completed with validation warnings:");
+            System.out.println(collector.getAllErrors());
+        } else {
             System.out.println("\nGenerated JSON:");
             System.out.println(jsonOutput);
-
-
-            
-        } catch (JsonValidationException e) {
-            // 6. Handle validation errors
-            System.err.println("Serialization failed with " + e.getValidationErrors().split("\n").length + " errors:");
-            System.err.println(e.getValidationErrors()); // Already includes timestamps
-            
-            if (collector.hasErrors()) {
-                System.out.println("\nSerialization succeeded with warnings:");
-                System.out.println(collector.getAllErrors());
-            }
-            
-            // For debugging: Print the complete exception
-            e.printStackTrace();
+            System.out.println("\nTest completed successfully!");
         }
     }
-    
-    private static CAMT052Request createTestRequest() {
 
-        Camt052RequestParams params = new Camt052RequestParams()
-            .setBicfi("BANKDEFFXXX")
+    private static Camt052RequestParams createTestParams() {
+        return new Camt052RequestParams()
+            .setBicfi("INVALIDBIC")  // Will trigger error
             .setBizMsgIdr("MSG123")
-            .setCreDt("2023-11-16T10:30:00Z");
-
-        CAMT052Request request = CamtRequestBuilder.build(params);
-
-
-        
-        return request;
+            .setCreDt("2023-11-17T15:30:58Z");
     }
 }
