@@ -1,5 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
@@ -20,7 +21,15 @@ public class AcctOwnr {
     Agt Agt= null;
     
 
-    public AcctOwnr() {
+    public AcctOwnr() {}
+
+    public AcctOwnr(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        try {
+            setPty(new Pty(params, collector), collector);
+            setAgt(new Agt(params, collector), collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_ACCT_OWNER_INIT, e);
+        }
     }
 
 

@@ -2,6 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 
 import java.util.regex.Pattern;
 
+import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,10 +22,18 @@ public class AcctId {
 
 
     
-    public AcctId() {
+    public AcctId() {}
+
+
+	public AcctId(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+        try {
+            setIBAN(params.getIban(), collector);
+            setAcctIdOthr (new AcctIdOthr( params, collector), collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_ACCTID_INIT, e);
+        }
     }
-
-
+    
     public AcctId(String iban, JsonValidationExceptionCollector collector) {
 		setIBAN(iban, collector);
     }
@@ -34,8 +43,7 @@ public class AcctId {
 		setAcctIdOthr(acctIdOthr, collector);
     }
 
-
-	/**
+    /**
 	 * @return the IBAN
 	 */
 	public String getIBAN() {

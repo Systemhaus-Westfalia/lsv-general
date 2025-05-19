@@ -27,7 +27,7 @@ public class CAMT052RequestEnvelope implements Validatable {
             setAppHdr(new AppHdr(params, collector), collector);
             setCAMT052RequestDocument(new CAMT052RequestDocument(params, collector), collector);
         } catch (Exception e) {
-            collector.addError(EBankingConstants.ERROR_ENVELOP_INIT, e);
+            collector.addError(EBankingConstants.ERROR_REQUEST_ENVELOP_INIT, e);
         }
     }
 

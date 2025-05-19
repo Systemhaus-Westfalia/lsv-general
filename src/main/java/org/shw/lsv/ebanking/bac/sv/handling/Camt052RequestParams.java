@@ -1,6 +1,5 @@
 package org.shw.lsv.ebanking.bac.sv.handling;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Camt052RequestParams {
     // No validation here - just data transfer
@@ -15,26 +14,37 @@ public class Camt052RequestParams {
     private String prtry;
     private String msgId;
     private String creDtTm;
+    private String reqdMsgNmId;
+    private String ccy;
+    private String iban;
+    private String acctidothr;
+    private String tp;
+    private String frdt;
+    private String todt;
+    private String eqseq;
 
 
-    public String getBicfi()     { return bicfi;     }
-    public String getBizMsgIdr() { return bizMsgIdr; }
-    public String getCreDt()     { return creDt;     }
-    public String getCurrency()  { return currency;  }
-    public String getMsgDefIdr() { return msgDefIdr; }
-    public String getBizSvc()    { return bizSvc;    }
-    public String getAnyBIC()    { return anyBIC;    }
-    public String getId()        { return id;        }
-    public String getPrtry()     { return prtry;     }
-    public String getMsgId()     { return msgId;     }
-    public String getCreDtTm()   { return creDtTm;   }
+    public String getBicfi()       { return bicfi;       }
+    public String getBizMsgIdr()   { return bizMsgIdr;   }
+    public String getCreDt()       { return creDt;       }
+    public String getCurrency()    { return currency;    }
+    public String getMsgDefIdr()   { return msgDefIdr;   }
+    public String getBizSvc()      { return bizSvc;      }
+    public String getAnyBIC()      { return anyBIC;      }
+    public String getId()          { return id;          }
+    public String getPrtry()       { return prtry;       }
+    public String getMsgId()       { return msgId;       }
+    public String getCreDtTm()     { return creDtTm;     }
+    public String getReqdMsgNmId() { return reqdMsgNmId; }
+    public String getCcy()         { return ccy;         }
+    public String getIban()        { return iban;        }
+    public String getAcctidothr()  { return acctidothr;  }
+    public String getTp()          { return tp;          }
+    public String getFrdt()        { return frdt;        }
+    public String getTodt()        { return todt;        }
+    public String getEqseq()       { return eqseq;       }
 
-
-    public Camt052RequestParams setBicfi(String bicfi) {
-        this.bicfi = bicfi;
-        return this;
-    }
-
+    
     public Camt052RequestParams setBizMsgIdr(String bizMsgIdr) {
         this.bizMsgIdr = bizMsgIdr;
         return this;
@@ -79,13 +89,55 @@ public class Camt052RequestParams {
         this.msgId = msgId;
         return this;
     }
-    
+
     public Camt052RequestParams setCreDtTm(String creDtTm) {
         this.creDtTm = creDtTm;
         return this;
     }
 
+    public Camt052RequestParams setBicfi(String bicfi) {
+        this.bicfi = bicfi;
+        return this;
+    }
+
+    public Camt052RequestParams setReqdMsgNmId(String reqdMsgNmId) {
+        this.reqdMsgNmId = reqdMsgNmId;
+        return this;
+    }
+
+    public Camt052RequestParams setCcy(String ccy) {
+        this.ccy = ccy;
+        return this;
+    }
+
+    public Camt052RequestParams setIban(String iban) {
+        this.iban = iban;
+        return this;
+    }
+
+    public Camt052RequestParams setAcctidothr(String acctidothr) {
+        this.acctidothr = acctidothr;
+        return this;
+    }
+
+    public Camt052RequestParams setTp(String tp) {
+        this.tp = tp;
+        return this;
+    }
+
+    public Camt052RequestParams setFrdt(String frdt) {
+        this.frdt = frdt;
+        return this;
+    }
+
+    public Camt052RequestParams setTodt(String todt) {
+        this.todt = todt;
+        return this;
+    }
 
 
-
+    public Camt052RequestParams setEqseq(String eqseq) {
+        this.eqseq = eqseq;
+        return this;
+    }
 }

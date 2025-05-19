@@ -32,7 +32,7 @@ public class EBankingConstants {
 	public static final String ERROR_CAMT052REQUEST_BUILDING   = "Error while building the CAMT052 Request";
 	public static final String ERROR_CAMT052REQUEST_PARAM      = "One or more parameters for the CAMT052 Request are invalid";
 	public static final String ERROR_CAMT052REQUEST_INIT       = "CAMT052Request initialization";
-	public static final String ERROR_ENVELOP_INIT              = "Envelope initialization";
+	public static final String ERROR_REQUEST_ENVELOP_INIT      = "Request Envelope initialization";
 	public static final String ERROR_APPHDR_INIT               = "AppHdr initialization";
 	public static final String ERROR_FIID_INIT                 = "FIId initialization";
 	public static final String ERROR_FININSTN_INIT             = "FinInstnId initialization";
@@ -41,6 +41,17 @@ public class EBankingConstants {
 	public static final String ERROR_IDORGID_INIT              = "IDOrgID initialization";
 	public static final String ERROR_ORGID_INIT                = "OrgId initialization";
 	public static final String ERROR_ACCTRPTGREQ_INIT          = "AcctRptgReq initialization";
+	public static final String ERROR_ACCT_OWNER_INIT           = "AcctOwner initialization";
+	public static final String ERROR_RPTGREQ_INIT              = "RptgReq initialization";
+	public static final String ERROR_ACCT_INIT                 = "Acct initialization";
+	public static final String ERROR_ACCTID_INIT               = "AcctId initialization";
+	public static final String ERROR_ACCTIDOTHR_INIT           = "AcctIdIthr initialization";
+	public static final String ERROR_PTY_INIT                  = "Pty initialization";
+	public static final String ERROR_PTYID_INIT                = "PtyId initialization";
+	public static final String ERROR_AGT_INIT                  = "Agt initialization";
+	public static final String ERROR_FRTODT_INIT               = "FrToDt initialization";
+	public static final String ERROR_RPTGPRD_INIT              = "RptgPrd initialization";
+
 
 	public static final String PATTERN_BIZSVC      = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+dd";
 	public static final String PATTERN_CREDT       = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";

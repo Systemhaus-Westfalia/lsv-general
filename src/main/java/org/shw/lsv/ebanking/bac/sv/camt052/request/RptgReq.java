@@ -27,12 +27,20 @@ public class RptgReq {
     RptgSeq RptgSeq;
 
 
-    public RptgReq() {
-    }
+    public RptgReq() {}
 
 
     public RptgReq(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
-        //TODO Auto-generated constructor stub
+        try {
+            setReqdMsgNmId(params.getReqdMsgNmId(), collector);
+
+            setAcct    (new Acct(    params, collector), collector);
+            setAcctOwnr(new AcctOwnr(params, collector), collector);
+            setRptgPrd (new RptgPrd( params, collector), collector);
+            setRptgSeq (new RptgSeq( params, collector), collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_RPTGREQ_INIT, e);
+        }
     }
 
 
