@@ -28,9 +28,17 @@ public class FinInstnId {
     }
 
 
-    public FinInstnId(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+    public FinInstnId(Camt052RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
-            setBICFI(params.getBicfiFro(), collector);
+            if (context.equals(EBankingConstants.CONTEXT_FR)) {
+                setBICFI(params.getBicfiFr(), collector);
+            } else if (context.equals(EBankingConstants.CONTEXT_TO)) {
+                setBICFI(params.getBicfiTo(), collector);
+            } else if (context.equals(EBankingConstants.CONTEXT_AGT)) {
+                setBICFI(params.getBicfiAcctOwnr(), collector);
+            } else {
+                throw new IllegalArgumentException("Wrong parameter 'context' (" + context + ") in FinInstnId()");
+            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_FININSTN_INIT, e);
         }

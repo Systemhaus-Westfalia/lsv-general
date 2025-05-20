@@ -42,7 +42,7 @@ public static void main(String[] args) {
 
     private static Camt052RequestParams createTestParams() {
         return new Camt052RequestParams()
-            .setBicfiFro(     "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
+            .setBicfiFr(     "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
             .setBicfiTo(      "BAMCSVSS")
             .setBizMsgIdr(    "DummySaldoCta1")
             .setMsgDefIdr(    "camt.060.001.05")

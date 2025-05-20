@@ -16,9 +16,9 @@ public class Agt {
     }
 
 
-    public Agt(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+    public Agt(Camt052RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
-            setFinInstnId (new FinInstnId( params, collector), collector);
+            setFinInstnId (new FinInstnId( params, context, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_AGT_INIT, e);
         }

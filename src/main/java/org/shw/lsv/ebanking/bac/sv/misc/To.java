@@ -25,10 +25,10 @@ public class To {
 	public To() {
     }
 
-    public To(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+    public To(Camt052RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
             // TODO: Sicherstellen, daß es nur eines der beiden geht!
-            setFIId(new FIId(params, collector), collector);
+            setFIId(new FIId(params, context, collector), collector);
             
             //setIDOrgID(new IDOrgID(params, collector), collector);
         } catch (Exception e) {

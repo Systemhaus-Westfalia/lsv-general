@@ -24,10 +24,10 @@ public class Fr {
 
     public Fr() {}
 
-    public Fr(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+    public Fr(Camt052RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
             // TODO: Sicherstellen, daß es nur eines der beiden geht!
-            setFIId(new FIId(params, collector), collector);
+            setFIId(new FIId(params, context, collector), collector);
             
             //setOrgId(new OrgId(params, collector), collector);
         } catch (Exception e) {

@@ -2,7 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.handling;
 
 
 public class Camt052RequestParams {
-    private String bicfiFro;
+    private String bicfiFr;
     private String bicfiTo;
     private String bicfiAcctOwnr;
     private String bizMsgIdr;
@@ -25,7 +25,7 @@ public class Camt052RequestParams {
     private String eqseq;
 
 
-    public String getBicfiFro()      { return bicfiFro;      }
+    public String getBicfiFr()       { return bicfiFr;       }
     public String getBicfiTo()       { return bicfiTo;       }
     public String getBicfiAcctOwnr() { return bicfiAcctOwnr; }
     public String getBizMsgIdr()     { return bizMsgIdr;     }
@@ -49,8 +49,8 @@ public class Camt052RequestParams {
 
     
 
-    public Camt052RequestParams setBicfiFro(String bicfi) {
-        this.bicfiFro = bicfi;
+    public Camt052RequestParams setBicfiFr(String bicfi) {
+        this.bicfiFr = bicfi;
         return this;
     }
 

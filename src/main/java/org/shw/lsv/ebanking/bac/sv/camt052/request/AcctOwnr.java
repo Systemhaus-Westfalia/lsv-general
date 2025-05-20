@@ -26,7 +26,7 @@ public class AcctOwnr {
     public AcctOwnr(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setPty(new Pty(params, collector), collector);
-            setAgt(new Agt(params, collector), collector);
+            setAgt(new Agt(params, EBankingConstants.CONTEXT_AGT, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_ACCT_OWNER_INIT, e);
         }

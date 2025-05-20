@@ -38,8 +38,8 @@ public class AppHdr {
 
 	public AppHdr(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
 		try {
-			setFr(new Fr(params, collector), collector);
-			setTo(new To(params, collector), collector);
+			setFr(new Fr(params, EBankingConstants.CONTEXT_FR, collector), collector);
+			setTo(new To(params, EBankingConstants.CONTEXT_TO, collector), collector);
 			
             setBizMsgIdr(params.getBizMsgIdr(), collector);
             setMsgDefIdr(params.getMsgDefIdr(), collector);
