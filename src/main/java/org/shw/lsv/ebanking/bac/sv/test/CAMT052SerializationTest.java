@@ -34,7 +34,7 @@ public static void main(String[] args) {
             System.out.println("Serialization succeeded without errors:\n");
 
         } catch (JsonValidationException e) {
-            System.err.println("Serialization Test failed");
+            System.err.println("Serialization Test failed: " + e.getMessage());
             System.err.println(e.getValidationErrors());
             System.err.println("********************************************");
         }
