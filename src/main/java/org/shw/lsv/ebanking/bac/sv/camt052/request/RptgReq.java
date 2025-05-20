@@ -56,7 +56,8 @@ public class RptgReq {
      * @param reqdMsgNmId the ReqdMsgNmId to be set.<br>
      * The parameter is validated.<br>
      * "minLength" : 1, "maxLength" : 35; null not allowed.<br>
-     * "pattern" : "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+".<br>
+     * "pattern" : "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+".   (das verursacht eine PatternsyntaxException) <br>
+     * pattern copilot: "[0-9a-zA-Z/\\-?:().,'+ ]+"; 
      * Example: "camt.053.001.08".
      */
     public void setReqdMsgNmId(String reqdMsgNmId) {

@@ -53,7 +53,7 @@ public class EBankingConstants {
 	public static final String ERROR_RPTGPRD_INIT              = "RptgPrd initialization";
 
 
-	public static final String PATTERN_BIZSVC      = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+dd";
+	public static final String PATTERN_BIZSVC      = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
 	public static final String PATTERN_CREDT       = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
 	public static final String PATTERN_BICFI       = "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}";
 	public static final String PATTERN_TODT        = "^\\d{4}-\\d{2}-\\d{2}$";
@@ -63,7 +63,8 @@ public class EBankingConstants {
 	public static final String PATTERN_PRTRY       = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
 	public static final String PATTERN_CREDTM      = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
 	public static final String PATTERN_MSG_ID      = "[0-9a-zA-Z/\\-\\?:\\(\\)\\.,'\\+ ]+";
-	public static final String PATTERN_REQDMSGNMID = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
+	//public static final String PATTERN_REQDMSGNMID = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
+	public static final String PATTERN_REQDMSGNMID = "[0-9a-zA-Z/\\-?:().,'+ ]+";
 	public static final String PATTERN_IBAN        = "[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}";
 	public static final String PATTERN_ACCT_ID     = "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)";
 	public static final String PATTERN_TP          = "ALLL";

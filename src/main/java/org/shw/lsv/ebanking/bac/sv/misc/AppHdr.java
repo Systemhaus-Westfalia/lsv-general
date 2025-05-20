@@ -210,6 +210,7 @@ public class AppHdr {
 	 * The parameter is validated.<br>
 	 * "minLength" : 6, "maxLength" : 35; null not allowed.<br>
 	 * "pattern" : "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+dd".<br>
+	 * copilot "pattern" : "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}".<br>
 	 * e.g.: "swift.cbprplus.01".
 	 */
 	public void setBizSvc(String bizSvc) {

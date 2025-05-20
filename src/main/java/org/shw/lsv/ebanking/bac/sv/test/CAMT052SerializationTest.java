@@ -14,7 +14,7 @@ public static void main(String[] args) {
 
         // 1. Create collector for test diagnostics
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
-        //collector.setPrintImmediately(true); // See errors as they happen
+        collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
         Camt052RequestParams params = createTestParams();
