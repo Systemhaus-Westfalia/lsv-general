@@ -15,9 +15,9 @@ public class IDOrgID {
     }
 
 
-    public IDOrgID(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+    public IDOrgID(Camt052RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
-            setOrgId(new OrgId(params, collector), collector);
+            setOrgId(new OrgId(params, context, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_IDORGID_INIT, e);
         }

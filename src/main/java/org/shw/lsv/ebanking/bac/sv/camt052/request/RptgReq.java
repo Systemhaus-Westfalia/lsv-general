@@ -36,8 +36,8 @@ public class RptgReq {
 
             setAcct    (new Acct(    params, collector), collector);
             setAcctOwnr(new AcctOwnr(params, collector), collector);
-            setRptgPrd (new RptgPrd( params, collector), collector);
-            setRptgSeq (new RptgSeq( params, collector), collector);
+            //setRptgPrd (new RptgPrd( params, collector), collector);
+            //setRptgSeq (new RptgSeq( params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_RPTGREQ_INIT, e);
         }

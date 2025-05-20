@@ -13,13 +13,12 @@ public class PtyId {
     OrgId OrgId;
 
 
-    public PtyId() {
-    }
+    public PtyId() { }
 
 
     public PtyId(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setOrgId(new OrgId(params, collector), collector);
+            setOrgId(new OrgId(params, EBankingConstants.CONTEXT_PTYORGID, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_PTYID_INIT, e);
         }

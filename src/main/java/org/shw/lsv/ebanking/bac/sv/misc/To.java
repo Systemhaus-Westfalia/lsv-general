@@ -28,9 +28,13 @@ public class To {
     public To(Camt052RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
             // TODO: Sicherstellen, daß es nur eines der beiden geht!
-            setFIId(new FIId(params, context, collector), collector);
+            if ( !(params.getBicfiFr() == null || params.getBicfiFr().isEmpty()) ) {
+                setFIId(new FIId(params, context, collector), collector);
+            }
+            else {
+                setIDOrgID(new IDOrgID(params, context, collector), collector);
+            }
             
-            //setIDOrgID(new IDOrgID(params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_FR_INIT, e);
         }

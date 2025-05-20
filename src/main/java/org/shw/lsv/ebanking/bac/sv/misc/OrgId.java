@@ -27,12 +27,16 @@ public class OrgId {
     }
 
 
-    public OrgId(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+    public OrgId(Camt052RequestParams params, String context, JsonValidationExceptionCollector collector) {
         
 		try {
-            setAnyBIC(params.getAnyBIC(), collector);
+            if ( !(params.getAnyBIC() == null || params.getAnyBIC().isEmpty()) ) {
+                setAnyBIC(params.getAnyBIC(), collector);
+            }
+            else {
+                setIdOthr(new IdOthr(params, collector), collector);
+            }
 
-			setIdOthr(new IdOthr(params, collector), collector);
 			
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_ORGID_INIT, e);

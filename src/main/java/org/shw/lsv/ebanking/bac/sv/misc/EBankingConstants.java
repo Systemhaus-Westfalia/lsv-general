@@ -74,9 +74,10 @@ public class EBankingConstants {
 	public static final String PATTERN_CCY         = "^[A-Z]{3}$";
 
 
-	public static final String CONTEXT_FR   = "FR";
-	public static final String CONTEXT_TO   = "TO";
-	public static final String CONTEXT_AGT  = "AGT";
+	public static final String CONTEXT_FR        = "FR";
+	public static final String CONTEXT_TO        = "TO";
+	public static final String CONTEXT_AGT       = "AGT";
+	public static final String CONTEXT_PTYORGID  = "PTYORGID";
 
 	
 }

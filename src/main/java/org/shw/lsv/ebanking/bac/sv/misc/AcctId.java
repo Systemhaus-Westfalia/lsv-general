@@ -27,8 +27,12 @@ public class AcctId {
 
 	public AcctId(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setIBAN(params.getIban(), collector);
-            setAcctIdOthr (new AcctIdOthr( params, collector), collector);
+            if ( !(params.getIban() == null || params.getIban().isEmpty()) ) {
+                setIBAN(params.getIban(), collector);
+            }
+            else {
+                setAcctIdOthr(new AcctIdOthr(params, collector), collector);
+            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_ACCTID_INIT, e);
         }

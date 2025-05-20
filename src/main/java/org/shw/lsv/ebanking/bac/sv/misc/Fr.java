@@ -27,9 +27,12 @@ public class Fr {
     public Fr(Camt052RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
             // TODO: Sicherstellen, daß es nur eines der beiden geht!
-            setFIId(new FIId(params, context, collector), collector);
-            
-            //setOrgId(new OrgId(params, collector), collector);
+            if ( !(params.getBicfiFr() == null || params.getBicfiFr().isEmpty()) ) {
+                setFIId(new FIId(params, context, collector), collector);
+            }
+            else {
+                setOrgId(new OrgId(params, context, collector), collector);
+            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_FR_INIT, e);
         }
