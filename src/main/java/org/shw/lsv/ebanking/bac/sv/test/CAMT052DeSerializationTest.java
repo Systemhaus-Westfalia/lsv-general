@@ -9,7 +9,7 @@ public class CAMT052DeSerializationTest {
     public static void main(String[] args) {
         // 1. Create collector with explicit settings
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
-        collector.setPrintImmediately(true); // Print errors as they occur
+        //collector.setPrintImmediately(true); // Print errors as they occur
 
         // 2. Inject collector into processor
         JsonProcessor processor = new JsonProcessor(collector);

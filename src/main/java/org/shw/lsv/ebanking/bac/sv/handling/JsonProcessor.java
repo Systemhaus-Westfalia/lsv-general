@@ -22,23 +22,23 @@ public class JsonProcessor {
             collector.reset(); // Reset error collector
             
             // 1. First attempt basic deserialization
-            T rootObject = mapper.readValue(json, valueType);
+            T result = mapper.readValue(json, valueType);
             
             // 2. Run custom validation if object implements Validatable
-            if (rootObject instanceof Validatable) {
-                ((Validatable) rootObject).validate(collector);
+            if (result instanceof Validatable) {
+                ((Validatable) result).validate(collector);
             }
             
             // 3. Check if any errors occurred
             if (collector.hasErrors()) {
-                throw new JsonValidationException(collector.getAllErrors());
+                throw new JsonValidationException(collector, "Deserialization validation failed");
             }
             
-            return rootObject;
+            return result;
         } catch (Exception e) {
             // Handle both Jackson parsing errors and our validation errors
-            collector.addError("Top-level processing", e);
-            throw new JsonValidationException(collector.getAllErrors(), e);
+            collector.addError("Deserialization error", e);
+            throw new JsonValidationException(collector, "Deserialization failed", e);
         }
     }
     
@@ -53,14 +53,14 @@ public class JsonProcessor {
             
             // 2. Check for validation errors
             if (collector.hasErrors()) {
-                throw new JsonValidationException(collector.getAllErrors());
+                throw new JsonValidationException(collector, "Serialization validation failed");
             }
             
             // 3. Proceed with serialization
             return mapper.writeValueAsString(value);
         } catch (Exception e) {
             collector.addError("Serialization error", e);
-            throw new JsonValidationException(collector.getAllErrors(), e);
+            throw new JsonValidationException(collector, "Serialization failed", e);
         }
     }
 }

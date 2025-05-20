@@ -3,30 +3,24 @@ package org.shw.lsv.ebanking.bac.sv.handling;
 /**
  * Custom exception for JSON validation failures
  */
-public class JsonValidationException extends RuntimeException {
-    private final String validationErrors;
-    
-    public JsonValidationException(String errors) {
-        super("JSON validation failed");
-        this.validationErrors = errors;
+public class JsonValidationException extends Exception {
+    private final JsonValidationExceptionCollector collector;
+
+    public JsonValidationException(JsonValidationExceptionCollector collector, String message) {
+        super(message);
+        this.collector = collector;
     }
-    
-    public JsonValidationException(String errors, Throwable cause) {
-        super("JSON validation failed", cause);
-        this.validationErrors = errors;
-    }
-    
-    public JsonValidationException(String errors, String allErrors) {
-        super("JSON validation failed");
-        this.validationErrors = errors + ": " + allErrors;
+
+    public JsonValidationException(JsonValidationExceptionCollector collector, String message, Throwable cause) {
+        super(message, cause);
+        this.collector = collector;
     }
 
     public String getValidationErrors() {
-        return validationErrors;
+        return collector.getAllErrors();
     }
-    
-    @Override
-    public String getMessage() {
-        return super.getMessage() + ":\n" + validationErrors;
+
+    public JsonValidationExceptionCollector getCollector() {
+        return collector;
     }
 }

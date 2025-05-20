@@ -5,7 +5,11 @@ import java.time.format.DateTimeFormatter;
 
 public class JsonValidationExceptionCollector {
     private final StringBuilder errorBuffer = new StringBuilder();
-    private boolean printImmediately = true;
+
+    // Soll eine Exception sofort ausgegeben werden?
+    // Wenn nicht, es ist Aufgabe des Programms, Abzufragen, ob es Fehler gibt, und sie auszugeben.
+    private boolean printImmediately = false;  
+    
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = 
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
@@ -15,7 +19,7 @@ public class JsonValidationExceptionCollector {
                                           timestamp, 
                                           context, 
                                           e.getMessage());
-        errorBuffer.insert(0, errorMessage);
+        errorBuffer.append(errorMessage);
         if (printImmediately) {
             System.err.print(errorMessage);
         }
@@ -39,6 +43,6 @@ public class JsonValidationExceptionCollector {
 
     public void reset() {
         clear();
-        printImmediately = true; // Reset to default
+        printImmediately = false; // Reset to default
     }
 }

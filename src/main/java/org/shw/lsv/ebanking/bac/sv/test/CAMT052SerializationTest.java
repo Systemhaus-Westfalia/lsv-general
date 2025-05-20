@@ -14,7 +14,7 @@ public static void main(String[] args) {
 
         // 1. Create collector for test diagnostics
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
-        collector.setPrintImmediately(true); // See errors as they happen
+        //collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
         Camt052RequestParams params = createTestParams();
@@ -26,22 +26,17 @@ public static void main(String[] args) {
             // 4. Serialization test
             JsonProcessor processor = new JsonProcessor(collector);
             jsonOutput = processor.serialize(request);
+
+            // 5. Print Json
+            System.out.println("\nGenerated JSON:");
+            System.out.println(jsonOutput);
             
             System.out.println("Serialization succeeded without errors:\n");
 
         } catch (JsonValidationException e) {
-            System.err.println("Validation failed during build:");
+            System.err.println("Serialization Test failed");
             System.err.println(e.getValidationErrors());
-        }
-
-        // 5. Post-validation check (even if no exception)
-        if (collector.hasErrors()) {
-            System.out.println("\nTest completed with validation warnings:");
-            System.out.println(collector.getAllErrors());
-        } else {
-            System.out.println("\nGenerated JSON:");
-            System.out.println(jsonOutput);
-            System.out.println("\nTest completed successfully!");
+            System.err.println("********************************************");
         }
     }
 
