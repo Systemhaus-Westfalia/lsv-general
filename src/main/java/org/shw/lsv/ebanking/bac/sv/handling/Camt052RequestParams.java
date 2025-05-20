@@ -2,8 +2,9 @@ package org.shw.lsv.ebanking.bac.sv.handling;
 
 
 public class Camt052RequestParams {
-    // No validation here - just data transfer
-    private String bicfi;
+    private String bicfiFro;
+    private String bicfiTo;
+    private String bicfiAcctOwnr;
     private String bizMsgIdr;
     private String creDt;
     private String currency;
@@ -24,27 +25,45 @@ public class Camt052RequestParams {
     private String eqseq;
 
 
-    public String getBicfi()       { return bicfi;       }
-    public String getBizMsgIdr()   { return bizMsgIdr;   }
-    public String getCreDt()       { return creDt;       }
-    public String getCurrency()    { return currency;    }
-    public String getMsgDefIdr()   { return msgDefIdr;   }
-    public String getBizSvc()      { return bizSvc;      }
-    public String getAnyBIC()      { return anyBIC;      }
-    public String getId()          { return id;          }
-    public String getPrtry()       { return prtry;       }
-    public String getMsgId()       { return msgId;       }
-    public String getCreDtTm()     { return creDtTm;     }
-    public String getReqdMsgNmId() { return reqdMsgNmId; }
-    public String getCcy()         { return ccy;         }
-    public String getIban()        { return iban;        }
-    public String getAcctidothr()  { return acctidothr;  }
-    public String getTp()          { return tp;          }
-    public String getFrdt()        { return frdt;        }
-    public String getTodt()        { return todt;        }
-    public String getEqseq()       { return eqseq;       }
+    public String getBicfiFro()      { return bicfiFro;      }
+    public String getBicfiTo()       { return bicfiTo;       }
+    public String getBicfiAcctOwnr() { return bicfiAcctOwnr; }
+    public String getBizMsgIdr()     { return bizMsgIdr;     }
+    public String getCreDt()         { return creDt;         }
+    public String getCurrency()      { return currency;      }
+    public String getMsgDefIdr()     { return msgDefIdr;     }
+    public String getBizSvc()        { return bizSvc;        }
+    public String getAnyBIC()        { return anyBIC;        }
+    public String getId()            { return id;            }
+    public String getPrtry()         { return prtry;         }
+    public String getMsgId()         { return msgId;         }
+    public String getCreDtTm()       { return creDtTm;       }
+    public String getReqdMsgNmId()   { return reqdMsgNmId;   }
+    public String getCcy()           { return ccy;           }
+    public String getIban()          { return iban;          }
+    public String getAcctidothr()    { return acctidothr;    }
+    public String getTp()            { return tp;            }
+    public String getFrdt()          { return frdt;          }
+    public String getTodt()          { return todt;          }
+    public String getEqseq()         { return eqseq;         }
 
     
+
+    public Camt052RequestParams setBicfiFro(String bicfi) {
+        this.bicfiFro = bicfi;
+        return this;
+    }
+
+    public Camt052RequestParams setBicfiTo(String bicfiTo) {
+        this.bicfiTo = bicfiTo;
+        return this;
+    }
+
+    public Camt052RequestParams setBicfiAcctOwnr(String bicfiAcctOwnr) {
+        this.bicfiAcctOwnr = bicfiAcctOwnr;
+        return this;
+    }
+
     public Camt052RequestParams setBizMsgIdr(String bizMsgIdr) {
         this.bizMsgIdr = bizMsgIdr;
         return this;
@@ -92,11 +111,6 @@ public class Camt052RequestParams {
 
     public Camt052RequestParams setCreDtTm(String creDtTm) {
         this.creDtTm = creDtTm;
-        return this;
-    }
-
-    public Camt052RequestParams setBicfi(String bicfi) {
-        this.bicfi = bicfi;
         return this;
     }
 

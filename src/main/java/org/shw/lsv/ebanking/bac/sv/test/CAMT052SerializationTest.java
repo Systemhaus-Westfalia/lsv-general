@@ -42,8 +42,17 @@ public static void main(String[] args) {
 
     private static Camt052RequestParams createTestParams() {
         return new Camt052RequestParams()
-            .setBicfi("INVALIDBIC")  // Will trigger error
-            .setBizMsgIdr("MSG123")
-            .setCreDt("2023-11-17T15:30:58Z");
+            .setBicfiFro(     "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
+            .setBicfiTo(      "BAMCSVSS")
+            .setBizMsgIdr(    "DummySaldoCta1")
+            .setMsgDefIdr(    "camt.060.001.05")
+            .setBizSvc(       "swift.cbprplus.01")
+            .setCreDt(        "2025-18-16T07:56:49-06:00")
+            .setMsgId(        "DummySaldoCta1")
+            .setCreDtTm(      "2025-18-16T07:56:49-06:00")
+            .setReqdMsgNmId(  "AccountBalanceReportV08")
+            .setAcctidothr(   "999888666")
+            .setBicfiAcctOwnr("DUMMYORDENA")
+            ;
     }
 }
