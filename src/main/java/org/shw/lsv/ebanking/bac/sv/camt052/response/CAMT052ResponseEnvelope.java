@@ -15,7 +15,7 @@ public class CAMT052ResponseEnvelope {
      AppHdr appHdr;
     
      @JsonProperty("Document")    // "Document" is the name of the field in the JSON
-     CAMT052ResponseDocument CAMT052ResponseDocument;
+     CAMT052ResponseDocument cAMT052ResponseDocument;
 
         
     public CAMT052ResponseEnvelope() {
@@ -57,8 +57,8 @@ public class CAMT052ResponseEnvelope {
     /**
     * @return the CAMT060RequestDocument object<br>
     */
-     public CAMT052ResponseDocument getCAMT052ResponseDocument() {
-         return CAMT052ResponseDocument;
+     public CAMT052ResponseDocument getcAMT052ResponseDocument() {
+         return cAMT052ResponseDocument;
      }
 
 
@@ -66,11 +66,11 @@ public class CAMT052ResponseEnvelope {
      * @param documentCAMT052Response the CAMT052ResponseDocument to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setCAMT052ResponseDocument(CAMT052ResponseDocument documentCAMT052Response) {
+    public void setcAMT052ResponseDocument(CAMT052ResponseDocument documentCAMT052Response) {
         if (documentCAMT052Response == null) {
             throw new IllegalArgumentException("Wrong parameter 'documentCAMT052Response' in setCAMT052ResponseDocument()");
         }
-        this.CAMT052ResponseDocument = documentCAMT052Response;
+        this.cAMT052ResponseDocument = documentCAMT052Response;
     }
 
     /**
@@ -79,7 +79,7 @@ public class CAMT052ResponseEnvelope {
      */
     public void setCAMT052ResponseDocument(CAMT052ResponseDocument documentCAMT052Response, JsonValidationExceptionCollector collector) {
         try {
-            setCAMT052ResponseDocument(documentCAMT052Response);
+            setcAMT052ResponseDocument(documentCAMT052Response);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;

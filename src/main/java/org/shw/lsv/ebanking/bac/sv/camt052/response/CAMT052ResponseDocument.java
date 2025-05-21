@@ -11,18 +11,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CAMT052ResponseDocument {
 
     @JsonProperty("BkToCstmrAcctRpt") 
-    BkToCstmrAcctRpt BkToCstmrAcctRpt;
+    BkToCstmrAcctRpt bkToCstmrAcctRpt;
 
         
-    public CAMT052ResponseDocument() {
-    }
+    public CAMT052ResponseDocument() { }
 
 
     /**
     * @return the BkToCstmrAcctRpt object<br>
     */
     public BkToCstmrAcctRpt getBkToCstmrAcctRpt() {
-        return BkToCstmrAcctRpt;
+        return bkToCstmrAcctRpt;
     }
 
 
@@ -34,7 +33,7 @@ public class CAMT052ResponseDocument {
         if (bkToCstmrAcctRpt == null) {
             throw new IllegalArgumentException("Wrong parameter 'bkToCstmrAcctRpt' in setBkToCstmrAcctRpt()");
         }
-        this.BkToCstmrAcctRpt = bkToCstmrAcctRpt;
+        this.bkToCstmrAcctRpt = bkToCstmrAcctRpt;
     }
 
     /**
