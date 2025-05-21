@@ -8,16 +8,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Bal  {
 
     @JsonProperty("Tp")
-    Tp Tp;
+    Tp tp;
 
     @JsonProperty(value = "CdtDbtInd", required = true)
-    String CdtDbtInd;  // Credit/Debit indicator
+    String cdtDbtInd;  // Credit/Debit indicator
 
     @JsonProperty("Dt")
-    Dt Dt;  // DateTime with timezone           
+    Dt dt;  // DateTime with timezone
 
     @JsonProperty("Amt")
-    Amt Amt;
+    Amt amt;
 
 
    public Bal() {
@@ -40,7 +40,7 @@ public class Bal  {
      * @return the Tp object<br>
      */
     public Tp getTp() {
-        return Tp;
+        return tp;
     }
 
 
@@ -52,7 +52,7 @@ public class Bal  {
         if (tp == null) {
             throw new IllegalArgumentException("Wrong parameter 'tp' in setTp()");
         }
-        this.Tp = tp;
+        this.tp = tp;
     }
 
     /**
@@ -73,7 +73,7 @@ public class Bal  {
      * @return the CdtDbtInd<br>
      */
     public String getCdtDbtInd() {
-        return CdtDbtInd;
+        return cdtDbtInd;
     }
 
 
@@ -87,7 +87,7 @@ public class Bal  {
             !(cdtDbtInd.equals(EBankingConstants.CRDT) || cdtDbtInd.equals(EBankingConstants.DBIT))) {
             throw new IllegalArgumentException("Wrong parameter 'cdtDbtInd' (" + cdtDbtInd + ") in setCdtDbtInd()");
         }
-        this.CdtDbtInd = cdtDbtInd;
+        this.cdtDbtInd = cdtDbtInd;
     }
 
     /**
@@ -107,7 +107,7 @@ public class Bal  {
      * @return the Dt object<br>
      */
     public Dt getDt() {
-        return Dt;
+        return dt;
     }
 
 
@@ -119,7 +119,7 @@ public class Bal  {
         if (dt == null) {
             throw new IllegalArgumentException("Wrong parameter 'dt' in setDt()");
         }
-        this.Dt = dt;
+        this.dt = dt;
     }
 
     /**
@@ -140,7 +140,7 @@ public class Bal  {
      * @return the Amt object<br>
      */
     public Amt getAmt() {
-        return Amt;
+        return amt;
     }
 
 
@@ -152,7 +152,7 @@ public class Bal  {
         if (amt == null) {
             throw new IllegalArgumentException("Wrong parameter 'amt' in setAmt()");
         }
-        this.Amt = amt;
+        this.amt = amt;
     }
 
     /**

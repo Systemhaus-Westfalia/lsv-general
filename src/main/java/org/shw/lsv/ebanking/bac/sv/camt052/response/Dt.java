@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Dt {
 
     @JsonProperty(value = "DtTm", required = true)
-    String DtTm;  // DateTime with timezone
+    String dtTm;  // DateTime with timezone
 
 
 
@@ -32,7 +32,7 @@ public class Dt {
 	 * @return the DtTm
 	 */
     public String getDtTm() {
-        return DtTm;
+        return dtTm;
     }
 
 
@@ -47,7 +47,7 @@ public class Dt {
         boolean patternOK = (dtTm != null) && Pattern.matches(EBankingConstants.PATTERN_DTTM, dtTm);
 
         if (patternOK) {
-            this.DtTm = dtTm;
+            this.dtTm = dtTm;
         } else {
             throw new IllegalArgumentException("Wrong parameter 'dtTm' (" + dtTm + ") in setDtTm()");
         }

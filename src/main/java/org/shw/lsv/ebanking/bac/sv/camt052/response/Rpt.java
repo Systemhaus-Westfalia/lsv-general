@@ -11,16 +11,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Rpt {
 
     @JsonProperty(value = "Id", required = true)
-    String Id;
+    String id;
 
     @JsonProperty(value = "RptPgntn", required = true)
-    RptPgntn RptPgntn;
+    RptPgntn rptPgntn;
 
     @JsonProperty("Acct")
-    Acct Acct;
+    Acct acct;
 
     @JsonProperty("Bal")
-    Bal Bal;
+    Bal bal;
 
 
     public Rpt() {
@@ -42,7 +42,7 @@ public class Rpt {
 	 * @return the Id
 	 */
 	public String getId() {
-        return Id;
+        return id;
     }
 
 
@@ -61,7 +61,7 @@ public class Rpt {
         boolean patternOK = (id != null) && Pattern.matches(EBankingConstants.PATTERN_RPTID, id);
 
         if (length >= MINLENGTH && length <= MAXLENGTH && patternOK) {
-            this.Id = id;
+            this.id = id;
         } else {
             throw new IllegalArgumentException("Wrong parameter 'Id' (" + id + ") in setId()");
         }
@@ -85,7 +85,7 @@ public class Rpt {
      * @return the RptPgntn
      */
     public RptPgntn getRptPgntn() {
-        return RptPgntn;
+        return rptPgntn;
     }
 
 
@@ -97,7 +97,7 @@ public class Rpt {
         if (rptPgntn == null) {
             throw new IllegalArgumentException("Wrong parameter 'rptPgntn' in setRptPgntn()");
         }
-        this.RptPgntn = rptPgntn;
+        this.rptPgntn = rptPgntn;
     }
 
     /**
@@ -118,7 +118,7 @@ public class Rpt {
      * @return the Acct
      */
     public Acct getAcct() {
-        return Acct;
+        return acct;
     }
 
 
@@ -130,7 +130,7 @@ public class Rpt {
         if (acct == null) {
             throw new IllegalArgumentException("Wrong parameter 'acct' in setAcct()");
         }
-        this.Acct = acct;
+        this.acct = acct;
     }
 
     /**
@@ -151,7 +151,7 @@ public class Rpt {
      * @return the Bal
      */
     public Bal getBal() {
-        return Bal;
+        return bal;
     }
 
 
@@ -163,7 +163,7 @@ public class Rpt {
         if (bal == null) {
             throw new IllegalArgumentException("Wrong parameter 'bal' in setBal()");
         }
-        this.Bal = bal;
+        this.bal = bal;
     }
 
     /**

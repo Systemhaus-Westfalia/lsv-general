@@ -9,10 +9,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class BkToCstmrAcctRpt {
 
     @JsonProperty(value = "GrpHdr", required = true)
-    GrpHdr GrpHdr;
+    GrpHdr grpHdr;
     
     @JsonProperty("Rpt")
-    Rpt Rpt;
+    Rpt rpt;
 
 
     public BkToCstmrAcctRpt() {
@@ -33,7 +33,7 @@ public class BkToCstmrAcctRpt {
      * @return the GrpHdr object<br>
      */
     public GrpHdr getGrpHdr() {
-        return GrpHdr;
+        return grpHdr;
     }
 
 
@@ -45,7 +45,7 @@ public class BkToCstmrAcctRpt {
         if (grpHdr == null) {
             throw new IllegalArgumentException("Wrong parameter 'grpHdr' in setGrpHdr()");
         }
-        this.GrpHdr = grpHdr;
+        this.grpHdr = grpHdr;
     }
 
     /**
@@ -66,7 +66,7 @@ public class BkToCstmrAcctRpt {
      * @return the Rpt object<br>
      */
     public Rpt getRpt() {
-        return Rpt;
+        return rpt;
     }
 
 
@@ -78,7 +78,7 @@ public class BkToCstmrAcctRpt {
         if (Rpt == null) {
             throw new IllegalArgumentException("Wrong parameter 'Rpt' in setRpt()");
         }
-        this.Rpt = Rpt;
+        this.rpt = Rpt;
     }
 
     /**

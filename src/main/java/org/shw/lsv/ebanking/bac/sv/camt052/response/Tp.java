@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Tp {
 
     @JsonProperty("CdOrPrtry")
-    CdOrPrtry CdOrPrtry;
+    CdOrPrtry cdOrPrtry;
 
 
     public Tp() {
@@ -18,7 +18,7 @@ public class Tp {
      * @return the CdOrPrtry object<br>
      */
     public CdOrPrtry getCdOrPrtry() {
-        return CdOrPrtry;
+        return cdOrPrtry;
     }
 
 
@@ -30,7 +30,7 @@ public class Tp {
         if (cdOrPrtry == null) {
             throw new IllegalArgumentException("Wrong parameter 'cdOrPrtry' in setCdOrPrtry()");
         }
-        this.CdOrPrtry = cdOrPrtry;
+        this.cdOrPrtry = cdOrPrtry;
     }
 
     /**

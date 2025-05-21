@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Amt {
 
     @JsonProperty("Ccy")  // "Ccy" is optional in the JSON definition
-    String Ccy= null;
+    String ccy= null;
 
     @JsonProperty(value = "Amt", required = true)
-    String Amt= null;
+    String amt= null;
 
    public Amt() {
     }
@@ -39,7 +39,7 @@ public class Amt {
      * @return the Ccy object<br>
      */
     public String getCcy() {
-        return Ccy;
+        return ccy;
     }
 
 
@@ -53,7 +53,7 @@ public class Amt {
         boolean patternOK = (ccy != null) && Pattern.matches(EBankingConstants.PATTERN_CCY, ccy);
 
         if (patternOK) {
-            this.Ccy = ccy;
+            this.ccy = ccy;
         } else {
             throw new IllegalArgumentException("Wrong parameter 'ccy' (" + ccy + ") in setCcy()");
         }
@@ -76,7 +76,7 @@ public class Amt {
      * @return the Amt<br>
      */
     public String getAmt() {
-        return Amt;
+        return amt;
     }
 
 
@@ -90,7 +90,7 @@ public class Amt {
         boolean patternOK = (amt != null) && Pattern.matches(EBankingConstants.PATTERN_AMT, amt);
 
         if (patternOK) {
-            this.Amt = amt;
+            this.amt = amt;
         } else {
             throw new IllegalArgumentException("Wrong parameter 'amt' (" + amt + ") in setAmt()");
         }

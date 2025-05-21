@@ -8,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RptPgntn {
 
     @JsonProperty(value = "PgNb", required = true)
-    String PgNb;
+    String pgNb;
 
 
     @JsonProperty(value = "LastPgInd", required = true)
-    String LastPgInd;
+    String lastPgInd;
 
     public RptPgntn() {
     }
@@ -34,7 +34,7 @@ public class RptPgntn {
     
 
     public String getPgNb() {
-        return PgNb;
+        return pgNb;
     }
 
 
@@ -46,7 +46,7 @@ public class RptPgntn {
         if (pgNb == null || pgNb.isEmpty()) {
             throw new IllegalArgumentException("Wrong parameter 'PgNb' (" + pgNb + ") in setPgNb()");
         }
-        this.PgNb = pgNb;
+        this.pgNb = pgNb;
     }
 
     /**
@@ -71,7 +71,7 @@ public class RptPgntn {
         if (lastPgInd == null || lastPgInd.isEmpty()) {
             throw new IllegalArgumentException("Wrong parameter 'LastPgInd' (" + lastPgInd + ") in setLastPgInd()");
         }
-        this.LastPgInd = lastPgInd;
+        this.lastPgInd = lastPgInd;
     }
 
     /**
