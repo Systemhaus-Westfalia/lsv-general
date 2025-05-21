@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +28,7 @@ import org.adempiere.core.domains.models.X_E_Enviroment;
 import org.adempiere.core.domains.models.X_E_PlantType;
 import org.adempiere.core.domains.models.X_E_Recipient_Identification;
 import org.adempiere.core.domains.models.X_E_TimeSpan;
+import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MCity;
 import org.compiere.model.MClient;
@@ -158,8 +160,8 @@ public abstract class EDocumentFactory {
 					|| directoryPath.endsWith("\\"))
 					? directoryPath:directoryPath + "/"; 
 			
-			// Path filepath = Paths.get(directoryPath);  // nicht nötig
-			//Files.createDirectories(filepath);  // nicht nötig
+			// Path filepath = Paths.get(directoryPath);  // nicht nï¿½tig
+			//Files.createDirectories(filepath);  // nicht nï¿½tig
 			File readableFile = new File (fullPathFileName);
 			long fileLength = readableFile.length();
 			byte[] fileContent = new byte[(int) fileLength];
@@ -397,6 +399,18 @@ public abstract class EDocumentFactory {
 		MInvoiceLine refInvoiceLine = new MInvoiceLine(Env.getCtx(), invoiceLine.get_ValueAsInt("Ref_InvoiceLine_ID"), null);
 		MInvoice invoice = (MInvoice)refInvoiceLine.getC_Invoice();
 		return invoice;
+	}
+	
+	public String generateNumeroControl(MInvoice invoice, String duns) {
+		String prefix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getPrefix()).orElse("");
+		String documentno = invoice.getDocumentNo().replace(prefix,"");
+		String suffix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getSuffix()).orElse("");	
+		documentno = documentno.replace(suffix,"");
+		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
+
+		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
+				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
+		return numeroControl;
 	}
 	
 	
