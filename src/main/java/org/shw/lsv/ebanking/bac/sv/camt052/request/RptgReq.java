@@ -7,6 +7,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.Acct;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RptgReq {
@@ -21,9 +22,11 @@ public class RptgReq {
     AcctOwnr acctOwnr;
     
     @JsonProperty("RptgPrd")
+    @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude fields with null values
     RptgPrd rptgPrd;
     
     @JsonProperty("RptgSeq")
+    @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude fields with null values
     RptgSeq rptgSeq;
 
 
@@ -36,8 +39,14 @@ public class RptgReq {
 
             setAcct    (new Acct(    params, collector), collector);
             setAcctOwnr(new AcctOwnr(params, collector), collector);
-            //setRptgPrd (new RptgPrd( params, collector), collector);
-            //setRptgSeq (new RptgSeq( params, collector), collector);
+
+            if (!(params.getFrdt() == null || params.getFrdt().isBlank()) ) {
+                setRptgPrd (new RptgPrd( params, collector), collector);
+            }
+
+            if (!(params.getEqseq() == null || params.getEqseq().isBlank()) ) {
+                setRptgSeq (new RptgSeq( params, collector), collector);
+            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_RPTGREQ_INIT, e);
         }

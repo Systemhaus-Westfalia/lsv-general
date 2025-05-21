@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RptgSeq {
     @JsonProperty("EQSeq")
-    String EQSeq;
+    String eQSeq;
 
 
 	public RptgSeq() {}
@@ -28,8 +28,8 @@ public class RptgSeq {
 	/**
 	 * @return the EQSeq
 	 */
-    public String getEQSeq() {
-        return EQSeq;
+    public String geteQSeq() {
+        return eQSeq;
     }
 
 
@@ -39,7 +39,7 @@ public class RptgSeq {
 	 * Pattern: "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+".<br>
 	 * Example: "1", "abc123", "A-Z/?", "Hello, World!", "1+2-3", "abc/def\\ghi".
 	 */
-	public void setEQSeq(String eQSeq) {
+	public void seteQSeq(String eQSeq) {
 		boolean patternOK = (eQSeq != null) && Pattern.matches(EBankingConstants.PATTERN_EQSEQ, eQSeq);
 
 		if (!patternOK) {
@@ -47,7 +47,7 @@ public class RptgSeq {
 				"Wrong parameter 'eQSeq' (" + eQSeq + ") in setEQSeq()"
 			);
 		}
-		this.EQSeq = eQSeq;
+		this.eQSeq = eQSeq;
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class RptgSeq {
 	 */
 	public void setEQSeq(String eQSeq, JsonValidationExceptionCollector collector) {
 		try {
-			setEQSeq(eQSeq);
+			seteQSeq(eQSeq);
 		} catch (IllegalArgumentException e) {
 			collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
 			//throw e;

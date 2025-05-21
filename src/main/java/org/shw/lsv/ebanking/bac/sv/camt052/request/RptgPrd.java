@@ -8,10 +8,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RptgPrd {
     @JsonProperty("FrToDt")
-    FrToDt FrToDt;
+    FrToDt frToDt;
 
     @JsonProperty("Tp")
-    String Tp;
+    String tp;
 
 
     public RptgPrd() {
@@ -30,7 +30,7 @@ public class RptgPrd {
 
 
     public FrToDt getFrToDt() {
-        return FrToDt;
+        return frToDt;
 
     }
 
@@ -43,7 +43,7 @@ public class RptgPrd {
         if (frToDt == null) {
             throw new IllegalArgumentException("Wrong parameter 'frToDt' in setFrToDt()");
         }
-        this.FrToDt = frToDt;
+        this.frToDt = frToDt;
     }
 
     /**
@@ -74,7 +74,7 @@ public class RptgPrd {
                 "Wrong parameter 'tp' (" + tp + ") in setTp()"
             );
         }
-        this.Tp = tp;
+        this.tp = tp;
     }
 
     /**

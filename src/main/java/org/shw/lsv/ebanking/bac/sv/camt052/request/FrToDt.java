@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FrToDt {
     @JsonProperty("FrDt")
-    String FrDt;
+    String frDt;
 
     @JsonProperty("ToDt")
-    String ToDt;
+    String toDt;
 
 
 	public FrToDt() {}
@@ -33,7 +33,7 @@ public class FrToDt {
 	 * @return the FrDt
 	 */
     public String getFrDt() {
-        return FrDt;
+        return frDt;
     }
 
 
@@ -51,7 +51,7 @@ public class FrToDt {
 				"Wrong parameter 'frDt' (" + frDt + ") in setFrDt()"
 			);
 		}
-		this.FrDt = frDt;
+		this.frDt = frDt;
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class FrToDt {
 	 * @return the ToDt
 	 */
     public String getToDt() {
-        return ToDt;
+        return toDt;
     }
 
 
@@ -90,7 +90,7 @@ public class FrToDt {
 				"Wrong parameter 'toDt' (" + toDt + ") in setToDt()"
 			);
 		}
-		this.ToDt = toDt;
+		this.toDt = toDt;
 	}
 
 	/**

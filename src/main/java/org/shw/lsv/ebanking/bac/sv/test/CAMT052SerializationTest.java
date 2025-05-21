@@ -31,7 +31,7 @@ public static void main(String[] args) {
             System.out.println("\nGenerated JSON:");
             System.out.println(jsonOutput);
             
-            System.out.println("Serialization succeeded without errors:\n");
+            System.out.println("Serialization succeeded without errors.\n");
 
         } catch (JsonValidationException e) {
             System.err.println("Serialization Test failed: " + e.getMessage());
