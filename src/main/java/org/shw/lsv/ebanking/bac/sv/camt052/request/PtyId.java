@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PtyId {
     
     @JsonProperty("OrgId")    // "OrgId" is the name of the field in the JSON
-    OrgId OrgId;
+    OrgId orgId;
 
 
     public PtyId() { }
@@ -26,7 +26,7 @@ public class PtyId {
 
 
     public OrgId getOrgId() {
-        return OrgId;
+        return orgId;
     }
 
 
@@ -38,7 +38,7 @@ public class PtyId {
         if (orgId == null) {
             throw new IllegalArgumentException("Wrong parameter 'orgId' in setOrgId()");
         }
-        this.OrgId = orgId;
+        this.orgId = orgId;
     }
 
     /**

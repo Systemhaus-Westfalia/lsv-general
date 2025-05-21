@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CAMT052RequestDocument implements Validatable {
 
     @JsonProperty("AcctRptgReq")  // "AcctRptgReq" is the name of the field in the JSON
-    AcctRptgReq AcctRptgReq;
+    AcctRptgReq acctRptgReq;
     
     public CAMT052RequestDocument() {
     }
@@ -31,13 +31,13 @@ public class CAMT052RequestDocument implements Validatable {
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {
-            if (AcctRptgReq == null) {
+            if (acctRptgReq == null) {
                 throw new IllegalArgumentException("AcctRptgReq cannot be null");
             }
 
             // Validate nested objects
-            if (AcctRptgReq instanceof Validatable) {
-                ((Validatable) AcctRptgReq).validate(collector);
+            if (acctRptgReq instanceof Validatable) {
+                ((Validatable) acctRptgReq).validate(collector);
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
@@ -49,7 +49,7 @@ public class CAMT052RequestDocument implements Validatable {
     * @return the AcctRptgReq object<br>
     */
     public AcctRptgReq getAcctRptgReq() {
-        return AcctRptgReq;
+        return acctRptgReq;
     }
 
 
@@ -61,7 +61,7 @@ public class CAMT052RequestDocument implements Validatable {
         if (acctRptgReq == null) {
             throw new IllegalArgumentException("Wrong parameter 'acctRptgReq' in setAcctRptgReq()");
         }
-        this.AcctRptgReq = acctRptgReq;
+        this.acctRptgReq = acctRptgReq;
     }
 
     /**

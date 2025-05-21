@@ -12,19 +12,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RptgReq {
     
     @JsonProperty("ReqdMsgNmId")
-    String ReqdMsgNmId;  // Specifies the type of the requested reporting message
+    String reqdMsgNmId;  // Specifies the type of the requested reporting message
 
     @JsonProperty("Acct")
-    Acct Acct;
+    Acct acct;
 
     @JsonProperty("AcctOwnr")
-    AcctOwnr AcctOwnr;
+    AcctOwnr acctOwnr;
     
     @JsonProperty("RptgPrd")
-    RptgPrd RptgPrd;
+    RptgPrd rptgPrd;
     
     @JsonProperty("RptgSeq")
-    RptgSeq RptgSeq;
+    RptgSeq rptgSeq;
 
 
     public RptgReq() {}
@@ -48,7 +48,7 @@ public class RptgReq {
      * @return the ReqdMsgNmId
      */    
     public String getReqdMsgNmId() {
-        return ReqdMsgNmId;
+        return reqdMsgNmId;
     }
 
 
@@ -72,7 +72,7 @@ public class RptgReq {
                 "Wrong parameter 'reqdMsgNmId' (" + reqdMsgNmId + ") in setReqdMsgNmId()"
             );
         }
-        this.ReqdMsgNmId = reqdMsgNmId;
+        this.reqdMsgNmId = reqdMsgNmId;
     }
 
     /**
@@ -93,7 +93,7 @@ public class RptgReq {
      * @return the Acct
      */
 	public Acct getAcct() {
-        return Acct;
+        return acct;
     }
 
 
@@ -106,7 +106,7 @@ public class RptgReq {
         if (acct == null) {
             throw new IllegalArgumentException("Wrong parameter 'acct' in setAcct()");
         }
-        this.Acct = acct;
+        this.acct = acct;
     }
 
     /**
@@ -127,7 +127,7 @@ public class RptgReq {
      * @return the AcctOwnr
      */
     public AcctOwnr getAcctOwnr() {
-        return AcctOwnr;
+        return acctOwnr;
     }
     
 
@@ -140,7 +140,7 @@ public class RptgReq {
         if (acctOwnr == null) {
             throw new IllegalArgumentException("Wrong parameter 'acctOwnr' in setAcctOwnr()");
         }
-        this.AcctOwnr = acctOwnr;
+        this.acctOwnr = acctOwnr;
     }
 
     /**
@@ -160,7 +160,7 @@ public class RptgReq {
      * @return the RptgPrd
      */
     public RptgPrd getRptgPrd() {
-        return RptgPrd;
+        return rptgPrd;
     }
 
 
@@ -172,7 +172,7 @@ public class RptgReq {
         if (rptgPrd == null) {
             throw new IllegalArgumentException("Wrong parameter 'rptgPrd' in setRptgPrd()");
         }
-        this.RptgPrd = rptgPrd;
+        this.rptgPrd = rptgPrd;
     }
 
     /**
@@ -193,7 +193,7 @@ public class RptgReq {
      * @return the RptgSeq
      */
     public RptgSeq getRptgSeq() {
-        return RptgSeq;
+        return rptgSeq;
     }
     
 
@@ -205,7 +205,7 @@ public class RptgReq {
         if (rptgSeq == null) {
             throw new IllegalArgumentException("Wrong parameter 'rptgSeq' in setRptgSeq()");
         }
-        this.RptgSeq = rptgSeq;
+        this.rptgSeq = rptgSeq;
     }
 
     /**

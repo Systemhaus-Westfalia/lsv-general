@@ -13,10 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class GrpHdr {
 
     @JsonProperty(value = "MsgId", required = true)
-    String MsgId;  // Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message.
+    String msgId;  // Point to point reference, as assigned by the account servicing institution, and sent to the account owner or the party authorised to receive the message.
 
     @JsonProperty(value = "CreDtTm", required = true)
-    String CreDtTm;  // Date and time at which the message was created.
+    String creDtTm;  // Date and time at which the message was created.
 
     public GrpHdr() {
 	}
@@ -41,7 +41,7 @@ public class GrpHdr {
 	 * @return the MsgId
 	 */
 	public String getMsgId() {
-        return MsgId;
+        return msgId;
     }
 
 
@@ -64,7 +64,7 @@ public class GrpHdr {
 				"Wrong parameter 'msgId' (" + msgId + ") in setMsgId()"
 			);
 		}
-		this.MsgId = msgId;
+		this.msgId = msgId;
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class GrpHdr {
 	 * @return the CreDtTm
 	 */
     public String getCreDtTm() {
-        return CreDtTm;
+        return creDtTm;
     }
 
 
@@ -104,7 +104,7 @@ public class GrpHdr {
 				"Wrong parameter 'creDtTm' (" + creDtTm + ") in setCreDtTm()"
 			);
 		}
-		this.CreDtTm = creDtTm;
+		this.creDtTm = creDtTm;
 	}
 
 	/**

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SchmeNm {
     @JsonProperty("Prtry")
-    String Prtry;  // "Name of the identification scheme, in a free text form."
+    String prtry;  // "Name of the identification scheme, in a free text form."
 
 
 	public SchmeNm() {
@@ -30,7 +30,7 @@ public class SchmeNm {
 	 * @return the Prtry
 	 */
     public String getPrtry() {
-        return Prtry;
+        return prtry;
     }
 
 
@@ -53,7 +53,7 @@ public class SchmeNm {
                 "Wrong parameter 'prtry' (" + prtry + ") in setPrtry()"
             );
         }
-        this.Prtry = prtry;
+        this.prtry = prtry;
     }
 
     /**

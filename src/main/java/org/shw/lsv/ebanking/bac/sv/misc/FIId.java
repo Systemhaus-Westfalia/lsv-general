@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FIId {
     @JsonProperty("FinInstnId")
-    FinInstnId FinInstnId;  // BICFI (Bank Identifier Code)
+    FinInstnId finInstnId;  // BICFI (Bank Identifier Code)
 
 
 	public FIId() {}
@@ -31,7 +31,7 @@ public class FIId {
 	 */
 
     public FinInstnId getFinInstnId() {
-        return FinInstnId;
+        return finInstnId;
     }
 
     
@@ -43,7 +43,7 @@ public class FIId {
         if (finInstnId == null) {
             throw new IllegalArgumentException("Wrong parameter 'finInstnId' in setFinInstnId()");
         }
-        this.FinInstnId = finInstnId;
+        this.finInstnId = finInstnId;
     }
 
     /**

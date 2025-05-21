@@ -17,10 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AcctOwnr {
     
     @JsonProperty("Pty")
-    Pty Pty= null;
+    Pty pty= null;
 
     @JsonProperty("Agt")
-    Agt Agt= null;
+    Agt agt= null;
     
 
     public AcctOwnr() {}
@@ -40,7 +40,7 @@ public class AcctOwnr {
 
 
     public Pty getPty() {
-        return Pty;
+        return pty;
     }
 
 
@@ -53,7 +53,7 @@ public class AcctOwnr {
         if (pty == null) {
             throw new IllegalArgumentException("Wrong parameter 'pty' in setPty()");
         }
-        this.Pty = pty;
+        this.pty = pty;
     }
 
     /**
@@ -74,7 +74,7 @@ public class AcctOwnr {
 	 * @return the Agt object<br>
 	 */
     public Agt getAgt() {
-        return Agt;
+        return agt;
     }
 
 
@@ -86,7 +86,7 @@ public class AcctOwnr {
         if (agt == null) {
             throw new IllegalArgumentException("Wrong parameter 'agt' in setAgt()");
         }
-        this.Agt = agt;
+        this.agt = agt;
     }
 
     /**

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Agt {
     @JsonProperty("FinInstnId")
-    FinInstnId FinInstnId;  // BICFI (Bank Identifier Code)
+    FinInstnId finInstnId;  // BICFI (Bank Identifier Code)
 
 
 	public Agt() {
@@ -29,7 +29,7 @@ public class Agt {
 	 * @return the FinInstnId object<br>
 	 */
     public FinInstnId getFinInstnId() {
-        return FinInstnId;
+        return finInstnId;
     }
 
 
@@ -41,7 +41,7 @@ public class Agt {
         if (finInstnId == null) {
             throw new IllegalArgumentException("Wrong parameter 'finInstnId' in setFinInstnId()");
         }
-        this.FinInstnId = finInstnId;
+        this.finInstnId = finInstnId;
     }
 
     /**

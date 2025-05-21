@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class IdOthr {
     @JsonProperty("Id")
-    String Id;  // Identification assigned by an institution.
+    String id;  // Identification assigned by an institution.
 
     @JsonProperty("SchmeNm")
-	SchmeNm SchmeNm;
+	SchmeNm cchmeNm;
 
 
 	public IdOthr() {
@@ -37,7 +37,7 @@ public class IdOthr {
 	 * @return the Id
 	 */
 	public String getId() {
-        return Id;
+        return id;
     }
 
 
@@ -53,7 +53,7 @@ public class IdOthr {
 		if (!patternOK) {
 			throw new IllegalArgumentException("Wrong parameter 'Id' (" + id + ") in setId()");
 		}
-		this.Id = id;
+		this.id = id;
 	}
 
 	/**
@@ -70,8 +70,8 @@ public class IdOthr {
 	}
 
 
-	public SchmeNm getSchmeNm() {
-		return SchmeNm;
+	public SchmeNm getCchmeNm() {
+		return cchmeNm;
 	}
 
 
@@ -79,11 +79,11 @@ public class IdOthr {
 	 * @param schmeNm the SchmeNm to be set<br>
 	 * The parameter is validated: null not allowed.<br>
 	 */
-	public void setSchmeNm(SchmeNm schmeNm) {
+	public void setCchmeNm(SchmeNm schmeNm) {
 		if (schmeNm == null) {
 			throw new IllegalArgumentException("Wrong parameter 'schmeNm' in setSchmeNm()");
 		}
-		this.SchmeNm = schmeNm;
+		this.cchmeNm = schmeNm;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class IdOthr {
 	 */
 	public void setSchmeNm(SchmeNm schmeNm, JsonValidationExceptionCollector collector) {
 		try {
-			setSchmeNm(schmeNm);
+			setCchmeNm(schmeNm);
 		} catch (IllegalArgumentException e) {
 			collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
 			//throw e;

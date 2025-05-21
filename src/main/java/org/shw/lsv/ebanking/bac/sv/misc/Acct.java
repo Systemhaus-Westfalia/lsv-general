@@ -15,11 +15,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Acct {
 
     @JsonProperty("Id")   // "Id" is the name of the field in the JSON
-    AcctId AcctId;
+    AcctId acctId;
 
     @JsonProperty("Ccy")
     @JsonInclude(JsonInclude.Include.NON_NULL)// Exclude fields with null values
-    String Ccy= null;  // ToDo: check actual Ccy values.
+    String ccy= null;  // ToDo: check actual Ccy values.
 
 
     public Acct() {}
@@ -39,7 +39,7 @@ public class Acct {
      * @return the AcctId object<br>
      */
     public AcctId getAcctId() {
-        return AcctId;
+        return acctId;
     }
 
 
@@ -51,7 +51,7 @@ public class Acct {
         if (acctId == null) {
             throw new IllegalArgumentException("Wrong parameter 'acctId' in setAcctId()");
         }
-        this.AcctId = acctId;
+        this.acctId = acctId;
     }
 
     /**
@@ -72,7 +72,7 @@ public class Acct {
      * @return the Ccy object<br>
      */
     public String getCcy() {
-        return Ccy;
+        return ccy;
     }
 
 
@@ -84,7 +84,7 @@ public class Acct {
         if (ccy == null || ccy.isEmpty()) {
             throw new IllegalArgumentException("Wrong parameter 'ccy' (" + ccy + ") in setCcy()");
         }
-        this.Ccy = ccy;
+        this.ccy = ccy;
     }
 
     /**

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AcctIdOthr {
 
     @JsonProperty(value = "Id", required = true)
-    String Id;
+    String id;
 
 
     public AcctIdOthr() {}
@@ -39,7 +39,7 @@ public class AcctIdOthr {
 	 * @return the Id
 	 */
 	public String getId() {
-        return Id;  // Choice Acct_Id_2: Unique identification of an account, as assigned by the account servicer, using an identification scheme.
+        return id;  // Choice Acct_Id_2: Unique identification of an account, as assigned by the account servicer, using an identification scheme.
     }
 
 
@@ -62,7 +62,7 @@ public class AcctIdOthr {
 				"Wrong parameter 'Id' (" + id + ") in setId()"
 			);
 		}
-		this.Id = id;
+		this.id = id;
 	}
 
 	/**

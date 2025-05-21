@@ -17,7 +17,7 @@ public class CAMT052RequestEnvelope implements Validatable {
      AppHdr appHdr;
     
      @JsonProperty("Document")    // "Document" is the name of the field in the JSON
-     CAMT052RequestDocument CAMT052RequestDocument;
+     CAMT052RequestDocument cAMT052RequestDocument;
     
     public CAMT052RequestEnvelope() {}
 
@@ -38,7 +38,7 @@ public class CAMT052RequestEnvelope implements Validatable {
             if (appHdr == null) {
                 throw new IllegalArgumentException("AppHdr cannot be null");
             }
-            if (CAMT052RequestDocument == null) {
+            if (cAMT052RequestDocument == null) {
                 throw new IllegalArgumentException("Document cannot be null");
             }
 
@@ -46,8 +46,8 @@ public class CAMT052RequestEnvelope implements Validatable {
             if (appHdr instanceof Validatable) {
                 ((Validatable) appHdr).validate(collector);
             }
-            if (CAMT052RequestDocument instanceof Validatable) {
-                ((Validatable) CAMT052RequestDocument).validate(collector);
+            if (cAMT052RequestDocument instanceof Validatable) {
+                ((Validatable) cAMT052RequestDocument).validate(collector);
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
@@ -93,8 +93,8 @@ public class CAMT052RequestEnvelope implements Validatable {
     /**
     * @return the CAMT052RequestDocument object<br>
     */
-     public CAMT052RequestDocument getCAMT052RequestDocument() {
-         return CAMT052RequestDocument;
+     public CAMT052RequestDocument getcAMT052RequestDocument() {
+         return cAMT052RequestDocument;
      }
 
 
@@ -102,13 +102,13 @@ public class CAMT052RequestEnvelope implements Validatable {
      * @param documentCAMT052Request the CAMT052RequestDocument to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setCAMT052RequestDocument(CAMT052RequestDocument documentCAMT052Request) {
+    public void setcAMT052RequestDocument(CAMT052RequestDocument documentCAMT052Request) {
         if (documentCAMT052Request == null) {
             throw new IllegalArgumentException(
                 "Wrong parameter 'documentCAMT052Request' in setCAMT052RequestDocument()"
             );
         }
-        this.CAMT052RequestDocument = documentCAMT052Request;
+        this.cAMT052RequestDocument = documentCAMT052Request;
     }
 
     /**
@@ -118,7 +118,7 @@ public class CAMT052RequestEnvelope implements Validatable {
     public void setCAMT052RequestDocument(CAMT052RequestDocument documentCAMT052Request, 
                                         JsonValidationExceptionCollector collector) {
         try {
-            setCAMT052RequestDocument(documentCAMT052Request);
+            setcAMT052RequestDocument(documentCAMT052Request);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;

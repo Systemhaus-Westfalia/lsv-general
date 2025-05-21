@@ -15,11 +15,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Fr {
     @JsonProperty("FIId")
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
-    FIId FIId=null;  // BICFI (Bank Identifier Code)
+    FIId fIId=null;  // BICFI (Bank Identifier Code)
 
     @JsonProperty("OrgId")  // "OrgId" is the name of the field in the JSON
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
-    OrgId OrgId=null;
+    OrgId orgId=null;
 
 
     public Fr() {}
@@ -42,8 +42,8 @@ public class Fr {
     /**
 	 * @return the FIId object<br>
 	 */
-    public FIId getFIId() {
-        return FIId;
+    public FIId getfIId() {
+        return fIId;
     }
 
     
@@ -51,11 +51,11 @@ public class Fr {
      * @param fIId the FIId object to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setFIId(FIId fIId) {
+    public void setfIId(FIId fIId) {
         if (fIId == null) {
             throw new IllegalArgumentException("Wrong parameter 'fIId' in setFIId()");
         }
-        this.FIId = fIId;
+        this.fIId = fIId;
     }
 
     /**
@@ -64,7 +64,7 @@ public class Fr {
      */
     public void setFIId(FIId fIId, JsonValidationExceptionCollector collector) {
         try {
-            setFIId(fIId);
+            setfIId(fIId);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;
@@ -76,7 +76,7 @@ public class Fr {
      * @return the OrgId object<br>
      */
 	public OrgId getOrgId() {
-        return OrgId;
+        return orgId;
     }
 
 
@@ -88,7 +88,7 @@ public class Fr {
         if (orgId == null) {
             throw new IllegalArgumentException("Wrong parameter 'orgId' in setOrgId()");
         }
-        this.OrgId = orgId;
+        this.orgId = orgId;
     }
 
     /**

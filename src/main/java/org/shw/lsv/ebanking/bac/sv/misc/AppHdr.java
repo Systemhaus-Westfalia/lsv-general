@@ -21,16 +21,16 @@ public class AppHdr {
     private To to; 				// Receiving MessagingEndpoint
 
     @JsonProperty("BizMsgIdr")
-    private String BizMsgIdr;	// Business Message Identifier
+    private String bizMsgIdr;	// Business Message Identifier
 
     @JsonProperty("MsgDefIdr")
-    private String MsgDefIdr; 	// Message Identifier
+    private String msgDefIdr; 	// Message Identifier
 
     @JsonProperty("BizSvc")
-    private String BizSvc; // Business service agreed between two MessagingEndpoints
+    private String bizSvc; // Business service agreed between two MessagingEndpoints
 
     @JsonProperty("CreDt")
-    String CreDt;     			// Creation Date and Time
+    String creDt;     			// Creation Date and Time
 
 
     public AppHdr() {}
@@ -121,7 +121,7 @@ public class AppHdr {
 	 * @return the BizMsgIdr
 	 */
     public String getBizMsgIdr() {
-        return BizMsgIdr;
+        return bizMsgIdr;
     }
 
 
@@ -140,7 +140,7 @@ public class AppHdr {
 				"Wrong parameter 'bizMsgIdr' (" + bizMsgIdr + ") in setBizMsgIdr()"
 			);
 		}
-		this.BizMsgIdr = bizMsgIdr;
+		this.bizMsgIdr = bizMsgIdr;
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class AppHdr {
 	 * @return the MsgDefIdr
 	 */
     public String getMsgDefIdr() {
-        return MsgDefIdr;
+        return msgDefIdr;
     }
 
 
@@ -180,7 +180,7 @@ public class AppHdr {
 				"Wrong parameter 'msgDefIdr' (" + msgDefIdr + ") in setMsgDefIdr()"
 			);
 		}
-		this.MsgDefIdr = msgDefIdr;
+		this.msgDefIdr = msgDefIdr;
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class AppHdr {
 	 * @return the BizSvc
 	 */
     public String getBizSvc() {
-        return BizSvc;
+        return bizSvc;
     }
 
 
@@ -223,7 +223,7 @@ public class AppHdr {
 		if (!(length >= MINLENGTH && length <= MAXLENGTH && patternOK)) {
 			throw new IllegalArgumentException("Wrong parameter 'bizSvc' (" + bizSvc + ") in setBizSvc()");
 		}
-		this.BizSvc = bizSvc;
+		this.bizSvc = bizSvc;
 	}
 
 	/**
@@ -244,7 +244,7 @@ public class AppHdr {
 	 * @return the CreDt
 	 */
     public String getCreDt() {
-        return CreDt;
+        return creDt;
     }
 	
 
@@ -260,7 +260,7 @@ public class AppHdr {
 		if (!patternOK) {
 			throw new IllegalArgumentException("Wrong parameter 'creDt' (" + creDt + ") in setCreDt()");
 		}
-		this.CreDt = creDt;
+		this.creDt = creDt;
 	}
 
 	/**

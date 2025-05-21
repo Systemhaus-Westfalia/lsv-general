@@ -15,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(JsonInclude.Include.NON_NULL)// Exclude fields with null values
 public class AcctId {
     @JsonProperty("IBAN")
-    String IBAN=null;            // Choice Acct_Id_1: International Bank Account Number (IBAN) - identifier used internationally by financial institutions to uniquely identify the account of a customer.
+    String iBAN=null;            // Choice Acct_Id_1: International Bank Account Number (IBAN) - identifier used internationally by financial institutions to uniquely identify the account of a customer.
     
     @JsonProperty("Othr")        // Das Json-Feld heisst nur "Othr"
-    AcctIdOthr AcctIdOthr=null;  // Choice Acct_Id_2: Unique identification of an account, as assigned by the account servicer, using an identification scheme.
+    AcctIdOthr acctIdOthr=null;  // Choice Acct_Id_2: Unique identification of an account, as assigned by the account servicer, using an identification scheme.
 
 
     
@@ -50,8 +50,8 @@ public class AcctId {
     /**
 	 * @return the IBAN
 	 */
-	public String getIBAN() {
-        return IBAN; 
+	public String getiBAN() {
+        return iBAN; 
     }
 
 
@@ -61,13 +61,13 @@ public class AcctId {
      * "pattern" : "[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}".<br>
      * Example: "CR05011111111111111111".
      */
-    public void setIBAN(String IBAN) {
+    public void setiBAN(String IBAN) {
         boolean patternOK = (IBAN != null && !IBAN.isEmpty()) && Pattern.matches(EBankingConstants.PATTERN_IBAN, IBAN);
 
         if (!patternOK) {
             throw new IllegalArgumentException("Wrong parameter 'IBAN' (" + IBAN + ") in setIBAN()");
         }
-        this.IBAN = IBAN;
+        this.iBAN = IBAN;
     }
 
     /**
@@ -76,7 +76,7 @@ public class AcctId {
      */
     public void setIBAN(String IBAN, JsonValidationExceptionCollector collector) {
         try {
-            setIBAN(IBAN);
+            setiBAN(IBAN);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
             //throw e;
@@ -88,7 +88,7 @@ public class AcctId {
 	 * @return the AcctIdOthr object<br>
 	 */
     public AcctIdOthr getAcctIdOthr() {
-        return AcctIdOthr;
+        return acctIdOthr;
     }
 
 
@@ -100,7 +100,7 @@ public class AcctId {
         if (acctIdOthr == null) {
             throw new IllegalArgumentException("Wrong parameter 'acctIdOthr' in setAcctIdOthr()");
         }
-        this.AcctIdOthr = acctIdOthr;
+        this.acctIdOthr = acctIdOthr;
     }
 
     /**

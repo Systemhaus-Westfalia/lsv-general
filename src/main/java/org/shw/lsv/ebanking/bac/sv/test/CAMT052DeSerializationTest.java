@@ -60,10 +60,10 @@ public class CAMT052DeSerializationTest {
 
     private static void printRequestSummary(CAMT052Request request) {
         // Implement meaningful object inspection
-        System.out.println("Envelope present: " + (request.getEnvelopeCAMT052Request() != null));
-        if (request.getEnvelopeCAMT052Request() != null) {
+        System.out.println("Envelope present: " + (request.getcAMT052RequestEnvelope() != null));
+        if (request.getcAMT052RequestEnvelope() != null) {
             System.out.println("Document present: " + 
-                (request.getEnvelopeCAMT052Request().getCAMT052RequestDocument() != null));
+                (request.getcAMT052RequestEnvelope().getcAMT052RequestDocument() != null));
             // Add more details as needed
         }
     }

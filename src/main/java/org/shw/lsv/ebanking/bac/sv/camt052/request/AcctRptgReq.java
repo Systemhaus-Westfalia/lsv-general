@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AcctRptgReq {
     
     @JsonProperty("GrpHdr")
-    GrpHdr GrpHdr;
+    GrpHdr grpHdr;
     
     @JsonProperty("RptgReq")
-    RptgReq RptgReq;
+    RptgReq rptgReq;
 
     public AcctRptgReq() {
     }
@@ -34,7 +34,7 @@ public class AcctRptgReq {
      * @return the GrpHdr object<br>
      */
     public GrpHdr getGrpHdr() {
-        return GrpHdr;
+        return grpHdr;
     }
 
 
@@ -46,7 +46,7 @@ public class AcctRptgReq {
         if (grpHdr == null) {
             throw new IllegalArgumentException("Wrong parameter 'grpHdr' in setGrpHdr()");
         }
-        this.GrpHdr = grpHdr;
+        this.grpHdr = grpHdr;
     }
 
     /**
@@ -67,7 +67,7 @@ public class AcctRptgReq {
      * @return the RptgReq object<br>
      */
     public RptgReq getRptgReq() {
-        return RptgReq;
+        return rptgReq;
     }
 
 
@@ -79,7 +79,7 @@ public class AcctRptgReq {
         if (rptgReq == null) {
             throw new IllegalArgumentException("Wrong parameter 'rptgReq' in setRptgReq()");
         }
-        this.RptgReq = rptgReq;
+        this.rptgReq = rptgReq;
     }
 
     /**

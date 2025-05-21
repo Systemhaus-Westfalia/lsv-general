@@ -17,10 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class OrgId {
     
     @JsonProperty("AnyBIC")
-	String AnyBIC=null;        // Choice AcctOwnr_OrgId_1: Business identification code of the organisation.
+	String anyBIC=null;        // Choice AcctOwnr_OrgId_1: Business identification code of the organisation.
 
     @JsonProperty("Othr")      // "Othr" is the name of the field in the JSON
-    IdOthr IdOthr=null;  // Choice AcctOwnr_OrgId_2: Identification assigned by an institution.
+    IdOthr idOthr=null;  // Choice AcctOwnr_OrgId_2: Identification assigned by an institution.
 
 
     public OrgId() {
@@ -48,7 +48,7 @@ public class OrgId {
 	 * @return the AnyBIC
 	 */
 	public String getAnyBIC() {
-        return AnyBIC;
+        return anyBIC;
     }
 
 
@@ -64,7 +64,7 @@ public class OrgId {
         if (!patternOK) {
             throw new IllegalArgumentException("Wrong parameter 'anyBIC' (" + anyBIC + ") in setAnyBIC()");
         }
-        this.AnyBIC = anyBIC;
+        this.anyBIC = anyBIC;
     }
 
     /**
@@ -81,7 +81,7 @@ public class OrgId {
     }
 
 	public IdOthr getIdOthr() {
-        return IdOthr;
+        return idOthr;
     }
 
 
@@ -93,7 +93,7 @@ public class OrgId {
         if (idOthr == null) {
             throw new IllegalArgumentException("Wrong parameter 'idOthr' in setIdOthr()");
         }
-        this.IdOthr = idOthr;
+        this.idOthr = idOthr;
     }
 
     /**

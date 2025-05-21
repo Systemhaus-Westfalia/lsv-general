@@ -15,11 +15,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class To {
     @JsonProperty("FIId")
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
-    FIId FIId=null;  // BICFI (Bank Identifier Code)
+    FIId fIId=null;  // BICFI (Bank Identifier Code)
 
     @JsonProperty("OrgId")  // "OrgId" is the name of the field in the JSON
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
-    IDOrgID IDOrgID=null;
+    IDOrgID iDOrgID=null;
 
 
 	public To() {
@@ -43,19 +43,19 @@ public class To {
     /**
 	 * @return the FIId object
 	 */
-    public FIId getFIId() {
-        return FIId;
+    public FIId getfIId() {
+        return fIId;
     }
 
     /**
      * @param fIId the FIId to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setFIId(FIId fIId) {
+    public void setfIId(FIId fIId) {
         if (fIId == null) {
             throw new IllegalArgumentException("Wrong parameter 'fIId' in setFIId()");
         }
-        this.FIId = fIId;
+        this.fIId = fIId;
     }
 
     /**
@@ -64,7 +64,7 @@ public class To {
      */
     public void setFIId(FIId fIId, JsonValidationExceptionCollector collector) {
         try {
-            setFIId(fIId);
+            setfIId(fIId);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;
@@ -75,8 +75,8 @@ public class To {
     /**
      * @return the OrgId object<br>
      */
-	public IDOrgID getIDOrgID() {
-        return IDOrgID;
+	public IDOrgID getiDOrgID() {
+        return iDOrgID;
     }
 
 
@@ -84,11 +84,11 @@ public class To {
      * @param IDOrgID the IDOrgID to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setIDOrgID(IDOrgID IDOrgID) {
+    public void setiDOrgID(IDOrgID IDOrgID) {
         if (IDOrgID == null) {
             throw new IllegalArgumentException("Wrong parameter 'IDOrgID' in setIDOrgID()");
         }
-        this.IDOrgID = IDOrgID;
+        this.iDOrgID = IDOrgID;
     }
 
     /**
@@ -97,7 +97,7 @@ public class To {
      */
     public void setIDOrgID(IDOrgID IDOrgID, JsonValidationExceptionCollector collector) {
         try {
-            setIDOrgID(IDOrgID);
+            setiDOrgID(IDOrgID);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;
