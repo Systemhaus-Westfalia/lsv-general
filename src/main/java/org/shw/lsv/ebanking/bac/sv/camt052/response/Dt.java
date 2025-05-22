@@ -40,11 +40,11 @@ public class Dt {
      * @param dtTm the DtTm to be set<br>
      * The parameter is validated.<br>
      * "pattern" : ".*(+|-)((0[0-9])|(1[0-3])):[0-5][0-9]"
-     * pattern copilot: "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9])$"
+     * pattern copilot: "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$"
      * e.g.: "2020-09-08T18:00:00+02:00"
      */
     public void setDtTm(String dtTm) {
-        boolean patternOK = (dtTm != null) && Pattern.matches(EBankingConstants.PATTERN_DTTM, dtTm);
+        boolean patternOK = (dtTm != null) && Pattern.matches(EBankingConstants.PATTERN_DATETIME, dtTm);
 
         if (patternOK) {
             this.dtTm = dtTm;

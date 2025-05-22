@@ -255,7 +255,7 @@ public class AppHdr {
 	 * pattern copilot: "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9])$".
 	 */
 	public void setCreDt(String creDt) {
-		boolean patternOK = (creDt != null) && Pattern.matches(EBankingConstants.PATTERN_CREDT, creDt);
+		boolean patternOK = (creDt != null) && Pattern.matches(EBankingConstants.PATTERN_DATETIME, creDt);
 
 		if (!patternOK) {
 			throw new IllegalArgumentException("Wrong parameter 'creDt' (" + creDt + ") in setCreDt()");

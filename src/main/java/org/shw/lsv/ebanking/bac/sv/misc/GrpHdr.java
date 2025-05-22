@@ -93,11 +93,11 @@ public class GrpHdr {
 	 * @param creDtTm the CreDtTm to be set.<br>
 	 * The parameter is validated.<br>
 	 * "pattern" : ".*(+|-)((0[0-9])|(1[0-3])):[0-5][0-9]".<br>
-		 * pattern copilot: "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9])$".
+		 * pattern copilot: "^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$".
 	 * Example: "2020-09-08T18:00:00+02:00".
 	 */
 	public void setCreDtTm(String creDtTm) {
-		boolean patternOK = (creDtTm != null) && Pattern.matches(EBankingConstants.PATTERN_CREDTM, creDtTm);
+		boolean patternOK = (creDtTm != null) && Pattern.matches(EBankingConstants.PATTERN_DATETIME, creDtTm);
 
 		if (!patternOK) {
 			throw new IllegalArgumentException(

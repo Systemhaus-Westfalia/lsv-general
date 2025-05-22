@@ -12,12 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Unique and unambiguous identification for the account between the account owner and the account servicer.
  * Choose between "IBAN" and "Othr"
 */
-@JsonInclude(JsonInclude.Include.NON_NULL)// Exclude fields with null values
 public class AcctId {
     @JsonProperty("IBAN")
+    @JsonInclude(JsonInclude.Include.NON_NULL)// Exclude fields with null values
     String iBAN=null;            // Choice Acct_Id_1: International Bank Account Number (IBAN) - identifier used internationally by financial institutions to uniquely identify the account of a customer.
     
     @JsonProperty("Othr")        // Das Json-Feld heisst nur "Othr"
+    @JsonInclude(JsonInclude.Include.NON_NULL)// Exclude fields with null values
     AcctIdOthr acctIdOthr=null;  // Choice Acct_Id_2: Unique identification of an account, as assigned by the account servicer, using an identification scheme.
 
 
