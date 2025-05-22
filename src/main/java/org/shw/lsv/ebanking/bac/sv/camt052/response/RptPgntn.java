@@ -8,20 +8,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RptPgntn {
 
     @JsonProperty(value = "PgNb", required = true)
-    String pgNb;
-
+    String pgNb;  // Page Number
 
     @JsonProperty(value = "LastPgInd", required = true)
-    String lastPgInd;
+    boolean lastPgInd; // Last Page Number Indicator
 
-    public RptPgntn() {
-    }
-
+    public RptPgntn() { }
 
     /**
-	 * @param pgNb the PgNb to be set<br>
-	 * @param lastPgInd the LastPgInd to be set<br>
-	 * Both @pgNb and @lastPgInd are mandatory in the JSON definition.
+     * @param pgNb the PgNb to be set<br>
+     * @param lastPgInd the LastPgInd to be set<br>
+     * Both @pgNb and @lastPgInd are mandatory in the JSON definition.
      * 
      * Constructor with parameters
      * For using the Constructor at deserialization time, it has to be of the form:
@@ -31,12 +28,10 @@ public class RptPgntn {
         setPgNb(pgNb);
         setLastPgInd(lastPgInd);
     }
-    
 
     public String getPgNb() {
         return pgNb;
     }
-
 
     /**
      * @param pgNb the PgNb to be set<br>
@@ -62,16 +57,19 @@ public class RptPgntn {
         }
     }
 
+    public boolean isLastPgInd() {
+        return lastPgInd;
+    }
 
     /**
      * @param lastPgInd the LastPgInd to be set<br>
-     * The parameter is validated: null not allowed.<br>
+     * The parameter is validated: must be "true" or "false".<br>
      */
     public void setLastPgInd(String lastPgInd) {
-        if (lastPgInd == null || lastPgInd.isEmpty()) {
+        if (lastPgInd == null || (!lastPgInd.equalsIgnoreCase("true") && !lastPgInd.equalsIgnoreCase("false"))) {
             throw new IllegalArgumentException("Wrong parameter 'LastPgInd' (" + lastPgInd + ") in setLastPgInd()");
         }
-        this.lastPgInd = lastPgInd;
+        this.lastPgInd = Boolean.parseBoolean(lastPgInd);
     }
 
     /**
@@ -86,6 +84,4 @@ public class RptPgntn {
             //throw e;
         }
     }
-
-    
 }

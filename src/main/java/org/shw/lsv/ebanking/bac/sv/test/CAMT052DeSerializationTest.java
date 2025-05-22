@@ -1,5 +1,8 @@
 package org.shw.lsv.ebanking.bac.sv.test;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052Response;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
@@ -7,6 +10,10 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 public class CAMT052DeSerializationTest {
     public static void main(String[] args) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.err.println("Deserialization started at: " + now.format(formatter));
+
         // 1. Create collector with explicit settings
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
         //collector.setPrintImmediately(true); // Print errors as they occur
@@ -114,14 +121,67 @@ public class CAMT052DeSerializationTest {
                // - Omit required fields
                // - Set invalid values
                // - Include nulls where prohibited
-
+/*  
+ * Zu erwartetes Ergebnis:
+ * *** AppHdr ***
+    Fr-BICFI : BAMCSVSS
+    To-BICFI : DUMMYMASTER
+    BizMshIdr: 182142
+    BizSvc:    swift.cbprplus.02
+    CreDt:     2024-07-23T18:44:54-06:00
+    MsgDefIdr: AccountBalanceReportV08
+*** CAMT052 Response Document ***
+********************************************
+    CreDtTm:   2024-07-23T18:44:54-06:00
+    MsgId:     182142
+    AcctId:    999888666
+    Acct-Ccy:  USD
+    Bal-Amt:   999994769.99
+    Bal-Ccy:   USD
+    CdtDbtInd: CRDT
+    Bal-Dt:    2024-07-23T18:44:54-06:00
+    Bal-Cd:    ITAV
+    Id:        2024072318445460000
+    Bal-RptId: 1
+    LastPgInd: true
+ * 
+*/
     private static void printResponseSummary(CAMT052Response response) {
-        // Implement meaningful object inspection
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.err.println("Deserialization finished at: " + now.format(formatter));
+    
         System.out.println("Envelope present: " + (response.getcAMT052ResponseEnvelope() != null));
         if (response.getcAMT052ResponseEnvelope() != null) {
             System.out.println("Document present: " + 
                 (response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument() != null));
-            // Add more details as needed
         }
+        System.err.println("********************************************");
+        System.err.println("********************************************");
+        System.err.println("Ergebinisse:");
+        System.err.println("*** AppHdr ***");
+        System.err.println("    Fr-BICFI : "  + response.getcAMT052ResponseEnvelope().getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
+        System.err.println("    To-BICFI : "  + response.getcAMT052ResponseEnvelope().getAppHdr().getTo().getfIId().getFinInstnId().getbICFI());
+        System.err.println("    BizMshIdr: "  + response.getcAMT052ResponseEnvelope().getAppHdr().getBizMsgIdr());
+        System.err.println("    BizSvc:    "  + response.getcAMT052ResponseEnvelope().getAppHdr().getBizSvc());
+        System.err.println("    CreDt:     "  + response.getcAMT052ResponseEnvelope().getAppHdr().getCreDt());
+        System.err.println("    MsgDefIdr: "  + response.getcAMT052ResponseEnvelope().getAppHdr().getMsgDefIdr());
+        System.err.println("*** CAMT052 Response Document ***");
+        System.err.println("********************************************");
+        System.err.println("    CreDtTm:   "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getGrpHdr().getCreDtTm());
+        System.err.println("    MsgId:     "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getGrpHdr().getMsgId());
+        System.err.println("    AcctId:    "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getAcct().getAcctId().getAcctIdOthr().getId());
+        System.err.println("    Acct-Ccy:  "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getAcct().getCcy());
+        System.err.println("    Bal-Amt:   "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getBal().getAmt().getAmt());
+        System.err.println("    Bal-Ccy:   "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getBal().getAmt().getCcy());
+        System.err.println("    CdtDbtInd: "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getBal().getCdtDbtInd());
+        System.err.println("    Bal-DtTm:  "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getBal().getDt().getDtTm());
+        System.err.println("    Bal-Cd:    "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getBal().getTp().getCdOrPrtry().getCd());
+        System.err.println("    Id:        "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getId());
+
+        System.err.println("    Bal-RptId: "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getRptPgntn().getPgNb());
+        System.err.println("    LastPgInd: "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getRptPgntn().isLastPgInd());
+        System.err.println("********************************************");
+        System.err.println("********************************************");
     }
 }

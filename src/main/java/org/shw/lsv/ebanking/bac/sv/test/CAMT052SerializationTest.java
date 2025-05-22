@@ -1,5 +1,8 @@
 package org.shw.lsv.ebanking.bac.sv.test;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
 import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.CamtRequestBuilder;
@@ -11,6 +14,10 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 public class CAMT052SerializationTest {
 public static void main(String[] args) {
     String jsonOutput = "";
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.err.println("Serialization started at: " + now.format(formatter));
 
         // 1. Create collector for test diagnostics
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
@@ -32,6 +39,9 @@ public static void main(String[] args) {
             System.out.println(jsonOutput);
             
             System.out.println("Serialization succeeded without errors.\n");
+            
+            now = LocalDateTime.now();
+            System.err.println("Serialization finished at: " + now.format(formatter));
 
         } catch (JsonValidationException e) {
             System.err.println("Serialization Test failed: " + e.getMessage());
