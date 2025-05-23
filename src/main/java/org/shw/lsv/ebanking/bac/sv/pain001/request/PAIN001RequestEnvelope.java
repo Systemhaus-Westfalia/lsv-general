@@ -21,7 +21,7 @@ public class PAIN001RequestEnvelope implements Validatable  {
     public PAIN001RequestEnvelope(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setAppHdr(new AppHdr(params, collector), collector);
-            setCAMT052RequestDocument(new PAIN001RequestDocument(params, collector), collector);
+            setPAIN001RequestDocument(new PAIN001RequestDocument(params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_REQUEST_ENVELOP_INIT, e);
         }
@@ -93,7 +93,7 @@ public class PAIN001RequestEnvelope implements Validatable  {
      * @param pAIN001RequestDocument the PAIN001RequestDocument to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setCAMT052RequestDocument(PAIN001RequestDocument pAIN001RequestDocument,
+    public void setPAIN001RequestDocument(PAIN001RequestDocument pAIN001RequestDocument,
                                         JsonValidationExceptionCollector collector) {
         try {
             setpAIN001RequestDocument(pAIN001RequestDocument);
