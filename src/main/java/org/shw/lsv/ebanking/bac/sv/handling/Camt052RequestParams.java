@@ -1,7 +1,8 @@
 package org.shw.lsv.ebanking.bac.sv.handling;
 
+import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
 
-public class Camt052RequestParams {
+public class Camt052RequestParams implements RequestParams<CAMT052Request> {
     private String bicfiFr;
     private String bicfiTo;
     private String bicfiAcctOwnr;

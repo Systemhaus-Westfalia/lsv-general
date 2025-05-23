@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
 import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
-import org.shw.lsv.ebanking.bac.sv.handling.CamtRequestBuilder;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
@@ -28,7 +28,7 @@ public static void main(String[] args) {
         
         try {
             // 3. Build request with test's collector
-            CAMT052Request request = CamtRequestBuilder.build(params, collector);
+            CAMT052Request request = RequestBuilder.build(params, collector);
             
             // 4. Serialization test
             JsonProcessor processor = new JsonProcessor(collector);

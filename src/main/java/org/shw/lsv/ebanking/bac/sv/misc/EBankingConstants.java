@@ -30,8 +30,8 @@ public class EBankingConstants {
 	public static final String ERROR_INVALID_CCY_FORMAT        = "The Ccy format is invalid";
 
 	public static final String ERROR_ENVELOPE_NOT_NULL         = "Envelope cannot be null";
-	public static final String ERROR_CAMT052REQUEST_BUILDING   = "Error while building the CAMT052 Request";
-	public static final String ERROR_CAMT052REQUEST_PARAM      = "One or more parameters for the CAMT052 Request are invalid";
+	public static final String ERROR_REQUEST_BUILDING          = "Error while building the Request";
+	public static final String ERROR_REQUEST_PARAM             = "One or more parameters for the Request are invalid";
 	public static final String ERROR_CAMT052REQUEST_INIT       = "CAMT052Request initialization";
 	public static final String ERROR_REQUEST_ENVELOP_INIT      = "Request Envelope initialization";
 	public static final String ERROR_APPHDR_INIT               = "AppHdr initialization";

@@ -3,10 +3,9 @@ package org.shw.lsv.ebanking.bac.sv.test;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
 import org.shw.lsv.ebanking.bac.sv.handling.PAIN001RequestParams;
 import org.shw.lsv.ebanking.bac.sv.pain001.request.PAIN001Request;
-import org.shw.lsv.ebanking.bac.sv.handling.CamtRequestBuilder;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
@@ -28,7 +27,7 @@ public class PAIN001SerializationTest {
         
         try {
             // 3. Build request with test's collector
-            PAIN001Request request=null;//= CamtRequestBuilder.build(params, collector);
+            PAIN001Request request = RequestBuilder.build(params, collector);
             
             // 4. Serialization test
             JsonProcessor processor = new JsonProcessor(collector);
