@@ -2,8 +2,10 @@ package org.shw.lsv.ebanking.bac.sv.pain001.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052RequestEnvelope;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsPAIN001;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
 import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
@@ -15,12 +17,11 @@ public class PAIN001Request implements Validatable {
     public PAIN001Request() {}
 
     // Validation constructor
-    public PAIN001Request(RequestParamsPAIN001 params, 
-                         JsonValidationExceptionCollector collector) {
+    public PAIN001Request(RequestParamsCamt052 params, JsonValidationExceptionCollector collector) {
         try {
-            setPain0012RequestEnvelope(new Pain0012RequestEnvelope(params, collector));
+            setPain0012RequestEnvelope(new CAMT052RequestEnvelope(params, collector), collector);
         } catch (Exception e) {
-            collector.addError(EBankingConstants.ERROR_PAIN001REQUEST_INIT, e);
+            collector.addError(EBankingConstants.ERROR_CAMT052REQUEST_INIT, e);
         }
     }
 
@@ -65,10 +66,10 @@ public class PAIN001Request implements Validatable {
      * The parameter is validated: null not allowed.
      * @param collector the JsonValidationExceptionCollector to be set.
      */
-    public void setPain0012RequestEnvelope(Pain0012RequestEnvelope pain0012RequestEnvelope, 
+    public void setPain0012RequestEnvelope(CAMT052RequestEnvelope pain0012RequestEnvelope, 
                                         JsonValidationExceptionCollector collector) {
         try {
-            setPain0012RequestEnvelope(pain0012RequestEnvelope);
+            //setPain0012RequestEnvelope(pain0012RequestEnvelope);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;

@@ -49,7 +49,7 @@ public class RequestBuilder {
      * Code example: PAIN001Request request = RequestBuilder.build(params, collector);
      * Zurzeit nicht verwendet, weil die generische Variante bevorzugt wird.
      */
-    public static <T, P extends RequestParams<T>> T build(
+    /* public static <T, P extends RequestParams<T>> T build(
             P params, 
             JsonValidationExceptionCollector collector) 
         throws JsonValidationException {
@@ -73,9 +73,9 @@ public class RequestBuilder {
                 collector.addError(EBankingConstants.ERROR_REQUEST_BUILDING, e);
                 throw new JsonValidationException(collector, EBankingConstants.ERROR_REQUEST_PARAM, e);
         }
-    }
+    } */
 
-    // CAMT052-specific implementation
+    /* // CAMT052-specific implementation
     private static CAMT052Request buildCamt052(
             RequestParamsCamt052 params,
             JsonValidationExceptionCollector collector) {
@@ -95,7 +95,7 @@ public class RequestBuilder {
             ((Validatable) request).validate(collector);
         }
         return request;
-    }
+    } */
 }
 
 /* 
