@@ -1,6 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
@@ -15,7 +15,7 @@ public class Pty {
     public Pty() {}
 
 
-    public Pty(RequestParamsCamt052 params, JsonValidationExceptionCollector collector) {
+    public Pty(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setPtyId(new PtyId(params, collector), collector);
         } catch (Exception e) {

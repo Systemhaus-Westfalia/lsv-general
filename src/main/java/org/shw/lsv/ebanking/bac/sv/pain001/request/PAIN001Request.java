@@ -4,20 +4,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052RequestEnvelope;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsPAIN001;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 public class PAIN001Request implements Validatable {
     @JsonProperty("Envelope")
-    private Pain0012RequestEnvelope pain0012RequestEnvelope;
+    private Pain001RequestEnvelope pain0012RequestEnvelope;
 
     // Jackson constructor
     public PAIN001Request() {}
 
     // Validation constructor
-    public PAIN001Request(RequestParamsCamt052 params, JsonValidationExceptionCollector collector) {
+    public PAIN001Request(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setPain0012RequestEnvelope(new CAMT052RequestEnvelope(params, collector), collector);
         } catch (Exception e) {
@@ -41,7 +40,7 @@ public class PAIN001Request implements Validatable {
         }
     }
 
-    public Pain0012RequestEnvelope getPain0012RequestEnvelope() {
+    public Pain001RequestEnvelope getPain0012RequestEnvelope() {
         return pain0012RequestEnvelope;
     }
 
@@ -50,7 +49,7 @@ public class PAIN001Request implements Validatable {
     /**
      * @param cAMT052RequestEnvelope the CAMT052RequestEnvelope to be set.
      */
-    public void setPain0012RequestEnvelope(Pain0012RequestEnvelope pain0012RequestEnvelope) {
+    public void setPain0012RequestEnvelope(Pain001RequestEnvelope pain0012RequestEnvelope) {
         if (pain0012RequestEnvelope == null) {
             throw new IllegalArgumentException(
                 "Wrong parameter 'pain0012RequestEnvelope' in setPain0012RequestEnvelope()"

@@ -13,7 +13,7 @@ public class RequestBuilder {
      * Build the Request object based on the parameters provided.
      * Example: PAIN001Request request = RequestBuilder.build(PAIN001Request.class, params, collector);
      */
-    public static <T, P extends RequestParams<T>> T build(
+    public static <T, P extends RequestParams> T build(
             Class<T> requestClass,
             P params,
             JsonValidationExceptionCollector collector)
@@ -49,20 +49,21 @@ public class RequestBuilder {
      * Code example: PAIN001Request request = RequestBuilder.build(params, collector);
      * Zurzeit nicht verwendet, weil die generische Variante bevorzugt wird.
      */
-    /* public static <T, P extends RequestParams<T>> T build(
+    @Deprecated
+    public static <T, P extends RequestParams> T build(
             P params, 
             JsonValidationExceptionCollector collector) 
         throws JsonValidationException {
         
         try {
             // Dispatch to specialized builders
-            if (params instanceof RequestParamsCamt052) {
+            if (params instanceof RequestParams) {
                 @SuppressWarnings("unchecked")
-                T result = (T) buildCamt052((RequestParamsCamt052) params, collector);
+                T result = (T) buildCamt052((RequestParams) params, collector);
                 return result;
-            } else if (params instanceof RequestParamsPAIN001) {
+            } else if (params instanceof RequestParams) {
                 @SuppressWarnings("unchecked")
-                T result = (T) buildPain001((RequestParamsPAIN001) params, collector);
+                T result = (T) buildPain001((RequestParams) params, collector);
                 return result;
             } else {
                 throw new IllegalArgumentException("Unsupported request type");
@@ -73,11 +74,11 @@ public class RequestBuilder {
                 collector.addError(EBankingConstants.ERROR_REQUEST_BUILDING, e);
                 throw new JsonValidationException(collector, EBankingConstants.ERROR_REQUEST_PARAM, e);
         }
-    } */
+    }
 
-    /* // CAMT052-specific implementation
+    // CAMT052-specific implementation
     private static CAMT052Request buildCamt052(
-            RequestParamsCamt052 params,
+            RequestParams params,
             JsonValidationExceptionCollector collector) {
         CAMT052Request request = new CAMT052Request(params, collector);
         if (request instanceof Validatable) {
@@ -88,14 +89,14 @@ public class RequestBuilder {
 
     // PAIN001-specific implementation
     private static PAIN001Request buildPain001(
-            RequestParamsPAIN001 params,
+            RequestParams params,
             JsonValidationExceptionCollector collector) {
         PAIN001Request request = new PAIN001Request(params, collector);
         if (request instanceof Validatable) {
             ((Validatable) request).validate(collector);
         }
         return request;
-    } */
+    }
 }
 
 /* 

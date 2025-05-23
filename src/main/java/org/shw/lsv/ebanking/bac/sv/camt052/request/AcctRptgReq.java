@@ -1,6 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.misc.GrpHdr;
@@ -19,7 +19,7 @@ public class AcctRptgReq {
     }
 
 
-    public AcctRptgReq(RequestParamsCamt052 params, JsonValidationExceptionCollector collector) {
+    public AcctRptgReq(RequestParams params, JsonValidationExceptionCollector collector) {
         
         try {
             setGrpHdr(new GrpHdr(params, collector), collector);

@@ -2,7 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 
 import java.util.regex.Pattern;
 
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,7 +28,7 @@ public class FinInstnId {
     }
 
 
-    public FinInstnId(RequestParamsCamt052 params, String context, JsonValidationExceptionCollector collector) {
+    public FinInstnId(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
             if (context.equals(EBankingConstants.CONTEXT_FR)) {
                 setBICFI(params.getBicfiFr(), collector);

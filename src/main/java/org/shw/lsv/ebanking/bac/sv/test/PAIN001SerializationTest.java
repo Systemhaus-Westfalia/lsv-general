@@ -2,7 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.test;
 
 import java.time.LocalDateTime;
 
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsPAIN001;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.pain001.request.PAIN001Request;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
@@ -22,7 +22,7 @@ public class PAIN001SerializationTest {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        RequestParamsPAIN001 params = createTestParams();
+        RequestParams params = createTestParams();
         
         try {
             // 3. Build request with test's collector
@@ -49,8 +49,8 @@ public class PAIN001SerializationTest {
         }
     }
 
-    private static RequestParamsPAIN001 createTestParams() {
-        return new RequestParamsPAIN001()
+    private static RequestParams createTestParams() {
+        return new RequestParams()
             /* .setBicfiFr(     "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
             .setBicfiTo(      "BAMCSVSS")
             .setBizMsgIdr(    "DummySaldoCta1")

@@ -1,6 +1,6 @@
 package     org.shw.lsv.ebanking.bac.sv.misc;
 
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -25,7 +25,7 @@ public class Acct {
     public Acct() {}
 
 
-    public Acct(RequestParamsCamt052 params, JsonValidationExceptionCollector collector) {
+    public Acct(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setAcctId (new AcctId( params, collector), collector);
             setCcy(params.getCcy(), collector);

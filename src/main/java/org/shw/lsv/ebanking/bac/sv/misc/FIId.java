@@ -1,6 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,7 +17,7 @@ public class FIId {
 	public FIId() {}
 
 
-    public FIId(RequestParamsCamt052 params, String context, JsonValidationExceptionCollector collector) {
+    public FIId(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
             setFinInstnId(new FinInstnId(params, context, collector), collector);
         } catch (Exception e) {

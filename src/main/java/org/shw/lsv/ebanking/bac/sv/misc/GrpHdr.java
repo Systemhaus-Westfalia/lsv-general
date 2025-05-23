@@ -2,7 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 
 import java.util.regex.Pattern;
 
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,7 +31,7 @@ public class GrpHdr {
      * For using the Constructor at deserialization time, it has to be of the form:
      * public GrpHdr(@JsonProperty(value = "MsgId", required = true) String msgId,.....)
      */
-    public GrpHdr(RequestParamsCamt052 params, JsonValidationExceptionCollector collector) {
+    public GrpHdr(RequestParams params, JsonValidationExceptionCollector collector) {
 		setMsgId(params.getMsgId(), collector);
         setCreDtTm(params.getCreDtTm(), collector);
     }
