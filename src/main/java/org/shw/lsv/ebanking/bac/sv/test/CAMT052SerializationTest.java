@@ -28,7 +28,8 @@ public static void main(String[] args) {
         
         try {
             // 3. Build request with test's collector
-            CAMT052Request request = RequestBuilder.build(params, collector);
+           // CAMT052Request request = RequestBuilder.build(params, collector);  // Deprecated. Kann spaeter geloescht werden
+            CAMT052Request request = RequestBuilder.build(CAMT052Request.class, params, collector);
             
             // 4. Serialization test
             JsonProcessor processor = new JsonProcessor(collector);
