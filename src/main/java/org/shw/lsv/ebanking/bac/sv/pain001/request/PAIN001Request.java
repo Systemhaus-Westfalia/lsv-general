@@ -46,7 +46,7 @@ public class PAIN001Request implements Validatable {
 
 
     /**
-     * @param cAMT052RequestEnvelope the PAIN001RequestEnvelope to be set.
+     * @param pain0012RequestEnvelope the PAIN001RequestEnvelope to be set.
      */
     public void setpAIN001RequestEnvelope(PAIN001RequestEnvelope pain0012RequestEnvelope) {
         if (pain0012RequestEnvelope == null) {
