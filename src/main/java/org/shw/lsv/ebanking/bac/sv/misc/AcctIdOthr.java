@@ -2,7 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 
 import java.util.regex.Pattern;
 
-import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +16,7 @@ public class AcctIdOthr {
     public AcctIdOthr() {}
 
 
-	public AcctIdOthr(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+	public AcctIdOthr(RequestParamsCamt052 params, JsonValidationExceptionCollector collector) {
         try {
             setId(params.getAcctidothr(), collector);
         } catch (Exception e) {

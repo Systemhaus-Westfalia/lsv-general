@@ -2,7 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
 import org.shw.lsv.ebanking.bac.sv.misc.AppHdr;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
-import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 
@@ -22,7 +22,7 @@ public class CAMT052RequestEnvelope implements Validatable {
     public CAMT052RequestEnvelope() {}
 
 
-    public CAMT052RequestEnvelope(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+    public CAMT052RequestEnvelope(RequestParamsCamt052 params, JsonValidationExceptionCollector collector) {
         try {
             setAppHdr(new AppHdr(params, collector), collector);
             setCAMT052RequestDocument(new CAMT052RequestDocument(params, collector), collector);

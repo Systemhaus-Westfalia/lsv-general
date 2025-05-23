@@ -56,13 +56,13 @@ public class RequestBuilder {
         
         try {
             // Dispatch to specialized builders
-            if (params instanceof Camt052RequestParams) {
+            if (params instanceof RequestParamsCamt052) {
                 @SuppressWarnings("unchecked")
-                T result = (T) buildCamt052((Camt052RequestParams) params, collector);
+                T result = (T) buildCamt052((RequestParamsCamt052) params, collector);
                 return result;
-            } else if (params instanceof PAIN001RequestParams) {
+            } else if (params instanceof RequestParamsPAIN001) {
                 @SuppressWarnings("unchecked")
-                T result = (T) buildPain001((PAIN001RequestParams) params, collector);
+                T result = (T) buildPain001((RequestParamsPAIN001) params, collector);
                 return result;
             } else {
                 throw new IllegalArgumentException("Unsupported request type");
@@ -77,7 +77,7 @@ public class RequestBuilder {
 
     // CAMT052-specific implementation
     private static CAMT052Request buildCamt052(
-            Camt052RequestParams params,
+            RequestParamsCamt052 params,
             JsonValidationExceptionCollector collector) {
         CAMT052Request request = new CAMT052Request(params, collector);
         if (request instanceof Validatable) {
@@ -88,7 +88,7 @@ public class RequestBuilder {
 
     // PAIN001-specific implementation
     private static PAIN001Request buildPain001(
-            PAIN001RequestParams params,
+            RequestParamsPAIN001 params,
             JsonValidationExceptionCollector collector) {
         PAIN001Request request = new PAIN001Request(params, collector);
         if (request instanceof Validatable) {

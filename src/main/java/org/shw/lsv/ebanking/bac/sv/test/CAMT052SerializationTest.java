@@ -3,7 +3,7 @@ package org.shw.lsv.ebanking.bac.sv.test;
 import java.time.LocalDateTime;
 
 import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
-import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
@@ -23,7 +23,7 @@ public static void main(String[] args) {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        Camt052RequestParams params = createTestParams();
+        RequestParamsCamt052 params = createTestParams();
         
         try {
             // 3. Build request with test's collector
@@ -50,8 +50,8 @@ public static void main(String[] args) {
         }
     }
 
-    private static Camt052RequestParams createTestParams() {
-        return new Camt052RequestParams()
+    private static RequestParamsCamt052 createTestParams() {
+        return new RequestParamsCamt052()
             .setBicfiFr(     "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
             .setBicfiTo(      "BAMCSVSS")
             .setBizMsgIdr(    "DummySaldoCta1")

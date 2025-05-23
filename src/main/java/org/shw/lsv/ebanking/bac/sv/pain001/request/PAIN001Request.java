@@ -3,7 +3,7 @@ package org.shw.lsv.ebanking.bac.sv.pain001.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
-import org.shw.lsv.ebanking.bac.sv.handling.PAIN001RequestParams;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsPAIN001;
 import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
@@ -15,7 +15,7 @@ public class PAIN001Request implements Validatable {
     public PAIN001Request() {}
 
     // Validation constructor
-    public PAIN001Request(PAIN001RequestParams params, 
+    public PAIN001Request(RequestParamsPAIN001 params, 
                          JsonValidationExceptionCollector collector) {
         try {
             setPain0012RequestEnvelope(new Pain0012RequestEnvelope(params, collector));

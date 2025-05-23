@@ -2,7 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
 import java.util.regex.Pattern;
 
-import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.Acct;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
@@ -33,7 +33,7 @@ public class RptgReq {
     public RptgReq() {}
 
 
-    public RptgReq(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+    public RptgReq(RequestParamsCamt052 params, JsonValidationExceptionCollector collector) {
         try {
             setReqdMsgNmId(params.getReqdMsgNmId(), collector);
 

@@ -1,6 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
-import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -24,7 +24,7 @@ public class Fr {
 
     public Fr() {}
 
-    public Fr(Camt052RequestParams params, String context, JsonValidationExceptionCollector collector) {
+    public Fr(RequestParamsCamt052 params, String context, JsonValidationExceptionCollector collector) {
         try {
             // TODO: Sicherstellen, daß es nur eines der beiden geht!
             if ( !(params.getBicfiFr() == null || params.getBicfiFr().isEmpty()) ) {

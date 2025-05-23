@@ -2,7 +2,7 @@ package org.shw.lsv.ebanking.bac.sv.camt052.request;
 
 import java.util.regex.Pattern;
 
-import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
@@ -19,7 +19,7 @@ public class FrToDt {
 	public FrToDt() {}
 
 
-	public FrToDt(Camt052RequestParams params, JsonValidationExceptionCollector collector) {
+	public FrToDt(RequestParamsCamt052 params, JsonValidationExceptionCollector collector) {
         try {
             setFrDt(params.getFrdt(), collector);
             setToDt(params.getTodt(), collector);

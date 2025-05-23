@@ -1,6 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
-import org.shw.lsv.ebanking.bac.sv.handling.Camt052RequestParams;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParamsCamt052;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,7 +15,7 @@ public class IDOrgID {
     }
 
 
-    public IDOrgID(Camt052RequestParams params, String context, JsonValidationExceptionCollector collector) {
+    public IDOrgID(RequestParamsCamt052 params, String context, JsonValidationExceptionCollector collector) {
         try {
             setOrgId(new OrgId(params, context, collector), collector);
         } catch (Exception e) {

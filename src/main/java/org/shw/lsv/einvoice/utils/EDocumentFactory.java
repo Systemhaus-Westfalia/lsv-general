@@ -158,8 +158,8 @@ public abstract class EDocumentFactory {
 					|| directoryPath.endsWith("\\"))
 					? directoryPath:directoryPath + "/"; 
 			
-			// Path filepath = Paths.get(directoryPath);  // nicht nötig
-			//Files.createDirectories(filepath);  // nicht nötig
+			// Path filepath = Paths.get(directoryPath);  // nicht noetig
+			//Files.createDirectories(filepath);  // nicht noetig
 			File readableFile = new File (fullPathFileName);
 			long fileLength = readableFile.length();
 			byte[] fileContent = new byte[(int) fileLength];

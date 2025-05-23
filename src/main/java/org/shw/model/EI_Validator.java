@@ -201,7 +201,7 @@ public class EI_Validator implements ModelValidator
 					&& order.getBill_Location().getC_Location().getC_Region_ID()>0
 					&& order.getBill_Location().getC_Location().getAddress1()!="NN");
 			if (!addressCorrect)
-				return "Socio de Negocio: Dirección";
+				return "Socio de Negocio: Direccion";
 			return error;
 		}
 
