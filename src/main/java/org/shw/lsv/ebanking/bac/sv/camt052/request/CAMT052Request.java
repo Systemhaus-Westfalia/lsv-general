@@ -30,7 +30,7 @@ public class CAMT052Request implements Validatable {
     public void validate(JsonValidationExceptionCollector collector) {
         try {
             if (cAMT052RequestEnvelope == null) {
-                throw new IllegalArgumentException("Envelope cannot be null");
+                throw new IllegalArgumentException(EBankingConstants.ERROR_ENVELOPE_NOT_NULL);
             }
 
             // Validate nested objects

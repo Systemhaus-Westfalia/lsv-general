@@ -29,6 +29,7 @@ public class EBankingConstants {
 	public static final String ERROR_INVALID_AMT_FORMAT        = "The Amt format is invalid";
 	public static final String ERROR_INVALID_CCY_FORMAT        = "The Ccy format is invalid";
 
+	public static final String ERROR_ENVELOPE_NOT_NULL         = "Envelope cannot be null";
 	public static final String ERROR_CAMT052REQUEST_BUILDING   = "Error while building the CAMT052 Request";
 	public static final String ERROR_CAMT052REQUEST_PARAM      = "One or more parameters for the CAMT052 Request are invalid";
 	public static final String ERROR_CAMT052REQUEST_INIT       = "CAMT052Request initialization";
@@ -51,6 +52,9 @@ public class EBankingConstants {
 	public static final String ERROR_AGT_INIT                  = "Agt initialization";
 	public static final String ERROR_FRTODT_INIT               = "FrToDt initialization";
 	public static final String ERROR_RPTGPRD_INIT              = "RptgPrd initialization";
+
+
+	public static final String ERROR_PAIN001REQUEST_INIT       = "PAIN001Request initialization";
 
 
 	public static final String PATTERN_BIZSVC      = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
