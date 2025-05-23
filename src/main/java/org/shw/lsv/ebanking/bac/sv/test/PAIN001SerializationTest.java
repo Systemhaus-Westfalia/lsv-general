@@ -1,12 +1,11 @@
 package org.shw.lsv.ebanking.bac.sv.test;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.shw.lsv.ebanking.bac.sv.handling.PAIN001RequestParams;
 import org.shw.lsv.ebanking.bac.sv.pain001.request.PAIN001Request;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
-import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
@@ -16,8 +15,7 @@ public class PAIN001SerializationTest {
         String jsonOutput = "";
 
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.err.println("Serialization started at: " + now.format(formatter));
+        System.err.println("Serialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         // 1. Create collector for test diagnostics
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
@@ -42,7 +40,7 @@ public class PAIN001SerializationTest {
             System.out.println("Serialization succeeded without errors.\n");
             
             now = LocalDateTime.now();
-            System.err.println("Serialization finished at: " + now.format(formatter));
+            System.err.println("Serialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         } catch (JsonValidationException e) {
             System.err.println("Serialization Test failed: " + e.getMessage());

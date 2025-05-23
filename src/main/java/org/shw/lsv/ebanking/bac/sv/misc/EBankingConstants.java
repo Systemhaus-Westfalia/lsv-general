@@ -1,14 +1,15 @@
-		/**
- * 
- */
 package org.shw.lsv.ebanking.bac.sv.misc;
+
+import java.time.format.DateTimeFormatter;
 
 /**
  * 
  */
 public class EBankingConstants {
-	public StringBuffer errorMessages = new StringBuffer();
-	
+    public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+	public static final StringBuffer errorMessages = new StringBuffer();
+
 	public static final String ITAV 		= "ITAV";  // InterimAvailable
 	public static final String ITBD 		= "ITBD";  // InterimBooked
 	public static final String OPAV 		= "OPAV";  // OpeningAvailable

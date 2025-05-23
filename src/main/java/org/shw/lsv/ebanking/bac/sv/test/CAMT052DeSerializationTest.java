@@ -1,18 +1,17 @@
 package org.shw.lsv.ebanking.bac.sv.test;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052Response;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 public class CAMT052DeSerializationTest {
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.err.println("Deserialization started at: " + now.format(formatter));
+        System.err.println("Deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         // 1. Create collector with explicit settings
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
@@ -148,8 +147,7 @@ public class CAMT052DeSerializationTest {
 */
     private static void printResponseSummary(CAMT052Response response) {
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.err.println("Deserialization finished at: " + now.format(formatter));
+        System.err.println("Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
     
         System.out.println("Envelope present: " + (response.getcAMT052ResponseEnvelope() != null));
         if (response.getcAMT052ResponseEnvelope() != null) {
