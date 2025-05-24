@@ -20,7 +20,6 @@ public class AcctRptgReq {
 
 
     public AcctRptgReq(RequestParams params, JsonValidationExceptionCollector collector) {
-        
         try {
             setGrpHdr(new GrpHdr(params, collector), collector);
             setRptgReq(new RptgReq(params, collector), collector);
