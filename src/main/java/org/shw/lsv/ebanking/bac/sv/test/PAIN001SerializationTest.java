@@ -1,5 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.test;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
@@ -51,10 +52,10 @@ public class PAIN001SerializationTest {
 
     private static RequestParams createTestParams() {
         return new RequestParams()
-            .setNbOfTxs(    "3") // Number of transactions
-            .setCtrlSum(      "460")
-            .setNm(       "CLIENTE01")
-            .setBicOrBEI(    "DUMMYORDENA")
+            .setNbOfTxs(    Integer.valueOf(3)) // Number of transactions
+            .setCtrlSum(    new BigDecimal("460"))
+            .setNm(      "CLIENTE01")
+            .setBicOrBEI( "DUMMYORDENA")
             /*.setBizSvc(       "swift.cbprplus.01")
             .setCreDt(        "2025-05-16T07:56:49-06:00")
             .setMsgId(        "DummySaldoCta1")

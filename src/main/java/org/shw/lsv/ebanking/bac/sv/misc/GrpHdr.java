@@ -1,5 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
+import java.math.BigDecimal;
 import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
@@ -22,11 +23,11 @@ public class GrpHdr {
 
     @JsonProperty("NbOfTxs")                    // For payments
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
-    String nbOfTxs;
+    Integer nbOfTxs;
 
     @JsonProperty("CtrlSum")                    // For payments
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
-    String ctrlSum;
+    BigDecimal ctrlSum;
 
     @JsonProperty("InitgPty")                   // For payments
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
@@ -50,10 +51,10 @@ public class GrpHdr {
         setCreDtTm(params.getCreDtTm(), collector);
 
 		// Payments
-		if(params.getNbOfTxs() != null && !params.getNbOfTxs().isEmpty()) {
+		if(params.getNbOfTxs() != null) {
 			setNbOfTxs(params.getNbOfTxs());
 		}
-		if(params.getCtrlSum() != null && !params.getCtrlSum().isEmpty()) {
+		if(params.getCtrlSum() != null ) {
 			setCtrlSum(params.getCtrlSum());
 		}
 
@@ -147,52 +148,46 @@ public class GrpHdr {
 		}
 	}
 
-
-	
-
-    public String getNbOfTxs() {
-		return nbOfTxs;
-	}
+/**
+     * @return the NbOfTxs
+     */
+    public Integer getNbOfTxs() {
+        return nbOfTxs;
+    }
 
 
 	/**
-     * @param nbOfTxs the NbOfTxs to be set.<br>
-     * The parameter is validated.<br>
-     * "pattern" : "^[0-9]+$"; null not allowed.<br>
-     * Example: "3".
+     * @param nbOfTxs the NbOfTxs to be set<br>
+     * The parameter is validated: must be positive; null not allowed.<br>
+     * Example: 3
      */
-    public void setNbOfTxs(String nbOfTxs) {
-        boolean patternOK = (nbOfTxs != null) && Pattern.matches(EBankingConstants.PATTERN_INTEGER, nbOfTxs);
-
-        if (!patternOK) {
+    public void setNbOfTxs(Integer nbOfTxs) {
+        if (nbOfTxs == null || nbOfTxs <= 0) {
             throw new IllegalArgumentException(
-                "Wrong parameter 'nbOfTxs' (" + nbOfTxs + ") in setNbOfTxs()"
+                "Wrong parameter 'nbOfTxs' (" + nbOfTxs + ") in setNbOfTxs(): must be positive and not null"
             );
         }
         this.nbOfTxs = nbOfTxs;
     }
 
 
-	public String getCtrlSum() {
-		return ctrlSum;
-	}
+	/**
+     * @return the CtrlSum
+     */
+    public BigDecimal getCtrlSum() {
+        return ctrlSum;
+    }
 
 
 	/**
      * @param ctrlSum the CtrlSum to be set.<br>
-     * The parameter is validated.<br>
-     * "pattern" : "^\\d+\\.\\d{2}$"; null not allowed.<br>
-     * Example: "123.45".
-	 * Alternative pattern (copilot):
-	 * If you want to allow integers and numbers with one or two decimals:
-	 * The suggested pattern (^[0-9]+(\\.[0-9]{1,2})?$) is more flexible.
+     * The parameter is validated: must be non-null, non-negative, and have two decimal places.<br>
+     * Example: 123.45
      */
-    public void setCtrlSum(String ctrlSum) {
-        boolean patternOK = (ctrlSum != null) && Pattern.matches(EBankingConstants.PATTERN_CURRENCY_AMT, ctrlSum);
-
-        if (!patternOK) {
+    public void setCtrlSum(BigDecimal ctrlSum) {
+        if (ctrlSum == null || ctrlSum.scale() != 2 || ctrlSum.signum() < 0) {
             throw new IllegalArgumentException(
-                "Wrong parameter 'ctrlSum' (" + ctrlSum + ") in setCtrlSum()"
+                "Wrong parameter 'ctrlSum' (" + ctrlSum + ") in setCtrlSum(): must be non-null, non-negative, and have two decimal places"
             );
         }
         this.ctrlSum = ctrlSum;

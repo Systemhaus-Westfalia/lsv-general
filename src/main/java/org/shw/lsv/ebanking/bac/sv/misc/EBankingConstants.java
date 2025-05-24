@@ -15,6 +15,10 @@ public class EBankingConstants {
 	public static final String OPAV 		= "OPAV";  // OpeningAvailable
 	public static final String OPBD 		= "OPBD";  // OpeningBooked
 
+
+	public static final String TRF  		= "TRF";  // Transaccion
+	public static final String CHK  		= "CHK";  // Cheque
+
 	public static final String CRDT 		= "CRDT";  // Credit (T (zero balance is considered to be a credit balance))
 	public static final String DBIT 		= "DBIT";  // Debit
 
@@ -53,6 +57,7 @@ public class EBankingConstants {
 	public static final String ERROR_AGT_INIT                  = "Agt initialization";
 	public static final String ERROR_FRTODT_INIT               = "FrToDt initialization";
 	public static final String ERROR_RPTGPRD_INIT              = "RptgPrd initialization";
+	public static final String ERROR_PMT_INIT                  = "PmtInf initialization";
 
 
 	public static final String ERROR_PAIN001REQUEST_INIT       = "PAIN001Request initialization";

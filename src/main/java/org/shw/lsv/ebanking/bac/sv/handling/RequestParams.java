@@ -1,5 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.handling;
 
+import java.math.BigDecimal;
 
 public class RequestParams {
     private String bicfiFr;
@@ -25,37 +26,37 @@ public class RequestParams {
     private String eqseq;
 
     // Payments
-    private String nbOfTxs;
-    private String ctrlSum;
-    private String nm;
-    private String bicOrBEI;
+    private Integer    nbOfTxs;
+    private BigDecimal ctrlSum;
+    private String     nm;
+    private String     bicOrBEI;
 
 
-    public String getBicfiFr()       { return bicfiFr;       }
-    public String getBicfiTo()       { return bicfiTo;       }
-    public String getBicfiAcctOwnr() { return bicfiAcctOwnr; }
-    public String getBizMsgIdr()     { return bizMsgIdr;     }
-    public String getCreDt()         { return creDt;         }
-    public String getCurrency()      { return currency;      }
-    public String getMsgDefIdr()     { return msgDefIdr;     }
-    public String getBizSvc()        { return bizSvc;        }
-    public String getAnyBIC()        { return anyBIC;        }
-    public String getId()            { return id;            }
-    public String getPrtry()         { return prtry;         }
-    public String getMsgId()         { return msgId;         }
-    public String getCreDtTm()       { return creDtTm;       }
-    public String getReqdMsgNmId()   { return reqdMsgNmId;   }
-    public String getCcy()           { return ccy;           }
-    public String getIban()          { return iban;          }
-    public String getAcctidothr()    { return acctidothr;    }
-    public String getTp()            { return tp;            }
-    public String getFrdt()          { return frdt;          }
-    public String getTodt()          { return todt;          }
-    public String getEqseq()         { return eqseq;         }
-    public String getNbOfTxs()       { return nbOfTxs;       }
-    public String getCtrlSum()       { return ctrlSum;       }
-    public String getNm()            { return nm;            }
-    public String getBicOrBEI()      { return bicOrBEI;      }
+    public String     getBicfiFr()       { return bicfiFr;       }
+    public String     getBicfiTo()       { return bicfiTo;       }
+    public String     getBicfiAcctOwnr() { return bicfiAcctOwnr; }
+    public String     getBizMsgIdr()     { return bizMsgIdr;     }
+    public String     getCreDt()         { return creDt;         }
+    public String     getCurrency()      { return currency;      }
+    public String     getMsgDefIdr()     { return msgDefIdr;     }
+    public String     getBizSvc()        { return bizSvc;        }
+    public String     getAnyBIC()        { return anyBIC;        }
+    public String     getId()            { return id;            }
+    public String     getPrtry()         { return prtry;         }
+    public String     getMsgId()         { return msgId;         }
+    public String     getCreDtTm()       { return creDtTm;       }
+    public String     getReqdMsgNmId()   { return reqdMsgNmId;   }
+    public String     getCcy()           { return ccy;           }
+    public String     getIban()          { return iban;          }
+    public String     getAcctidothr()    { return acctidothr;    }
+    public String     getTp()            { return tp;            }
+    public String     getFrdt()          { return frdt;          }
+    public String     getTodt()          { return todt;          }
+    public String     getEqseq()         { return eqseq;         }
+    public Integer    getNbOfTxs()       { return nbOfTxs;       }
+    public BigDecimal getCtrlSum()       { return ctrlSum;       }
+    public String     getNm()            { return nm;            }
+    public String     getBicOrBEI()      { return bicOrBEI;      }
 
     
     public RequestParams setBicfiFr(String bicfi) {
@@ -164,12 +165,12 @@ public class RequestParams {
         return this;
     }
 
-    public RequestParams setNbOfTxs(String nbOfTxs) {
+    public RequestParams setNbOfTxs(Integer nbOfTxs) {
         this.nbOfTxs = nbOfTxs;
         return this;
     }
 
-    public RequestParams setCtrlSum(String ctrlSum) {
+    public RequestParams setCtrlSum(BigDecimal ctrlSum) {
         this.ctrlSum = ctrlSum;
         return this;
     }
