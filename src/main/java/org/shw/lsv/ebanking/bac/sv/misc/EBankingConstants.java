@@ -65,8 +65,6 @@ public class EBankingConstants {
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
 	public static final String PATTERN_BICFI        = "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}";
-	public static final String PATTERN_TODT         = "^\\d{4}-\\d{2}-\\d{2}$";
-	public static final String PATTERN_FRDT         = "^\\d{4}-\\d{2}-\\d{2}$";
 	public static final String PATTERN_ANYBIC       = "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}";
 	public static final String PATTERN_OTHER_ID     = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
 	public static final String PATTERN_PRTRY        = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
@@ -79,6 +77,7 @@ public class EBankingConstants {
 	public static final String PATTERN_EQSEQ        = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
 	public static final String PATTERN_RPTID        = "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)";
 	public static final String PATTERN_DATETIME     = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
+	public static final String PATTERN_DATE         = "^\\d{4}-\\d{2}-\\d{2}$";
 
 	public static final String PATTERN_CURRENCY_AMT = "^\\d+\\.\\d{2}$";
 	public static final String PATTERN_CCY          = "^[A-Z]{3}$";

@@ -44,7 +44,7 @@ public class FrToDt {
 	 * Example: "2020-09-08".
 	 */
 	public void setFrDt(String frDt) {
-		boolean patternOK = (frDt != null) && Pattern.matches(EBankingConstants.PATTERN_FRDT, frDt);
+		boolean patternOK = (frDt != null) && Pattern.matches(EBankingConstants.PATTERN_DATE, frDt);
 
 		if (!patternOK) {
 			throw new IllegalArgumentException(
@@ -83,7 +83,7 @@ public class FrToDt {
 	 * Example: "2020-09-08".
 	 */
 	public void setToDt(String toDt) {
-		boolean patternOK = (toDt != null) && Pattern.matches(EBankingConstants.PATTERN_TODT, toDt);
+		boolean patternOK = (toDt != null) && Pattern.matches(EBankingConstants.PATTERN_DATE, toDt);
 
 		if (!patternOK) {
 			throw new IllegalArgumentException(

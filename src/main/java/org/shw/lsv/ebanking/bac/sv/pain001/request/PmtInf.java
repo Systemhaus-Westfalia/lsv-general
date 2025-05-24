@@ -26,7 +26,7 @@ public class PmtInf {
     PmtTpInf pmtTpInf;
 
     @JsonProperty("ReqdExctnDt")
-    ReqdExctnDt reqdExctnDt;
+    String reqdExctnDt;
 
     @JsonProperty("Dbtr")
     Dbtr dbtr;
@@ -59,7 +59,7 @@ public class PmtInf {
             setCtrlSum( params.getCtrlSum(),   collector);
 
             setPmtTpInf (    new PmtTpInf(    params, collector), collector);
-            setReqdExctnDt ( new ReqdExctnDt( params, collector), collector);
+            setReqdExctnDt( params.getReqdExctnDt(),   collector);
             setDbtr (        new Dbtr(        params, collector), collector);
             setDbtrAcct (    new DbtrAcct(    params, collector), collector);
             setDbtrAgt (     new DbtrAgt(     params, collector), collector);
@@ -255,19 +255,24 @@ public class PmtInf {
     }
 
     /**
-     * @return the ReqdExctnDt object<br>
+     * @return the ReqdExctnDt
      */
-    public ReqdExctnDt getReqdExctnDt() {
+    public String getReqdExctnDt() {
         return reqdExctnDt;
     }
 
     /**
      * @param reqdExctnDt the ReqdExctnDt to be set<br>
      * The parameter is validated: null not allowed.<br>
+     * "pattern" : "^\d{4}-\d{2}-\d{2}$"<br>
+     * Example: "2023-12-31"
      */
-    public void setReqdExctnDt(ReqdExctnDt reqdExctnDt) {
-        if (reqdExctnDt == null) {
-            throw new IllegalArgumentException("Wrong parameter 'reqdExctnDt' in setReqdExctnDt()");
+    public void setReqdExctnDt(String reqdExctnDt) {
+        boolean patternOK = (reqdExctnDt != null) && 
+            java.util.regex.Pattern.matches(EBankingConstants.PATTERN_DATE, reqdExctnDt);
+
+        if (!patternOK) {
+            throw new IllegalArgumentException("Wrong parameter 'reqdExctnDt' (" + reqdExctnDt + ") in setReqdExctnDt()");
         }
         this.reqdExctnDt = reqdExctnDt;
     }
@@ -276,14 +281,15 @@ public class PmtInf {
      * @param reqdExctnDt the ReqdExctnDt to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setReqdExctnDt(ReqdExctnDt reqdExctnDt, JsonValidationExceptionCollector collector) {
+    public void setReqdExctnDt(String reqdExctnDt, JsonValidationExceptionCollector collector) {
         try {
             setReqdExctnDt(reqdExctnDt);
         } catch (IllegalArgumentException e) {
-            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
-            // throw e;
+            collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+            //throw e;
         }
     }
+
 
     /**
      * @return the Dbtr object<br>

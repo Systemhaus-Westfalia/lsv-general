@@ -30,7 +30,7 @@ public class RequestParams {
     private BigDecimal ctrlSum;
     private String     nm;
     private String     bicOrBEI;
-
+    private String     reqdExctnDt;
 
     public String     getBicfiFr()       { return bicfiFr;       }
     public String     getBicfiTo()       { return bicfiTo;       }
@@ -57,6 +57,7 @@ public class RequestParams {
     public BigDecimal getCtrlSum()       { return ctrlSum;       }
     public String     getNm()            { return nm;            }
     public String     getBicOrBEI()      { return bicOrBEI;      }
+    public String     getReqdExctnDt()   { return reqdExctnDt;   }
 
     
     public RequestParams setBicfiFr(String bicfi) {
@@ -182,6 +183,11 @@ public class RequestParams {
 
     public RequestParams setBicOrBEI(String bICOrBEI) {
         this.bicOrBEI = bICOrBEI;
+        return this;
+    }
+
+    public RequestParams setReqdExctnDt(String reqdExctnDt) {
+        this.reqdExctnDt = reqdExctnDt;
         return this;
     }
 }
