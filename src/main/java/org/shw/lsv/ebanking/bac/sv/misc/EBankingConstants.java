@@ -71,7 +71,6 @@ public class EBankingConstants {
 	public static final String PATTERN_MSG_ID       = "[0-9a-zA-Z/\\-\\?:\\(\\)\\.,'\\+ ]+";
 	//public static final String PATTERN_REQDMSGNMID  = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
 	public static final String PATTERN_REQDMSGNMID  = "[0-9a-zA-Z/\\-?:().,'+ ]+";
-	public static final String PATTERN_IBAN         = "[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}";
 	public static final String PATTERN_ACCT_ID      = "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)";
 	public static final String PATTERN_TP           = "ALLL";
 	public static final String PATTERN_EQSEQ        = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
@@ -82,6 +81,7 @@ public class EBankingConstants {
 	public static final String PATTERN_CURRENCY_AMT = "^\\d+\\.\\d{2}$";
 	public static final String PATTERN_CCY          = "^[A-Z]{3}$";
 	public static final String PATTERN_INTEGER      = "^[0-9]+$";
+	public static final String PATTERN_IBAN         = "[A-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}";
 
 
 	public static final String CONTEXT_FR        = "FR";
