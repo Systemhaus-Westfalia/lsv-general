@@ -19,7 +19,8 @@ public class Dbtr {
     public  Dbtr(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setNm(params.getNm(), collector);
-            setId ( new DbtrId(  params, collector), collector);
+            // TODO: Implement DbtrId initialization??? Wird das Objekt verwendet?
+            //setId ( new DbtrId(  params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_PMT_INIT, e);
         }

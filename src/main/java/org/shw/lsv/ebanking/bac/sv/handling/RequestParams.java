@@ -31,6 +31,7 @@ public class RequestParams {
     private String     nm;
     private String     bicOrBEI;
     private String     reqdExctnDt;
+    private String     dbtrAcctID;
 
     public String     getBicfiFr()       { return bicfiFr;       }
     public String     getBicfiTo()       { return bicfiTo;       }
@@ -58,6 +59,8 @@ public class RequestParams {
     public String     getNm()            { return nm;            }
     public String     getBicOrBEI()      { return bicOrBEI;      }
     public String     getReqdExctnDt()   { return reqdExctnDt;   }
+    public String     getDbtrAcctID()    { return dbtrAcctID;    }
+
 
     
     public RequestParams setBicfiFr(String bicfi) {
@@ -188,6 +191,11 @@ public class RequestParams {
 
     public RequestParams setReqdExctnDt(String reqdExctnDt) {
         this.reqdExctnDt = reqdExctnDt;
+        return this;
+    }
+
+    public RequestParams setDbtrAcctID(String dbtrAcctID) {
+        this.dbtrAcctID = dbtrAcctID;
         return this;
     }
 }
