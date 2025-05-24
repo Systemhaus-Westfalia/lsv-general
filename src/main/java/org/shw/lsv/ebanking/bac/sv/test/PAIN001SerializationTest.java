@@ -51,11 +51,11 @@ public class PAIN001SerializationTest {
 
     private static RequestParams createTestParams() {
         return new RequestParams()
-            /* .setBicfiFr(     "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
-            .setBicfiTo(      "BAMCSVSS")
-            .setBizMsgIdr(    "DummySaldoCta1")
-            .setMsgDefIdr(    "camt.060.001.05")
-            .setBizSvc(       "swift.cbprplus.01")
+            .setNbOfTxs(    "3") // Number of transactions
+            .setCtrlSum(      "460")
+            .setNm(       "CLIENTE01")
+            .setBicOrBEI(    "DUMMYORDENA")
+            /*.setBizSvc(       "swift.cbprplus.01")
             .setCreDt(        "2025-05-16T07:56:49-06:00")
             .setMsgId(        "DummySaldoCta1")
             .setCreDtTm(      "2025-05-16T07:56:49-06:00")

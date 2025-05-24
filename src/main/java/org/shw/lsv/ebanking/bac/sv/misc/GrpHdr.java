@@ -3,7 +3,6 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-import org.shw.lsv.ebanking.bac.sv.pain001.request.CstmrCdtTrfInitn;
 import org.shw.lsv.ebanking.bac.sv.pain001.request.InitgPty;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
@@ -21,15 +20,15 @@ public class GrpHdr {
     @JsonProperty(value = "CreDtTm", required = true)
     String creDtTm;  // Date and time at which the message was created.
 
-    @JsonProperty("NbOfTxs")  // For payments
+    @JsonProperty("NbOfTxs")                    // For payments
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
     String nbOfTxs;
 
-    @JsonProperty("CtrlSum")  // For payments
+    @JsonProperty("CtrlSum")                    // For payments
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
     String ctrlSum;
 
-    @JsonProperty("InitgPty")  // For payments
+    @JsonProperty("InitgPty")                   // For payments
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
     InitgPty initgPty;
 
@@ -156,9 +155,22 @@ public class GrpHdr {
 	}
 
 
-	public void setNbOfTxs(String nbOfTxs) {
-		this.nbOfTxs = nbOfTxs;
-	}
+	/**
+     * @param nbOfTxs the NbOfTxs to be set.<br>
+     * The parameter is validated.<br>
+     * "pattern" : "^[0-9]+$"; null not allowed.<br>
+     * Example: "3".
+     */
+    public void setNbOfTxs(String nbOfTxs) {
+        boolean patternOK = (nbOfTxs != null) && Pattern.matches(EBankingConstants.PATTERN_INTEGER, nbOfTxs);
+
+        if (!patternOK) {
+            throw new IllegalArgumentException(
+                "Wrong parameter 'nbOfTxs' (" + nbOfTxs + ") in setNbOfTxs()"
+            );
+        }
+        this.nbOfTxs = nbOfTxs;
+    }
 
 
 	public String getCtrlSum() {
@@ -166,25 +178,51 @@ public class GrpHdr {
 	}
 
 
-	public void setCtrlSum(String ctrlSum) {
-		this.ctrlSum = ctrlSum;
-	}
+	/**
+     * @param ctrlSum the CtrlSum to be set.<br>
+     * The parameter is validated.<br>
+     * "pattern" : "^\\d+\\.\\d{2}$"; null not allowed.<br>
+     * Example: "123.45".
+	 * Alternative pattern (copilot):
+	 * If you want to allow integers and numbers with one or two decimals:
+	 * The suggested pattern (^[0-9]+(\\.[0-9]{1,2})?$) is more flexible.
+     */
+    public void setCtrlSum(String ctrlSum) {
+        boolean patternOK = (ctrlSum != null) && Pattern.matches(EBankingConstants.PATTERN_CURRENCY_AMT, ctrlSum);
+
+        if (!patternOK) {
+            throw new IllegalArgumentException(
+                "Wrong parameter 'ctrlSum' (" + ctrlSum + ") in setCtrlSum()"
+            );
+        }
+        this.ctrlSum = ctrlSum;
+    }
 
 
-	public InitgPty getInitgPty() {
-		return initgPty;
-	}
+	/**
+     * @param initgPty the InitgPty to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setInitgPty(InitgPty initgPty) {
+        if (initgPty == null) {
+            throw new IllegalArgumentException("Wrong parameter 'initgPty' in setInitgPty()");
+        }
+        this.initgPty = initgPty;
+    }
 
 
-	public void setInitgPty(InitgPty initgPty) {
-		this.initgPty = initgPty;
-	}
-
-
-	private void setInitgPty(InitgPty initgPty2, JsonValidationExceptionCollector collector) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'setInitgPty'");
-	}
+	/**
+     * @param initgPty the InitgPty to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setInitgPty(InitgPty initgPty, JsonValidationExceptionCollector collector) {
+        try {
+            setInitgPty(initgPty);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+            //throw e;
+        }
+    }
 
 
 	public static void main(String[] args) {

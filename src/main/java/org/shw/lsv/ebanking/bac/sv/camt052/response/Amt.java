@@ -87,7 +87,7 @@ public class Amt {
      * e.g.: "999994769.99"
      */
     public void setAmt(String amt) {
-        boolean patternOK = (amt != null) && Pattern.matches(EBankingConstants.PATTERN_AMT, amt);
+        boolean patternOK = (amt != null) && Pattern.matches(EBankingConstants.PATTERN_CURRENCY_AMT, amt);
 
         if (patternOK) {
             this.amt = amt;
