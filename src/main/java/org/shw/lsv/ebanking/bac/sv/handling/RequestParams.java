@@ -24,6 +24,12 @@ public class RequestParams {
     private String todt;
     private String eqseq;
 
+    // Payments
+    private String nbOfTxs;
+    private String ctrlSum;
+    private String nm;
+    private String bicOrBEI;
+
 
     public String getBicfiFr()       { return bicfiFr;       }
     public String getBicfiTo()       { return bicfiTo;       }
@@ -46,9 +52,12 @@ public class RequestParams {
     public String getFrdt()          { return frdt;          }
     public String getTodt()          { return todt;          }
     public String getEqseq()         { return eqseq;         }
+    public String getNbOfTxs()       { return nbOfTxs;       }
+    public String getCtrlSum()       { return ctrlSum;       }
+    public String getNm()            { return nm;            }
+    public String getBicOrBEI()      { return bicOrBEI;      }
 
     
-
     public RequestParams setBicfiFr(String bicfi) {
         this.bicfiFr = bicfi;
         return this;
@@ -152,6 +161,26 @@ public class RequestParams {
 
     public RequestParams setEqseq(String eqseq) {
         this.eqseq = eqseq;
+        return this;
+    }
+
+    public RequestParams setNbOfTxs(String nbOfTxs) {
+        this.nbOfTxs = nbOfTxs;
+        return this;
+    }
+
+    public RequestParams setCtrlSum(String ctrlSum) {
+        this.ctrlSum = ctrlSum;
+        return this;
+    }
+
+    public RequestParams setNm(String nm) {
+        this.nm = nm;
+        return this;
+    }
+
+    public RequestParams setBicOrBEI(String bICOrBEI) {
+        this.bicOrBEI = bICOrBEI;
         return this;
     }
 }

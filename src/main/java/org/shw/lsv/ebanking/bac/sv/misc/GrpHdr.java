@@ -3,8 +3,11 @@ package org.shw.lsv.ebanking.bac.sv.misc;
 import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
+import org.shw.lsv.ebanking.bac.sv.pain001.request.CstmrCdtTrfInitn;
+import org.shw.lsv.ebanking.bac.sv.pain001.request.InitgPty;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -17,6 +20,18 @@ public class GrpHdr {
 
     @JsonProperty(value = "CreDtTm", required = true)
     String creDtTm;  // Date and time at which the message was created.
+
+    @JsonProperty("NbOfTxs")  // For payments
+    @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
+    String nbOfTxs;
+
+    @JsonProperty("CtrlSum")  // For payments
+    @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
+    String ctrlSum;
+
+    @JsonProperty("InitgPty")  // For payments
+    @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
+    InitgPty initgPty;
 
     public GrpHdr() {
 	}
@@ -32,8 +47,21 @@ public class GrpHdr {
      * public GrpHdr(@JsonProperty(value = "MsgId", required = true) String msgId,.....)
      */
     public GrpHdr(RequestParams params, JsonValidationExceptionCollector collector) {
-		setMsgId(params.getMsgId(), collector);
+		setMsgId(  params.getMsgId(),   collector);
         setCreDtTm(params.getCreDtTm(), collector);
+
+		// Payments
+		if(params.getNbOfTxs() != null && !params.getNbOfTxs().isEmpty()) {
+			setNbOfTxs(params.getNbOfTxs());
+		}
+		if(params.getCtrlSum() != null && !params.getCtrlSum().isEmpty()) {
+			setCtrlSum(params.getCtrlSum());
+		}
+
+		if(params.getNm() != null && !params.getNm().isEmpty()) {
+        	setInitgPty(new InitgPty(params, collector), collector);
+    	}
+
     }
 
 
@@ -119,9 +147,47 @@ public class GrpHdr {
 			//throw e;
 		}
 	}
+
+
 	
 
-    public static void main(String[] args) {
+    public String getNbOfTxs() {
+		return nbOfTxs;
+	}
+
+
+	public void setNbOfTxs(String nbOfTxs) {
+		this.nbOfTxs = nbOfTxs;
+	}
+
+
+	public String getCtrlSum() {
+		return ctrlSum;
+	}
+
+
+	public void setCtrlSum(String ctrlSum) {
+		this.ctrlSum = ctrlSum;
+	}
+
+
+	public InitgPty getInitgPty() {
+		return initgPty;
+	}
+
+
+	public void setInitgPty(InitgPty initgPty) {
+		this.initgPty = initgPty;
+	}
+
+
+	private void setInitgPty(InitgPty initgPty2, JsonValidationExceptionCollector collector) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'setInitgPty'");
+	}
+
+
+	public static void main(String[] args) {
         System.out.println(GrpHdr.class.getName());
     }
 
