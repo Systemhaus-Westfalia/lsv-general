@@ -20,7 +20,7 @@ public class Dbtr {
         try {
             setNm(params.getNm(), collector);
             // TODO: Implement DbtrId initialization??? Wird das Objekt verwendet?
-            //setId ( new DbtrId(  params, collector), collector);
+            setId ( new DbtrId(  params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_DBTR_INIT, e);
         }

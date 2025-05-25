@@ -13,7 +13,7 @@ public class IdOthr {
     String id;  // Identification assigned by an institution.
 
     @JsonProperty("SchmeNm")
-	SchmeNm cchmeNm;
+	SchmeNm schmeNm;
 
 
 	public IdOthr() {
@@ -70,8 +70,8 @@ public class IdOthr {
 	}
 
 
-	public SchmeNm getCchmeNm() {
-		return cchmeNm;
+	public SchmeNm getSchmeNm() {
+		return schmeNm;
 	}
 
 
@@ -79,11 +79,11 @@ public class IdOthr {
 	 * @param schmeNm the SchmeNm to be set<br>
 	 * The parameter is validated: null not allowed.<br>
 	 */
-	public void setCchmeNm(SchmeNm schmeNm) {
+	public void setSchmeNm(SchmeNm schmeNm) {
 		if (schmeNm == null) {
 			throw new IllegalArgumentException("Wrong parameter 'schmeNm' in setSchmeNm()");
 		}
-		this.cchmeNm = schmeNm;
+		this.schmeNm = schmeNm;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class IdOthr {
 	 */
 	public void setSchmeNm(SchmeNm schmeNm, JsonValidationExceptionCollector collector) {
 		try {
-			setCchmeNm(schmeNm);
+			setSchmeNm(schmeNm);
 		} catch (IllegalArgumentException e) {
 			collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
 			//throw e;
