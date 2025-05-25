@@ -65,7 +65,7 @@ public class PmtInf {
             setDbtrAgt (     new DbtrAgt(     params, collector), collector);
             setCdtTrfTxInf ( new CdtTrfTxInf( params, collector), collector);
         } catch (Exception e) {
-            collector.addError(EBankingConstants.ERROR_PMT_INIT, e);
+            collector.addError(EBankingConstants.ERROR_PMTTPINF_INIT, e);
         }
     }
 

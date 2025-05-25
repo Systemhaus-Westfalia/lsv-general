@@ -17,7 +17,7 @@ public class DbtrAcct {
         try {
             setDbtrAcctId (new DbtrAcctId(params, collector), collector);
         } catch (Exception e) {
-            collector.addError(EBankingConstants.ERROR_PMT_INIT, e);
+            collector.addError(EBankingConstants.ERROR_DBTRACCT_INIT, e);
         }
     }
 

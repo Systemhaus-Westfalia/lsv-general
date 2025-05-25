@@ -32,6 +32,8 @@ public class RequestParams {
     private String     bicOrBEI;
     private String     reqdExctnDt;
     private String     dbtrAcctID;
+    private String     cd;  // Category Purpose Code
+
 
     public String     getBicfiFr()       { return bicfiFr;       }
     public String     getBicfiTo()       { return bicfiTo;       }
@@ -60,6 +62,7 @@ public class RequestParams {
     public String     getBicOrBEI()      { return bicOrBEI;      }
     public String     getReqdExctnDt()   { return reqdExctnDt;   }
     public String     getDbtrAcctID()    { return dbtrAcctID;    }
+    public String     getCd()            { return cd;            }
 
 
     
@@ -196,6 +199,11 @@ public class RequestParams {
 
     public RequestParams setDbtrAcctID(String dbtrAcctID) {
         this.dbtrAcctID = dbtrAcctID;
+        return this;
+    }
+
+    public RequestParams setCd(String cd) {
+        this.cd = cd;
         return this;
     }
 }

@@ -22,7 +22,7 @@ public class Dbtr {
             // TODO: Implement DbtrId initialization??? Wird das Objekt verwendet?
             //setId ( new DbtrId(  params, collector), collector);
         } catch (Exception e) {
-            collector.addError(EBankingConstants.ERROR_PMT_INIT, e);
+            collector.addError(EBankingConstants.ERROR_DBTR_INIT, e);
         }
     }
 

@@ -60,8 +60,8 @@ public class PAIN001SerializationTest {
              .setNm(        "CLIENTE01      ")
             .setDbtrAcctID(        "999888666")
             .setIban(      "CR42010200690010163989")
-            /*.setReqdMsgNmId(  "AccountBalanceReportV08")
-            .setAcctidothr(   "999888666")
+            .setCd(  "SUPP")
+            /*.setAcctidothr(   "999888666")
             .setBicfiAcctOwnr("DUMMYORDENA")
             .setCcy(          "USD")
             */

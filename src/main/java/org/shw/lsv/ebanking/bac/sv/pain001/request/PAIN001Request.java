@@ -19,7 +19,7 @@ public class PAIN001Request implements Validatable {
         try {
             setPain0012RequestEnvelope(new PAIN001RequestEnvelope(params, collector), collector);
         } catch (Exception e) {
-            collector.addError(EBankingConstants.ERROR_CAMT052REQUEST_INIT, e);
+            collector.addError(EBankingConstants.ERROR_PAIN001REQUEST_INIT, e);
         }
     }
 

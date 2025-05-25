@@ -19,7 +19,7 @@ public class PAIN001RequestDocument implements Validatable {
         try {
             setCstmrCdtTrfInitn(new CstmrCdtTrfInitn(params, collector), collector);
         } catch (Exception e) {
-            collector.addError(EBankingConstants.ERROR_CAMT052REQUEST_INIT, e);
+            collector.addError(EBankingConstants.ERROR_DOCUMENT_INIT, e);
         }
     }
 

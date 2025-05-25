@@ -23,7 +23,7 @@ public class CAMT052RequestDocument implements Validatable {
         try {
             setAcctRptgReq(new AcctRptgReq(params, collector), collector);
         } catch (Exception e) {
-            collector.addError(EBankingConstants.ERROR_CAMT052REQUEST_INIT, e);
+            collector.addError(EBankingConstants.ERROR_DOCUMENT_INIT, e);
         }
     }
 

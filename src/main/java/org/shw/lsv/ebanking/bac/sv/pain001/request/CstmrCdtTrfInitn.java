@@ -21,7 +21,7 @@ public class CstmrCdtTrfInitn {
             setGrpHdr(new GrpHdr(params, collector), collector);
             setPmtInf(new PmtInf(params, collector), collector);
         } catch (Exception e) {
-            collector.addError(EBankingConstants.ERROR_ACCTRPTGREQ_INIT, e);
+            collector.addError(EBankingConstants.ERROR_CSTMRCDTTRFINITN_INIT, e);
         }
     }
 

@@ -21,7 +21,7 @@ public class DbtrAcctId {
             // TODO: ueberpruefen, ob IBAN ein muss-Feld ist
             setIBAN(params.getIban(), collector);
         } catch (Exception e) {
-            collector.addError(EBankingConstants.ERROR_PMT_INIT, e);
+            collector.addError(EBankingConstants.ERROR_DBTRACCTID_INIT, e);
         }
     }
 
