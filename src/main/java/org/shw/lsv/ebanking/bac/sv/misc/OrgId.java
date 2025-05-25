@@ -61,7 +61,7 @@ public class OrgId {
      * Example: "BSNJCRSJ".
      */
     public void setAnyBIC(String anyBIC) {
-        boolean patternOK = (anyBIC != null && !anyBIC.isEmpty()) && Pattern.matches(EBankingConstants.PATTERN_ANYBIC, anyBIC);
+        boolean patternOK = (anyBIC != null && !anyBIC.isEmpty()) && Pattern.matches(EBankingConstants.PATTERN_BIC, anyBIC);
 
         if (!patternOK) {
             throw new IllegalArgumentException("Wrong parameter 'anyBIC' (" + anyBIC + ") in setAnyBIC()");

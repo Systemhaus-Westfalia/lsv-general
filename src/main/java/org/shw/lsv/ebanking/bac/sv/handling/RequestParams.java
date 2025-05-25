@@ -33,6 +33,7 @@ public class RequestParams {
     private String     reqdExctnDt;
     private String     dbtrAcctID;
     private String     cd;  // Category Purpose Code
+    private String     bic; // BIC  (Business Identifier Code)
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -63,6 +64,7 @@ public class RequestParams {
     public String     getReqdExctnDt()   { return reqdExctnDt;   }
     public String     getDbtrAcctID()    { return dbtrAcctID;    }
     public String     getCd()            { return cd;            }
+    public String     getBic()           { return bic;           }
 
 
     
@@ -204,6 +206,11 @@ public class RequestParams {
 
     public RequestParams setCd(String cd) {
         this.cd = cd;
+        return this;
+    }
+
+    public RequestParams setBic(String bic) {
+        this.bic = bic;
         return this;
     }
 }

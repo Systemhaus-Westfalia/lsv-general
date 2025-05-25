@@ -61,9 +61,9 @@ public class PAIN001SerializationTest {
             .setDbtrAcctID(        "999888666")
             .setIban(      "CR42010200690010163989")
             .setCd(  "SUPP")
-            /*.setAcctidothr(   "999888666")
-            .setBicfiAcctOwnr("DUMMYORDENA")
-            .setCcy(          "USD")
+            .setBic(   "BAMCSVSS")
+            /*.setCcy(          "USD")
+             .setBicfiAcctOwnr("DUMMYORDENA")
             */
             ; 
     }

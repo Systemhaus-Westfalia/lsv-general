@@ -61,7 +61,7 @@ public class FinInstnId {
      * Pattern: "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}".
      */
     public void setbICFI(String BICFI) {
-        boolean patternOK = (BICFI != null) && Pattern.matches(EBankingConstants.PATTERN_BICFI, BICFI);
+        boolean patternOK = (BICFI != null) && Pattern.matches(EBankingConstants.PATTERN_BIC, BICFI);
 
         if (!patternOK) {
             throw new IllegalArgumentException("Wrong parameter 'BICFI' (" + BICFI + ") in setBICFI()");
