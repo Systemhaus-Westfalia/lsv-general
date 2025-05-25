@@ -6,6 +6,7 @@ import org.shw.lsv.ebanking.bac.sv.camt052.request.SchmeNm;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class IdOthr {
@@ -13,6 +14,7 @@ public class IdOthr {
     String id;  // Identification assigned by an institution.
 
     @JsonProperty("SchmeNm")
+	@JsonInclude(JsonInclude.Include.NON_NULL) // Exclude fields with null values
 	SchmeNm schmeNm;
 
 

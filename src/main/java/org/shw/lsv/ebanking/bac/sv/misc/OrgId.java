@@ -17,9 +17,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class OrgId {
     
     @JsonProperty("AnyBIC")
+    @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude fields with null values
 	String anyBIC=null;        // Choice AcctOwnr_OrgId_1: Business identification code of the organisation.
 
     @JsonProperty("Othr")      // "Othr" is the name of the field in the JSON
+    @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude fields with null values
     IdOthr idOthr=null;  // Choice AcctOwnr_OrgId_2: Identification assigned by an institution.
 
 
