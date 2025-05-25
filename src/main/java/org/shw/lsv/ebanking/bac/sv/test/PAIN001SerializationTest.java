@@ -62,9 +62,7 @@ public class PAIN001SerializationTest {
             .setIban(      "CR42010200690010163989")
             .setCd(  "SUPP")
             .setBic(   "BAMCSVSS")
-            /*.setCcy(          "USD")
-             .setBicfiAcctOwnr("DUMMYORDENA")
-            */
+            .setCountry(          "SV")
             ; 
     }
 

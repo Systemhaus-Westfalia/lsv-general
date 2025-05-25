@@ -50,7 +50,7 @@ public class Amt {
      * e.g.: "EUR", "USD", "GBP"
      */
     public void setCcy(String ccy) {
-        boolean patternOK = (ccy != null) && Pattern.matches(EBankingConstants.PATTERN_CCY, ccy);
+        boolean patternOK = (ccy != null) && Pattern.matches(EBankingConstants.PATTERN_CURRENCY, ccy);
 
         if (patternOK) {
             this.ccy = ccy;

@@ -91,9 +91,10 @@ public class EBankingConstants {
 	public static final String PATTERN_DATE         = "^\\d{4}-\\d{2}-\\d{2}$";
 
 	public static final String PATTERN_CURRENCY_AMT = "^\\d+\\.\\d{2}$";
-	public static final String PATTERN_CCY          = "^[A-Z]{3}$";
+	public static final String PATTERN_CURRENCY     = "^[A-Z]{3}$";
 	public static final String PATTERN_INTEGER      = "^[0-9]+$";
 	public static final String PATTERN_IBAN         = "[A-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}";
+	public static final String PATTERN_COUNTRY      = "[A-Z]{2}";
 
 
 	public static final String CONTEXT_FR        = "FR";
