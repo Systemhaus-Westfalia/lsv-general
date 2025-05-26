@@ -32,9 +32,10 @@ public class RequestParams {
     private String     bicOrBEI;
     private String     reqdExctnDt;
     private String     dbtrAcctID;
-    private String     cd;      // Category Purpose Code
-    private String     bic;     // BIC  (Business Identifier Code)
-    private String     country; // Country code, e.g. "DE" for Germany
+    private String     cd;         // Category Purpose Code
+    private String     bic;        // BIC  (Business Identifier Code)
+    private String     country;    // Country code, e.g. "DE" for Germany
+    private String     endToEndId; // End-to-End Identification
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -67,8 +68,7 @@ public class RequestParams {
     public String     getCd()            { return cd;            }
     public String     getBic()           { return bic;           }
     public String     getCountry()       { return country;       }
-
-
+    public String     getEndToEndId()    { return endToEndId;    }
     
     public RequestParams setBicfiFr(String bicfi) {
         this.bicfiFr = bicfi;
@@ -220,4 +220,10 @@ public class RequestParams {
         this.country = country;
         return this;
     }
+
+    public RequestParams setEndToEndId(String endToEndId) {
+        this.endToEndId = endToEndId;
+        return this;
+    }
+
 }

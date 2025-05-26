@@ -75,6 +75,9 @@ public class PAIN001SerializationTest {
             .setBicOrBEI(     "DUMMYORDENA")
             .setBic(          "BAMCSVSS")
             .setCountry(      "SV")
+
+            // Payment Element
+            .setEndToEndId(   "E2E-1234567890")
             ;
     }
 

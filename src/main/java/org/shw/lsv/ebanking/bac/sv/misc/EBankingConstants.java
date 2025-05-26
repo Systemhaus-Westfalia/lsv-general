@@ -90,6 +90,7 @@ public class EBankingConstants {
 	public static final String PATTERN_RPTID        = "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)";
 	public static final String PATTERN_DATETIME     = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
 	public static final String PATTERN_DATE         = "^\\d{4}-\\d{2}-\\d{2}$";
+	public static final String PATTERN_ENDTOENDID   = "[0-9a-zA-Z/\\-?:().,'+ ]{1,35}";
 
 	public static final String PATTERN_CURRENCY_AMT = "^\\d+\\.\\d{2}$";
 	public static final String PATTERN_CURRENCY     = "^[A-Z]{3}$";
