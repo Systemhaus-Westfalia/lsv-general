@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -215,35 +216,23 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 	
 	private JSONObject generateIdentificationInputData() {
 		System.out.println("CreditoFiscal: start collecting JSON data for Identificacion");
-		String prefix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getPrefix()).orElse("");
-		String documentno = invoice.getDocumentNo().replace(prefix,"");
-		String suffix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getSuffix()).orElse("");	
-		documentno = documentno.replace(suffix,"");
-		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
-		String duns = orgInfo.getDUNS().replace("-", "");
-		
-		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
-				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
-		Integer invoiceID = invoice.get_ID();
-		//String numeroControl = getNumeroControl(invoiceID, orgInfo, "DTE-01-");
-		Integer clientID = (Integer)client.getAD_Client_ID();
-		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
-		
+			
+		String numeroControl = createNumeroControl(invoice, client);
+		String codigoGeneracion =  createCodigoGeneracion(invoice);
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		Boolean isContigencia = false;
-		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
-			isContigencia = true;
-		}
-		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-		Calendar cal = Calendar.getInstance();
-		String horEmi = timeFormat.format(cal.getTime());
+		//if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
+		//	isContigencia = true;
+		//}
+		String fecEmi = getfecEmi();
+		String horEmi = gethorEmi();
 		int tipoModelo = isContigencia?CreditoFiscal.TIPOMODELO_CONTIGENCIA:CreditoFiscal.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?CreditoFiscal.TIPOOPERACION_CONTIGENCIA:CreditoFiscal.TIPOOPERACION_NOCONTIGENCIA;
 		jsonObjectIdentificacion.put(CreditoFiscal.NUMEROCONTROL, numeroControl);
 		jsonObjectIdentificacion.put(CreditoFiscal.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(CreditoFiscal.TIPOMODELO, tipoModelo);
 		jsonObjectIdentificacion.put(CreditoFiscal.TIPOOPERACION, tipoOperacion);
-		jsonObjectIdentificacion.put(CreditoFiscal.FECEMI,  invoice.getDateAcct().toString().substring(0, 10));
+		jsonObjectIdentificacion.put(CreditoFiscal.FECEMI,  fecEmi);
 		jsonObjectIdentificacion.put(CreditoFiscal.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(CreditoFiscal.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(CreditoFiscal.AMBIENTE, client_getE_Enviroment(client).getValue());

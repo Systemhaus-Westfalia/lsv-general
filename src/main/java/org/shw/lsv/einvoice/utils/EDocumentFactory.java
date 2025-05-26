@@ -12,6 +12,9 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +28,7 @@ import org.adempiere.core.domains.models.X_E_BPType;
 import org.adempiere.core.domains.models.X_E_DocType;
 import org.adempiere.core.domains.models.X_E_Duties;
 import org.adempiere.core.domains.models.X_E_Enviroment;
+import org.adempiere.core.domains.models.X_E_PaymentTerm;
 import org.adempiere.core.domains.models.X_E_PlantType;
 import org.adempiere.core.domains.models.X_E_Recipient_Identification;
 import org.adempiere.core.domains.models.X_E_TimeSpan;
@@ -36,6 +40,7 @@ import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MTax;
@@ -401,18 +406,40 @@ public abstract class EDocumentFactory {
 		return invoice;
 	}
 
-	public String getNumeroControl(MInvoice invoice, String duns) {
+	public String createNumeroControl(MInvoice invoice, MClient client) {
+		MOrg org = new MOrg(invoice.getCtx(), invoice.getAD_Org_ID(), invoice.get_TrxName());
 		String prefix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getPrefix()).orElse("");
 		String documentno = invoice.getDocumentNo().replace(prefix,"");
 		String suffix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getSuffix()).orElse("");	
 		documentno = documentno.replace(suffix,"");
 		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
-
+		String pos = invoice.getC_POS().getName()==null?"PV01":invoice.getC_POS().getName();
+		X_E_PlantType plantType = client_getE_PlantType(client);
+		String idPosCompany = "M001" + pos;
 		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
-				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
+				+ "-"+ StringUtils.leftPad(idPosCompany, 8,"0") + "-"+ idIdentification;
 		return numeroControl;
 	}
 	
+	public String createCodigoGeneracion(MInvoice invoice) {
+		
+		String numControl = invoice.get_UUID().toUpperCase();
+		return numControl;		
+	}
+	public String getfecEmi() {
+		LocalDate date = LocalDate.now();
+		String fecEmi = date.toString();
+		return fecEmi;
+	}
+	
+	
+
+	public String gethorEmi() {
+        LocalDateTime dateTime = LocalDateTime.now();
+        String time = String.format("%02d", dateTime.getHour()) + ":" + String.format("%02d", dateTime.getMinute())  
+        + ":" + String.format("%02d", dateTime.getSecond()) ;
+		return time;
+	}
 	
 	
 

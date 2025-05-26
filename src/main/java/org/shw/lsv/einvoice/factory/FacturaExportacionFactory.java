@@ -211,29 +211,17 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		System.out.println("Start collecting JSON data for Identificacion");
 
 
-		String prefix = invoice.getC_DocType().getDefiniteSequence().getPrefix();
-		String documentno = invoice.getDocumentNo().replace(prefix,"");
-		String suffix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getSuffix()).orElse("");	
-		documentno = documentno.replace(suffix,"");
-		String idIdentification  = StringUtils.leftPad(documentno , 15,"0");
-		String duns = orgInfo.getDUNS().replace("-", "");
 		
-		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
-				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
-		Integer invoiceID = invoice.get_ID();
-		
-		Integer clientID = (Integer)client.getAD_Client_ID();
-		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
-		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-		Calendar cal = Calendar.getInstance();
-		String horEmi = timeFormat.format(cal.getTime());
+		String numeroControl = createNumeroControl(invoice, client);
+		String codigoGeneracion = createCodigoGeneracion(invoice);
+		String horEmi = gethorEmi();
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		jsonObjectIdentificacion.put(FacturaExportacion.NUMEROCONTROL, numeroControl);
 		
 		jsonObjectIdentificacion.put(FacturaExportacion.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMODELO, 1);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOOPERACION, 1);
-		jsonObjectIdentificacion.put(FacturaExportacion.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
+		jsonObjectIdentificacion.put(FacturaExportacion.FECEMI, getfecEmi());
 		jsonObjectIdentificacion.put(FacturaExportacion.HOREMI,horEmi);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(FacturaExportacion.AMBIENTE,  client_getE_Enviroment(client).getValue());

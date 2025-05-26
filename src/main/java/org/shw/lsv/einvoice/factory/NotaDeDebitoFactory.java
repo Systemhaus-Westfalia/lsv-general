@@ -227,26 +227,17 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		Integer tipoContingencia = 0;
 		int tipoModelo           = 1;
 		int tipoOperacion        = 1;
-		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
-			tipoModelo       = 2;
-			tipoOperacion    = 2;	
-			motivoContin     = "Contigencia por fecha de factura";	
-			tipoContingencia = 5;
-		}
+		//if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
+		//	tipoModelo       = 2;
+		//	tipoOperacion    = 2;	
+		//	motivoContin     = "Contigencia por fecha de factura";	
+		//	tipoContingencia = 5;
+		//}
 
-		String prefix = invoice.getC_DocType().getDefiniteSequence().getPrefix();
-		String documentno = invoice.getDocumentNo().replace(prefix,"");
-		String suffix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getSuffix()).orElse("");	
-		documentno = documentno.replace(suffix,"");
-		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
-		String duns = orgInfo.getDUNS().replace("-", "");
 		
-		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
-				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
+		String numeroControl = createNumeroControl(invoice, client);
 		
-		Integer invoiceID = invoice.get_ID();
-		Integer clientID = (Integer)client.getAD_Client_ID();
-		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
+		String codigoGeneracion = createCodigoGeneracion(invoice);
 		
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		jsonObjectIdentificacion.put(NotaDeDebito.MOTIVOCONTIN, motivoContin);
@@ -255,8 +246,8 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(NotaDeDebito.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(NotaDeDebito.TIPOMODELO, tipoModelo);
 		jsonObjectIdentificacion.put(NotaDeDebito.TIPOOPERACION, tipoOperacion);
-		jsonObjectIdentificacion.put(NotaDeDebito.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
-		jsonObjectIdentificacion.put(NotaDeDebito.HOREMI, "00:00:00");
+		jsonObjectIdentificacion.put(NotaDeDebito.FECEMI, getfecEmi());
+		jsonObjectIdentificacion.put(NotaDeDebito.HOREMI, gethorEmi());
 		jsonObjectIdentificacion.put(NotaDeDebito.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(NotaDeDebito.AMBIENTE, client_getE_Enviroment(client).getValue());
 

@@ -213,35 +213,22 @@ public class FacturaFactory extends EDocumentFactory {
 	private JSONObject generateIdentificationInputData() {
 		System.out.println("Factura: start collecting JSON data for Identificacion");
 
-		String prefix = invoice.getC_DocType().getDefiniteSequence().getPrefix();
-		String documentno = invoice.getDocumentNo().replace(prefix,"");
-		String suffix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getSuffix()).orElse("");	
-		documentno = documentno.replace(suffix,"");
-		String idIdentification  = StringUtils.leftPad(documentno , 15,"0");
-		String duns = orgInfo.getDUNS().replace("-", "");
-		
-		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
-				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
-		Integer invoiceID = invoice.get_ID();
-		//String numeroControl = getNumeroControl(invoiceID, orgInfo, "DTE-01-");
-		Integer clientID = (Integer)client.getAD_Client_ID();
-		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
-		
+		String numeroControl = createNumeroControl(invoice, client);
+		String codigoGeneracion =  createCodigoGeneracion(invoice);
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		Boolean isContigencia = false;
-		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
-			isContigencia = true;
-		}
-		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-		Calendar cal = Calendar.getInstance();
-		String horEmi = timeFormat.format(cal.getTime());
+		//if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
+		//	isContigencia = true;
+		//}
+		String fecEmi = getfecEmi();
+		String horEmi = gethorEmi();
 		int tipoModelo = isContigencia?Factura.TIPOMODELO_CONTIGENCIA:Factura.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?Factura.TIPOOPERACION_CONTIGENCIA:Factura.TIPOOPERACION_NOCONTIGENCIA;
 		jsonObjectIdentificacion.put(Factura.NUMEROCONTROL, numeroControl);
 		jsonObjectIdentificacion.put(Factura.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(Factura.TIPOMODELO, tipoModelo);
 		jsonObjectIdentificacion.put(Factura.TIPOOPERACION, tipoOperacion);
-		jsonObjectIdentificacion.put(Factura.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
+		jsonObjectIdentificacion.put(Factura.FECEMI, fecEmi);
 		jsonObjectIdentificacion.put(Factura.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(Factura.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(Factura.AMBIENTE, client_getE_Enviroment(client).getValue());

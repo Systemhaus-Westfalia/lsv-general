@@ -230,29 +230,19 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		Integer tipoContingencia = 0;
 		int tipoModelo           = 1;
 		int tipoOperacion        = 1;
-		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
-			tipoModelo       = 2;
-			tipoOperacion    = 2;	
-			motivoContin     = "Contigencia por fecha de factura";	
-			tipoContingencia = 5;
-		}
+		//if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
+		//	tipoModelo       = 2;
+		//	tipoOperacion    = 2;	
+		//	motivoContin     = "Contigencia por fecha de factura";	
+		//	tipoContingencia = 5;
+		//}
 
-		String prefix = invoice.getC_DocType().getDefiniteSequence().getPrefix();
-		String documentno = invoice.getDocumentNo().replace(prefix,"");
-		String suffix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getSuffix()).orElse("");	
-		documentno = documentno.replace(suffix,"");
-		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
-		String duns = orgInfo.getDUNS().replace("-", "");
 		
-		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
-				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
+		String numeroControl = createNumeroControl(invoice, client);
 		
-		Integer invoiceID = invoice.get_ID();
-		Integer clientID = (Integer)client.getAD_Client_ID();
-		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
-		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-		Calendar cal = Calendar.getInstance();
-		String horEmi = timeFormat.format(cal.getTime());
+		String codigoGeneracion = createCodigoGeneracion(invoice);
+		String horEmi = gethorEmi();
+		String fecEmi = getfecEmi();
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		jsonObjectIdentificacion.put(NotaDeCredito.MOTIVOCONTIN, motivoContin);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOCONTINGENCIA, tipoContingencia);
@@ -260,7 +250,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(NotaDeCredito.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOMODELO, tipoModelo);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOOPERACION, tipoOperacion);
-		jsonObjectIdentificacion.put(NotaDeCredito.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
+		jsonObjectIdentificacion.put(NotaDeCredito.FECEMI, fecEmi);
 		jsonObjectIdentificacion.put(NotaDeCredito.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(NotaDeCredito.AMBIENTE, client_getE_Enviroment(client).getValue());
