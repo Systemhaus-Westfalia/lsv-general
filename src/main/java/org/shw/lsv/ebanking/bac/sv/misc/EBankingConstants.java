@@ -74,6 +74,7 @@ public class EBankingConstants {
 	public static final String ERROR_DBTRACCT_INIT             = "DbtrAcct initialization";
 	public static final String ERROR_DBTRACCTID_INIT           = "DbtrAcctId initialization";
 	public static final String ERROR_FININSTDBTR_INIT          = "FinInstnIdDbtr initialization";
+	public static final String ERROR_PAYMENT_ELEMENT_INIT      = "PaymentElement initialization";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
