@@ -78,6 +78,7 @@ public class PAIN001SerializationTest {
 
             // Payment Element
             .setEndToEndId(   "E2E-1234567890")
+            .setInstrPrty(   "NORM")  // Instruction Priority, e.g. "NORM" or "HIGH"
             ;
     }
 
