@@ -52,18 +52,30 @@ public class PAIN001SerializationTest {
 
     private static RequestParams createTestParams() {
         return new RequestParams()
-            .setNbOfTxs(    Integer.valueOf(3)) // Number of transactions
-            .setCtrlSum(    new BigDecimal("460"))
-            .setNm(      "CLIENTE01")
-            .setBicOrBEI( "DUMMYORDENA")
-            .setReqdExctnDt(       "2023-06-27")
-             .setNm(        "CLIENTE01      ")
-            .setDbtrAcctID(        "999888666")
-            .setIban(      "CR42010200690010163989")
-            .setCd(  "SUPP")
-            .setBic(   "BAMCSVSS")
-            .setCountry(          "SV")
-            ; 
+            // AppHdr
+            .setBicfiFr(      "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
+            .setBicfiTo(      "BAMCSVSS")
+            .setBizMsgIdr(    "DummySaldoCta1")
+            .setMsgDefIdr(    "camt.060.001.05")
+            .setBizSvc(       "swift.cbprplus.01")
+            .setCreDt(        "2025-05-16T07:56:49-06:00")
+
+            // Group Header
+            .setMsgId(        "DummySaldoCta1")
+            .setCreDtTm(      "2025-05-16T07:56:49-06:00")
+
+            //Document
+            .setNbOfTxs(      Integer.valueOf(3)) // Number of transactions
+            .setCtrlSum(      new BigDecimal("460"))
+            .setCd(           "SUPP")
+            .setReqdExctnDt(  "2023-06-27")
+            .setNm(           "CLIENTE01")
+            .setDbtrAcctID(   "999888666")
+            .setIban(         "CR42010200690010163989")
+            .setBicOrBEI(     "DUMMYORDENA")
+            .setBic(          "BAMCSVSS")
+            .setCountry(      "SV")
+            ;
     }
 
 }

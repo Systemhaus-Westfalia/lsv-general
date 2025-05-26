@@ -27,6 +27,7 @@ public class AcctId {
 
 
 	public AcctId(RequestParams params, JsonValidationExceptionCollector collector) {
+        // TODO: sich vergewissern, was BAC will: IBAN oder AcctIdOthr
         try {
             if ( !(params.getIban() == null || params.getIban().isEmpty()) ) {
                 setIBAN(params.getIban(), collector);

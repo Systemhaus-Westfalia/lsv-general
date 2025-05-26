@@ -13,22 +13,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PmtInf {
     @JsonProperty("PmtInfId")
-    String pmtInfId;
+    String pmtInfId;  // Payment Information Identification
 
     @JsonProperty("PmtMtd")
-    String pmtMtd;
+    String pmtMtd;  // means of payment
 
     @JsonProperty("NbOfTxs")
-    Integer nbOfTxs;
+    Integer nbOfTxs;  // Total number of individual transactions (credit transfers)
 
     @JsonProperty("CtrlSum")
-    String ctrlSum;
+    String ctrlSum;  // total sum of all individual transaction amounts (
 
     @JsonProperty("PmtTpInf")
     PmtTpInf pmtTpInf;
 
     @JsonProperty("ReqdExctnDt")
-    String reqdExctnDt;
+    String reqdExctnDt;  // Requested Execution Date.
 
     @JsonProperty("Dbtr")
     Dbtr dbtr;
@@ -55,19 +55,20 @@ public class PmtInf {
      */
     public PmtInf(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
+            int trxCount = params.getNbOfTxs() != null ? params.getNbOfTxs() : 0;
+
             setPmtInfId(params.getMsgId(),     collector);
             setPmtMtd(  params.getMsgDefIdr(), collector);
-            setNbOfTxs( params.getNbOfTxs(),   collector);
+            setNbOfTxs( trxCount,              collector);
             setCtrlSum( params.getCtrlSum(),   collector);
 
             setPmtTpInf (    new PmtTpInf(    params, collector), collector);
-            setReqdExctnDt( params.getReqdExctnDt(),   collector);
+            setReqdExctnDt( params.getReqdExctnDt(),              collector);
             setDbtr (        new Dbtr(        params, collector), collector);
             setDbtrAcct (    new DbtrAcct(    params, collector), collector);
             setDbtrAgt (     new DbtrAgt(     params, collector), collector);
 
             // Payments
-            int trxCount = params.getNbOfTxs() != null ? params.getNbOfTxs() : 0;
             paymentElements = initPayment(params, trxCount, collector);
             setPaymentElements(paymentElements, collector);
         } catch (Exception e) {
@@ -92,7 +93,12 @@ public class PmtInf {
     }
 
     /**
-     * @param pmtInfId the PmtInfId to be set<br>
+     * @param pmtInfId the Payment Information Identification to be set<br>
+     * <p>
+     * It is a unique identifier for a group of payment instructions within a payment message.
+     * It is assigned by the initiating party (the sender, usually the company or bank creating the payment file).
+     * It helps both the sender and the receiver (bank) to reference, track, and reconcile the payment batch.
+     *
      * The parameter is validated.<br>
      * "minLength" : 1, "maxLength" : 35; null not allowed.<br>
      */
@@ -112,6 +118,11 @@ public class PmtInf {
     /**
      * @param pmtInfId the PmtInfId to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * Payment Information Identification to be set<br>
+     * It is a unique identifier for a group of payment instructions within a payment message.
+     * It is assigned by the initiating party (the sender, usually the company or bank creating the payment file).
+     * It helps both the sender and the receiver (bank) to reference, track, and reconcile the payment batch.
      */
     public void setPmtInfId(String pmtInfId, JsonValidationExceptionCollector collector) {
         try {
@@ -131,7 +142,10 @@ public class PmtInf {
     }
 
     /**
-     * @param pmtMtd the PmtMtd to be set<br>
+     * @param pmtMtd the means of payment to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.
+     * <p>
+     * Specifies the means of payment that will be used to move the amount of money.<p>
      * The parameter is validated: null not allowed.<br>
      * And must equal one of the following values: [TRF, CHK]
      * -> TRF = Transaccion, CHK = Cheques"
@@ -148,8 +162,12 @@ public class PmtInf {
     }
 
     /**
-     * @param pmtMtd the PmtMtd to be set<br>
-     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * @param pmtMtd the means of payment to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.
+     * <p>
+     * Specifies the means of payment that will be used to move the amount of money.
+     * Descripccion segun ficha técnica": "[TRF, CHK] -> TRF = Transacción, CHK = Cheques".
+     * Example:"TRF"
      */
     public void setPmtMtd(String pmtMtd, JsonValidationExceptionCollector collector) {
         try {
@@ -169,7 +187,12 @@ public class PmtInf {
     }
 
     /**
-     * @param nbOfTxs the NbOfTxs to be set<br>
+     * @param nbOfTxs the number of individual transactions to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * It indicates the total number of individual transactions (credit transfers) included in the payment batch (PmtInf block).
+     * <p>
+     * It must match the number of CdtTrfTxInf (Credit Transfer Transaction Information) elements in the same PmtInf.
      * The parameter is validated: must be positive; null not allowed.<br>
      * Example: 3
      */
@@ -183,8 +206,12 @@ public class PmtInf {
     }
 
     /**
-     * @param nbOfTxs the NbOfTxs to be set<br>
+     * @param nbOfTxs the number of individual transactions to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * It indicates the total number of individual transactions (credit transfers) included in the payment batch (PmtInf block).
+     * <p>
+     * It must match the number of CdtTrfTxInf (Credit Transfer Transaction Information) elements in the same PmtInf.
      */
     public void setNbOfTxs(Integer nbOfTxs, JsonValidationExceptionCollector collector) {
         try {
@@ -212,7 +239,10 @@ public class PmtInf {
     }
 
     /**
-     * @param ctrlSum the CtrlSum to be set.<br>
+     * @param ctrlSum the total sum of all individual transaction amounts to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * It is the sum of all credit transfers within a payment batch (PmtInf block).
      * The parameter is validated: must be non-null, non-negative, and have two decimal places.<br>
      * Example: 123.45
      */
@@ -226,8 +256,10 @@ public class PmtInf {
     }
 
     /**
-     * @param ctrlSum the CtrlSum to be set<br>
+     * @param ctrlSum the total sum of all individual transaction amounts to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * It is the sum of all credit transfers within a payment batch (PmtInf block).
      */
     public void setCtrlSum(BigDecimal ctrlSum, JsonValidationExceptionCollector collector) {
         try {
@@ -277,7 +309,7 @@ public class PmtInf {
     }
 
     /**
-     * @param reqdExctnDt the ReqdExctnDt to be set<br>
+     * @param reqdExctnDt the Requested Execution Date to be set<br>
      * The parameter is validated: null not allowed.<br>
      * "pattern" : "^\d{4}-\d{2}-\d{2}$"<br>
      * Example: "2023-12-31"
@@ -293,7 +325,7 @@ public class PmtInf {
     }
 
     /**
-     * @param reqdExctnDt the ReqdExctnDt to be set<br>
+     * @param reqdExctnDt the Requested Execution Date to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
     public void setReqdExctnDt(String reqdExctnDt, JsonValidationExceptionCollector collector) {

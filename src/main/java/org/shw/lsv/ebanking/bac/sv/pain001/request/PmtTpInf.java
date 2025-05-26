@@ -8,14 +8,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PmtTpInf {
 
-    /* Category purpose
-    "Propósito de pago (Payment Information), los valores esperados son: SUPP, SALA, TREA.
-    Para planilla (SALA) o cualquier otro propósito, este campo es obligatorio.
-    Para proveedores (SUPP) u otro valor sino se indica se tomará como valor por defecto SUPP"
-    Segun copilto, hac muchos vlores, pero los bancos utilizan sus propios. */
     @JsonProperty("CtgyPurp")
     CtgyPurp ctgyPurp;
 
+    /**
+     * Category purpose
+     * Propósito de pago (Payment Information), los valores esperados son: SUPP, SALA, TREA.
+     * Para planilla (SALA) o cualquier otro propósito, este campo es obligatorio.
+     * Para proveedores (SUPP) u otro valor sino se indica se tomará como valor por defecto SUPP"
+     *  Segun copiloto, hay muchos vlores, pero los bancos utilizan sus propios
+     */
     public PmtTpInf(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setCtgyPurp (new CtgyPurp(params, collector), collector);

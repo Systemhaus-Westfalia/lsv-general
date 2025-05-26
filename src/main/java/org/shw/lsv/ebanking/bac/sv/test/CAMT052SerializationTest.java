@@ -52,14 +52,19 @@ public static void main(String[] args) {
 
     private static RequestParams createTestParams() {
         return new RequestParams()
+            // AppHdr
             .setBicfiFr(     "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
             .setBicfiTo(      "BAMCSVSS")
             .setBizMsgIdr(    "DummySaldoCta1")
             .setMsgDefIdr(    "camt.060.001.05")
             .setBizSvc(       "swift.cbprplus.01")
             .setCreDt(        "2025-05-16T07:56:49-06:00")
+
+            // Group Header
             .setMsgId(        "DummySaldoCta1")
             .setCreDtTm(      "2025-05-16T07:56:49-06:00")
+
+            // Document
             .setReqdMsgNmId(  "AccountBalanceReportV08")
             .setAcctidothr(   "999888666")
             .setBicfiAcctOwnr("DUMMYORDENA")

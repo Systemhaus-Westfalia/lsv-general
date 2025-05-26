@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Dbtr {
 
     @JsonProperty("Nm")
-    String nm;
+    String nm;  // Debtor name
 
     @JsonProperty("Id")
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude fields with null values
@@ -23,8 +23,10 @@ public class Dbtr {
         try {
             setNm(params.getNm(), collector);
 
-            // TODO: Wird das Objekt verwendet? Sicher stellen, dass es keinen Konflikt mit CAMT052 Request gibt.
+        // TODO: Wird das Objekt verwendet? Sicher stellen, dass es keinen Konflikt mit CAMT052 Request gibt.
+		if(params.getDbtrAcctID() != null && !params.getDbtrAcctID().isEmpty()) {
             setId ( new IDOrgID(  params, nm, collector), collector);
+        }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_DBTR_INIT, e);
         }
