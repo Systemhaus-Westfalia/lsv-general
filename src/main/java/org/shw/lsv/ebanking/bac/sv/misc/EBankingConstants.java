@@ -75,6 +75,7 @@ public class EBankingConstants {
 	public static final String ERROR_DBTRACCTID_INIT           = "DbtrAcctId initialization";
 	public static final String ERROR_FININSTDBTR_INIT          = "FinInstnIdDbtr initialization";
 	public static final String ERROR_PAYMENT_ELEMENT_INIT      = "PaymentElement initialization";
+	public static final String ERROR_INSTDAMT_INIT             = "InstdAmt initialization";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
@@ -92,7 +93,18 @@ public class EBankingConstants {
 	public static final String PATTERN_DATE         = "^\\d{4}-\\d{2}-\\d{2}$";
 	public static final String PATTERN_ENDTOENDID   = "[0-9a-zA-Z/\\-?:().,'+ ]{1,35}";
 
-	public static final String PATTERN_CURRENCY_AMT = "^\\d+\\.\\d{2}$";
+	public static final String PATTERN_CURRENCY_AMT = "\\d+(\\.\\d{1,2})?";
+	// Laut copilot sind folgende Eigenschaften dieses Patterns:
+	// Matches: Integers (123), one decimal (123.4), two decimals (123.45)
+	//  - Does NOT match: More than two decimals (123.456)
+	//  - Flexible: Allows whole numbers and up to two decimals.
+	//
+	// Folgendes Pattern habe ich nicht verwendet:
+	// "^\\d+\\.\\d{2}$"
+	//  - Matches: Only numbers with exactly two decimal places (e.g., 123.45, 0.99)
+	//  - Does NOT match: Integers (123), one decimal (123.4), more than two decimals (123.456)
+	// Strict: Enforces exactly two decimals, which is standard for most currencies.
+
 	public static final String PATTERN_CURRENCY     = "^[A-Z]{3}$";
 	public static final String PATTERN_INTEGER      = "^[0-9]+$";
 	public static final String PATTERN_IBAN         = "[A-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}";

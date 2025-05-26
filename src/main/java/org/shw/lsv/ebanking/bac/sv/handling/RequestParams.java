@@ -38,6 +38,7 @@ public class RequestParams {
 
     private String     endToEndId; // End-to-End Identification
     private String     instrPrty;  // Instruction Priority, e.g. "NORM" for Normal
+    private String     instdAmt;   // Amount to be transferred in a single payment transaction
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -72,6 +73,7 @@ public class RequestParams {
     public String     getCountry()       { return country;       }
     public String     getEndToEndId()    { return endToEndId;    }
     public String     getInstrPrty()     { return instrPrty;     }
+    public String     getInstdAmt()      { return instdAmt;      }
     
     public RequestParams setBicfiFr(String bicfi) {
         this.bicfiFr = bicfi;
@@ -231,6 +233,11 @@ public class RequestParams {
 
     public RequestParams setInstrPrty(String instrPrty) {
         this.instrPrty = instrPrty;
+        return this;
+    }
+
+    public RequestParams setInstdAmt(String instdAmt) {
+        this.instdAmt = instdAmt;
         return this;
     }
 

@@ -82,6 +82,14 @@ public class Amt {
 
     /**
      * @param amt the Amt to be set<br>
+     * <p>
+     * Pattern: "\\d+(\\.\\d{1,2})?";
+     * Laut copilot sind folgende Eigenschaften dieses Patterns:
+     * <p>
+     * Matches: Integers (123), one decimal (123.4), two decimals (123.45)
+     *   - Does NOT match: More than two decimals (123.456)
+     *   - Flexible: Allows whole numbers and up to two decimals.
+     * <p>
      * The parameter is validated.<br>
      * pattern: "^\d+\.\d{2}$"<br>
      * e.g.: "999994769.99"
@@ -99,6 +107,14 @@ public class Amt {
     /**
      * @param amt the Amt to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * Pattern: "\\d+(\\.\\d{1,2})?";
+     * Laut copilot sind folgende Eigenschaften dieses Patterns:
+     * <p>
+     * Matches: Integers (123), one decimal (123.4), two decimals (123.45)
+     *   - Does NOT match: More than two decimals (123.456)
+     *   - Flexible: Allows whole numbers and up to two decimals.
+     * <p>
      */
     public void setAmt(String amt, JsonValidationExceptionCollector collector) {
         try {

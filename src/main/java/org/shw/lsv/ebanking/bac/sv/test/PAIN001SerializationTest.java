@@ -66,7 +66,7 @@ public class PAIN001SerializationTest {
 
             //Document
             .setNbOfTxs(      Integer.valueOf(3)) // Number of transactions
-            .setCtrlSum(      new BigDecimal("460"))
+            .setCtrlSum(      new BigDecimal("469.87"))
             .setCd(           "SUPP")
             .setReqdExctnDt(  "2023-06-27")
             .setNm(           "CLIENTE01")
@@ -78,7 +78,9 @@ public class PAIN001SerializationTest {
 
             // Payment Element
             .setEndToEndId(   "E2E-1234567890")
-            .setInstrPrty(   "NORM")  // Instruction Priority, e.g. "NORM" or "HIGH"
+            .setInstrPrty(    "NORM")  // Instruction Priority, e.g. "NORM" or "HIGH"
+            .setCcy(          "USD")
+            .setInstdAmt(     "469.87")
             ;
     }
 

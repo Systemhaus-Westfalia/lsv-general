@@ -32,7 +32,6 @@ public class PmtElementtPInf {
 
     /**
      * @param instrPrty the instruction priority to be set.<br>instruction priority to be set.<br>
-     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      * <p>
      * InstrPrty specifies the priority level of the payment instruction.
      * It tells the bank whether the payment should be processed as normal or urgent.

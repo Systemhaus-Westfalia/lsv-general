@@ -30,7 +30,6 @@ public class PmtId {
 
     /**
      * @param endToEndId the unique identifier for each individual transaction within a payment batch.<br>
-     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      * <p>
      * It is assigned by the initiating party (the sender, usually the company or bank creating the payment file).
      * It is used to track and reconcile the payment from the originator to the ultimate beneficiary, across all intermediaries.
