@@ -1,6 +1,8 @@
 package org.shw.lsv.ebanking.bac.sv.pain001.request;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
@@ -38,7 +40,7 @@ public class PmtInf {
     DbtrAgt dbtrAgt;
 
     @JsonProperty("CdtTrfTxInf")
-    CdtTrfTxInf cdtTrfTxInf;
+    List<PaymentElement> paymentElements;
 
 
     public PmtInf() { }
@@ -63,11 +65,24 @@ public class PmtInf {
             setDbtr (        new Dbtr(        params, collector), collector);
             setDbtrAcct (    new DbtrAcct(    params, collector), collector);
             setDbtrAgt (     new DbtrAgt(     params, collector), collector);
-            setCdtTrfTxInf ( new CdtTrfTxInf( params, collector), collector);
+
+            // Payments
+            int trxCount = params.getNbOfTxs() != null ? params.getNbOfTxs() : 0;
+            paymentElements = initPayment(params, trxCount, collector);
+            setPaymentElements(paymentElements, collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_PMTINF_INIT, e);
         }
     }
+
+    private List<PaymentElement> initPayment(RequestParams params, int n, JsonValidationExceptionCollector collector) {
+        List<PaymentElement> paymentElements = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            paymentElements.add(new PaymentElement(params, collector));
+        }
+        return paymentElements;
+    }
+
 
     /**
      * @return the PmtInfId
@@ -386,30 +401,30 @@ public class PmtInf {
     }
 
     /**
-     * @return the CdtTrfTxInf object<br>
+     * @return the <PaymentElement array <br>
      */
-    public CdtTrfTxInf getCdtTrfTxInf() {
-        return cdtTrfTxInf;
+    public List<PaymentElement> getPaymentElements() {
+        return paymentElements;
     }
 
     /**
-     * @param cdtTrfTxInf the CdtTrfTxInf to be set<br>
+     * @param paymentElements the PaymentElement array to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setCdtTrfTxInf(CdtTrfTxInf cdtTrfTxInf) {
-        if (cdtTrfTxInf == null) {
-            throw new IllegalArgumentException("Wrong parameter 'cdtTrfTxInf' in setCdtTrfTxInf()");
+    public void setPaymentElements(List<PaymentElement> paymentElements) {
+        if (paymentElements == null) {
+            throw new IllegalArgumentException("Wrong parameter 'paymentElements' in setPaymentElements()");
         }
-        this.cdtTrfTxInf = cdtTrfTxInf;
+        this.paymentElements = paymentElements;
     }
 
     /**
-     * @param cdtTrfTxInf the CdtTrfTxInf to be set<br>
+     * @param paymentElements the PaymentElement array to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setCdtTrfTxInf(CdtTrfTxInf cdtTrfTxInf, JsonValidationExceptionCollector collector) {
+    public void setPaymentElements(List<PaymentElement> paymentElements, JsonValidationExceptionCollector collector) {
         try {
-            setCdtTrfTxInf(cdtTrfTxInf);
+            setPaymentElements(paymentElements);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             // throw e;
