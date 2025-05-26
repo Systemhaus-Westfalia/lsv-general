@@ -34,7 +34,7 @@ public class FinInstnIdDbtr {
      */
     public FinInstnIdDbtr(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setBIC(params.getBic(), collector);
+            setBIC(params.getBicDbtr(), collector);
             setPstlAdr ( new PstlAdr( params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_PMTTPINF_INIT, e);

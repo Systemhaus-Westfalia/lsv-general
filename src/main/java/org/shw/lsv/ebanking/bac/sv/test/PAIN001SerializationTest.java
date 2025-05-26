@@ -73,7 +73,7 @@ public class PAIN001SerializationTest {
             .setDbtrAcctID(   "999888666")
             .setIban(         "CR42010200690010163989")
             .setBicOrBEI(     "BSNJCRSJXXX")
-            .setBic(          "BAMCSVSS")
+            .setBicDbtr(      "BAMCSVSS")
             .setCountry(      "SV")
 
             // Payment Element
@@ -82,6 +82,10 @@ public class PAIN001SerializationTest {
             .setCcy(          "USD")
             .setInstdAmt(     "469.87")
             .setDebtrNm(      "CLIENTE01")  // Debtor Name: Unterschied zu "Nm"??
+            .setBic     (     "BSNJCRSJXXX")
+
+            //.setMmbId     (     "102")  // Entweder BIC oder MmbId
+
             ;
     }
 

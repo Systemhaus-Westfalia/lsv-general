@@ -34,12 +34,14 @@ public class RequestParams {
     private String     dbtrAcctID;
     private String     cd;         // Category Purpose Code
     private String     bic;        // BIC  (Business Identifier Code)
+    private String     bicDbtr;    // Debtor BIC  (Business Identifier Code)
     private String     country;    // Country code, e.g. "DE" for Germany
 
     private String     endToEndId; // End-to-End Identification
     private String     instrPrty;  // Instruction Priority, e.g. "NORM" for Normal
     private String     instdAmt;   // Amount to be transferred in a single payment transaction
     private String     debtrNm;    // Debtor Name
+    private String     mmbId;
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -71,11 +73,13 @@ public class RequestParams {
     public String     getDbtrAcctID()    { return dbtrAcctID;    }
     public String     getCd()            { return cd;            }
     public String     getBic()           { return bic;           }
+    public String     getBicDbtr()       { return bicDbtr;       }
     public String     getCountry()       { return country;       }
     public String     getEndToEndId()    { return endToEndId;    }
     public String     getInstrPrty()     { return instrPrty;     }
     public String     getInstdAmt()      { return instdAmt;      }
     public String     getDebtrNm()       { return debtrNm;       }
+    public String     getMmbId()         { return mmbId;         }
     
     public RequestParams setBicfiFr(String bicfi) {
         this.bicfiFr = bicfi;
@@ -245,6 +249,16 @@ public class RequestParams {
 
     public RequestParams setDebtrNm(String debtrNm) {
         this.debtrNm = debtrNm;
+        return this;
+    }
+
+    public RequestParams setBicDbtr(String bicDbtr) {
+        this.bicDbtr = bicDbtr;
+        return this;
+    }
+
+    public RequestParams setMmbId(String mmbId) {
+        this.mmbId = mmbId;
         return this;
     }
 

@@ -37,6 +37,8 @@ public class EBankingConstants {
 	public static final String ERROR_INVALID_DTTM              = "The Dttm value is invalid";
 	public static final String ERROR_INVALID_AMT_FORMAT        = "The Amt format is invalid";
 	public static final String ERROR_INVALID_CCY_FORMAT        = "The Ccy format is invalid";
+	public static final String ERROR_INVALID_BIC_FORMAT        = "The BIC format is invalid";
+	public static final String ERROR_INVALID_MMBID_FORMAT      = "The MmbId format is invalid";
 
 	public static final String ERROR_ENVELOPE_NOT_NULL         = "Envelope cannot be null";
 	public static final String ERROR_REQUEST_BUILDING          = "Error while building the Request";
@@ -65,6 +67,9 @@ public class EBankingConstants {
 	public static final String ERROR_PMTINF_INIT               = "PmtInf initialization";
 	public static final String ERROR_PMTTPINF_INIT             = "PmtTpInf initialization";
 	public static final String ERROR_DBTRAGT_INIT              = "DbtrAgt initialization";
+	public static final String ERROR_CDTRAGT_INIT              = "CdtrAgt initialization";
+	public static final String ERROR_CDTRAGT_FININSTNID_INIT   = "CdtrAgtFininstnId initialization";
+	public static final String ERROR_CLRSYSMMBID_INIT          = "CltSysMmbId initialization";
 
 
 	public static final String ERROR_PAIN001REQUEST_INIT       = "PAIN001Request initialization";
@@ -96,6 +101,7 @@ public class EBankingConstants {
 	public static final String PATTERN_DATE         = "^\\d{4}-\\d{2}-\\d{2}$";
 	public static final String PATTERN_ENDTOENDID   = "[0-9a-zA-Z/\\-?:().,'+ ]{1,35}";
 	public static final String PATTERN_BICORBEI     = "[A-Z0-9]{8,11}";
+	public static final String PATTERN_MMBID        = "[A-Z0-9]{1,35}";
 
 	public static final String PATTERN_CURRENCY_AMT = "\\d+(\\.\\d{1,2})?";
 	// Laut copilot sind folgende Eigenschaften dieses Patterns:
