@@ -72,7 +72,7 @@ public class PAIN001SerializationTest {
             .setNm(           "CLIENTE01")
             .setDbtrAcctID(   "999888666")
             .setIban(         "CR42010200690010163989")
-            .setBicOrBEI(     "DUMMYORDENA")
+            .setBicOrBEI(     "BSNJCRSJXXX")
             .setBic(          "BAMCSVSS")
             .setCountry(      "SV")
 
@@ -81,6 +81,7 @@ public class PAIN001SerializationTest {
             .setInstrPrty(    "NORM")  // Instruction Priority, e.g. "NORM" or "HIGH"
             .setCcy(          "USD")
             .setInstdAmt(     "469.87")
+            .setDebtrNm(      "CLIENTE01")  // Debtor Name: Unterschied zu "Nm"??
             ;
     }
 

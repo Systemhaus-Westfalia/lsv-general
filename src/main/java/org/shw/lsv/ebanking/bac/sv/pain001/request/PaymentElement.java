@@ -2,7 +2,7 @@
 
     import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
     import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+    import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
     PmtElementtPInf pmtElementtPInf;  // additional information about the type of payment being made.
 
     @JsonProperty("Amt")
-    PmtElementtAmt pmtElementtAmt;
+    PmtElementtAmt pmtElementtAmt;  // Amount and currency
 
     @JsonProperty("CdtrAgt")
-    CdtrAgt cdtrAgt;
+    CdtrAgt cdtrAgt;  // Creditor's agent (bank or financial institution)
 
     @JsonProperty("Cdtr")
     Cdtr cdtr;
@@ -141,14 +141,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
     /**
-     * @return the CdtrAgt object<br>
+     * @return the Creditor's agent (bank or financial institution) object<br>
      */
     public CdtrAgt getCdtrAgt() {
         return cdtrAgt;
     }
 
     /**
-     * @param cdtrAgt the CdtrAgt to be set<br>
+     * @param cdtrAgt the Creditor's agent (bank or financial institution)<br>
+     * <p>
+     * CdtrAgt identifies the financial institution (bank) of the creditor (the recipient of the payment).
+     * It typically contains details such as the BIC (Bank Identifier Code, also known as SWIFT code) and, optionally, postal address information.
+     * <p>
+     * Required for routing the payment to the correct financial institution in PAIN.001 files.
      * The parameter is validated: null not allowed.<br>
      */
     public void setCdtrAgt(CdtrAgt cdtrAgt) {
@@ -159,8 +164,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
     }
 
     /**
-     * @param cdtrAgt the CdtrAgt to be set<br>
+     * @param cdtrAgt the Creditor's agent (bank or financial institution)<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * CdtrAgt identifies the financial institution (bank) of the creditor (the recipient of the payment).
+     * It typically contains details such as the BIC (Bank Identifier Code, also known as SWIFT code) and, optionally, postal address information.
+     * <p>
+     * Required for routing the payment to the correct financial institution in PAIN.001 files.
+     *
      */
     public void setCdtrAgt(CdtrAgt cdtrAgt, JsonValidationExceptionCollector collector) {
         try {

@@ -76,6 +76,9 @@ public class EBankingConstants {
 	public static final String ERROR_FININSTDBTR_INIT          = "FinInstnIdDbtr initialization";
 	public static final String ERROR_PAYMENT_ELEMENT_INIT      = "PaymentElement initialization";
 	public static final String ERROR_INSTDAMT_INIT             = "InstdAmt initialization";
+	public static final String ERROR_INITGPTY_INIT             = "InitgPty initialization";
+	public static final String ERROR_GRPHDRID_INIT             = "GrpHdrId initialization";
+	public static final String ERROR_INVALID_BIC_OR_BEI_FORMAT = "Invalid BIC or BEI format";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
@@ -92,6 +95,7 @@ public class EBankingConstants {
 	public static final String PATTERN_DATETIME     = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
 	public static final String PATTERN_DATE         = "^\\d{4}-\\d{2}-\\d{2}$";
 	public static final String PATTERN_ENDTOENDID   = "[0-9a-zA-Z/\\-?:().,'+ ]{1,35}";
+	public static final String PATTERN_BICORBEI     = "[A-Z0-9]{8,11}";
 
 	public static final String PATTERN_CURRENCY_AMT = "\\d+(\\.\\d{1,2})?";
 	// Laut copilot sind folgende Eigenschaften dieses Patterns:
