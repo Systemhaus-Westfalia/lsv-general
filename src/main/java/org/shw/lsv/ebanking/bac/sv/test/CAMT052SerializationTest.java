@@ -66,7 +66,7 @@ public static void main(String[] args) {
 
             // Document
             .setReqdMsgNmId(  "AccountBalanceReportV08")
-            .setAcctidothr(   "999888666")
+            .setAcctId(       "999888666")
             .setBicfiAcctOwnr("DUMMYORDENA")
             .setCcy(          "USD")
             ;

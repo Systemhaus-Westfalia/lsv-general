@@ -12,18 +12,22 @@ public class RequestParams {
     private String msgDefIdr;
     private String bizSvc;
     private String anyBIC;
+    private String frOthrId;
     private String toOthrId;
+
     private String prtry;
     private String msgId;
     private String creDtTm;
     private String reqdMsgNmId;
     private String ccy;
     private String iban;
-    private String acctidothr;
+    private String acctId;
     private String tp;
     private String frdt;
     private String todt;
     private String eqseq;
+    private String acctOwntPtyId;
+
 
     // Payments
     private Integer    nbOfTxs;
@@ -33,7 +37,7 @@ public class RequestParams {
     private String     nameCreditor;
     private String     bicOrBEI;
     private String     reqdExctnDt;
-    private String     dbtrAcctID;
+    private String     dbtrAcctId;
     private String     dbtrID;
 
     private String     cd;         // Category Purpose Code
@@ -56,6 +60,7 @@ public class RequestParams {
     public String     getMsgDefIdr()     { return msgDefIdr;     }
     public String     getBizSvc()        { return bizSvc;        }
     public String     getAnyBIC()        { return anyBIC;        }
+    public String     getFrOthrId()      { return frOthrId;      }
     public String     getToOthrId()      { return toOthrId;      }
     public String     getPrtry()         { return prtry;         }
     public String     getMsgId()         { return msgId;         }
@@ -63,7 +68,7 @@ public class RequestParams {
     public String     getReqdMsgNmId()   { return reqdMsgNmId;   }
     public String     getCcy()           { return ccy;           }
     public String     getIban()          { return iban;          }
-    public String     getAcctidothr()    { return acctidothr;    }
+    public String     getAcctId()        { return acctId;        }
     public String     getTp()            { return tp;            }
     public String     getFrdt()          { return frdt;          }
     public String     getTodt()          { return todt;          }
@@ -75,7 +80,7 @@ public class RequestParams {
     public String     getNameCreditor()  { return nameCreditor;  }
     public String     getBicOrBEI()      { return bicOrBEI;      }
     public String     getReqdExctnDt()   { return reqdExctnDt;   }
-    public String     getDbtrAcctID()    { return dbtrAcctID;    }
+    public String     getDbtrAcctId()    { return dbtrAcctId;    }
     public String     getCd()            { return cd;            }
     public String     getBic()           { return bic;           }
     public String     getBicDbtr()       { return bicDbtr;       }
@@ -85,6 +90,7 @@ public class RequestParams {
     public String     getInstdAmt()      { return instdAmt;      }
     public String     getMmbId()         { return mmbId;         }
     public String     getDbtrID()        { return dbtrID;        }
+    public String     getAcctOwntPtyId() { return acctOwntPtyId; }
 
 
 
@@ -168,8 +174,8 @@ public class RequestParams {
         return this;
     }
 
-    public RequestParams setAcctidothr(String acctidothr) {
-        this.acctidothr = acctidothr;
+    public RequestParams setAcctId(String acctId) {
+        this.acctId = acctId;
         return this;
     }
 
@@ -219,8 +225,8 @@ public class RequestParams {
         return this;
     }
 
-    public RequestParams setDbtrAcctID(String dbtrAcctID) {
-        this.dbtrAcctID = dbtrAcctID;
+    public RequestParams setDbtrAcctId(String dbtrAcctId) {
+        this.dbtrAcctId = dbtrAcctId;
         return this;
     }
 
@@ -279,5 +285,14 @@ public class RequestParams {
         return this;
     }
 
+    public RequestParams setFrOthrId(String frOthrId) {
+        this.frOthrId = frOthrId;
+        return this;
+    }
+
+    public RequestParams setAcctOwntPtyId(String acctOwntPtyId) {
+        this.acctOwntPtyId = acctOwntPtyId;
+        return this;
+    }
 
 }

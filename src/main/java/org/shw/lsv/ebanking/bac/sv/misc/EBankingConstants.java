@@ -52,6 +52,7 @@ public class EBankingConstants {
 	public static final String ERROR_FR_INIT                   = "Fr initialization";
 	public static final String ERROR_IDOTHR_INIT               = "IdOthr initialization";
 	public static final String ERROR_IDORGID_INIT              = "IDOrgID initialization";
+	public static final String ERROR_TOID_INIT                 = "ToId initialization";
 	public static final String ERROR_ORGID_INIT                = "OrgId initialization";
 	public static final String ERROR_ACCTRPTGREQ_INIT          = "AcctRptgReq initialization";
 	public static final String ERROR_ACCT_OWNER_INIT           = "AcctOwner initialization";

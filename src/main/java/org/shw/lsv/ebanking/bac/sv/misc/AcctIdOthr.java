@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AcctIdOthr {
 
-    @JsonProperty(value = "Id", required = true)
+    @JsonProperty("Id")
     String id;
 
 
@@ -18,7 +18,13 @@ public class AcctIdOthr {
 
 	public AcctIdOthr(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setId(params.getAcctidothr(), collector);
+
+            if ( !(params.getAcctId() == null || params.getAcctId().isEmpty()) ) {
+				setId(params.getAcctId(), collector);			// # 2
+            }
+            if ( !(params.getDbtrAcctId() == null || params.getDbtrAcctId().isEmpty()) ) {
+				setId(params.getDbtrAcctId(), collector);			// # 6
+            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_ACCTIDOTHR_INIT, e);
         }

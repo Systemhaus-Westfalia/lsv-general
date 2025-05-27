@@ -24,16 +24,15 @@ public class IdOthr {
 
 	public IdOthr(RequestParams params, String context, JsonValidationExceptionCollector collector) {
 		try {
-            if (context.equals(EBankingConstants.CONTEXT_TO)) {
-				setId(params.getToOthrId(), collector);
+            if (context.equals(EBankingConstants.CONTEXT_FR)) {
+				setId(params.getFrOthrId(), collector);  						// # 1
+            }  else if (context.equals(EBankingConstants.CONTEXT_TO)) {
+				setId(params.getToOthrId(), collector);							// # 4
             }  else if (context.equals(EBankingConstants.CONTEXT_DBTR)) {
-				setId(params.getDbtrID(), collector);
-            } else if (context.equals(EBankingConstants.CONTEXT_DBTRACCT)) {
-				setId(params.getDbtrAcctID(), collector);
-            }  else {
-                throw new IllegalArgumentException("Wrong parameter 'context' (" + context + ") in FinInstnId()");
-            }
-
+				setId(params.getDbtrID(), collector);							// # 5
+            } else if ( !(params.getAcctOwntPtyId() == null || params.getAcctOwntPtyId().isEmpty()) ) {
+				setId(params.getAcctOwntPtyId(), collector); 					// # 3
+            } 
 			setSchmeNm(new SchmeNm(params, collector), collector);
 			
         } catch (Exception e) {

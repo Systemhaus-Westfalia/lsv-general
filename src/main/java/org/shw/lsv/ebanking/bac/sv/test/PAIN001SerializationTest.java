@@ -77,7 +77,7 @@ public class PAIN001SerializationTest {
             .setReqdExctnDt(  "2023-06-27")
             .setNameDebtor(   "Nombre cliente ordenante")  // TODO: Cual es la diferencia diferencia con setNameInitParty() ?
             .setDbtrID(       "123456789")
-            .setDbtrAcctID(   "999888666")
+            .setDbtrAcctId(   "999888666")
             .setIban(         "CR42010200690010163989")
             .setBicOrBEI(     "BSNJCRSJXXX")
             .setBicDbtr(      "BAMCSVSS")

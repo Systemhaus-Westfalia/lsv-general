@@ -38,6 +38,7 @@ public class RptgReq {
             setReqdMsgNmId(params.getReqdMsgNmId(), collector);
 
             setAcct    (new Acct(    params, collector), collector);
+            // TODO: in den unteren Konstruktoren, sehen, unter welchen Umstaenden .getAcctOwntPtyId() oder getAnyBIC() zum Tragen kommen
             setAcctOwnr(new AcctOwnr(params, collector), collector);
 
             if (!(params.getFrdt() == null || params.getFrdt().isBlank()) ) {

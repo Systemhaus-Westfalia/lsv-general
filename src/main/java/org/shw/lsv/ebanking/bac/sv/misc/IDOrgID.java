@@ -7,53 +7,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class IDOrgID {
 
-    @JsonProperty("OrgId")  // "OrgId" is the name of the field in the JSON
-    OrgId OrgId;
-    
+    @JsonProperty("Id")  // "Id" is the name of the field in the JSON
+    Id id;
 
     public IDOrgID() {
     }
 
-
     public IDOrgID(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
-            setOrgId(new OrgId(params, context, collector), collector);
+            setId(new Id(params, context, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_IDORGID_INIT, e);
         }
     }
 
-
     /**
-     * @return the OrgId object<br>
+     * @return the id object<br>
      */
-	public OrgId getOrgId() {
-        return OrgId;
+    public Id getId() {
+        return id;
     }
 
-
     /**
-     * @param orgId the OrgId to be set<br>
+     * @param id the id to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setOrgId(OrgId orgId) {
-        if (orgId == null) {
-            throw new IllegalArgumentException("Wrong parameter 'orgId' in setOrgId()");
+    public void setId(Id id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Wrong parameter 'id' in setId()");
         }
-        this.OrgId = orgId;
+        this.id = id;
     }
 
     /**
-     * @param orgId the OrgId to be set<br>
+     * @param id the id to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setOrgId(OrgId orgId, JsonValidationExceptionCollector collector) {
+    public void setId(Id id, JsonValidationExceptionCollector collector) {
         try {
-            setOrgId(orgId);
+            setId(id);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;
         }
     }
-
 }
