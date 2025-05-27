@@ -52,6 +52,11 @@ public class PAIN001SerializationTest {
 
     private static RequestParams createTestParams() {
         return new RequestParams()
+
+        // TODO: sicher stellen, dass im Betrieb, folgender Aufruf nicht bei Payments vorkomtt!!!
+        //.setAnyBIC()
+        // weil es dann PmtInf->Dbtr->Id->OrgId->AnyBIC gesetzt wird, was nicht erlaubt ist.
+
             // AppHdr
             .setBicfiFr(      "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
             .setBicfiTo(      "BAMCSVSS")
@@ -71,6 +76,7 @@ public class PAIN001SerializationTest {
             .setCd(           "SUPP")
             .setReqdExctnDt(  "2023-06-27")
             .setNameDebtor(   "Nombre cliente ordenante")  // TODO: Cual es la diferencia diferencia con setNameInitParty() ?
+            .setDbtrID(       "123456789")
             .setDbtrAcctID(   "999888666")
             .setIban(         "CR42010200690010163989")
             .setBicOrBEI(     "BSNJCRSJXXX")

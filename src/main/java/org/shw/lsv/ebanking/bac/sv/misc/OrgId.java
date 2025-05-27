@@ -25,18 +25,16 @@ public class OrgId {
     IdOthr idOthr=null;  // Choice AcctOwnr_OrgId_2: Identification assigned by an institution.
 
 
-    public OrgId() {
-    }
-
+    public OrgId() { }
 
     public OrgId(RequestParams params, String context, JsonValidationExceptionCollector collector) {
-        
 		try {
             if ( !(params.getAnyBIC() == null || params.getAnyBIC().isEmpty()) ) {
+                // Hier darf man bei Payments nicht gelangen!!
                 setAnyBIC(params.getAnyBIC(), collector);
             }
             else {
-                setIdOthr(new IdOthr(params, collector), collector);
+                setIdOthr(new IdOthr(params, context, collector), collector);
             }
 
 			

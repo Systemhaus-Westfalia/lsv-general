@@ -12,7 +12,7 @@ public class RequestParams {
     private String msgDefIdr;
     private String bizSvc;
     private String anyBIC;
-    private String id;
+    private String toOthrId;
     private String prtry;
     private String msgId;
     private String creDtTm;
@@ -34,6 +34,8 @@ public class RequestParams {
     private String     bicOrBEI;
     private String     reqdExctnDt;
     private String     dbtrAcctID;
+    private String     dbtrID;
+
     private String     cd;         // Category Purpose Code
     private String     bic;        // BIC  (Business Identifier Code)
     private String     bicDbtr;    // Debtor BIC  (Business Identifier Code)
@@ -54,7 +56,7 @@ public class RequestParams {
     public String     getMsgDefIdr()     { return msgDefIdr;     }
     public String     getBizSvc()        { return bizSvc;        }
     public String     getAnyBIC()        { return anyBIC;        }
-    public String     getId()            { return id;            }
+    public String     getToOthrId()      { return toOthrId;      }
     public String     getPrtry()         { return prtry;         }
     public String     getMsgId()         { return msgId;         }
     public String     getCreDtTm()       { return creDtTm;       }
@@ -82,6 +84,7 @@ public class RequestParams {
     public String     getInstrPrty()     { return instrPrty;     }
     public String     getInstdAmt()      { return instdAmt;      }
     public String     getMmbId()         { return mmbId;         }
+    public String     getDbtrID()        { return dbtrID;        }
 
 
 
@@ -130,8 +133,8 @@ public class RequestParams {
         return this;
     }
 
-    public RequestParams setId(String id) {
-        this.id = id;
+    public RequestParams setToOthrId(String id) {
+        this.toOthrId = id;
         return this;
     }
 
@@ -268,6 +271,11 @@ public class RequestParams {
 
     public RequestParams setNameCreditor(String nameCreditor) {
         this.nameCreditor = nameCreditor;
+        return this;
+    }
+
+    public RequestParams setDbtrID(String dbtrID) {
+        this.dbtrID = dbtrID;
         return this;
     }
 

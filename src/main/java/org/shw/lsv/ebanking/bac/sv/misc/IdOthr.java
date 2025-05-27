@@ -22,10 +22,17 @@ public class IdOthr {
 	}
 
 
-	public IdOthr(RequestParams params, JsonValidationExceptionCollector collector) {
-		
+	public IdOthr(RequestParams params, String context, JsonValidationExceptionCollector collector) {
 		try {
-            setId(params.getId(), collector);
+            if (context.equals(EBankingConstants.CONTEXT_TO)) {
+				setId(params.getToOthrId(), collector);
+            }  else if (context.equals(EBankingConstants.CONTEXT_DBTR)) {
+				setId(params.getDbtrID(), collector);
+            } else if (context.equals(EBankingConstants.CONTEXT_DBTRACCT)) {
+				setId(params.getDbtrAcctID(), collector);
+            }  else {
+                throw new IllegalArgumentException("Wrong parameter 'context' (" + context + ") in FinInstnId()");
+            }
 
 			setSchmeNm(new SchmeNm(params, collector), collector);
 			
@@ -42,21 +49,20 @@ public class IdOthr {
         return id;
     }
 
+    /**
+     * @param id the Id to be set<br>
+     * The parameter is validated.<br>
+     * Pattern: "[0-9a-zA-Z/\\-?:().,'+ ]{1,35}"<br>
+     * Example: "ALIASXXX".
+     */
+    public void setId(String id) {
+        boolean patternOK = (id != null && !id.isEmpty()) && Pattern.matches(EBankingConstants.PATTERN_OTHER_ID, id);
 
-	/**
-	 * @param id the Id to be set<br>
-	 * The parameter is validated.<br>
-	 * Pattern: "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+".<br>
-	 * Example: "ALIASXXX".
-	 */
-	public void setId(String id) {
-		boolean patternOK = (id != null && !id.isEmpty()) && Pattern.matches(EBankingConstants.PATTERN_OTHER_ID, id);
-
-		if (!patternOK) {
-			throw new IllegalArgumentException("Wrong parameter 'Id' (" + id + ") in setId()");
-		}
-		this.id = id;
-	}
+        if (!patternOK) {
+            throw new IllegalArgumentException("Wrong parameter 'Id' (" + id + ") in setId()");
+        }
+        this.id = id;
+    }
 
 	/**
 	 * @param id the Id to be set<br>

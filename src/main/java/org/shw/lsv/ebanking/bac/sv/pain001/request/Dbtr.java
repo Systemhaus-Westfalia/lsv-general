@@ -24,8 +24,8 @@ public class Dbtr {
             setNm(params.getNameDebtor(), collector);
 
         // TODO: Wird das Objekt verwendet? Sicher stellen, dass es keinen Konflikt mit CAMT052 Request gibt.
-		if(params.getDbtrAcctID() != null && !params.getDbtrAcctID().isEmpty()) {
-            setId ( new IDOrgID(  params, nm, collector), collector);
+		if(params.getDbtrID() != null && !params.getDbtrID().isEmpty()) {
+            setId ( new IDOrgID(  params, EBankingConstants.CONTEXT_DBTR, collector), collector);
         }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_DBTR_INIT, e);

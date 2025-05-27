@@ -28,7 +28,7 @@ public class To {
     public To(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
             // TODO: Sicherstellen, daß es nur eines der beiden geht!
-            if ( !(params.getBicfiFr() == null || params.getBicfiFr().isEmpty()) ) {
+            if ( !(params.getBicfiTo() == null || params.getBicfiTo().isEmpty()) ) {
                 setFIId(new FIId(params, context, collector), collector);
             }
             else {

@@ -76,8 +76,11 @@ public class EBankingConstants {
 	public static final String ERROR_CSTMRCDTTRFINITN_INIT     = "CstmrCdtTrfInitn initialization";
 	public static final String ERROR_CTGYPURP_INIT             = "CtgyPurp initialization";
 	public static final String ERROR_DBTR_INIT                 = "Dbtr initialization";
+	public static final String ERROR_CDTR_INIT                 = "Cdtr initialization";
+	public static final String ERROR_CDTRID_INIT               = "CdtrId initialization";
+	public static final String ERROR_CDTRORGID_INIT            = "CdtroRGID initialization";
 	public static final String ERROR_DBTRACCT_INIT             = "DbtrAcct initialization";
-	public static final String ERROR_DBTRACCTID_INIT           = "DbtrAcctId initialization";
+	public static final String ERROR_CDTRACCTID_INIT           = "CdtrAcctId initialization";
 	public static final String ERROR_FININSTDBTR_INIT          = "FinInstnIdDbtr initialization";
 	public static final String ERROR_PAYMENT_ELEMENT_INIT      = "PaymentElement initialization";
 	public static final String ERROR_INSTDAMT_INIT             = "InstdAmt initialization";
@@ -88,7 +91,8 @@ public class EBankingConstants {
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
 	public static final String PATTERN_BIC          = "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}";
-	public static final String PATTERN_OTHER_ID     = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
+	//public static final String PATTERN_OTHER_ID     = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
+	public static final String PATTERN_OTHER_ID     = "[0-9a-zA-Z/\\-?:().,'+ ]{1,35}";
 	public static final String PATTERN_PRTRY        = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
 	public static final String PATTERN_MSG_ID       = "[0-9a-zA-Z/\\-\\?:\\(\\)\\.,'\\+ ]+";
 	//public static final String PATTERN_REQDMSGNMID  = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
@@ -124,8 +128,14 @@ public class EBankingConstants {
 
 	public static final String CONTEXT_FR        = "FR";
 	public static final String CONTEXT_TO        = "TO";
+
 	public static final String CONTEXT_AGT       = "AGT";
 	public static final String CONTEXT_PTYORGID  = "PTYORGID";
+
+	public static final String CONTEXT_DBTR       = "DBTR";
+	public static final String CONTEXT_DBTRACCT   = "DBTRACCT";
+	public static final String CONTEXT_CDTR       = "CDTR";
+	public static final String CONTEXT_CDTRACCT   = "CDTRACCT";
 
 	
 }
