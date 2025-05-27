@@ -29,7 +29,7 @@ public class GrpHdr {
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
     BigDecimal ctrlSum;
 
-    @JsonProperty("InitgPty")                   // For payments
+    @JsonProperty("InitgPty")                   // For payments: Initiating Party (the sender of the payment)
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude this field if its value is null
     InitgPty initgPty;
 
@@ -58,7 +58,7 @@ public class GrpHdr {
 			setCtrlSum(params.getCtrlSum());
 		}
 
-		if(params.getNm() != null && !params.getNm().isEmpty()) {
+		if(params.getNameInitParty() != null && !params.getNameInitParty().isEmpty()) {
         	setInitgPty(new InitgPty(params, collector), collector);
     	}
 
@@ -195,8 +195,12 @@ public class GrpHdr {
 
 
 	/**
-     * @param initgPty the InitgPty to be set<br>
+     * @param initgPty the Initiating Party (the sender of the payment)<br>
      * The parameter is validated: null not allowed.<br>
+	 * <p>
+	 * The party that initiates the payment.
+	 * Usually the company, organization, or person sending the payment instructions to the bank.
+	 * It is not necessarily the account owner (debtor), but often is in practice.
      */
     public void setInitgPty(InitgPty initgPty) {
         if (initgPty == null) {
@@ -207,8 +211,12 @@ public class GrpHdr {
 
 
 	/**
-     * @param initgPty the InitgPty to be set<br>
+     * @param initgPty the Initiating Party (the sender of the payment)<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+	 * <p>
+	 * The party that initiates the payment.
+	 * Usually the company, organization, or person sending the payment instructions to the bank.
+	 * It is not necessarily the account owner (debtor), but often is in practice.
      */
     public void setInitgPty(InitgPty initgPty, JsonValidationExceptionCollector collector) {
         try {

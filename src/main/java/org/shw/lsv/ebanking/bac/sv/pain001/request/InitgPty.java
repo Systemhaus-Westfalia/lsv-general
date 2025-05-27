@@ -18,7 +18,7 @@ public class InitgPty {
 
     public InitgPty(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setNm(params.getNm(), collector);
+            setNm(params.getNameInitParty(), collector);
             setGrpHdrId(new GrpHdrId(params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_INITGPTY_INIT, e);

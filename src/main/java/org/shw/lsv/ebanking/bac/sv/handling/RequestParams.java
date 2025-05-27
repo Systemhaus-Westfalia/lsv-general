@@ -28,7 +28,9 @@ public class RequestParams {
     // Payments
     private Integer    nbOfTxs;
     private BigDecimal ctrlSum;
-    private String     nm;
+    private String     nameInitParty;
+    private String     nameDebtor;
+    private String     nameCreditor;
     private String     bicOrBEI;
     private String     reqdExctnDt;
     private String     dbtrAcctID;
@@ -40,7 +42,6 @@ public class RequestParams {
     private String     endToEndId; // End-to-End Identification
     private String     instrPrty;  // Instruction Priority, e.g. "NORM" for Normal
     private String     instdAmt;   // Amount to be transferred in a single payment transaction
-    private String     debtrNm;    // Debtor Name
     private String     mmbId;
 
 
@@ -67,7 +68,9 @@ public class RequestParams {
     public String     getEqseq()         { return eqseq;         }
     public Integer    getNbOfTxs()       { return nbOfTxs;       }
     public BigDecimal getCtrlSum()       { return ctrlSum;       }
-    public String     getNm()            { return nm;            }
+    public String     getNameInitParty() { return nameInitParty; }
+    public String     getNameDebtor()    { return nameDebtor;    }
+    public String     getNameCreditor()  { return nameCreditor;  }
     public String     getBicOrBEI()      { return bicOrBEI;      }
     public String     getReqdExctnDt()   { return reqdExctnDt;   }
     public String     getDbtrAcctID()    { return dbtrAcctID;    }
@@ -78,9 +81,10 @@ public class RequestParams {
     public String     getEndToEndId()    { return endToEndId;    }
     public String     getInstrPrty()     { return instrPrty;     }
     public String     getInstdAmt()      { return instdAmt;      }
-    public String     getDebtrNm()       { return debtrNm;       }
     public String     getMmbId()         { return mmbId;         }
-    
+
+
+
     public RequestParams setBicfiFr(String bicfi) {
         this.bicfiFr = bicfi;
         return this;
@@ -197,8 +201,8 @@ public class RequestParams {
         return this;
     }
 
-    public RequestParams setNm(String nm) {
-        this.nm = nm;
+    public RequestParams setNameInitParty(String nm) {
+        this.nameInitParty = nm;
         return this;
     }
 
@@ -247,11 +251,6 @@ public class RequestParams {
         return this;
     }
 
-    public RequestParams setDebtrNm(String debtrNm) {
-        this.debtrNm = debtrNm;
-        return this;
-    }
-
     public RequestParams setBicDbtr(String bicDbtr) {
         this.bicDbtr = bicDbtr;
         return this;
@@ -261,5 +260,16 @@ public class RequestParams {
         this.mmbId = mmbId;
         return this;
     }
+
+    public RequestParams setNameDebtor(String nameDebtor) {
+        this.nameDebtor = nameDebtor;
+        return this;
+    }
+
+    public RequestParams setNameCreditor(String nameCreditor) {
+        this.nameCreditor = nameCreditor;
+        return this;
+    }
+
 
 }

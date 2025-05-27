@@ -21,7 +21,7 @@ public class Dbtr {
 
     public Dbtr(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setNm(params.getDebtrNm(), collector);
+            setNm(params.getNameDebtor(), collector);
 
         // TODO: Wird das Objekt verwendet? Sicher stellen, dass es keinen Konflikt mit CAMT052 Request gibt.
 		if(params.getDbtrAcctID() != null && !params.getDbtrAcctID().isEmpty()) {

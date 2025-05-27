@@ -63,13 +63,14 @@ public class PAIN001SerializationTest {
             // Group Header
             .setMsgId(        "DummySaldoCta1")
             .setCreDtTm(      "2025-05-16T07:56:49-06:00")
-
-            //Document
             .setNbOfTxs(      Integer.valueOf(3)) // Number of transactions
             .setCtrlSum(      new BigDecimal("469.87"))
+            .setNameInitParty("Nombre cliente ordenante")         // TODO: Cual es la diferencia diferencia con setNameDebtor() ?
+
+            //Document
             .setCd(           "SUPP")
             .setReqdExctnDt(  "2023-06-27")
-            .setNm(           "CLIENTE01")
+            .setNameDebtor(   "Nombre cliente ordenante")  // TODO: Cual es la diferencia diferencia con setNameInitParty() ?
             .setDbtrAcctID(   "999888666")
             .setIban(         "CR42010200690010163989")
             .setBicOrBEI(     "BSNJCRSJXXX")
@@ -81,11 +82,9 @@ public class PAIN001SerializationTest {
             .setInstrPrty(    "NORM")  // Instruction Priority, e.g. "NORM" or "HIGH"
             .setCcy(          "USD")
             .setInstdAmt(     "469.87")
-            .setDebtrNm(      "CLIENTE01")  // Debtor Name: Unterschied zu "Nm"??
-            .setBic     (     "BSNJCRSJXXX")
-
-            //.setMmbId     (     "102")  // Entweder BIC oder MmbId
-
+            .setBic(          "BSNJCRSJXXX")    // Entweder BIC oder MmbId
+            //.setMmbId     (     "102")            // Entweder BIC oder MmbId
+            .setNameCreditor( "Nombre cliente destino") 
             ;
     }
 

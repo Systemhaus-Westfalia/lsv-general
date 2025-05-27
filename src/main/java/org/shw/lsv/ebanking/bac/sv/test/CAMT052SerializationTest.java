@@ -53,7 +53,7 @@ public static void main(String[] args) {
     private static RequestParams createTestParams() {
         return new RequestParams()
             // AppHdr
-            .setBicfiFr(     "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
+            .setBicfiFr(      "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
             .setBicfiTo(      "BAMCSVSS")
             .setBizMsgIdr(    "DummySaldoCta1")
             .setMsgDefIdr(    "camt.060.001.05")
