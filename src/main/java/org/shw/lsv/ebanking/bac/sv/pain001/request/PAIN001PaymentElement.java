@@ -4,6 +4,7 @@
     import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
     import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
     public class PAIN001PaymentElement {
@@ -27,10 +28,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
     CdtrAcct cdtrAcct;
 
     @JsonProperty("RmtInf")
-    RmtInf rmtInf;
+    RmtInf rmtInf;  // Remittance Information
 
     @JsonProperty("Purp")
-    Purp purp;
+    @JsonInclude(JsonInclude.Include.NON_NULL)  // Include Purp only if it is not null
+    Purp purp;  // Purpose of the payment (optional, but often included for regulatory or informational purposes)
 
     public PAIN001PaymentElement() { }
 
@@ -44,8 +46,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
             setCdtrAcct(        new CdtrAcct(        params, collector), collector);
             setRmtInf(          new RmtInf(          params, collector), collector);
 
-            // TODO: ermitteln, ob Purpose Muss-Feld ist, oder nicht
-            setPurp(            new Purp(            params, collector), collector);
+            if ( !(params.getPymtPurpose() == null || params.getPymtPurpose ().isEmpty()) ) {
+                setPurp( new Purp(params, collector), collector);
+            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_PAYMENT_ELEMENT_INIT, e);
         }
@@ -259,6 +262,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
     /**
      * @param rmtInf the RmtInf to be set<br>
+     * <p>
+     * RmtInf contains remittance information, which is additional information about the payment.
+     * It can include details such as invoice numbers, payment references, or any other information that helps the creditor identify the purpose of the payment.
+     * <p>
+     * It is often used to provide context for the payment and can be important for reconciliation purposes.
+     * <p>
      * The parameter is validated: null not allowed.<br>
      */
     public void setRmtInf(RmtInf rmtInf) {
@@ -271,6 +280,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
     /**
      * @param rmtInf the RmtInf to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * RmtInf contains remittance information, which is additional information about the payment.
+     * It can include details such as invoice numbers, payment references, or any other information that helps the creditor identify the purpose of the payment.
+     * <p>
+     * It is often used to provide context for the payment and can be important for reconciliation purposes.
      */
     public void setRmtInf(RmtInf rmtInf, JsonValidationExceptionCollector collector) {
         try {
