@@ -6,7 +6,7 @@
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-    public class PaymentElement {
+    public class PAIN001PaymentElement {
 
     @JsonProperty("PmtId")
     PmtId pmtId;
@@ -29,9 +29,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
     @JsonProperty("RmtInf")
     RmtInf rmtInf;
 
-    public PaymentElement() { }
+    public PAIN001PaymentElement() { }
 
-       public PaymentElement(RequestParams params, JsonValidationExceptionCollector collector) {
+       public PAIN001PaymentElement(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setPmtId(           new PmtId(           params, collector), collector);
             setPmtElementtPInf( new PmtElementtPInf( params, collector), collector);

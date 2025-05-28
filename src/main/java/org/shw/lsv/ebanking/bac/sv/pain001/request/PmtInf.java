@@ -39,8 +39,14 @@ public class PmtInf {
     @JsonProperty("DbtrAgt")
     DbtrAgt dbtrAgt;
 
+    /*
+    * Credit Transfer Transaction Information.
+    * Represents a single payment instruction within a batch.
+    * Contains all details for one credit transfer (amount, debtor, creditor, accounts, references, etc.).
+    * There can be many CdtTrfTxInf elements in a PAIN.001 message. 
+    */
     @JsonProperty("CdtTrfTxInf")
-    List<PaymentElement> paymentElements;
+    List<PAIN001PaymentElement> paymentElements;
 
 
     public PmtInf() { }
@@ -76,10 +82,10 @@ public class PmtInf {
         }
     }
 
-    private List<PaymentElement> initPayment(RequestParams params, int n, JsonValidationExceptionCollector collector) {
-        List<PaymentElement> paymentElements = new ArrayList<>();
+    private List<PAIN001PaymentElement> initPayment(RequestParams params, int n, JsonValidationExceptionCollector collector) {
+        List<PAIN001PaymentElement> paymentElements = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            paymentElements.add(new PaymentElement(params, collector));
+            paymentElements.add(new PAIN001PaymentElement(params, collector));
         }
         return paymentElements;
     }
@@ -435,7 +441,7 @@ public class PmtInf {
     /**
      * @return the <PaymentElement array <br>
      */
-    public List<PaymentElement> getPaymentElements() {
+    public List<PAIN001PaymentElement> getPaymentElements() {
         return paymentElements;
     }
 
@@ -443,7 +449,7 @@ public class PmtInf {
      * @param paymentElements the PaymentElement array to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setPaymentElements(List<PaymentElement> paymentElements) {
+    public void setPaymentElements(List<PAIN001PaymentElement> paymentElements) {
         if (paymentElements == null) {
             throw new IllegalArgumentException("Wrong parameter 'paymentElements' in setPaymentElements()");
         }
@@ -454,7 +460,7 @@ public class PmtInf {
      * @param paymentElements the PaymentElement array to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setPaymentElements(List<PaymentElement> paymentElements, JsonValidationExceptionCollector collector) {
+    public void setPaymentElements(List<PAIN001PaymentElement> paymentElements, JsonValidationExceptionCollector collector) {
         try {
             setPaymentElements(paymentElements);
         } catch (IllegalArgumentException e) {
