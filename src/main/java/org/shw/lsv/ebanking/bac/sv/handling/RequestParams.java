@@ -42,7 +42,8 @@ public class RequestParams {
     private String     dbtrId;
     private String     cdtrId;
 
-    private String     cd;         // Category Purpose Code
+    private String     catPurpCd;  // Category Purpose Code
+    private String     cdtrAcctCd; // Category Purpose Code
     private String     bic;        // BIC  (Business Identifier Code)
     private String     bicDbtr;    // Debtor BIC  (Business Identifier Code)
     private String     country;    // Country code, e.g. "DE" for Germany
@@ -83,7 +84,7 @@ public class RequestParams {
     public String     getBicOrBEI()      { return bicOrBEI;      }
     public String     getReqdExctnDt()   { return reqdExctnDt;   }
     public String     getDbtrAcctId()    { return dbtrAcctId;    }
-    public String     getCd()            { return cd;            }
+    public String     getCatPurpCd()     { return catPurpCd;     }
     public String     getBic()           { return bic;           }
     public String     getBicDbtr()       { return bicDbtr;       }
     public String     getCountry()       { return country;       }
@@ -94,7 +95,8 @@ public class RequestParams {
     public String     getDbtrId()        { return dbtrId;        }
     public String     getAcctOwntPtyId() { return acctOwntPtyId; }
     public String     getCdtrId()        { return cdtrId;        }
-    public String     getCdtrAcctId()    { return cdtrAcctId;     }
+    public String     getCdtrAcctId()    { return cdtrAcctId;    }
+    public String     getCdtrAcctCd()    { return cdtrAcctCd;    }
 
 
 
@@ -234,8 +236,8 @@ public class RequestParams {
         return this;
     }
 
-    public RequestParams setCd(String cd) {
-        this.cd = cd;
+    public RequestParams setCatPurpCd(String catPurpCd) {
+        this.catPurpCd = catPurpCd;
         return this;
     }
 
@@ -306,6 +308,11 @@ public class RequestParams {
 
     public RequestParams setCdtrAcctId(String cdtrAcctId) {
         this.cdtrAcctId = cdtrAcctId;
+        return this;
+    }
+
+    public RequestParams setCdtrAcctCd(String cdtrAcctCd) {
+        this.cdtrAcctCd = cdtrAcctCd;
         return this;
     }
 

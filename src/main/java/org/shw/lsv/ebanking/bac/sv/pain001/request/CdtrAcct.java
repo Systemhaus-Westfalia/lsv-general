@@ -12,8 +12,8 @@ public class CdtrAcct {
     @JsonProperty("Id")   // "Id" is the name of the field in the JSON
     AcctId acctId;
 
-    @JsonProperty("Tp")
-    Tp tp;
+    @JsonProperty("Tp")  // "Tp" is the name of the field in the JSON
+    CtgyPurp ctgyPurp;
 
     public CdtrAcct() {}
 
@@ -24,7 +24,7 @@ public class CdtrAcct {
     public CdtrAcct(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setAcctId(new AcctId(params, collector), collector);
-            setTp(new Tp(params, collector), collector);
+            setCtgyPurp(new CtgyPurp(params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CDTRACCT_INIT, e);
         }
@@ -61,30 +61,30 @@ public class CdtrAcct {
     }
 
     /**
-     * @return the Tp object<br>
+     * @return the CtgyPurp object<br>
      */
-    public Tp getTp() {
-        return tp;
+    public CtgyPurp getCtgyPurp() {
+        return ctgyPurp;
     }
 
     /**
-     * @param tp the Tp to be set<br>
+     * @param ctgyPurp the CtgyPurp to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setTp(Tp tp) {
-        if (tp == null) {
-            throw new IllegalArgumentException("Wrong parameter 'tp' in setTp()");
+    public void setCtgyPurp(CtgyPurp ctgyPurp) {
+        if (ctgyPurp == null) {
+            throw new IllegalArgumentException("Wrong parameter 'ctgyPurp' in setCtgyPurp()");
         }
-        this.tp = tp;
+        this.ctgyPurp = ctgyPurp;
     }
 
     /**
-     * @param tp the Tp to be set<br>
+     * @param ctgyPurp the CtgyPurp to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setTp(Tp tp, JsonValidationExceptionCollector collector) {
+    public void setCtgyPurp(CtgyPurp ctgyPurp, JsonValidationExceptionCollector collector) {
         try {
-            setTp(tp);
+            setCtgyPurp(ctgyPurp);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }

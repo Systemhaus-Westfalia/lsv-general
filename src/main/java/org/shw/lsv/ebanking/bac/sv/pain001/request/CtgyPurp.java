@@ -12,9 +12,14 @@ public class CtgyPurp {
 
     CtgyPurp() { }
 
-    public  CtgyPurp(RequestParams params, JsonValidationExceptionCollector collector) {
+    public CtgyPurp(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setCd(params.getCd(), collector);
+            if ( !(params.getCatPurpCd() == null || params.getCatPurpCd().isEmpty()) ) {
+            setCd(params.getCatPurpCd(), collector);
+            }
+            if ( !(params.getCdtrAcctCd() == null || params.getCdtrAcctCd().isEmpty()) ) {
+            setCd(params.getCdtrAcctCd(), collector);
+            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CTGYPURP_INIT, e);
         }

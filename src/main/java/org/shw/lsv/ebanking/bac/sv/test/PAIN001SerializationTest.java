@@ -7,6 +7,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.pain001.request.PAIN001Request;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.compiere.model.Tax;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
@@ -73,7 +74,7 @@ public class PAIN001SerializationTest {
             .setNameInitParty("Nombre cliente ordenante")         // TODO: Cual es la diferencia diferencia con setNameDebtor() ?
 
             //Document
-            .setCd(           "SUPP")
+            .setCatPurpCd(           "SUPP")
             .setReqdExctnDt(  "2023-06-27")
             .setNameDebtor(   "Nombre cliente ordenante")  // TODO: Cual es la diferencia diferencia con setNameInitParty() ?
             .setDbtrId(       "123456789")             // TODO: Diferencia con CdtrId?
@@ -92,7 +93,8 @@ public class PAIN001SerializationTest {
             //.setMmbId     (     "102")            // Entweder BIC oder MmbId
             .setNameCreditor( "Nombre cliente destino") 
             .setCdtrId(       "987654321")   // TODO: Diferencia con DbtrId?
-            .setDbtrAcctId(   "112233445")
+            .setCdtrAcctId(   "112233445")
+            .setCdtrAcctCd(   "CACC")     // Andere Werte, nach copilot: CACC: Current account, SVGS: Savings account, COMM: Commission account, TRAN: Transit account, etc.
             ;
     }
 
