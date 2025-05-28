@@ -17,10 +17,7 @@ public class IdOthr {
 	@JsonInclude(JsonInclude.Include.NON_NULL) // Exclude fields with null values
 	SchmeNm schmeNm;
 
-
-	public IdOthr() {
-	}
-
+	public IdOthr() {}
 
 	public IdOthr(RequestParams params, String context, JsonValidationExceptionCollector collector) {
 		try {
@@ -29,10 +26,12 @@ public class IdOthr {
             }  else if (context.equals(EBankingConstants.CONTEXT_TO)) {
 				setId(params.getToOthrId(), collector);							// # 4
             }  else if (context.equals(EBankingConstants.CONTEXT_DBTR)) {
-				setId(params.getDbtrID(), collector);							// # 5
+				setId(params.getDbtrId(), collector);							// # 5
             } else if ( !(params.getAcctOwntPtyId() == null || params.getAcctOwntPtyId().isEmpty()) ) {
 				setId(params.getAcctOwntPtyId(), collector); 					// # 3
-            } 
+            } else if ( !(params.getCdtrId() == null || params.getCdtrId().isEmpty()) ) {
+				setId(params.getCdtrId(), collector); 					        // # 7
+            }
 			setSchmeNm(new SchmeNm(params, collector), collector);
 			
         } catch (Exception e) {

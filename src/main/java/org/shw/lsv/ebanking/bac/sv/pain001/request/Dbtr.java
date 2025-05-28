@@ -16,6 +16,7 @@ public class Dbtr {
     @JsonProperty("Id")
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude fields with null values
     Id id;
+
     public Dbtr() {}
 
     public Dbtr(RequestParams params, JsonValidationExceptionCollector collector) {
@@ -23,8 +24,8 @@ public class Dbtr {
             setNm(params.getNameDebtor(), collector);
 
             // TODO: Wird das Objekt verwendet? Sicher stellen, dass es keinen Konflikt mit CAMT052 Request gibt.
-            if(params.getDbtrID() != null && !params.getDbtrID().isEmpty()) {
-                setId(new Id(params, EBankingConstants.CONTEXT_DBTR, collector), collector); // <-- Changed to use Id
+            if(params.getDbtrId() != null && !params.getDbtrId().isEmpty()) {
+                setId(new Id(params, EBankingConstants.CONTEXT_DBTR, collector), collector);
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_DBTR_INIT, e);

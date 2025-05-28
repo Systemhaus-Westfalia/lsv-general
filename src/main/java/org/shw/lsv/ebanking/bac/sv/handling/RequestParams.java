@@ -38,7 +38,8 @@ public class RequestParams {
     private String     bicOrBEI;
     private String     reqdExctnDt;
     private String     dbtrAcctId;
-    private String     dbtrID;
+    private String     dbtrId;
+    private String     cdtrId;
 
     private String     cd;         // Category Purpose Code
     private String     bic;        // BIC  (Business Identifier Code)
@@ -89,8 +90,9 @@ public class RequestParams {
     public String     getInstrPrty()     { return instrPrty;     }
     public String     getInstdAmt()      { return instdAmt;      }
     public String     getMmbId()         { return mmbId;         }
-    public String     getDbtrID()        { return dbtrID;        }
+    public String     getDbtrId()        { return dbtrId;        }
     public String     getAcctOwntPtyId() { return acctOwntPtyId; }
+    public String     getCdtrId()        { return cdtrId;        }
 
 
 
@@ -280,8 +282,8 @@ public class RequestParams {
         return this;
     }
 
-    public RequestParams setDbtrID(String dbtrID) {
-        this.dbtrID = dbtrID;
+    public RequestParams setDbtrId(String dbtrId) {
+        this.dbtrId = dbtrId;
         return this;
     }
 
@@ -292,6 +294,11 @@ public class RequestParams {
 
     public RequestParams setAcctOwntPtyId(String acctOwntPtyId) {
         this.acctOwntPtyId = acctOwntPtyId;
+        return this;
+    }
+
+    public RequestParams setCdtrId(String cdtrId) {
+        this.cdtrId = cdtrId;
         return this;
     }
 

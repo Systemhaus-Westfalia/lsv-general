@@ -3,6 +3,7 @@ package org.shw.lsv.ebanking.bac.sv.pain001.request;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.misc.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,17 +13,18 @@ public class Cdtr {
     String nm;  // Creditor name
 
     @JsonProperty("Id")
-    CdtrID cdtrID;
+    Id id;
+
+    public Cdtr() {}
 
     public Cdtr(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setNm(params.getNameCreditor(), collector);
-            setCdtrID(new CdtrID(params, collector), collector);
+            setId(new Id(params, EBankingConstants.CONTEXT_DBTR, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CDTR_INIT, e);
         }
     }
-
 
     /**
      * @return the Creditor name
@@ -63,35 +65,33 @@ public class Cdtr {
     }
 
     /**
-     * @return the CdtrID object<br>
+     * @return the Id object<br>
      */
-    public CdtrID getCdtrID() {
-        return cdtrID;
+    public Id getId() {
+        return id;
     }
 
     /**
-     * @param cdtrID the CdtrID to be set<br>
+     * @param id the Id to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setCdtrID(CdtrID cdtrID) {
-        if (cdtrID == null) {
-            throw new IllegalArgumentException("Wrong parameter 'cdtrID' in setCdtrID()");
+    public void setId(Id id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Wrong parameter 'id' in setId()");
         }
-        this.cdtrID = cdtrID;
+        this.id = id;
     }
 
     /**
-     * @param cdtrID the CdtrID to be set<br>
+     * @param id the Id to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setCdtrID(CdtrID cdtrID, JsonValidationExceptionCollector collector) {
+    public void setId(Id id, JsonValidationExceptionCollector collector) {
         try {
-            setCdtrID(cdtrID);
+            setId(id);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
-            // throw e;
+            //throw e;
         }
     }
-
-
 }
