@@ -1,4 +1,4 @@
-package     org.shw.lsv.ebanking.bac.sv.misc;
+package org.shw.lsv.ebanking.bac.sv.misc;
 
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;

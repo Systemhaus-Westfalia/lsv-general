@@ -18,12 +18,12 @@ public class AcctIdOthr {
 
 	public AcctIdOthr(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-
             if ( !(params.getAcctId() == null || params.getAcctId().isEmpty()) ) {
 				setId(params.getAcctId(), collector);			// # 2
-            }
-            if ( !(params.getDbtrAcctId() == null || params.getDbtrAcctId().isEmpty()) ) {
+            } else if ( !(params.getDbtrAcctId() == null || params.getDbtrAcctId().isEmpty()) ) {
 				setId(params.getDbtrAcctId(), collector);			// # 6
+            } else if ( !(params.getCdtrAcctId() == null || params.getCdtrAcctId().isEmpty()) ) {
+				setId(params.getCdtrAcctId(), collector);			// # 8
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_ACCTIDOTHR_INIT, e);

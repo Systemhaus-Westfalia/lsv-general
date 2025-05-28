@@ -38,6 +38,7 @@ public class RequestParams {
     private String     bicOrBEI;
     private String     reqdExctnDt;
     private String     dbtrAcctId;
+    private String     cdtrAcctId;
     private String     dbtrId;
     private String     cdtrId;
 
@@ -93,6 +94,7 @@ public class RequestParams {
     public String     getDbtrId()        { return dbtrId;        }
     public String     getAcctOwntPtyId() { return acctOwntPtyId; }
     public String     getCdtrId()        { return cdtrId;        }
+    public String     getCdtrAcctId()    { return cdtrAcctId;     }
 
 
 
@@ -299,6 +301,11 @@ public class RequestParams {
 
     public RequestParams setCdtrId(String cdtrId) {
         this.cdtrId = cdtrId;
+        return this;
+    }
+
+    public RequestParams setCdtrAcctId(String cdtrAcctId) {
+        this.cdtrAcctId = cdtrAcctId;
         return this;
     }
 
