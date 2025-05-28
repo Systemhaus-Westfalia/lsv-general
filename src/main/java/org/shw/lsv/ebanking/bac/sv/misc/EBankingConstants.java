@@ -72,6 +72,7 @@ public class EBankingConstants {
 	public static final String ERROR_CDTRAGT_FININSTNID_INIT   = "CdtrAgtFininstnId initialization";
 	public static final String ERROR_CLRSYSMMBID_INIT          = "CltSysMmbId initialization";
     public static final String ERROR_CDTRACCT_INIT             = "CdtrAcct initialization";
+    public static final String ERROR_PURP_INIT                 = "Purp initialization";
 
 
 	public static final String ERROR_PAIN001REQUEST_INIT       = "PAIN001Request initialization";

@@ -95,6 +95,7 @@ public class PAIN001SerializationTest {
             .setCdtrId(       "987654321")   // TODO: Diferencia con DbtrId?
             .setCdtrAcctId(   "112233445")
             .setCdtrAcctCd(   "CACC")     // Andere Werte, nach copilot: CACC: Current account, SVGS: Savings account, COMM: Commission account, TRAN: Transit account, etc.
+            .setPymtPurpose(  "Motivo del pago es el siguiente...")  // TODO: ermitteln, ob Purpose Muss-Feld ist, oder nicht
             ;
     }
 

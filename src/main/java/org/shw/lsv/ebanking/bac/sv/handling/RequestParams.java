@@ -27,7 +27,7 @@ public class RequestParams {
     private String todt;
     private String eqseq;
     private String acctOwntPtyId;
-
+    private String pymtPurpose;
 
     // Payments
     private Integer    nbOfTxs;
@@ -97,6 +97,7 @@ public class RequestParams {
     public String     getCdtrId()        { return cdtrId;        }
     public String     getCdtrAcctId()    { return cdtrAcctId;    }
     public String     getCdtrAcctCd()    { return cdtrAcctCd;    }
+    public String     getPymtPurpose()   { return pymtPurpose;   }
 
 
 
@@ -315,5 +316,11 @@ public class RequestParams {
         this.cdtrAcctCd = cdtrAcctCd;
         return this;
     }
+
+    public RequestParams setPymtPurpose(String pymtPurpose) {
+        this.pymtPurpose = pymtPurpose;
+        return this;
+    }
+
 
 }

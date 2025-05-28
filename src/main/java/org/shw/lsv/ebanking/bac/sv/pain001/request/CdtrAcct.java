@@ -13,7 +13,7 @@ public class CdtrAcct {
     AcctId acctId;
 
     @JsonProperty("Tp")  // "Tp" is the name of the field in the JSON
-    CtgyPurp ctgyPurp;
+    CtgyPurp ctgyPurp;   // Type of account or type of purpose
 
     public CdtrAcct() {}
 

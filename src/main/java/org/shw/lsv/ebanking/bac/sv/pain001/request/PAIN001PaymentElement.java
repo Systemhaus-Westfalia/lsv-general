@@ -29,6 +29,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
     @JsonProperty("RmtInf")
     RmtInf rmtInf;
 
+    @JsonProperty("Purp")
+    Purp purp;
+
     public PAIN001PaymentElement() { }
 
        public PAIN001PaymentElement(RequestParams params, JsonValidationExceptionCollector collector) {
@@ -40,6 +43,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
             setCdtr(            new Cdtr(            params, collector), collector);
             setCdtrAcct(        new CdtrAcct(        params, collector), collector);
             setRmtInf(          new RmtInf(          params, collector), collector);
+
+            // TODO: ermitteln, ob Purpose Muss-Feld ist, oder nicht
+            setPurp(            new Purp(            params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_PAYMENT_ELEMENT_INIT, e);
         }
@@ -274,5 +280,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
             // throw e;
         }
     }
+
+    /**
+     * @return the Purp object<br>
+     */
+    public Purp getPurp() {
+        return purp;
+    }
+
+    /**
+     * @param purp the Purp to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setPurp(Purp purp) {
+        if (purp == null) {
+            throw new IllegalArgumentException("Wrong parameter 'purp' in setPurp()");
+        }
+        this.purp = purp;
+    }
+
+    /**
+     * @param purp the Purp to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setPurp(Purp purp, JsonValidationExceptionCollector collector) {
+        try {
+            setPurp(purp);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+            // throw e;
+        }
+    }
+
 
 }
