@@ -21,26 +21,29 @@ public class IdOthr {
 
 	public IdOthr(RequestParams params, String context, JsonValidationExceptionCollector collector) {
 		try {
-            if (context.equals(EBankingConstants.CONTEXT_FR)) {
-				setId(params.getFrOthrId(), collector);  						// # 1
+            if ( context.equals(EBankingConstants.CONTEXT_FR)) {
+				if (( !(params.getFrOthrId() == null || params.getFrOthrId().isEmpty()) ) ) {
+					setId(params.getFrOthrId(), collector);							// # 1
+				}
             }  else if (context.equals(EBankingConstants.CONTEXT_TO)) {
-				setId(params.getToOthrId(), collector);							// # 4
-            }
-
-			if ( !(params.getDbtrId() == null || params.getDbtrId().isEmpty()) ) {
-				setId(params.getDbtrId(), collector);							// # 5
-            }
-
-			if ( !(params.getAcctOwntPtyId() == null || params.getAcctOwntPtyId().isEmpty()) ) {
-				setId(params.getAcctOwntPtyId(), collector); 					// # 3
-            }
-
-			if ( !(params.getCdtrId() == null || params.getCdtrId().isEmpty()) ) {
-				setId(params.getCdtrId(), collector); 					        // # 7
-            }
-
-			 if (! context.equals(EBankingConstants.CONTEXT_DBTR)) {
-				setSchmeNm(new SchmeNm(params, collector), collector);
+				if (( !(params.getToOthrId() == null || params.getToOthrId().isEmpty()) ) ) {
+					setId(params.getToOthrId(), collector);								// # 4
+				}
+				if (( (params.getBicfiTo() == null || params.getBicfiTo().isEmpty()) ) ) {
+					setSchmeNm(new SchmeNm(params, collector), collector);
+				}
+            } else if ( context.equals(EBankingConstants.CONTEXT_DBTR)) {
+				if (( !(params.getDbtrId() == null || params.getDbtrId().isEmpty()) ) ) {
+					setId(params.getDbtrId(), collector);							// # 5
+				}
+            } else if ( context.equals(EBankingConstants.CONTEXT_CDTR)) {
+				if (( !(params.getCdtrId() == null || params.getCdtrId().isEmpty()) ) ) {
+					setId(params.getCdtrId(), collector); 					        	// # 7
+				}
+            } else if ( context.equals(EBankingConstants.CONTEXT_PTYORGID)) {
+				if ( !(params.getAcctOwntPtyId() == null || params.getAcctOwntPtyId().isEmpty()) ) {
+					setId(params.getAcctOwntPtyId(), collector);						// # 3
+				}
             }
 
         } catch (Exception e) {

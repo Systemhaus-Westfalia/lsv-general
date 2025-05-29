@@ -142,6 +142,7 @@ public class EBankingConstants {
 	public static final String CONTEXT_DBTRACCT   = "DBTRACCT";
 	public static final String CONTEXT_CDTR       = "CDTR";
 	public static final String CONTEXT_CDTRACCT   = "CDTRACCT";
+	public static final String CONTEXT_PMTTPINF   = "PMTTPINF";
 
 
 	

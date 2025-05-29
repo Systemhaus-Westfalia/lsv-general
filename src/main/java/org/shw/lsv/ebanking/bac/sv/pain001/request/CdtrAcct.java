@@ -24,7 +24,7 @@ public class CdtrAcct {
     public CdtrAcct(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setAcctId(new AcctId(params, collector), collector);
-            setCtgyPurp(new CtgyPurp(params, collector), collector);
+            setCtgyPurp(new CtgyPurp(params, EBankingConstants.CONTEXT_CDTRACCT, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CDTRACCT_INIT, e);
         }

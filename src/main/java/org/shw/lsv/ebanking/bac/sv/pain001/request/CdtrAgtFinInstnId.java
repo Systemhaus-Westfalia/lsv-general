@@ -32,7 +32,7 @@ public class CdtrAgtFinInstnId {
     /**
      * @return the BIC
      */
-    public String getBIC() {
+    public String getbIC() {
         return bIC;
     }
 
@@ -42,7 +42,7 @@ public class CdtrAgtFinInstnId {
      * Pattern: "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}"<br>
      * Example: "BSNJCRSJXXX"
      */
-    public void setBIC(String bIC) {
+    public void setbIC(String bIC) {
         boolean patternOK = (bIC != null) && bIC.matches(EBankingConstants.PATTERN_BIC);
         if (!patternOK) {
             throw new IllegalArgumentException("Wrong parameter 'bIC' (" + bIC + ") in setBIC()");
@@ -56,7 +56,7 @@ public class CdtrAgtFinInstnId {
      */
     public void setBIC(String bIC, JsonValidationExceptionCollector collector) {
         try {
-            setBIC(bIC);
+            setbIC(bIC);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_INVALID_BIC_FORMAT, e);
             //throw e;

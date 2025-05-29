@@ -20,7 +20,7 @@ public class PmtTpInf {
      */
     public PmtTpInf(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setCtgyPurp (new CtgyPurp(params, collector), collector);
+            setCtgyPurp (new CtgyPurp(params, EBankingConstants.CONTEXT_PMTTPINF, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_PMTTPINF_INIT, e);
         }

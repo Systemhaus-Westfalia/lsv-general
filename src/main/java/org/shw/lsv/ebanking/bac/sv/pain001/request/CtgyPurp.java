@@ -12,14 +12,17 @@ public class CtgyPurp {
 
     CtgyPurp() { }
 
-    public CtgyPurp(RequestParams params, JsonValidationExceptionCollector collector) {
+    public CtgyPurp(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
-            if ( !(params.getCatPurpCd() == null || params.getCatPurpCd().isEmpty()) ) {
-            setCd(params.getCatPurpCd(), collector);
+            if ( context.equals(EBankingConstants.CONTEXT_CDTRACCT)) {
+                if ( !(params.getCdtrAcctCd() == null || params.getCdtrAcctCd().isEmpty()) ) {
+                    setCd(params.getCdtrAcctCd(), collector);
             }
-            if ( !(params.getCdtrAcctCd() == null || params.getCdtrAcctCd().isEmpty()) ) {
-            setCd(params.getCdtrAcctCd(), collector);
-            }
+            } else if ( context.equals(EBankingConstants.CONTEXT_PMTTPINF)) {
+                if (( !(params.getCatPurpCd() == null || params.getCatPurpCd().isEmpty()) ) ) {
+                    setCd(params.getCatPurpCd(), collector);
+                } 
+        }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CTGYPURP_INIT, e);
         }

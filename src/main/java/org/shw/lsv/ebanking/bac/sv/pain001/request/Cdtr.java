@@ -20,7 +20,7 @@ public class Cdtr {
     public Cdtr(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setNm(params.getNameCreditor(), collector);
-            setId(new Id(params, EBankingConstants.CONTEXT_DBTR, collector), collector);
+            setId(new Id(params, EBankingConstants.CONTEXT_CDTR, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CDTR_INIT, e);
         }

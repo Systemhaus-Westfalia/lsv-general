@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Id {
 
     @JsonProperty("OrgId")  // "OrgId" is the name of the field in the JSON
-    OrgId OrgId;
+    OrgId orgId;
     
 
     public Id() {
@@ -28,7 +28,7 @@ public class Id {
      * @return the OrgId object<br>
      */
 	public OrgId getOrgId() {
-        return OrgId;
+        return orgId;
     }
 
 
@@ -40,7 +40,7 @@ public class Id {
         if (orgId == null) {
             throw new IllegalArgumentException("Wrong parameter 'orgId' in setOrgId()");
         }
-        this.OrgId = orgId;
+        this.orgId = orgId;
     }
 
     /**

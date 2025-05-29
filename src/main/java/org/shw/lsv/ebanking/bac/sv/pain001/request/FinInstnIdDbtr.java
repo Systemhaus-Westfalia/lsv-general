@@ -18,7 +18,7 @@ public class FinInstnIdDbtr {
     Example: "BSNJCRSJ" (where "BSNJ" is the bank code, "CR" is the country code for Costa Rica, and "SJ" is the location code).
     It is also known as SWIFT code. */
     @JsonProperty("BIC")  
-    String BIC;  
+    String bIC;
     
     @JsonProperty("PstlAdr")
     PstlAdr pstlAdr;  // Postal address of the debtor's financial institution, if available.
@@ -44,8 +44,8 @@ public class FinInstnIdDbtr {
     /**
      * @return the BIC
      */
-    public String getBIC() {
-        return BIC;
+    public String getbIC() {
+        return bIC;
     }
 
     /**
@@ -54,13 +54,13 @@ public class FinInstnIdDbtr {
      * Pattern: "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}"<br>
      * Example: "BSNJCRSJ".
      */
-    public void setBIC(String BIC) {
+    public void setbIC(String BIC) {
         boolean patternOK = (BIC != null) && Pattern.matches(EBankingConstants.PATTERN_BIC, BIC);
 
         if (!patternOK) {
             throw new IllegalArgumentException("Wrong parameter 'BIC' (" + BIC + ") in setBIC()");
         }
-        this.BIC = BIC;
+        this.bIC = BIC;
     }
 
     /**
@@ -69,7 +69,7 @@ public class FinInstnIdDbtr {
      */
     public void setBIC(String BIC, JsonValidationExceptionCollector collector) {
         try {
-            setBIC(BIC);
+            setbIC(BIC);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
         }

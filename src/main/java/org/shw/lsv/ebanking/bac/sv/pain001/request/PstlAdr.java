@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PstlAdr {
     @JsonProperty("Ctry")
-    String Ctry; 
+    String ctry; 
 
     public PstlAdr() { }
 
@@ -26,7 +26,7 @@ public class PstlAdr {
      * @return the Ctry
      */
     public String getCtry() {
-        return Ctry;
+        return ctry;
     }
 
     /**
@@ -40,7 +40,7 @@ public class PstlAdr {
         if (!patternOK) {
             throw new IllegalArgumentException("Wrong parameter 'Ctry' (" + Ctry + ") in setCtry()");
         }
-        this.Ctry = Ctry;
+        this.ctry = Ctry;
     }
 
     /**
