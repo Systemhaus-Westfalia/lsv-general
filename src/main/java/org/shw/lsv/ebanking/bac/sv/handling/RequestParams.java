@@ -30,6 +30,7 @@ public class RequestParams {
     private String pymtPurpose;
 
     // Payments
+    private String     pmtMtd;
     private Integer    nbOfTxs;
     private BigDecimal ctrlSum;
     private String     nameInitParty;
@@ -77,6 +78,7 @@ public class RequestParams {
     public String     getFrdt()          { return frdt;          }
     public String     getTodt()          { return todt;          }
     public String     getEqseq()         { return eqseq;         }
+    public String     getPmtMtd()        { return pmtMtd;        }
     public Integer    getNbOfTxs()       { return nbOfTxs;       }
     public BigDecimal getCtrlSum()       { return ctrlSum;       }
     public String     getNameInitParty() { return nameInitParty; }
@@ -206,6 +208,11 @@ public class RequestParams {
 
     public RequestParams setEqseq(String eqseq) {
         this.eqseq = eqseq;
+        return this;
+    }
+
+    public RequestParams setPmtMtd(String pmtMtd) {
+        this.pmtMtd = pmtMtd;
         return this;
     }
 

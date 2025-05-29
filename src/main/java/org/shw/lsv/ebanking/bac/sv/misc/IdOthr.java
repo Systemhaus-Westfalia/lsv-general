@@ -25,15 +25,24 @@ public class IdOthr {
 				setId(params.getFrOthrId(), collector);  						// # 1
             }  else if (context.equals(EBankingConstants.CONTEXT_TO)) {
 				setId(params.getToOthrId(), collector);							// # 4
-            }  else if (context.equals(EBankingConstants.CONTEXT_DBTR)) {
+            }
+
+			if ( !(params.getDbtrId() == null || params.getDbtrId().isEmpty()) ) {
 				setId(params.getDbtrId(), collector);							// # 5
-            } else if ( !(params.getAcctOwntPtyId() == null || params.getAcctOwntPtyId().isEmpty()) ) {
+            }
+
+			if ( !(params.getAcctOwntPtyId() == null || params.getAcctOwntPtyId().isEmpty()) ) {
 				setId(params.getAcctOwntPtyId(), collector); 					// # 3
-            } else if ( !(params.getCdtrId() == null || params.getCdtrId().isEmpty()) ) {
+            }
+
+			if ( !(params.getCdtrId() == null || params.getCdtrId().isEmpty()) ) {
 				setId(params.getCdtrId(), collector); 					        // # 7
             }
-			setSchmeNm(new SchmeNm(params, collector), collector);
-			
+
+			 if (! context.equals(EBankingConstants.CONTEXT_DBTR)) {
+				setSchmeNm(new SchmeNm(params, collector), collector);
+            }
+
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_IDOTHR_INIT, e);
         }

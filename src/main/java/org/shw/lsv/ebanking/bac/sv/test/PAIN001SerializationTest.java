@@ -7,7 +7,6 @@ import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.pain001.request.PAIN001Request;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
-import org.compiere.model.Tax;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
@@ -69,6 +68,7 @@ public class PAIN001SerializationTest {
             // Group Header
             .setMsgId(        "DummySaldoCta1")
             .setCreDtTm(      "2025-05-16T07:56:49-06:00")
+            .setPmtMtd(      "TRF")           // TRF oder CHK
             .setNbOfTxs(      Integer.valueOf(3)) // Number of transactions
             .setCtrlSum(      new BigDecimal("469.87"))
             .setNameInitParty("Nombre cliente ordenante")         // TODO: Cual es la diferencia diferencia con setNameDebtor() ?

@@ -64,7 +64,7 @@ public class PmtInf {
             int trxCount = params.getNbOfTxs() != null ? params.getNbOfTxs() : 0;
 
             setPmtInfId(params.getMsgId(),     collector);
-            setPmtMtd(  params.getMsgDefIdr(), collector);
+            setPmtMtd(  params.getPmtMtd(), collector);
             setNbOfTxs( trxCount,              collector);
             setCtrlSum( params.getCtrlSum(),   collector);
 
