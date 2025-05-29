@@ -74,6 +74,8 @@ public class EBankingConstants {
     public static final String ERROR_CDTRACCT_INIT             = "CdtrAcct initialization";
     public static final String ERROR_PURP_INIT                 = "Purp initialization";
     public static final String ERROR_RMTINF_INIT               = "Rmtinf initialization";
+    public static final String ERROR_STRD_INIT                 = "Strd initialization";
+    public static final String ERROR_RFRDDOCINF_INIT           = "RfrdDocInf initialization";
 
 
 	public static final String ERROR_PAIN001REQUEST_INIT       = "PAIN001Request initialization";

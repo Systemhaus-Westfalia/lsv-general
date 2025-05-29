@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RmtInf {
 
     @JsonProperty("Strd")
-    Strd strd;
+    Strd strd;  // Structured Remittance Information.
 
     /**
      * Default constructor for RmtInf.
@@ -33,6 +33,17 @@ public class RmtInf {
 
     /**
      * @param strd the Strd to be set<br>
+     * <p>
+     * Structured remittance information allows automated reconciliation by the recipient.
+     * <p>
+     * It can include references like:
+     *  <ul>
+     *    <li>Creditor Reference (CdtrRefInf)</li>
+     *    <li>Invoice Number</li>
+     *    <li>Tax Information</li>
+     *    <li>Other standardized codes</li>
+     *  </ul>
+     * <p>
      * The parameter is validated: null not allowed.<br>
      */
     public void setStrd(Strd strd) {
@@ -45,6 +56,16 @@ public class RmtInf {
     /**
      * @param strd the Strd to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * Structured remittance information allows automated reconciliation by the recipient.
+     * <p>
+     * It can include references like:
+     *  <ul>
+     *    <li>Creditor Reference (CdtrRefInf)</li>
+     *    <li>Invoice Number</li>
+     *    <li>Tax Information</li>
+     *    <li>Other standardized codes</li>
+     *  </ul>
      */
     public void setStrd(Strd strd, JsonValidationExceptionCollector collector) {
         try {

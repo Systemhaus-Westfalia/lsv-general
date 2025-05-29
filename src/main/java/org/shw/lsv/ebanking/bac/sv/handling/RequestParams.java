@@ -52,6 +52,7 @@ public class RequestParams {
     private String     instrPrty;  // Instruction Priority, e.g. "NORM" for Normal
     private String     instdAmt;   // Amount to be transferred in a single payment transaction
     private String     mmbId;
+    private String     rmtncInf;
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -98,6 +99,7 @@ public class RequestParams {
     public String     getCdtrAcctId()    { return cdtrAcctId;    }
     public String     getCdtrAcctCd()    { return cdtrAcctCd;    }
     public String     getPymtPurpose()   { return pymtPurpose;   }
+    public String     getRmtncInf()      { return rmtncInf;      }
 
 
 
@@ -319,6 +321,11 @@ public class RequestParams {
 
     public RequestParams setPymtPurpose(String pymtPurpose) {
         this.pymtPurpose = pymtPurpose;
+        return this;
+    }
+
+    public RequestParams setRmtncInf(String rmtncInf) {
+        this.rmtncInf = rmtncInf;
         return this;
     }
 
