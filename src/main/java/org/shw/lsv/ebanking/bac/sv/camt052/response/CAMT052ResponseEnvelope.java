@@ -18,8 +18,7 @@ public class CAMT052ResponseEnvelope {
      CAMT052ResponseDocument cAMT052ResponseDocument;
 
         
-    public CAMT052ResponseEnvelope() {
-    }
+    public CAMT052ResponseEnvelope() {}
 
 
     /**

@@ -5,9 +5,6 @@ import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * 
- */
 public class CAMT052ResponseDocument {
 
     @JsonProperty("BkToCstmrAcctRpt") 
