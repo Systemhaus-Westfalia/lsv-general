@@ -96,24 +96,24 @@ public class PAIN001DeSerializationSystemEventNotification {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
-        System.out.println("Envelope present: " + (response.getPAIN001ResponseEnvelope() != null));
-        if (response.getPAIN001ResponseEnvelope() != null) {
+        System.out.println("Envelope present: " + (response.getpAIN001ResponseEnvelope() != null));
+        if (response.getpAIN001ResponseEnvelope() != null) {
             System.out.println("Document present: " +
-                (response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument() != null));
-            if (response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument() != null) {
+                (response.getpAIN001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument() != null));
+            if (response.getpAIN001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument() != null) {
                 System.out.println("SysEvtNtfctn present: " +
-                    (response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn() != null));
-                if (response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn() != null) {
+                    (response.getpAIN001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn() != null));
+                if (response.getpAIN001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn() != null) {
                     System.out.println("EvtInf present: ");
                     System.out.println("Erhaltene Variablen: " +
-                        (response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn().getEvtInf() != null));
-                    if (response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn().getEvtInf() != null) {
+                        (response.getpAIN001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf() != null));
+                    if (response.getpAIN001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf() != null) {
                         System.out.println("    EvtCd  : " +
-                            response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn().getEvtInf().getEvtCd());
+                            response.getpAIN001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtCd());
                         System.out.println("    EvtDesc: " +
-                            response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn().getEvtInf().getEvtDesc());
+                            response.getpAIN001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtDesc());
                         System.out.println("    EvtTm  : " +
-                            response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn().getEvtInf().getEvtTm());
+                            response.getpAIN001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtTm());
                     }
                 }
             }

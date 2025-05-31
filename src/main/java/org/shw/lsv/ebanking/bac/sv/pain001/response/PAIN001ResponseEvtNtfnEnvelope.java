@@ -12,7 +12,7 @@ public class PAIN001ResponseEvtNtfnEnvelope {
     AppHdr appHdr;
 
     @JsonProperty("Document")
-    PAIN001ResponseEvtNtfnDocument pAIN001ResponseDocument;
+    PAIN001ResponseEvtNtfnDocument pAIN001ResponseEvtNtfnDocument;
 
     public PAIN001ResponseEvtNtfnEnvelope() {}
 
@@ -40,24 +40,24 @@ public class PAIN001ResponseEvtNtfnEnvelope {
         }
     }
 
-    public PAIN001ResponseEvtNtfnDocument getPAIN001ResponseDocument() {
-        return pAIN001ResponseDocument;
+    public PAIN001ResponseEvtNtfnDocument getpAIN001ResponseEvtNtfnDocument() {
+        return pAIN001ResponseEvtNtfnDocument;
     }
 
-    public void setPAIN001ResponseDocument(PAIN001ResponseEvtNtfnDocument pAIN001ResponseDocument) {
+    public void setpAIN001ResponseEvtNtfnDocument(PAIN001ResponseEvtNtfnDocument pAIN001ResponseDocument) {
         if (pAIN001ResponseDocument == null) {
             throw new IllegalArgumentException("Wrong parameter 'pAIN001ResponseDocument' in setPAIN001ResponseDocument()");
         }
-        this.pAIN001ResponseDocument = pAIN001ResponseDocument;
+        this.pAIN001ResponseEvtNtfnDocument = pAIN001ResponseDocument;
     }
 
     /**
      * @param pAIN001ResponseDocument the PAIN001ResponseDocument to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setPAIN001ResponseDocument(PAIN001ResponseEvtNtfnDocument pAIN001ResponseDocument, JsonValidationExceptionCollector collector) {
+    public void setpAIN001ResponseEvtNtfnDocument(PAIN001ResponseEvtNtfnDocument pAIN001ResponseDocument, JsonValidationExceptionCollector collector) {
         try {
-            setPAIN001ResponseDocument(pAIN001ResponseDocument);
+            setpAIN001ResponseEvtNtfnDocument(pAIN001ResponseDocument);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;

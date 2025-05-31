@@ -9,31 +9,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PAIN001EvtNtfnResponse implements Validatable {
 
     @JsonProperty("Envelope")    // "Envelope" is the name of the field in the JSON
-    PAIN001ResponseEvtNtfnEnvelope pAIN001ResponseEnvelope;
+    PAIN001ResponseEvtNtfnEnvelope pAIN001ResponseEvtNtfnEnvelope;
 
     public PAIN001EvtNtfnResponse() {}
 
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {
-            if (pAIN001ResponseEnvelope == null) {
+            if (pAIN001ResponseEvtNtfnEnvelope == null) {
                 throw new IllegalArgumentException("Envelope cannot be null");
             }
 
             // Validate nested objects
-            if (pAIN001ResponseEnvelope instanceof Validatable) {
-                ((Validatable) pAIN001ResponseEnvelope).validate(collector);
+            if (pAIN001ResponseEvtNtfnEnvelope instanceof Validatable) {
+                ((Validatable) pAIN001ResponseEvtNtfnEnvelope).validate(collector);
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 
-    public PAIN001ResponseEvtNtfnEnvelope getPAIN001ResponseEnvelope() {
-        return pAIN001ResponseEnvelope;
+    public PAIN001ResponseEvtNtfnEnvelope getpAIN001ResponseEnvelope() {
+        return pAIN001ResponseEvtNtfnEnvelope;
     }
 
-    public void setPAIN001ResponseEnvelope(PAIN001ResponseEvtNtfnEnvelope pAIN001ResponseEnvelope) {
-        this.pAIN001ResponseEnvelope = pAIN001ResponseEnvelope;
+    public void setpAIN001ResponseEnvelope(PAIN001ResponseEvtNtfnEnvelope pAIN001ResponseEvtNtfnEnvelope) {
+        this.pAIN001ResponseEvtNtfnEnvelope = pAIN001ResponseEvtNtfnEnvelope;
     }
 }
