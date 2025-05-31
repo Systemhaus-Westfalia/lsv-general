@@ -16,6 +16,8 @@ public class EvtInf {
     @JsonProperty("EvtTm")
     String evtTm;  // Event Time
 
+    public EvtInf() {}
+
     public EvtInf(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setEvtCd(params.getEvtCd(), collector);

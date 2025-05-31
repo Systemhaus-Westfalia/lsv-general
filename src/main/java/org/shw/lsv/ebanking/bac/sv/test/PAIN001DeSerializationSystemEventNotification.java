@@ -2,11 +2,11 @@ package org.shw.lsv.ebanking.bac.sv.test;
 
 import java.time.LocalDateTime;
 
-import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001Response;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001Response;
 
 public class PAIN001DeSerializationSystemEventNotification {
     public static void main(String[] args) {
@@ -71,6 +71,27 @@ public class PAIN001DeSerializationSystemEventNotification {
         return jsonContent;
     }
 
+/*
+ * Zu erwartetes Ergebnis:
+ *
+ * Deserialization started at: 2025-05-31 02:33:03
+ * Starting deserialization test...
+ * Deserialization completed cleanly
+ *
+ * Deserialized object details:
+ * Deserialization finished at: 2025-05-31 02:33:03
+ * Envelope present: true
+ * Document present: true
+ * SysEvtNtfctn present: true
+ * EvtInf present:
+ * Erhaltene Variablen: true
+ *  EvtCd  : ACCEPTED
+ *  EvtDesc: Payment accepted
+ *  EvtTm  : 2024-07-23T18:44:54-06:00
+********************************************
+********************************************
+ *
+*/
     private static void printResponseSummary(PAIN001Response response) {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
@@ -83,14 +104,15 @@ public class PAIN001DeSerializationSystemEventNotification {
                 System.out.println("SysEvtNtfctn present: " +
                     (response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn() != null));
                 if (response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn() != null) {
-                    System.out.println("EvtInf present: " +
+                    System.out.println("EvtInf present: ");
+                    System.out.println("Erhaltene Variablen: " +
                         (response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn().getEvtInf() != null));
                     if (response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn().getEvtInf() != null) {
-                        System.out.println("EvtCd: " +
+                        System.out.println("    EvtCd  : " +
                             response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn().getEvtInf().getEvtCd());
-                        System.out.println("EvtDesc: " +
+                        System.out.println("    EvtDesc: " +
                             response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn().getEvtInf().getEvtDesc());
-                        System.out.println("EvtTm: " +
+                        System.out.println("    EvtTm  : " +
                             response.getPAIN001ResponseEnvelope().getPAIN001ResponseDocument().getSysEvtNtfctn().getEvtInf().getEvtTm());
                     }
                 }

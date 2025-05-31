@@ -11,8 +11,7 @@ public class SysEvtNtfctn {
     @JsonProperty("EvtInf")
     EvtInf evtInf;  // Event Information
 
-    public SysEvtNtfctn() {
-    }
+    public SysEvtNtfctn() {}
 
     public SysEvtNtfctn(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
