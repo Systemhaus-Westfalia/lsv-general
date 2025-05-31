@@ -6,12 +6,12 @@ import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PAIN001EvtNtfnResponse implements Validatable {
+public class PAIN001ResponseEvtNtfn implements Validatable {
 
     @JsonProperty("Envelope")    // "Envelope" is the name of the field in the JSON
     PAIN001ResponseEvtNtfnEnvelope pAIN001ResponseEvtNtfnEnvelope;
 
-    public PAIN001EvtNtfnResponse() {}
+    public PAIN001ResponseEvtNtfn() {}
 
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
@@ -29,11 +29,11 @@ public class PAIN001EvtNtfnResponse implements Validatable {
         }
     }
 
-    public PAIN001ResponseEvtNtfnEnvelope getpAIN001ResponseEnvelope() {
+    public PAIN001ResponseEvtNtfnEnvelope getpAIN001ResponseEvtNtfnEnvelope() {
         return pAIN001ResponseEvtNtfnEnvelope;
     }
 
-    public void setpAIN001ResponseEnvelope(PAIN001ResponseEvtNtfnEnvelope pAIN001ResponseEvtNtfnEnvelope) {
+    public void setpAIN001ResponseEvtNtfnEnvelope(PAIN001ResponseEvtNtfnEnvelope pAIN001ResponseEvtNtfnEnvelope) {
         this.pAIN001ResponseEvtNtfnEnvelope = pAIN001ResponseEvtNtfnEnvelope;
     }
 }
