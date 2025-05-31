@@ -54,6 +54,9 @@ public class RequestParams {
     private String     instdAmt;   // Amount to be transferred in a single payment transaction
     private String     mmbId;
     private String     rmtncInf;
+    private String     evtCd;
+    private String     evtDesc;
+    private String     evtTm;
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -102,6 +105,9 @@ public class RequestParams {
     public String     getCdtrAcctCd()    { return cdtrAcctCd;    }
     public String     getPymtPurpose()   { return pymtPurpose;   }
     public String     getRmtncInf()      { return rmtncInf;      }
+    public String     getEvtCd()         { return evtCd;         }
+    public String     getEvtDesc()       { return evtDesc;       }
+    public String     getEvtTm()         { return evtTm;         }
 
 
 
@@ -336,5 +342,17 @@ public class RequestParams {
         return this;
     }
 
+    public RequestParams setEvtCd(String evtCd) {
+        this.evtCd = evtCd;
+        return this;
+    }
+    public RequestParams setEvtDesc(String evtDesc) {
+        this.evtDesc = evtDesc;
+        return this;
+    }
+    public RequestParams setEvtTm(String evtTm) {
+        this.evtTm = evtTm;
+        return this;
+    }
 
 }

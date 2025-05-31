@@ -76,6 +76,8 @@ public class EBankingConstants {
     public static final String ERROR_RMTINF_INIT               = "Rmtinf initialization";
     public static final String ERROR_STRD_INIT                 = "Strd initialization";
     public static final String ERROR_RFRDDOCINF_INIT           = "RfrdDocInf initialization";
+    public static final String ERROR_SYSEVTNTFCTN_INIT         = "SysEvtNtfctn initialization";
+    public static final String ERROR_EVTINF_INIT               = "EvtInf initialization";
 
 
 	public static final String ERROR_PAIN001REQUEST_INIT       = "PAIN001Request initialization";
@@ -130,6 +132,7 @@ public class EBankingConstants {
 	public static final String PATTERN_IBAN         = "[A-Z]{2}[0-9]{2}[a-zA-Z0-9]{1,30}";
 	public static final String PATTERN_COUNTRY      = "[A-Z]{2}";
 	public static final String PATTERN_INSTR_PRTY   = "(HIGH|NORM)";
+	public static final String PATTERN_EVENTCODE    = "[A-Z0-9]{1,35}";
 
 
 	public static final String CONTEXT_FR        = "FR";

@@ -26,7 +26,7 @@ public class CAMT052DeSerializationTest {
         // 4. Execute deserialization
         try {
             System.out.println("Starting deserialization test...");
-            CAMT052Response request = processor.deserialize(testJson, CAMT052Response.class);
+            CAMT052Response response = processor.deserialize(testJson, CAMT052Response.class);
 
             // 5. Check for non-fatal warnings
             if (collector.hasErrors()) {
@@ -38,7 +38,7 @@ public class CAMT052DeSerializationTest {
 
             // 6. Use the deserialized object
             System.out.println("\nDeserialized object details:");
-            printResponseSummary(request);
+            printResponseSummary(response);
             
         } catch (JsonValidationException e) {
             System.err.println("\nCritical validation failures:");
