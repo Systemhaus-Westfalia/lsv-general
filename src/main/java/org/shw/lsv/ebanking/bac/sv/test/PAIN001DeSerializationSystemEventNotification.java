@@ -6,7 +6,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
-import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001Response;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001EvtNtfnResponse;
 
 public class PAIN001DeSerializationSystemEventNotification {
     public static void main(String[] args) {
@@ -26,7 +26,7 @@ public class PAIN001DeSerializationSystemEventNotification {
         // 4. Execute deserialization
         try {
             System.out.println("Starting deserialization test...");
-            PAIN001Response response = processor.deserialize(testJson, PAIN001Response.class);
+            PAIN001EvtNtfnResponse response = processor.deserialize(testJson, PAIN001EvtNtfnResponse.class);
 
             // 5. Check for non-fatal warnings
             if (collector.hasErrors()) {
@@ -92,7 +92,7 @@ public class PAIN001DeSerializationSystemEventNotification {
 ********************************************
  *
 */
-    private static void printResponseSummary(PAIN001Response response) {
+    private static void printResponseSummary(PAIN001EvtNtfnResponse response) {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 

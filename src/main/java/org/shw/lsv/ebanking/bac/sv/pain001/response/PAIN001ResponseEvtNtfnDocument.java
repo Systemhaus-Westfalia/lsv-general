@@ -5,12 +5,12 @@ import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PAIN001ResponseDocument {
+public class PAIN001ResponseEvtNtfnDocument {
 
     @JsonProperty("SysEvtNtfctn") 
     SysEvtNtfctn sysEvtNtfctn;  // System Event Notification.
 
-    public PAIN001ResponseDocument() { }
+    public PAIN001ResponseEvtNtfnDocument() { }
 
     /**
     * @return the SysEvtNtfctn object<br>

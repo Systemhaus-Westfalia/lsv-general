@@ -6,15 +6,15 @@ import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PAIN001ResponseEnvelope {
+public class PAIN001ResponseEvtNtfnEnvelope {
 
     @JsonProperty("AppHdr")
     AppHdr appHdr;
 
     @JsonProperty("Document")
-    PAIN001ResponseDocument pAIN001ResponseDocument;
+    PAIN001ResponseEvtNtfnDocument pAIN001ResponseDocument;
 
-    public PAIN001ResponseEnvelope() {}
+    public PAIN001ResponseEvtNtfnEnvelope() {}
 
     public AppHdr getAppHdr() {
         return appHdr;
@@ -40,11 +40,11 @@ public class PAIN001ResponseEnvelope {
         }
     }
 
-    public PAIN001ResponseDocument getPAIN001ResponseDocument() {
+    public PAIN001ResponseEvtNtfnDocument getPAIN001ResponseDocument() {
         return pAIN001ResponseDocument;
     }
 
-    public void setPAIN001ResponseDocument(PAIN001ResponseDocument pAIN001ResponseDocument) {
+    public void setPAIN001ResponseDocument(PAIN001ResponseEvtNtfnDocument pAIN001ResponseDocument) {
         if (pAIN001ResponseDocument == null) {
             throw new IllegalArgumentException("Wrong parameter 'pAIN001ResponseDocument' in setPAIN001ResponseDocument()");
         }
@@ -55,7 +55,7 @@ public class PAIN001ResponseEnvelope {
      * @param pAIN001ResponseDocument the PAIN001ResponseDocument to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setPAIN001ResponseDocument(PAIN001ResponseDocument pAIN001ResponseDocument, JsonValidationExceptionCollector collector) {
+    public void setPAIN001ResponseDocument(PAIN001ResponseEvtNtfnDocument pAIN001ResponseDocument, JsonValidationExceptionCollector collector) {
         try {
             setPAIN001ResponseDocument(pAIN001ResponseDocument);
         } catch (IllegalArgumentException e) {
