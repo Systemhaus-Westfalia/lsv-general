@@ -16,7 +16,7 @@ public class FinInstnId {
      * Code allocated to a financial institution by the ISO 9362 - Business identifier code (BIC). Multiplicity [1..1]
      */                         
     @JsonProperty(value = "BICFI", required = true)
-	String bICFI;  // BICFI (Bank Identifier Code)
+	String bICFI;  // BICFI (Bank Identifier Code) for a Financial Institution
 
 
     public FinInstnId() {
@@ -48,7 +48,7 @@ public class FinInstnId {
 
 
 	/**
-	 * @return the BICFI
+	 * @return the Bank Identifier Code
 	 */
 	public String getbICFI() {
         return bICFI;
@@ -56,7 +56,11 @@ public class FinInstnId {
 
 
     /**
-     * @param BICFI the BICFI to be set<br>
+     * @param BICFI the Bank Identifier Code<br>
+     * <p>
+     * BICs are assigned by SWIFT (Society for Worldwide Interbank Financial Telecommunication) according to the ISO 9362 standard.
+     * Each financial institution that participates in international payments and messaging has a unique BIC.
+     * <p>
      * The parameter is validated: null not allowed.<br>
      * Pattern: "[A-Z0-9]{4,4}[A-Z]{2,2}[A-Z0-9]{2,2}([A-Z0-9]{3,3}){0,1}".
      */
@@ -70,8 +74,11 @@ public class FinInstnId {
     }
 
     /**
-     * @param BICFI the BICFI to be set<br>
+     * @param BICFI the ank Identifier Code for a Financial Institution<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * BICs are assigned by SWIFT (Society for Worldwide Interbank Financial Telecommunication) according to the ISO 9362 standard.
+     * Each financial institution that participates in international payments and messaging has a unique BIC.
      */
     public void setBICFI(String BICFI, JsonValidationExceptionCollector collector) {
         try {
