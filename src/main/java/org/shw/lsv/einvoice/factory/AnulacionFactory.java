@@ -154,7 +154,7 @@ public class AnulacionFactory extends EDocumentFactory {
 		jsonObjectDocumento.put(Anulacion.CODIGOGENERACION, invoice_ei_codigoGeneracion((MInvoice)invoiceOriginal));		
 		jsonObjectDocumento.put(Anulacion.SELLORECIBIDO, invoice_ei_selloRecibido(invoiceOriginal));			
 		jsonObjectDocumento.put(Anulacion.NUMEROCONTROL, invoice_ei_numeroControl(invoiceOriginal));
-	    String fecEmi = invoiceOriginal.get_ValueAsString("ei_dateReceived").substring(1,8);
+		String fecEmi = invoiceOriginal.get_ValueAsString("ei_dateReceived").substring(0,10);
 	   
 		jsonObjectDocumento.put(Anulacion.FECEMI, fecEmi);
 		X_E_Recipient_Identification recipient_Identification =  bPartner_getE_Recipient_Identification((MBPartner)invoiceOriginal.getC_BPartner());
