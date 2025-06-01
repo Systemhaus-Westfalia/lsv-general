@@ -3,6 +3,8 @@ package org.shw.lsv.einvoice.factory;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
@@ -154,9 +156,16 @@ public class AnulacionFactory extends EDocumentFactory {
 		jsonObjectDocumento.put(Anulacion.CODIGOGENERACION, invoice_ei_codigoGeneracion((MInvoice)invoiceOriginal));		
 		jsonObjectDocumento.put(Anulacion.SELLORECIBIDO, invoice_ei_selloRecibido(invoiceOriginal));			
 		jsonObjectDocumento.put(Anulacion.NUMEROCONTROL, invoice_ei_numeroControl(invoiceOriginal));
-		String fecEmi = invoiceOriginal.get_ValueAsString("ei_dateReceived").substring(0,10);
-	   
-		jsonObjectDocumento.put(Anulacion.FECEMI, fecEmi);
+		String fecEmi = invoiceOriginal.get_ValueAsString("ei_dateReceived");    
+        // Define the formatter matching the input format
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");        
+        // Parse the string to LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.parse(fecEmi, inputFormatter);        
+        // Define output format
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");        
+        // Convert to desired format
+        String formattedDate = dateTime.format(outputFormatter);	   
+		jsonObjectDocumento.put(Anulacion.FECEMI, formattedDate);
 		X_E_Recipient_Identification recipient_Identification =  bPartner_getE_Recipient_Identification((MBPartner)invoiceOriginal.getC_BPartner());
 		//jsonObjectDocumento.put(Anulacion.CODIGOGENERACIONR, codigoGeneracion);		
 		jsonObjectDocumento.put(Anulacion.TIPODOCUMENTO, recipient_Identification.getValue());
