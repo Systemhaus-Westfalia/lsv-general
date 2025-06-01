@@ -52,17 +52,31 @@ public class PAIN001DeSerializationSystemEventNotification {
             "{\n" +
             "    \"Envelope\": {\n" +
             "        \"AppHdr\": {\n" +
-            "            \"BizMsgIdr\": \"123456\",\n" +
-            "            \"MsgDefIdr\": \"pain.001.001.09\",\n" +
-            "            \"BizSvc\": \"swift.cbprplus.01\",\n" +
-            "            \"CreDt\": \"2024-07-23T18:44:54-06:00\"\n" +
+            "            \"Fr\": {\n" +
+            "                \"FIId\": {\n" +
+            "                    \"FinInstnId\": {\n" +
+            "                        \"BICFI\": \"BMILHNTE\"\n" +
+            "                    }\n" +
+            "                }\n" +
+            "            },\n" +
+            "            \"To\": {\n" +
+            "                \"FIId\": {\n" +
+            "                    \"FinInstnId\": {\n" +
+            "                        \"BICFI\": \"DUMMYMASTER\"\n" +
+            "                    }\n" +
+            "                }\n" +
+            "            },\n" +
+            "            \"BizMsgIdr\": \"8034\",\n" +
+            "            \"MsgDefIdr\": \"ADMIN.004.001.02\",\n" +
+            "            \"BizSvc\": \"swift.cbprplus.02\",\n" +
+            "            \"CreDt\": \"2024-07-23T12:47:32-06:00\"\n" +
             "        },\n" +
             "        \"Document\": {\n" +
             "            \"SysEvtNtfctn\": {\n" +
             "                \"EvtInf\": {\n" +
-            "                    \"EvtCd\": \"ACCEPTED\",\n" +
-            "                    \"EvtDesc\": \"Payment accepted\",\n" +
-            "                    \"EvtTm\": \"2024-07-23T18:44:54-06:00\"\n" +
+            "                    \"EvtCd\": \"RCVD\",\n" +
+            "                    \"EvtDesc\": \"Solicitud recibida. Su pago se esta procesando o se procesara en la fecha indicada en el mensaje. Consulte mas tarde.\",\n" +
+            "                    \"EvtTm\": \"2024-07-23T12:47:32-06:00\"\n" +
             "                }\n" +
             "            }\n" +
             "        }\n" +
@@ -71,27 +85,31 @@ public class PAIN001DeSerializationSystemEventNotification {
         return jsonContent;
     }
 
-/*
- * Zu erwartetes Ergebnis:
- *
- * Deserialization started at: 2025-05-31 02:33:03
- * Starting deserialization test...
- * Deserialization completed cleanly
- *
- * Deserialized object details:
- * Deserialization finished at: 2025-05-31 02:33:03
- * Envelope present: true
- * Document present: true
- * SysEvtNtfctn present: true
- * EvtInf present:
- * Erhaltene Variablen: true
- *  EvtCd  : ACCEPTED
- *  EvtDesc: Payment accepted
- *  EvtTm  : 2024-07-23T18:44:54-06:00
-********************************************
-********************************************
- *
-*/
+    /*
+    * Zu erwartetes Ergebnis:
+    *
+    *
+    ********************************************
+    ********************************************
+    *** AppHdr ***
+        Fr-BICFI : BMILHNTE
+        BizMshIdr: 8034
+        BizSvc:    swift.cbprplus.02
+        CreDt:     2024-07-23T12:47:32-06:00
+        MsgDefIdr: ADMIN.004.001.02
+    ********************************************
+    *** PAIN001 (System Notification) Response Document ***
+    ********************************************
+    SysEvtNtfctn present: true
+    EvtInf present:
+    Erhaltene Variablen: true
+        EvtCd  : RCVD
+        EvtDesc: Solicitud recibida. Su pago se esta procesando o se procesara en la fecha indicada en el mensaje. Consulte mas tarde.
+        EvtTm  : 2024-07-23T12:47:32-06:00
+    ********************************************
+    ********************************************
+    *
+    */
     private static void printResponseSummary(PAIN001ResponseEvtNtfn response) {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
@@ -101,6 +119,18 @@ public class PAIN001DeSerializationSystemEventNotification {
             System.out.println("Document present: " +
                 (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument() != null));
             if (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument() != null) {
+                System.err.println("********************************************");
+                System.err.println("********************************************");
+                System.err.println("Ergebinisse:");
+                System.err.println("*** AppHdr ***");
+                System.err.println("    Fr-BICFI : "  + response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
+                System.err.println("    BizMshIdr: "  + response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getBizMsgIdr());
+                System.err.println("    BizSvc:    "  + response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getBizSvc());
+                System.err.println("    CreDt:     "  + response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getCreDt());
+                System.err.println("    MsgDefIdr: "  + response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getMsgDefIdr());
+                System.err.println("********************************************");
+                System.err.println("*** PAIN001 (System Event Notification) Response Document ***");
+                System.err.println("********************************************");
                 System.out.println("SysEvtNtfctn present: " +
                     (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn() != null));
                 if (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn() != null) {

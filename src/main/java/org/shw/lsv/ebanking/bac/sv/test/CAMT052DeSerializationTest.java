@@ -121,7 +121,7 @@ public class CAMT052DeSerializationTest {
                // - Set invalid values
                // - Include nulls where prohibited
 /*  
- * Zu erwartetes Ergebnis:
+ * Zu erwartetes Ergebnis u.a.:
  * *** AppHdr ***
     Fr-BICFI : BAMCSVSS
     To-BICFI : DUMMYMASTER
@@ -164,6 +164,7 @@ public class CAMT052DeSerializationTest {
         System.err.println("    BizSvc:    "  + response.getcAMT052ResponseEnvelope().getAppHdr().getBizSvc());
         System.err.println("    CreDt:     "  + response.getcAMT052ResponseEnvelope().getAppHdr().getCreDt());
         System.err.println("    MsgDefIdr: "  + response.getcAMT052ResponseEnvelope().getAppHdr().getMsgDefIdr());
+        System.err.println("********************************************");
         System.err.println("*** CAMT052 Response Document ***");
         System.err.println("********************************************");
         System.err.println("    CreDtTm:   "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getGrpHdr().getCreDtTm());

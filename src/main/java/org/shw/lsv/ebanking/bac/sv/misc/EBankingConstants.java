@@ -109,7 +109,8 @@ public class EBankingConstants {
 	public static final String PATTERN_TP           = "ALLL";
 	public static final String PATTERN_EQSEQ        = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
 	public static final String PATTERN_RPTID        = "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)";
-	public static final String PATTERN_DATETIME     = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
+	public static final String PATTERN_DATETIME_TZ  = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
+	public static final String PATTERN_DATETIME     = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$";
 	public static final String PATTERN_DATE         = "^\\d{4}-\\d{2}-\\d{2}$";
 	public static final String PATTERN_ENDTOENDID   = "[0-9a-zA-Z/\\-?:().,'+ ]{1,35}";
 	public static final String PATTERN_BICORBEI     = "[A-Z0-9]{8,11}";
@@ -133,6 +134,7 @@ public class EBankingConstants {
 	public static final String PATTERN_COUNTRY      = "[A-Z]{2}";
 	public static final String PATTERN_INSTR_PRTY   = "(HIGH|NORM)";
 	public static final String PATTERN_EVENTCODE    = "[A-Z0-9]{1,35}";
+	public static final String PATTERN_XMLNS        = "^urn:iso:std:iso:20022:tech:xsd:[a-z0-9\\.]+$";
 
 
 	public static final String CONTEXT_FR        = "FR";

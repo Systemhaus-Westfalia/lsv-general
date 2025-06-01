@@ -125,7 +125,7 @@ public class GrpHdr {
 	 * Example: "2020-09-08T18:00:00+02:00".
 	 */
 	public void setCreDtTm(String creDtTm) {
-		boolean patternOK = (creDtTm != null) && Pattern.matches(EBankingConstants.PATTERN_DATETIME, creDtTm);
+		boolean patternOK = (creDtTm != null) && Pattern.matches(EBankingConstants.PATTERN_DATETIME_TZ, creDtTm);
 
 		if (!patternOK) {
 			throw new IllegalArgumentException(

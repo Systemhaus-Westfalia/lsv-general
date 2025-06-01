@@ -108,7 +108,7 @@ public class EvtInf {
      * Example: "2023-06-27T14:23:00Z"
      */
     public void setEvtTm(String evtTm) {
-        boolean patternOK = (evtTm != null && !evtTm.isEmpty()) && evtTm.matches(EBankingConstants.PATTERN_DATETIME);
+        boolean patternOK = (evtTm != null && !evtTm.isEmpty()) && evtTm.matches(EBankingConstants.PATTERN_DATETIME_TZ);
         if (!patternOK) {
             throw new IllegalArgumentException("Wrong parameter 'evtTm' (" + evtTm + ") in setEvtTm()");
         }

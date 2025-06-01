@@ -44,7 +44,7 @@ public class Dt {
      * e.g.: "2020-09-08T18:00:00+02:00"
      */
     public void setDtTm(String dtTm) {
-        boolean patternOK = (dtTm != null) && Pattern.matches(EBankingConstants.PATTERN_DATETIME, dtTm);
+        boolean patternOK = (dtTm != null) && Pattern.matches(EBankingConstants.PATTERN_DATETIME_TZ, dtTm);
 
         if (patternOK) {
             this.dtTm = dtTm;
