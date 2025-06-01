@@ -71,13 +71,13 @@ public class PAIN001SerializationTest {
             .setPmtMtd(       "TRF")           // TRF oder CHK
             .setNbOfTxs(      Integer.valueOf(3)) // Number of transactions
             .setCtrlSum(      new BigDecimal("469.87"))
-            .setNameInitParty("Nombre cliente ordenante")         // TODO: Cual es la diferencia diferencia con setNameDebtor() ?
+            .setNameInitParty("Sistemas Aereos")                    // name of the customer sending the payment. AD_Client
 
             //Document
             .setCatPurpCd(    "SUPP")
             .setReqdExctnDt(  "2023-06-27")
             .setNameDebtor(   "Nombre cliente ordenante")  // TODO: Cual es la diferencia diferencia con setNameInitParty() ?
-            .setDbtrId(       "123456789")             // TODO: Diferencia con CdtrId?
+            .setDbtrId(       "123456789")                     // TODO: Diferencia con CdtrId?
             .setDbtrAcctId(   "999888666")
             .setIban(         "CR42010200690010163989")
             .setBicOrBEI(     "BSNJCRSJXXX")
