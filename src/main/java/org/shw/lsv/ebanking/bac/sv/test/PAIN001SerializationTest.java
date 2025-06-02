@@ -61,11 +61,11 @@ public class PAIN001SerializationTest {
         //  Nb	Reference number for the remittance document (e.g., invoice number)
 
             // AppHdr
-            .setBicfiFr(      "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
-            .setBicfiTo(      "BAMCSVSS")
-            .setBizMsgIdr(    "DummySaldoCta1")
-            .setMsgDefIdr(    "camt.060.001.05")
-            .setBizSvc(       "swift.cbprplus.01")
+            .setBicfiFr(      "DUMMYMASTER")                    // The sending Bank Identifier Code (festgelegt). "INVALIDBIC" Will trigger an error
+            .setBicfiTo(      "BAMCSVSS")                     // The receiving Bank Identifier Code (festgelegt)
+            .setBizMsgIdr(    "DummySaldoCta1")             // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference. 
+            .setMsgDefIdr(    "PAIN.001.001.03")            // The message definition identifier, indicating the type of message being sent. Bei "Payment Request" muß =PAIN.001.001.03
+            .setBizSvc(       "swift.cbprplus.01")             // The business service identifier. Hier muß == "swift.cbprplus.01"
             .setCreDt(        "2025-05-16T07:56:49-06:00")
 
             // Group Header
@@ -81,8 +81,11 @@ public class PAIN001SerializationTest {
             .setReqdExctnDt(  "2023-06-27")
             .setNameDebtor(   "Sistemas Aereos")           // AD_Client.name:  Name of the Debtor: The party whose account will be debited (payer).
             .setDbtrId(       "06140904181038")                // NIT vom AD_Client. Debtor Identifier: Unique ID for the debtor (payer), often a tax ID or customer number.
+
+            // Choose one Account Number:
             //.setDbtrAcctId(   "999888666")                          // Das oder IBAN. Debtor Identifier: Unique ID for the debtor (payer), often a tax ID or customer number.
             .setIbanDbtrAcct( "CR42010200690010163989")  // IBAN from Sender. IBAN is set by each bank.
+
             .setBicOrBEI(     "BSNJCRSJXXX")                 // Identifier for the initiating party, which can be a BIC (Bank Identifier Code) or BEI (Business Entity Identifier).
             .setBicDbtr(      "BAMCSVSS")
             .setCountry(      "SV")
@@ -96,12 +99,19 @@ public class PAIN001SerializationTest {
             .setInstrPrty(    "NORM")                                  // Instruction Priority, e.g. "NORM" or "HIGH"
             .setCcy(          "USD")
             .setInstdAmt(     "469.87")                                 // Payment Amount
-            .setBic(          "BSNJCRSJXXX")                                 // Entweder BIC oder MmbId
-            //.setMmbId     (     "102")            // Entweder BIC oder MmbId
-            .setNameCreditor( "Nombre cliente destino") 
-            .setCdtrId(       "987654321")                                // TODO: Diferencia con DbtrId?
-            .setCdtrAcctId(   "112233445")
+
+            // Choose one to determine the receivig Institution: BIC (Bank Identifier Code, SWIFT code) or MB:
+            .setBic(          "BSNJCRSJXXX")                                 // BIC vom Receiver. Entweder BIC oder MmbId
+            //.setMmbId     (     "102")                                         // MmbId (Clearing System Member Identifier):
+                                                                                 // An identifier assigned by a local clearing system (such as a national payment network). Entweder BIC oder MmbId
+
+            .setNameCreditor( "Nombre cliente destino")             // Name of receiver.
+            .setCdtrId(       "987654321")                                // TaxID of receiver.
+
+            // Choose one Account Number:
+            //.setCdtrAcctId(   "112233445")                                     // AccId oder IBAN. Creditor Identifier.
             .setIbanCdtrAcct( "CR42010200690010112233")             // IBAN from Receiver. IBAN is set by each bank.
+
             .setCdtrAcctCd(   "CACC")                                 // Andere Werte, nach copilot: CACC: Current account, SVGS: Savings account, COMM: Commission account, TRAN: Transit account, etc.
             .setPymtPurpose(  "Motivo del pago es el siguiente...")  // TODO: ermitteln, ob Purpose Muss-Feld ist, oder nicht
             .setRmtncInf(     "Referencia a factura numero NV-112")

@@ -2,7 +2,6 @@ package org.shw.lsv.ebanking.bac.sv.test;
 
 import java.time.LocalDateTime;
 
-import org.adempiere.legacy.apache.ecs.xhtml.code;
 import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
@@ -54,7 +53,7 @@ public static void main(String[] args) {
     private static RequestParams createTestParams() {
         return new RequestParams()
             // AppHdr
-            .setBicfiFr(      "DUMMYMASTER")                    // The sending Bank Identifier Code (festgelegt). "INVALIDBIC" Will trigger error
+            .setBicfiFr(      "DUMMYMASTER")                    // The sending Bank Identifier Code (festgelegt). "INVALIDBIC" Will trigger an error
             .setBicfiTo(      "BAMCSVSS")                     // The receiving Bank Identifier Code (festgelegt)
             .setBizMsgIdr(    "DummySaldoCta1")             // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference. 
             .setMsgDefIdr(    "camt.060.001.05")            // The message definition identifier, indicating the type of message being sent. Bei "Consulta Saldo Request" muß =() camt.052 ist das camt.060.001.05

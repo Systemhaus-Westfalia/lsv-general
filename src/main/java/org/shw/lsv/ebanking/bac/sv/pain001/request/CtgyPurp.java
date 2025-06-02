@@ -22,7 +22,7 @@ public class CtgyPurp {
                 if (( !(params.getCatPurpCd() == null || params.getCatPurpCd().isEmpty()) ) ) {
                     setCd(params.getCatPurpCd(), collector);
                 } 
-        }
+            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CTGYPURP_INIT, e);
         }

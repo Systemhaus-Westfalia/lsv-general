@@ -21,9 +21,9 @@ public class CdtrAcct {
      * @param params    the RequestParams containing the values to set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public CdtrAcct(RequestParams params, JsonValidationExceptionCollector collector) {
+    public CdtrAcct(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
-            setAcctId(new AcctId(params, collector), collector);
+            setAcctId(new AcctId(params, context, collector), collector);
             setCtgyPurp(new CtgyPurp(params, EBankingConstants.CONTEXT_CDTRACCT, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CDTRACCT_INIT, e);

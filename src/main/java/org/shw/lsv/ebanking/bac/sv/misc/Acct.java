@@ -25,9 +25,9 @@ public class Acct {
     public Acct() {}
 
 
-    public Acct(RequestParams params, JsonValidationExceptionCollector collector) {
+    public Acct(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
-            setAcctId (new AcctId( params, collector), collector);
+            setAcctId (new AcctId( params, context, collector), collector);
             setCcy(params.getCcy(), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_ACCT_INIT, e);

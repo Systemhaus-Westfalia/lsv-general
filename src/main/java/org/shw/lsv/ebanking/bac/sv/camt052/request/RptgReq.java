@@ -37,7 +37,7 @@ public class RptgReq {
         try {
             setReqdMsgNmId(params.getReqdMsgNmId(), collector);
 
-            setAcct    (new Acct(    params, collector), collector);
+            setAcct    (new Acct(    params, EBankingConstants.CONTEXT_RPTGREQ, collector), collector);
             // TODO: in den unteren Konstruktoren, sehen, unter welchen Umstaenden .getAcctOwntPtyId() oder getAnyBIC() zum Tragen kommen
             setAcctOwnr(new AcctOwnr(params, collector), collector);
 

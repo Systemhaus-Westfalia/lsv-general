@@ -16,7 +16,7 @@ public class DbtrAcct {
 
     public DbtrAcct(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setAcctId (new AcctId(params, collector), collector);
+            setAcctId (new AcctId(params, EBankingConstants.CONTEXT_DBTRACCT, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_DBTRACCT_INIT, e);
         }

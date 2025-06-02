@@ -1,8 +1,8 @@
-    package org.shw.lsv.ebanking.bac.sv.pain001.request;
+package org.shw.lsv.ebanking.bac.sv.pain001.request;
 
-    import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
-    import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-    import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -43,7 +43,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
             setPmtElementtAmt(  new PmtElementtAmt(  params, collector), collector);
             setCdtrAgt(         new CdtrAgt(         params, collector), collector);
             setCdtr(            new Cdtr(            params, collector), collector);
-            setCdtrAcct(        new CdtrAcct(        params, collector), collector);
+            setCdtrAcct(        new CdtrAcct(        params, EBankingConstants.CONTEXT_CDTRACCT, collector), collector);
             setRmtInf(          new RmtInf(          params, collector), collector);
 
             if ( !(params.getPymtPurpose() == null || params.getPymtPurpose ().isEmpty()) ) {

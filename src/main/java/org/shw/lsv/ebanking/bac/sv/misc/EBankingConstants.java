@@ -142,6 +142,7 @@ public class EBankingConstants {
 
 	public static final String CONTEXT_AGT       = "AGT";
 	public static final String CONTEXT_PTYORGID  = "PTYORGID";
+	public static final String CONTEXT_RPTGREQ   = "RPTGREQ";
 
 	public static final String CONTEXT_DBTR       = "DBTR";
 	public static final String CONTEXT_DBTRACCT   = "DBTRACCT";

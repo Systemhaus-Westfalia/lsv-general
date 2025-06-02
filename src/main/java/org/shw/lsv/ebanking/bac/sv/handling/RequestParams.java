@@ -22,6 +22,7 @@ public class RequestParams {
     private String ccy;
     private String ibanDbtrAcct;
     private String ibanCdtrAcct;
+    private String ibanRptgReq;
     private String acctId;
     private String tp;
     private String frdt;
@@ -78,6 +79,7 @@ public class RequestParams {
     public String     getCcy()           { return ccy;           }
     public String     getIbanDbtrAcct()  { return ibanDbtrAcct;  }
     public String     getIbanCdtrAcct()  { return ibanCdtrAcct;  }
+    public String     getIbanRptgReq()   { return ibanRptgReq;   }
     public String     getAcctId()        { return acctId;        }
     public String     getTp()            { return tp;            }
     public String     getFrdt()          { return frdt;          }
@@ -359,6 +361,11 @@ public class RequestParams {
 
     public RequestParams setIbanCdtrAcct(String ibanCdtrAcct) {
         this.ibanCdtrAcct = ibanCdtrAcct;
+        return this;
+    }
+
+    public RequestParams setIbanRptgReq(String ibanRptgReq) {
+        this.ibanRptgReq = ibanRptgReq;
         return this;
     }
 

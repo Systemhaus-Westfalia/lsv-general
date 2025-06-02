@@ -26,13 +26,22 @@ public class AcctId {
     public AcctId() {}
 
 
-	public AcctId(RequestParams params, JsonValidationExceptionCollector collector) {
+	public AcctId(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         // TODO: sich vergewissern, was BAC will: IBAN oder AcctIdOthr
         try {
-            if ( !(params.getIbanDbtrAcct() == null || params.getIbanDbtrAcct().isEmpty()) ) {
-                setIBAN(params.getIbanDbtrAcct(), collector);
-            }
-            else {
+            if ( context.equals(EBankingConstants.CONTEXT_CDTRACCT)) {
+                if ( !(params.getIbanCdtrAcct() == null || params.getIbanCdtrAcct().isEmpty()) ) {
+                    setIBAN(params.getIbanCdtrAcct(), collector);
+                }
+            } else if ( context.equals(EBankingConstants.CONTEXT_DBTRACCT)) {
+                if (( !(params.getIbanDbtrAcct() == null || params.getIbanDbtrAcct().isEmpty()) ) ) {
+                    setIBAN(params.getIbanDbtrAcct(), collector);
+                }
+            } else if ( context.equals(EBankingConstants.CONTEXT_RPTGREQ)) {
+                if (( !(params.getIbanRptgReq() == null || params.getIbanRptgReq().isEmpty()) ) ) {
+                    setIBAN(params.getIbanRptgReq(), collector);
+                }
+            } else {
                 setAcctIdOthr(new AcctIdOthr(params, collector), collector);
             }
         } catch (Exception e) {
