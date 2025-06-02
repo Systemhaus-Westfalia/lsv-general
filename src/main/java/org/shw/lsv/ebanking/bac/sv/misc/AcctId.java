@@ -29,8 +29,8 @@ public class AcctId {
 	public AcctId(RequestParams params, JsonValidationExceptionCollector collector) {
         // TODO: sich vergewissern, was BAC will: IBAN oder AcctIdOthr
         try {
-            if ( !(params.getIban() == null || params.getIban().isEmpty()) ) {
-                setIBAN(params.getIban(), collector);
+            if ( !(params.getIbanDbtrAcct() == null || params.getIbanDbtrAcct().isEmpty()) ) {
+                setIBAN(params.getIbanDbtrAcct(), collector);
             }
             else {
                 setAcctIdOthr(new AcctIdOthr(params, collector), collector);
@@ -58,7 +58,12 @@ public class AcctId {
 
 
     /**
-     * @param IBAN the IBAN to be set.<br>
+     * @param IBAN the International Bank Account Number.t.<br>
+     * <p>
+     * The IBAN structure is defined by the ISO 13616 standard.
+     * Each country’s national banking authority defines the format for its own IBANs (length, structure, included fields).
+     * The account-holding bank assigns the IBAN to each customer account, following the national rules.
+     * <p>
      * The parameter is validated.<br>
      * "pattern" : "[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}".<br>
      * Example: "CR05011111111111111111".
@@ -73,8 +78,13 @@ public class AcctId {
     }
 
     /**
-     * @param IBAN the IBAN to be set.<br>
+     * @param IBAN the International Bank Account Number.<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * The IBAN structure is defined by the ISO 13616 standard.
+     * Each country’s national banking authority defines the format for its own IBANs (length, structure, included fields).
+     * The account-holding bank assigns the IBAN to each customer account, following the national rules.
+     * <p>
      */
     public void setIBAN(String IBAN, JsonValidationExceptionCollector collector) {
         try {

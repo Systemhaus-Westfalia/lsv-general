@@ -56,6 +56,9 @@ public class PAIN001SerializationTest {
         // TODO: sicher stellen, dass im Betrieb, folgender Aufruf nicht bei Payments vorkomtt!!!
         //.setAnyBIC()
         // weil es dann PmtInf->Dbtr->Id->OrgId->AnyBIC gesetzt wird, was nicht erlaubt ist.
+        //
+        // Weitere Felder:
+        //  Nb	Reference number for the remittance document (e.g., invoice number)
 
             // AppHdr
             .setBicfiFr(      "DUMMYMASTER")  // "INVALIDBIC" Will trigger error
@@ -68,33 +71,38 @@ public class PAIN001SerializationTest {
             // Group Header
             .setMsgId(        "DummySaldoCta1")
             .setCreDtTm(      "2025-05-16T07:56:49-06:00")
-            .setPmtMtd(       "TRF")           // TRF oder CHK
-            .setNbOfTxs(      Integer.valueOf(3)) // Number of transactions
-            .setCtrlSum(      new BigDecimal("469.87"))
-            .setNameInitParty("Sistemas Aereos")                    // name of the customer sending the payment. AD_Client
+            .setPmtMtd(       "TRF")                           // Transfer immer. TRF oder CHK
+            .setNbOfTxs(      Integer.valueOf(3))                   // Normalerweise 1, weil wir immmer jeweils nur 1 Zahlung vornehmen. Number of transactions
+            .setCtrlSum(      new BigDecimal("469.87"))           // Payment Amout.
+            .setNameInitParty("Sistemas Aereos")                   // AD_Client.name: Name of the Initiating Party: The party that initiates the payment (the sender/customer).s
 
             //Document
-            .setCatPurpCd(    "SUPP")
+            .setCatPurpCd(    "SUPP")                       // SUPP als Konstante erstmal. Es koennen viele andere Werte angegeben werden.
             .setReqdExctnDt(  "2023-06-27")
-            .setNameDebtor(   "Nombre cliente ordenante")  // TODO: Cual es la diferencia diferencia con setNameInitParty() ?
-            .setDbtrId(       "123456789")                     // TODO: Diferencia con CdtrId?
-            .setDbtrAcctId(   "999888666")
-            .setIban(         "CR42010200690010163989")
-            .setBicOrBEI(     "BSNJCRSJXXX")
+            .setNameDebtor(   "Sistemas Aereos")           // AD_Client.name:  Name of the Debtor: The party whose account will be debited (payer).
+            .setDbtrId(       "06140904181038")                // NIT vom AD_Client. Debtor Identifier: Unique ID for the debtor (payer), often a tax ID or customer number.
+            //.setDbtrAcctId(   "999888666")                          // Das oder IBAN. Debtor Identifier: Unique ID for the debtor (payer), often a tax ID or customer number.
+            .setIbanDbtrAcct( "CR42010200690010163989")  // IBAN from Sender. IBAN is set by each bank.
+            .setBicOrBEI(     "BSNJCRSJXXX")                 // Identifier for the initiating party, which can be a BIC (Bank Identifier Code) or BEI (Business Entity Identifier).
             .setBicDbtr(      "BAMCSVSS")
             .setCountry(      "SV")
 
             // Payment Element
-            .setEndToEndId(   "E2E-1234567890")
-            .setInstrPrty(    "NORM")  // Instruction Priority, e.g. "NORM" or "HIGH"
+            .setEndToEndId(   "E2E-1234567890")             // C_Payment_ID oder aehnliches
+                                                                       // End-to-end identifier for the payment, used to track the transaction throughout its lifecycle.
+                                                                       // A unique reference for the transaction, assigned by the initiating party.
+                                                                       // Used for tracking the payment from origin to destination.
+
+            .setInstrPrty(    "NORM")                                  // Instruction Priority, e.g. "NORM" or "HIGH"
             .setCcy(          "USD")
-            .setInstdAmt(     "469.87")
-            .setBic(          "BSNJCRSJXXX")    // Entweder BIC oder MmbId
+            .setInstdAmt(     "469.87")                                 // Payment Amount
+            .setBic(          "BSNJCRSJXXX")                                 // Entweder BIC oder MmbId
             //.setMmbId     (     "102")            // Entweder BIC oder MmbId
             .setNameCreditor( "Nombre cliente destino") 
-            .setCdtrId(       "987654321")   // TODO: Diferencia con DbtrId?
+            .setCdtrId(       "987654321")                                // TODO: Diferencia con DbtrId?
             .setCdtrAcctId(   "112233445")
-            .setCdtrAcctCd(   "CACC")     // Andere Werte, nach copilot: CACC: Current account, SVGS: Savings account, COMM: Commission account, TRAN: Transit account, etc.
+            .setIbanCdtrAcct( "CR42010200690010112233")             // IBAN from Receiver. IBAN is set by each bank.
+            .setCdtrAcctCd(   "CACC")                                 // Andere Werte, nach copilot: CACC: Current account, SVGS: Savings account, COMM: Commission account, TRAN: Transit account, etc.
             .setPymtPurpose(  "Motivo del pago es el siguiente...")  // TODO: ermitteln, ob Purpose Muss-Feld ist, oder nicht
             .setRmtncInf(     "Referencia a factura numero NV-112")
             ;

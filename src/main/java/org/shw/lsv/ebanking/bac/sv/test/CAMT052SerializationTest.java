@@ -66,7 +66,7 @@ public static void main(String[] args) {
             .setCreDtTm(      "2025-05-16T07:56:49-06:00")
 
             // Document
-            .setReqdMsgNmId(  "ConsultaDeSaldoParaEmpresa" + "MiEmpresa")           // Specifies the type of report being requested
+            .setReqdMsgNmId(  "ConsultaDeSaldoParaEmpresa" + "MiEmpresa")         // Specifies the type of report being requested
             .setAcctId(       "999888666")                                 // Bank Account
             .setBicfiAcctOwnr("DUMMYORDENA")                        // The BIC (SWIFT code) of the account owner’s bank (the agent).
             .setCcy(          "USD")
