@@ -8,7 +8,7 @@ import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PAIN001RequestEnvelope implements Validatable  {
+public class PAIN001RequestEnvelope implements Validatable {
 
     @JsonProperty("AppHdr")
      AppHdr appHdr;

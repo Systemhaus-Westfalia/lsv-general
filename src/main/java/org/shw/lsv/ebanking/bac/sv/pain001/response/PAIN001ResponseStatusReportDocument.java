@@ -2,12 +2,13 @@ package org.shw.lsv.ebanking.bac.sv.pain001.response;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
+import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PAIN001ResponseStatusReportDocument {
+public class PAIN001ResponseStatusReportDocument implements Validatable {
 
     @JsonProperty("xmlns")
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,6 +34,23 @@ public class PAIN001ResponseStatusReportDocument {
             setXmlns(params.getXmlns(), collector);
     	}
         setStsRptReq(new StsRptReq(params, collector), collector);
+    }
+
+
+    @Override
+    public void validate(JsonValidationExceptionCollector collector) {
+        try {
+            if (stsRptReq == null) {
+                throw new IllegalArgumentException("stsRptReq cannot be null");
+            }
+
+            // Validate nested objects
+            if (stsRptReq instanceof Validatable) {
+                ((Validatable) stsRptReq).validate(collector);
+            }
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+        }
     }
 
     /**
