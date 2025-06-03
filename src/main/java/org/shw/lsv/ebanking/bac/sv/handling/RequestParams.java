@@ -59,6 +59,7 @@ public class RequestParams {
     private String     evtCd;
     private String     evtDesc;
     private String     evtTm;
+    private String     xmlns; // XML namespace, e.g. "urn:iso:std:iso:20022:tech:xsd:pain.001.001.09"
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -112,7 +113,7 @@ public class RequestParams {
     public String     getEvtCd()         { return evtCd;         }
     public String     getEvtDesc()       { return evtDesc;       }
     public String     getEvtTm()         { return evtTm;         }
-
+    public String     getXmlns()         { return xmlns;         }
 
 
     public RequestParams setBicfiFr(String bicfi) {
@@ -366,6 +367,11 @@ public class RequestParams {
 
     public RequestParams setIbanRptgReq(String ibanRptgReq) {
         this.ibanRptgReq = ibanRptgReq;
+        return this;
+    }
+
+    public RequestParams setXmlns(String xmlns) {
+        this.xmlns = xmlns;
         return this;
     }
 
