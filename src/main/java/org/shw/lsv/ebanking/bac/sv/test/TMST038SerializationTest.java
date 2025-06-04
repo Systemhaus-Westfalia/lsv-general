@@ -16,7 +16,7 @@ public class TMST038SerializationTest {
         String jsonOutput = "";
 
         LocalDateTime now = LocalDateTime.now();
-        System.err.println("Serialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+        System.err.println("TMST038 serialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         // 1. Create collector for test diagnostics
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
@@ -37,13 +37,13 @@ public class TMST038SerializationTest {
             System.out.println("\nGenerated JSON:");
             System.out.println(jsonOutput);
 
-            System.out.println("Serialization succeeded without errors.\n");
+            System.out.println("TMST038 serialization succeeded without errors.\n");
 
             now = LocalDateTime.now();
-            System.err.println("Serialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+            System.err.println("TMST038 serialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         } catch (JsonValidationException e) {
-            System.err.println("Serialization Test failed: " + e.getMessage());
+            System.err.println("TMST038 serialization Test failed: " + e.getMessage());
             System.err.println(e.getValidationErrors());
             System.err.println("********************************************");
         }

@@ -11,7 +11,7 @@ import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReport;
 public class PAIN001DeSerializationStatusReportTest {
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
-        System.err.println("Deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+        System.err.println("PAIN001 deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         // 1. Create collector with explicit settings
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
@@ -25,19 +25,19 @@ public class PAIN001DeSerializationStatusReportTest {
 
         // 4. Execute deserialization
         try {
-            System.out.println("Starting deserialization test...");
+            System.out.println("Starting PAIN001 deserialization test...");
             PAIN001ResponseStatusReport response = processor.deserialize(testJson, PAIN001ResponseStatusReport.class);
 
             // 5. Check for non-fatal warnings
             if (collector.hasErrors()) {
-                System.out.println("\nDeserialization succeeded with warnings:");
+                System.out.println("\nPAIN001 deserialization succeeded with warnings:");
                 System.out.println(collector.getAllErrors());
             } else {
-                System.out.println("Deserialization completed cleanly");
+                System.out.println("PAIN001 deserialization completed cleanly");
             }
 
             // 6. Use the deserialized object
-            System.out.println("\nDeserialized object details:");
+            System.out.println("\nPAIN001 deserialized object details:");
             printResponseSummary(response);
 
         } catch (JsonValidationException e) {

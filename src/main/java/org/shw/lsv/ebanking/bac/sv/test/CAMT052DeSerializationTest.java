@@ -11,7 +11,7 @@ import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 public class CAMT052DeSerializationTest {
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
-        System.err.println("Deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+        System.err.println("CAMT052 deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         // 1. Create collector with explicit settings
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
@@ -25,19 +25,19 @@ public class CAMT052DeSerializationTest {
 
         // 4. Execute deserialization
         try {
-            System.out.println("Starting deserialization test...");
+            System.out.println("Starting CAMT052 deserialization test...");
             CAMT052Response response = processor.deserialize(testJson, CAMT052Response.class);
 
             // 5. Check for non-fatal warnings
             if (collector.hasErrors()) {
-                System.out.println("\nDeserialization succeeded with warnings:");
+                System.out.println("\nCAMT052 deserialization succeeded with warnings:");
                 System.out.println(collector.getAllErrors());
             } else {
-                System.out.println("Deserialization completed cleanly");
+                System.out.println("CAMT052 deserialization completed cleanly");
             }
 
             // 6. Use the deserialized object
-            System.out.println("\nDeserialized object details:");
+            System.out.println("\nCAMT052 deserialized object details:");
             printResponseSummary(response);
             
         } catch (JsonValidationException e) {
