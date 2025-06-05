@@ -1,6 +1,5 @@
 package org.shw.lsv.ebanking.bac.sv.test;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
@@ -50,44 +49,27 @@ public class TMST038SerializationTest {
     }
 
     private static RequestParams createTestParams() {
-        return new RequestParams()
-            // AppHdr
-            .setBicfiFr("DUMMYMASTER")
-            .setBicfiTo("BAMCSVSS")
-            .setBizMsgIdr("DummySaldoCta1")
-            .setMsgDefIdr("PAIN.001.001.03")
-            .setBizSvc("swift.cbprplus.01")
-            .setCreDt("2025-05-16T07:56:49-06:00")
+        String PYMT_MESSAGE_ID = "ConsPago-ADClientName/(CuentaNr)";
+        String PYMT_DOCUMENT_ID = "PYMT-0001";  // Ich glaube, das ist die DocumentNr, die in der Antwort referenziert wird.
 
-            // Group Header
-            .setMsgId("DummySaldoCta1")
-            .setCreDtTm("2025-05-16T07:56:49-06:00")
-            .setPmtMtd("TRF")
-            .setNbOfTxs(Integer.valueOf(3))
-            .setCtrlSum(new BigDecimal("469.87"))
-            .setNameInitParty("Sistemas Aereos")
+        return new RequestParams()
+
+            // AppHdr
+            .setBicfiFr(      "BAMCSVSS")                       // BIC of Company's account (festgelegt)
+                                                                      // Official definition: The sending Bank Identifier Code.
+                                                                      // "INVALIDBIC" Will trigger an error
+            .setBicfiTo(      "BAMCSVSS")                     // BIC of Company's account (festgelegt)
+                                                                      // Official definition: The receiving Bank Identifier Code.
+            .setBizMsgIdr(    PYMT_MESSAGE_ID)                        // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference.
+            .setMsgDefIdr(    "TSMT.038.001.03")            // The message definition identifier, indicating the type of message being sent. Bei "Payment Consult Request" muß =TSMT.038.001.03
+            .setBizSvc(       "swift.cbprplus.01")             // The business service identifier. Hier muß == "swift.cbprplus.01"
+            .setCreDt(        "2025-06-10T17:26:49-06:00")
 
             // Document
-            .setCatPurpCd("SUPP")
-            .setReqdExctnDt("2023-06-27")
-            .setNameDebtor("Sistemas Aereos")
-            .setDbtrId("06140904181038")
-            .setIbanDbtrAcct("CR42010200690010163989")
-            .setBicOrBEI("BSNJCRSJXXX")
-            .setBicDbtr("BAMCSVSS")
-            .setCountry("SV")
-
-            // Payment Element
-            .setEndToEndId("E2E-1234567890")
-            .setInstrPrty("NORM")
-            .setCcy("USD")
-            .setInstdAmt("469.87")
-            .setBic("BSNJCRSJXXX")
-            .setNameCreditor("Nombre cliente destino")
-            .setCdtrId("987654321")
-            .setIbanCdtrAcct("CR42010200690010112233")
-            .setCdtrAcctCd("CACC")
-            .setPymtPurpose("Motivo del pago es el siguiente...")
-            .setRmtncInf("Referencia a factura numero NV-112");
+            .setXmlns(    "urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03") // XML namespace for the message
+            .setMsgId(    PYMT_DOCUMENT_ID)
+            .setCreDtTm("2025-06-10T17:26:49-06:00")
+            .setBic(        "BAMCSVSS");                           // BIC of Company's account
+                                                                       // Official definition: The BIC (SWIFT code) of the account’s bank.
     }
 }

@@ -51,23 +51,44 @@ public static void main(String[] args) {
     }
 
     private static RequestParams createTestParams() {
+        String SALDO_MESSAGE_ID = "Saldo-ADClientName/(CuentaNr)";
+
         return new RequestParams()
             // AppHdr
-            .setBicfiFr(      "DUMMYMASTER")                    // The sending Bank Identifier Code (festgelegt). "INVALIDBIC" Will trigger an error
-            .setBicfiTo(      "BAMCSVSS")                     // The receiving Bank Identifier Code (festgelegt)
-            .setBizMsgIdr(    "DummySaldoCta1")             // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference. 
+            .setBicfiFr(      "BAMCSVSS")                       // BIC of Company's account (festgelegt)
+                                                                      // Official definition: The sending Bank Identifier Code.
+                                                                      // "INVALIDBIC" Will trigger an error
+            .setBicfiTo(      "BAMCSVSS")                     // BIC of Company's account (festgelegt)
+                                                                      // Official definition: The receiving Bank Identifier Code.
+                                                                      // "INVALIDBIC" Will trigger an error
+
+            // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference.
+            // This MAY BE echeoed in the response, but must not
+            // Max length: 35
+            .setBizMsgIdr(    SALDO_MESSAGE_ID + "-01")
+
             .setMsgDefIdr(    "camt.060.001.05")            // The message definition identifier, indicating the type of message being sent. Bei "Consulta Saldo Request" muß =() camt.052 ist das camt.060.001.05
             .setBizSvc(       "swift.cbprplus.01")             // The business service identifier. Hier muß == "swift.cbprplus.01"
             .setCreDt(        "2025-05-16T07:56:49-06:00")
 
             // Group Header
-            .setMsgId(        "DummySaldoCta1")                             // ID assigned by the sender
+            // Max. length: 35
+            // Examples: "test:case? (ok)", "abc/def-ghi:jkl(mno)pqr.stu,vwx'y+z"
+            // Usually not echoed in Response
+            .setMsgId(        SALDO_MESSAGE_ID + "-02")                // ID assigned by the sender
+
             .setCreDtTm(      "2025-05-16T07:56:49-06:00")
 
             // Document
-            .setReqdMsgNmId(  "ConsultaDeSaldoParaEmpresa" + "MiEmpresa")         // Specifies the type of report being requested
-            .setAcctId(       "999888666")                                 // Bank Account
-            .setBicfiAcctOwnr("DUMMYORDENA")                        // The BIC (SWIFT code) of the account owner’s bank (the agent).
+
+            // Max length: 35
+            // Examples: "test:case? (ok)", "abc/def-ghi:jkl(mno)pqr.stu,vwx'y+z"
+            // Usually not echoed in Response
+            .setReqdMsgNmId(  SALDO_MESSAGE_ID + "-03")                // Specifies the type of report being requested
+
+            .setAcctId(       "999888666")                      // Bank Account
+            .setBicfiAcctOwnr("BAMCSVSS")                // BIC of Company's account
+                                                                       // Official definition: The BIC (SWIFT code) of the account owner’s bank (the agent).
             .setCcy(          "USD")
             ;
     }

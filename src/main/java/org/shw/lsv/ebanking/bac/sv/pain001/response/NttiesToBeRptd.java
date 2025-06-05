@@ -14,13 +14,13 @@ public class NttiesToBeRptd {
     public NttiesToBeRptd() {}
 
     public NttiesToBeRptd(RequestParams params, JsonValidationExceptionCollector collector) {
-        setBIC(params.getBic(), collector);
+        setbIC(params.getBic(), collector);
     }
 
     /**
      * @return the BIC (Bank Identifier Code)
      */
-    public String getBIC() {
+    public String getbIC() {
         return bIC;
     }
 
@@ -34,7 +34,7 @@ public class NttiesToBeRptd {
      * <p>
      * Example: "DEUTDEFF" or "DEUTDEFF500"
      */
-    public void setBIC(String bIC) {
+    public void setbIC(String bIC) {
         boolean patternOK = (bIC != null) && bIC.matches(EBankingConstants.PATTERN_BIC);
         if (!patternOK) {
             throw new IllegalArgumentException("Wrong parameter 'bIC' (" + bIC + ") in setBIC()");
@@ -52,9 +52,9 @@ public class NttiesToBeRptd {
      * <p>
      * Example: "DEUTDEFF" or "DEUTDEFF500"
      */
-    public void setBIC(String bIC, JsonValidationExceptionCollector collector) {
+    public void setbIC(String bIC, JsonValidationExceptionCollector collector) {
         try {
-            setBIC(bIC);
+            setbIC(bIC);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
         }

@@ -77,11 +77,14 @@ public class ReqId {
     /**
      * @param creDtTm the CreDtTm to be set.<br>
      * The parameter is validated.<br>
-     * "pattern" : EBankingConstants.PATTERN_DATETIME<br>
-     * Example: "2020-09-08T18:00:00+02:00".
+     * <p>
+     * "pattern" : PATTERN_DATETIME || PATTERN_DATETIME_TZ, because Payment Response is without TZ and Payment Consult Request with TZ<br>
+     * <p>
+     * Example: "2020-09-08T18:00:00+02:00" or "2020-09-08T18:00:00".
      */
     public void setCreDtTm(String creDtTm) {
-        boolean patternOK = (creDtTm != null) && Pattern.matches(EBankingConstants.PATTERN_DATETIME, creDtTm);
+        boolean patternOK = (creDtTm != null) && 
+            (Pattern.matches(EBankingConstants.PATTERN_DATETIME_TZ, creDtTm) || Pattern.matches(EBankingConstants.PATTERN_DATETIME, creDtTm));
 
         if (!patternOK) {
             throw new IllegalArgumentException(
@@ -94,6 +97,10 @@ public class ReqId {
     /**
      * @param creDtTm the CreDtTm to be set.<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     * <p>
+     * "pattern" : PATTERN_DATETIME || PATTERN_DATETIME_TZ, because Payment Response is without TZ and Payment Consult Request with TZ<br>
+     * <p>
+     * Example: "2020-09-08T18:00:00+02:00" or "2020-09-08T18:00:00".
      */
     public void setCreDtTm(String creDtTm, JsonValidationExceptionCollector collector) {
         try {

@@ -51,6 +51,9 @@ public class PAIN001SerializationTest {
     }
 
     private static RequestParams createTestParams() {
+        String PYMT_MESSAGE_ID = "Pago-ADClientName/(CuentaNr)";
+        String PYMT_DOCUMENT_ID = "PYMT-0001";  // Ich glaube, das ist die DocumentNr, die in der Antwort NICHT zurueckgeliefert wird.
+
         return new RequestParams()
 
         // TODO: sicher stellen, dass im Betrieb, folgender Aufruf nicht bei Payments vorkomtt!!!
@@ -61,17 +64,33 @@ public class PAIN001SerializationTest {
         //  Nb	Reference number for the remittance document (e.g., invoice number)
 
             // AppHdr
-            .setBicfiFr(      "DUMMYMASTER")                    // The sending Bank Identifier Code (festgelegt). "INVALIDBIC" Will trigger an error
-            .setBicfiTo(      "BAMCSVSS")                     // The receiving Bank Identifier Code (festgelegt)
-            .setBizMsgIdr(    "DummySaldoCta1")             // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference. 
+            .setBicfiFr(      "BAMCSVSS")                       // BIC of Company's account (festgelegt)
+                                                                      // Official definition: The sending Bank Identifier Code.
+                                                                      // "INVALIDBIC" Will trigger an error
+            .setBicfiTo(      "BAMCSVSS")                     // BIC of Company's account (festgelegt)
+                                                                      // Official definition: The receiving Bank Identifier Code.
+                                                                      // "INVALIDBIC" Will trigger an error
+            // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference.
+            // This MAY BE echeoed in the response, but must not
+            // Max length: 35
+            .setBizMsgIdr(    PYMT_MESSAGE_ID)
+
             .setMsgDefIdr(    "PAIN.001.001.03")            // The message definition identifier, indicating the type of message being sent. Bei "Payment Request" muß =PAIN.001.001.03
             .setBizSvc(       "swift.cbprplus.01")             // The business service identifier. Hier muß == "swift.cbprplus.01"
             .setCreDt(        "2025-05-16T07:56:49-06:00")
 
             // Group Header
-            .setMsgId(        "DummySaldoCta1")
+            .setMsgId(        PYMT_DOCUMENT_ID)                       // Unique identifier for the payment group (all transactions in this request).
+            // TODO: wo wird "PmtInfId"  mit PYMT_DOCUMENT_ID gesetzt?
             .setCreDtTm(      "2025-05-16T07:56:49-06:00")
             .setPmtMtd(       "TRF")                           // Transfer immer. TRF oder CHK
+
+            // Unique identifier for the payment instruction set (e.g., one set of creditor/amount details).
+            // Often matches GrpHdr/MsgId (if only one payment instruction exists).
+            // In production, this could be:a payment order ID (e.g., "PO-987654").
+            // Helps the bank associate the payment with your internal records.
+            .setPmtInfId(       PYMT_DOCUMENT_ID)
+
             .setNbOfTxs(      Integer.valueOf(3))                   // Normalerweise 1, weil wir immmer jeweils nur 1 Zahlung vornehmen. Number of transactions
             .setCtrlSum(      new BigDecimal("469.87"))           // Payment Amout.
             .setNameInitParty("Sistemas Aereos")                   // AD_Client.name: Name of the Initiating Party: The party that initiates the payment (the sender/customer).s
@@ -95,24 +114,25 @@ public class PAIN001SerializationTest {
                                                                        // End-to-end identifier for the payment, used to track the transaction throughout its lifecycle.
                                                                        // A unique reference for the transaction, assigned by the initiating party.
                                                                        // Used for tracking the payment from origin to destination.
+                                                                       // Use EndToEndId to match payments with responses.
 
-            .setInstrPrty(    "NORM")                                  // Instruction Priority, e.g. "NORM" or "HIGH"
+            .setInstrPrty(    "NORM")                        // Instruction Priority, e.g. "NORM" or "HIGH"
             .setCcy(          "USD")
-            .setInstdAmt(     "469.87")                                 // Payment Amount
+            .setInstdAmt(     "469.87")                       // Payment Amount
 
             // Choose one to determine the receivig Institution: BIC (Bank Identifier Code, SWIFT code) or MB:
-            .setBic(          "BSNJCRSJXXX")                                 // BIC vom Receiver. Entweder BIC oder MmbId
-            //.setMmbId     (     "102")                                         // MmbId (Clearing System Member Identifier):
-                                                                                 // An identifier assigned by a local clearing system (such as a national payment network). Entweder BIC oder MmbId
+            .setBic(          "BSNJCRSJXXX")                       // BIC vom Receiver. Entweder BIC oder MmbId
+            //.setMmbId     (     "102")                               // MmbId (Clearing System Member Identifier):
+                                                                       // An identifier assigned by a local clearing system (such as a national payment network). Entweder BIC oder MmbId
 
-            .setNameCreditor( "Nombre cliente destino")             // Name of receiver.
-            .setCdtrId(       "987654321")                                // TaxID of receiver.
+            .setNameCreditor( "Nombre cliente destino")   // Name of receiver.
+            .setCdtrId(       "987654321")                      // TaxID of receiver.
 
             // Choose one Account Number:
-            //.setCdtrAcctId(   "112233445")                                     // AccId oder IBAN. Creditor Identifier.
-            .setIbanCdtrAcct( "CR42010200690010112233")             // IBAN from Receiver. IBAN is set by each bank.
+            //.setCdtrAcctId(   "112233445")                           // AccId oder IBAN. Creditor Identifier.
+            .setIbanCdtrAcct( "CR42010200690010112233")   // IBAN from Receiver. IBAN is set by each bank.
 
-            .setCdtrAcctCd(   "CACC")                                 // Andere Werte, nach copilot: CACC: Current account, SVGS: Savings account, COMM: Commission account, TRAN: Transit account, etc.
+            .setCdtrAcctCd(   "CACC")                       // Andere Werte, nach copilot: CACC: Current account, SVGS: Savings account, COMM: Commission account, TRAN: Transit account, etc.
             .setPymtPurpose(  "Motivo del pago es el siguiente...")  // TODO: ermitteln, ob Purpose Muss-Feld ist, oder nicht
             .setRmtncInf(     "Referencia a factura numero NV-112")
             ;

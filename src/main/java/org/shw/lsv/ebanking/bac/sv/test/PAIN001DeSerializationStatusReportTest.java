@@ -47,6 +47,7 @@ public class PAIN001DeSerializationStatusReportTest {
     }
 
     private static String createTestJson() {
+        // StsRptReq -> ReqId -> Id should be the same as PmtInf of Request
         String jsonContent =
             "{\n" +
             "    \"Envelope\": {\n" +
@@ -74,7 +75,7 @@ public class PAIN001DeSerializationStatusReportTest {
             "            \"xmlns\": \"urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03\",\n" +
             "            \"StsRptReq\": {\n" +
             "                \"ReqId\": {\n" +
-            "                    \"Id\": \"Prueba_01\",\n" +
+            "                    \"Id\": \"E2E-1234567890\",\n" +
             "                    \"CreDtTm\": \"2022-05-20T12:21:35\"\n" +
             "                },\n" +
             "                \"NttiesToBeRptd\": {\n" +
@@ -149,7 +150,7 @@ public class PAIN001DeSerializationStatusReportTest {
                         (response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getNttiesToBeRptd() != null));
                     if (response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getNttiesToBeRptd() != null) {
                         System.out.println("    BIC     : " +
-                            response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getNttiesToBeRptd().getBIC());
+                            response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getNttiesToBeRptd().getbIC());
                     }
                 }
             }

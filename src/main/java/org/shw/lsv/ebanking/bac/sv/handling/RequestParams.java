@@ -17,6 +17,7 @@ public class RequestParams {
 
     private String prtry;
     private String msgId;
+    private String pmtInfId;
     private String creDtTm;
     private String reqdMsgNmId;
     private String ccy;
@@ -114,6 +115,7 @@ public class RequestParams {
     public String     getEvtDesc()       { return evtDesc;       }
     public String     getEvtTm()         { return evtTm;         }
     public String     getXmlns()         { return xmlns;         }
+    public String     getPmtInfId()      { return pmtInfId;      }
 
 
     public RequestParams setBicfiFr(String bicfi) {
@@ -372,6 +374,11 @@ public class RequestParams {
 
     public RequestParams setXmlns(String xmlns) {
         this.xmlns = xmlns;
+        return this;
+    }
+
+    public RequestParams setPmtInfId(String pmtInfId) {
+        this.pmtInfId = pmtInfId;
         return this;
     }
 
