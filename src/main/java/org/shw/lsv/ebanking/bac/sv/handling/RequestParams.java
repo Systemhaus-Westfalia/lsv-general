@@ -60,7 +60,8 @@ public class RequestParams {
     private String     evtCd;
     private String     evtDesc;
     private String     evtTm;
-    private String     xmlns; // XML namespace, e.g. "urn:iso:std:iso:20022:tech:xsd:pain.001.001.09"
+    private String     xmlns;      // XML namespace, e.g. "urn:iso:std:iso:20022:tech:xsd:pain.001.001.09"
+    private String     rsn;        // Reason for the response, e.g. "Payment found and accepted"
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -116,6 +117,7 @@ public class RequestParams {
     public String     getEvtTm()         { return evtTm;         }
     public String     getXmlns()         { return xmlns;         }
     public String     getPmtInfId()      { return pmtInfId;      }
+    public String     getRsn()           { return rsn;           }
 
 
     public RequestParams setBicfiFr(String bicfi) {
@@ -379,6 +381,11 @@ public class RequestParams {
 
     public RequestParams setPmtInfId(String pmtInfId) {
         this.pmtInfId = pmtInfId;
+        return this;
+    }
+
+    public RequestParams setRsn(String rsn) {
+        this.rsn = rsn;
         return this;
     }
 

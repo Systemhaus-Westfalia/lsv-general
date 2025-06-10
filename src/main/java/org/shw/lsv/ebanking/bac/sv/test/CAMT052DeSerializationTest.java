@@ -147,11 +147,11 @@ public class CAMT052DeSerializationTest {
 */
     private static void printResponseSummary(CAMT052Response response) {
         LocalDateTime now = LocalDateTime.now();
-        System.err.println("Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+        System.err.println("CAMT052 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
     
-        System.out.println("Envelope present: " + (response.getcAMT052ResponseEnvelope() != null));
+        System.out.println("CAMT052 Envelope present: " + (response.getcAMT052ResponseEnvelope() != null));
         if (response.getcAMT052ResponseEnvelope() != null) {
-            System.out.println("Document present: " + 
+            System.out.println("CAMT052 Document present: " + 
                 (response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument() != null));
         }
         System.err.println("********************************************");

@@ -78,6 +78,8 @@ public class EBankingConstants {
     public static final String ERROR_RFRDDOCINF_INIT           = "RfrdDocInf initialization";
     public static final String ERROR_SYSEVTNTFCTN_INIT         = "SysEvtNtfctn initialization";
     public static final String ERROR_EVTINF_INIT               = "EvtInf initialization";
+    public static final String ERROR_STS_INIT                  = "Sts initialization";
+    public static final String ERROR_STSRPTRSP_INIT            = "StsRptRsp initialization";
 
 
 	public static final String ERROR_PAIN001REQUEST_INIT       = "PAIN001Request initialization";
@@ -95,6 +97,7 @@ public class EBankingConstants {
 	public static final String ERROR_INITGPTY_INIT             = "InitgPty initialization";
 	public static final String ERROR_GRPHDRID_INIT             = "GrpHdrId initialization";
 	public static final String ERROR_INVALID_BIC_OR_BEI_FORMAT = "Invalid BIC or BEI format";
+	public static final String ERROR_TMST0039RESPONSE_INIT     = "TMST0039Response initialization";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";

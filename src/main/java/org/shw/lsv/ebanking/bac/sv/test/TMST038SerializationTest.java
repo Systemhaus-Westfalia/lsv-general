@@ -26,6 +26,8 @@ public class TMST038SerializationTest {
 
         try {
             // 3. Build request with test's collector
+            // TMST038 Request is the same as PAIN001ResponseStatusReport.
+            // This is the reason why PAIN001ResponseStatusReport is used here.
             PAIN001ResponseStatusReport request = RequestBuilder.build(PAIN001ResponseStatusReport.class, params, collector);
 
             // 4. Serialization test
@@ -67,7 +69,7 @@ public class TMST038SerializationTest {
 
             // Document
             .setXmlns(    "urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03") // XML namespace for the message
-            .setMsgId(    PYMT_DOCUMENT_ID)
+            .setMsgId(    PYMT_DOCUMENT_ID) 
             .setCreDtTm("2025-06-10T17:26:49-06:00")
             .setBic(        "BAMCSVSS");                           // BIC of Company's account
                                                                        // Official definition: The BIC (SWIFT code) of the account’s bank.

@@ -112,11 +112,11 @@ public class PAIN001DeSerializationSystemEventNotificationTest {
     */
     private static void printResponseSummary(PAIN001ResponseEvtNtfn response) {
         LocalDateTime now = LocalDateTime.now();
-        System.err.println("Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+        System.err.println("PAIN001 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
-        System.out.println("Envelope present: " + (response.getpAIN001ResponseEvtNtfnEnvelope() != null));
+        System.out.println("PAIN001 Envelope present: " + (response.getpAIN001ResponseEvtNtfnEnvelope() != null));
         if (response.getpAIN001ResponseEvtNtfnEnvelope() != null) {
-            System.out.println("Document present: " +
+            System.out.println("PAIN001 Document present: " +
                 (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument() != null));
             if (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument() != null) {
                 System.err.println("********************************************");

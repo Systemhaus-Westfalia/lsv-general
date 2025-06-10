@@ -110,7 +110,9 @@ public class PAIN001SerializationTest {
             .setCountry(      "SV")
 
             // Payment Element
-            .setEndToEndId(   "E2E-1234567890")             // C_Payment_ID oder aehnliches
+            .setEndToEndId(   PYMT_DOCUMENT_ID)                        // Damit es nur eine einzige ID gibt im Payment (also hier) und im Payment Consult Request.
+                                                                       // Wenn es nicht funktioniert, folgende, jetzt auskommentierte Zeile verwenden:
+            //.setEndToEndId(   "E2E-1234567890")             // C_Payment_ID oder aehnliches
                                                                        // End-to-end identifier for the payment, used to track the transaction throughout its lifecycle.
                                                                        // A unique reference for the transaction, assigned by the initiating party.
                                                                        // Used for tracking the payment from origin to destination.
