@@ -80,6 +80,7 @@ public class EBankingConstants {
     public static final String ERROR_EVTINF_INIT               = "EvtInf initialization";
     public static final String ERROR_STS_INIT                  = "Sts initialization";
     public static final String ERROR_STSRPTRSP_INIT            = "StsRptRsp initialization";
+	public static final String ERROR_CAMT053REQUEST_INIT       = "CAMT053Request initialization";
 
 
 	public static final String ERROR_PAIN001REQUEST_INIT       = "PAIN001Request initialization";
