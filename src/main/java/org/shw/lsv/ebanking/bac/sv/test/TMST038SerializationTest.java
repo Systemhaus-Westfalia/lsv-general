@@ -57,10 +57,10 @@ public class TMST038SerializationTest {
         return new RequestParams()
 
             // AppHdr
-            .setBicfiFr(      "BAMCSVSS")                       // BIC of Company's account (festgelegt)
+            .setBicfiFr(      "AMERICA3PLX")                    // BIC of Company (festgelegt)
                                                                       // Official definition: The sending Bank Identifier Code.
                                                                       // "INVALIDBIC" Will trigger an error
-            .setBicfiTo(      "BAMCSVSS")                     // BIC of Company's account (festgelegt)
+            .setBicfiTo(      "BAMCSVSSXXX")                  // BIC of bank (festgelegt)
                                                                       // Official definition: The receiving Bank Identifier Code.
             .setBizMsgIdr(    PYMT_MESSAGE_ID)                        // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference.
             .setMsgDefIdr(    "TSMT.038.001.03")            // The message definition identifier, indicating the type of message being sent. Bei "Payment Consult Request" muß =TSMT.038.001.03
@@ -71,7 +71,7 @@ public class TMST038SerializationTest {
             .setXmlns(    "urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03") // XML namespace for the message
             .setMsgId(    PYMT_DOCUMENT_ID) 
             .setCreDtTm("2025-06-10T17:26:49-06:00")
-            .setBic(        "BAMCSVSS");                           // BIC of Company's account
+            .setBic(        "AMERICA3PLX");                        // BIC of Company
                                                                        // Official definition: The BIC (SWIFT code) of the account’s bank.
     }
 }

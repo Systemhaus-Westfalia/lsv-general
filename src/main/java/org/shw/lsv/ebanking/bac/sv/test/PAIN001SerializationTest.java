@@ -64,10 +64,10 @@ public class PAIN001SerializationTest {
         //  Nb	Reference number for the remittance document (e.g., invoice number)
 
             // AppHdr
-            .setBicfiFr(      "BAMCSVSS")                       // BIC of Company's account (festgelegt)
+            .setBicfiFr(      "AMERICA3PLX")                    // BIC of Company (festgelegt)
                                                                       // Official definition: The sending Bank Identifier Code.
                                                                       // "INVALIDBIC" Will trigger an error
-            .setBicfiTo(      "BAMCSVSS")                     // BIC of Company's account (festgelegt)
+            .setBicfiTo(      "BAMCSVSSXXX")                  // BIC of bank (festgelegt)
                                                                       // Official definition: The receiving Bank Identifier Code.
                                                                       // "INVALIDBIC" Will trigger an error
             // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference.
@@ -105,8 +105,8 @@ public class PAIN001SerializationTest {
             //.setDbtrAcctId(   "999888666")                          // Das oder IBAN. Debtor Identifier: Unique ID for the debtor (payer), often a tax ID or customer number.
             .setIbanDbtrAcct( "CR42010200690010163989")  // IBAN from Sender. IBAN is set by each bank.
 
-            .setBicOrBEI(     "BSNJCRSJXXX")                 // Identifier for the initiating party, which can be a BIC (Bank Identifier Code) or BEI (Business Entity Identifier).
-            .setBicDbtr(      "BAMCSVSS")
+            .setBicOrBEI(     "AMERICA3PLX")                 // Identifier for the initiating party, which can be a BIC (Bank Identifier Code) or BEI (Business Entity Identifier).
+            .setBicDbtr(      "AMERICA3PLX")
             .setCountry(      "SV")
 
             // Payment Element
@@ -123,7 +123,7 @@ public class PAIN001SerializationTest {
             .setInstdAmt(     "469.87")                       // Payment Amount
 
             // Choose one to determine the receivig Institution: BIC (Bank Identifier Code, SWIFT code) or MB:
-            .setBic(          "BSNJCRSJXXX")                       // BIC vom Receiver. Entweder BIC oder MmbId
+            .setBic(          "BAMCSVSSXXX")                       // BIC vom Receiver. Entweder BIC oder MmbId
             //.setMmbId     (     "102")                               // MmbId (Clearing System Member Identifier):
                                                                        // An identifier assigned by a local clearing system (such as a national payment network). Entweder BIC oder MmbId
 

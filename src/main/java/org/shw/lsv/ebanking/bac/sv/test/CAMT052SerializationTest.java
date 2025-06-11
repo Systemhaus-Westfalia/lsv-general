@@ -55,10 +55,10 @@ public static void main(String[] args) {
 
         return new RequestParams()
             // AppHdr
-            .setBicfiFr(      "BAMCSVSS")                       // BIC of Company's account (festgelegt)
+            .setBicfiFr(      "AMERICA3PLX")                    // BIC of Company (festgelegt)
                                                                       // Official definition: The sending Bank Identifier Code.
                                                                       // "INVALIDBIC" Will trigger an error
-            .setBicfiTo(      "BAMCSVSS")                     // BIC of Company's account (festgelegt)
+            .setBicfiTo(      "BAMCSVSSXXX")                  // BIC of bank (festgelegt)
                                                                       // Official definition: The receiving Bank Identifier Code.
                                                                       // "INVALIDBIC" Will trigger an error
 
@@ -87,7 +87,7 @@ public static void main(String[] args) {
             .setReqdMsgNmId(  SALDO_MESSAGE_ID + "-03")                // Specifies the type of report being requested
 
             .setAcctId(       "999888666")                      // Bank Account
-            .setBicfiAcctOwnr("BAMCSVSS")                // BIC of Company's account
+            .setBicfiAcctOwnr("AMERICA3PLX")             // BIC of Company
                                                                        // Official definition: The BIC (SWIFT code) of the account owner’s bank (the agent).
             .setCcy(          "USD")
             ;
