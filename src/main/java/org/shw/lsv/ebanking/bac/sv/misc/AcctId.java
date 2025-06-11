@@ -40,8 +40,12 @@ public class AcctId {
             } else if ( context.equals(EBankingConstants.CONTEXT_RPTGREQ)) {
                 if (( !(params.getIbanRptgReq() == null || params.getIbanRptgReq().isEmpty()) ) ) {
                     setIBAN(params.getIbanRptgReq(), collector);
+                } else if (( !(params.getAcctId() == null || params.getAcctId().isEmpty()) ) ) {
+                    setAcctIdOthr(new AcctIdOthr(params, collector), collector);
                 }
             } else {
+                // Komme ich ueberhaupt hierhin??
+                // TODO: alle Tests durchgehen, ob es einen Fall gibt, wo ich hierhin komme
                 setAcctIdOthr(new AcctIdOthr(params, collector), collector);
             }
         } catch (Exception e) {
