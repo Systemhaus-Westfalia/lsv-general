@@ -36,7 +36,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
     public PAIN001PaymentElement() { }
 
-       public PAIN001PaymentElement(RequestParams params, JsonValidationExceptionCollector collector) {
+    public PAIN001PaymentElement(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setPmtId(           new PmtId(           params, collector), collector);
             setPmtElementtPInf( new PmtElementtPInf( params, collector), collector);

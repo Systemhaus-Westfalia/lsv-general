@@ -99,6 +99,7 @@ public class EBankingConstants {
 	public static final String ERROR_GRPHDRID_INIT             = "GrpHdrId initialization";
 	public static final String ERROR_INVALID_BIC_OR_BEI_FORMAT = "Invalid BIC or BEI format";
 	public static final String ERROR_TMST0039RESPONSE_INIT     = "TMST0039Response initialization";
+	public static final String ERROR_STMT_OF_ACCT_ELEMENT_INIT = "StmtOfAccountElement initialization";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
@@ -139,6 +140,9 @@ public class EBankingConstants {
 	public static final String PATTERN_INSTR_PRTY   = "(HIGH|NORM)";
 	public static final String PATTERN_EVENTCODE    = "[A-Z0-9]{1,35}";
 	public static final String PATTERN_XMLNS        = "^urn:iso:std:iso:20022:tech:xsd:[a-z0-9\\.]+$";
+	public static final String PATTERN_NTRYREF      = "[0-9A-Za-z/\\-\\?:().,'\\+ ]{1,35}";
+	public static final String PATTERN_CDTDBTIND    = "CRDT|DBIT";
+	public static final String PATTERN_ADDTLNTRYINF = "[0-9A-Za-z/\\-\\?:().,'\\+ ]{1,140}";
 
 
 	public static final String CONTEXT_FR        = "FR";
