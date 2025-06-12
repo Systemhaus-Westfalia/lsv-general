@@ -64,7 +64,7 @@ public class RptgPrd {
      * @param tp the Tp to be set.<br>
      * The parameter is validated: null not allowed.<br>
      * Matching items to be reported. Available options: ALLL (all elements).<br>
-     * Example: "ALLL".
+     * Example: "ALL".
      */
     public void setTp(String tp) {
         boolean patternOK = (tp != null && tp.equals(EBankingConstants.PATTERN_TP));

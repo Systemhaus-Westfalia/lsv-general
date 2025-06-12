@@ -111,7 +111,7 @@ public class EBankingConstants {
 	public static final String PATTERN_REQDMSGNMID  = "[0-9a-zA-Z/\\-?:().,'+ ]+";
 	public static final String PATTERN_ACCT_ID      = "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)";
 	public static final String PATTERN_TP           = "ALLL";
-	public static final String PATTERN_EQSEQ        = "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+";
+	public static final String PATTERN_EQSEQ        = "[0-9a-zA-Z/\\\\?:\\(\\)\\.,'\\+ \\-]+";
 	public static final String PATTERN_RPTID        = "([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]([0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ]*(/[0-9a-zA-Z\\-\\?:\\(\\)\\.,'\\+ ])?)*)";
 	public static final String PATTERN_DATETIME_TZ  = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]([0][0-9]|[1][0-1]):[0-5][0-9]$";
 	public static final String PATTERN_DATETIME     = "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$";
