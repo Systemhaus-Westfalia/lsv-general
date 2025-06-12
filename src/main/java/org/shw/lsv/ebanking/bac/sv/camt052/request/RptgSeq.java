@@ -36,7 +36,7 @@ public class RptgSeq {
 	/**
 	 * @param eQSeq the EQSeq to be set.<br>
 	 * The parameter is validated.<br>
-	 * Pattern: "[0-9a-zA-Z/\\\\-\\?:\\(\\)\\.,'\\+ ]+".<br>
+	 * Pattern: "[0-9a-zA-Z/\\\\?:\\(\\)\\.,'\\+ \\-]+"
 	 * Example: "1", "abc123", "A-Z/?", "Hello, World!", "1+2-3", "abc/def\\ghi".
 	 */
 	public void seteQSeq(String eQSeq) {
