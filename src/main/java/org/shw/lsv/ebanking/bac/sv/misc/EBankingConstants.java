@@ -101,6 +101,8 @@ public class EBankingConstants {
 	public static final String ERROR_TMST0039RESPONSE_INIT     = "TMST0039Response initialization";
 	public static final String ERROR_STMT_OF_ACCT_ELEMENT_INIT = "StmtOfAccountElement initialization";
 	public static final String ERROR_BOOKGORVALDT_INIT         = "BookgOrValDt initialization";
+	public static final String ERROR_DOMN_INIT                 = "Domn initialization";
+	public static final String ERROR_BKTXCD_INIT               = "BkTxCd initialization";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
