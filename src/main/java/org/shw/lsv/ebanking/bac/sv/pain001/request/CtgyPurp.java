@@ -43,7 +43,7 @@ public class CtgyPurp {
      */
     public void setCd(String cd) {
         boolean patternOK = (cd != null && !cd.isEmpty()) &&
-            java.util.regex.Pattern.matches("[A-Z]{4}", cd);
+            java.util.regex.Pattern.matches(EBankingConstants.PATTERN_CD_STATUS, cd);
 
         if (!patternOK) {
             throw new IllegalArgumentException("Wrong parameter 'cd' (" + cd + ") in setCd()");

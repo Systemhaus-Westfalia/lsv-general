@@ -69,6 +69,7 @@ public class RequestParams {
     private String     valDt;
     private String     balanceAmt;
     private String     stmtOfAcctAmt;
+    private String     subFmlyCd;
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -132,6 +133,7 @@ public class RequestParams {
     public String     getValDt()         { return valDt;         }
     public String     getBalanceAmt()    { return balanceAmt;    }
     public String     getStmtOfAcctAmt() { return stmtOfAcctAmt; }
+    public String     getSubFmlyCd()     { return subFmlyCd;     }
 
 
     public RequestParams setBicfiFr(String bicfi) {
@@ -435,6 +437,11 @@ public class RequestParams {
 
     public RequestParams setStmtOfAcctAmt(String stmtOfAcctAmt) {
         this.stmtOfAcctAmt = stmtOfAcctAmt;
+        return this;
+    }
+
+    public RequestParams setSubFmlyCd(String subFmlyCd) {
+        this.subFmlyCd = subFmlyCd;
         return this;
     }
 

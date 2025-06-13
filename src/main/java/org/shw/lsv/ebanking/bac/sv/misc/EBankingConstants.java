@@ -103,6 +103,7 @@ public class EBankingConstants {
 	public static final String ERROR_BOOKGORVALDT_INIT         = "BookgOrValDt initialization";
 	public static final String ERROR_DOMN_INIT                 = "Domn initialization";
 	public static final String ERROR_BKTXCD_INIT               = "BkTxCd initialization";
+	public static final String ERROR_FMLY_INIT                 = "Fmly initialization";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
@@ -146,6 +147,7 @@ public class EBankingConstants {
 	public static final String PATTERN_NTRYREF      = "[0-9A-Za-z/\\-\\?:().,'\\+ ]{1,35}";
 	public static final String PATTERN_CDTDBTIND    = "CRDT|DBIT";
 	public static final String PATTERN_ADDTLNTRYINF = "[0-9A-Za-z/\\-\\?:().,'\\+ ]{1,140}";
+	public static final String PATTERN_CD_STATUS    = "[A-Z]{4}";
 
 
 	public static final String CONTEXT_FR           = "FR";
