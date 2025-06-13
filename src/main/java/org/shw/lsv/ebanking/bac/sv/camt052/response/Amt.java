@@ -3,6 +3,7 @@ package org.shw.lsv.ebanking.bac.sv.camt052.response;
 import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,6 +33,19 @@ public class Amt {
     
     public Amt(String amt) {
         setAmt(amt);
+    }
+
+    public Amt(RequestParams params, JsonValidationExceptionCollector collector) {
+        try {
+            if (params.getCcy() != null && !params.getCcy().isEmpty()) {
+                setCcy(params.getCcy());
+            }
+            if (params.getStmtOfAcctAmt() != null && !params.getStmtOfAcctAmt().isEmpty()) {
+                setAmt(params.getStmtOfAcctAmt());
+            }
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_STS_INIT, e);
+        }
     }
 
 

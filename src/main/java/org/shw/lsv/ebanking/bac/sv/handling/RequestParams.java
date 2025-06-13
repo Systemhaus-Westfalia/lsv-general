@@ -67,6 +67,8 @@ public class RequestParams {
     private String     addtlNtryInf;
     private String     bookgDt;
     private String     valDt;
+    private String     balanceAmt;
+    private String     stmtOfAcctAmt;
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -128,6 +130,8 @@ public class RequestParams {
     public String     getAddtlNtryInf()  { return addtlNtryInf;  }
     public String     getBookgDt()       { return bookgDt;       }
     public String     getValDt()         { return valDt;         }
+    public String     getBalanceAmt()    { return balanceAmt;    }
+    public String     getStmtOfAcctAmt() { return stmtOfAcctAmt; }
 
 
     public RequestParams setBicfiFr(String bicfi) {
@@ -421,6 +425,16 @@ public class RequestParams {
 
     public RequestParams setValDt(String valDt) {
         this.valDt = valDt;
+        return this;
+    }
+
+    public RequestParams setBalanceAmt(String balanceAmt) {
+        this.balanceAmt = balanceAmt;
+        return this;
+    }
+
+    public RequestParams setStmtOfAcctAmt(String stmtOfAcctAmt) {
+        this.stmtOfAcctAmt = stmtOfAcctAmt;
         return this;
     }
 

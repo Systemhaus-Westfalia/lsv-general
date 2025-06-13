@@ -4,6 +4,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.tmst039.response.Sts;
+import org.shw.lsv.ebanking.bac.sv.camt052.response.Amt;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,7 +14,7 @@ public class StmtOfAccountElement {
     String ntryRef;
 
     @JsonProperty("Amt")
-    PmtElementtAmt pmtElementtAmt;  // Amount and currency
+    Amt amt;  // Amount and currency
 
     @JsonProperty("CdtDbtInd")
     String cdtDbtInd;
@@ -37,14 +38,14 @@ public class StmtOfAccountElement {
 
     public StmtOfAccountElement(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setNtryRef(        params.getNtryRef(), collector);
-            setPmtElementtAmt( new PmtElementtAmt(params, collector), collector);
-            setCdtDbtInd(      params.getCdtDbtInd(), collector);
-            setSts(            new Sts(params, collector), collector);
-            setBookgDt(        new BookgOrValDt(params, EBankingConstants.CONTEXT_BOOKING_DATE, collector), collector);
-            setValDt(          new BookgOrValDt(params, EBankingConstants.CONTEXT_VALID_DATE, collector), collector);
-            setBkTxCd(         new BkTxCd(params, collector), collector);
-            setAddtlNtryInf(   params.getAddtlNtryInf(), collector);
+            setNtryRef(      params.getNtryRef(), collector);
+            setAmt(          new Amt(params, collector), collector);
+            setCdtDbtInd(    params.getCdtDbtInd(), collector);
+            setSts(          new Sts(params, collector), collector);
+            setBookgDt(      new BookgOrValDt(params, EBankingConstants.CONTEXT_BOOKING_DATE, collector), collector);
+            setValDt(        new BookgOrValDt(params, EBankingConstants.CONTEXT_VALID_DATE, collector), collector);
+            setBkTxCd(       new BkTxCd(params, collector), collector);
+            setAddtlNtryInf( params.getAddtlNtryInf(), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_STMT_OF_ACCT_ELEMENT_INIT, e);
         }
@@ -85,28 +86,28 @@ public class StmtOfAccountElement {
     /**
      * @return the PmtElementtAmt object<br>
      */
-    public PmtElementtAmt getPmtElementtAmt() {
-        return pmtElementtAmt;
+    public Amt getAmt() {
+        return amt;
     }
 
     /**
-     * @param pmtElementtAmt the PmtElementtAmt to be set.<br>
+     * @param amt the PmtElementtAmt to be set.<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setPmtElementtAmt(PmtElementtAmt pmtElementtAmt) {
-        if (pmtElementtAmt == null) {
+    public void setAmt(Amt amt) {
+        if (amt == null) {
             throw new IllegalArgumentException("Wrong parameter 'pmtElementtAmt' in setPmtElementtAmt()");
         }
-        this.pmtElementtAmt = pmtElementtAmt;
+        this.amt = amt;
     }
 
     /**
-     * @param pmtElementtAmt the PmtElementtAmt to be set.<br>
+     * @param amt the Amt to be set.<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setPmtElementtAmt(PmtElementtAmt pmtElementtAmt, JsonValidationExceptionCollector collector) {
+    public void setAmt(Amt amt, JsonValidationExceptionCollector collector) {
         try {
-            setPmtElementtAmt(pmtElementtAmt);
+            setAmt(amt);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }

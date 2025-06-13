@@ -15,13 +15,6 @@ public class Sts {
 
     public Sts() { }
 
-    /**
-     * Constructor with parameters.
-     * Initializes the object using values from RequestParams and context.
-     * @param params    the RequestParams containing the values to set<br>
-     * @param context   the context string to determine which value to use<br>
-     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
-     */
     public Sts(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             if (params.getCatPurpCd() != null && !params.getCatPurpCd().isEmpty()) {
