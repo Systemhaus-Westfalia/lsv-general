@@ -47,7 +47,7 @@ public class BkTxCd {
         try {
             setDomn(domn);
         } catch (IllegalArgumentException e) {
-            collector.addError("ERROR_NULL_NOT_ALLOWED", e);
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 }

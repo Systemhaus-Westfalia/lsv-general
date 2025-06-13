@@ -57,7 +57,7 @@ public class BookgOrValDt {
         try {
             setDt(dt);
         } catch (IllegalArgumentException e) {
-            collector.addError("ERROR_PATTERN_MISMATCH", e);
+            collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
         }
     }
 }

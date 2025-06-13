@@ -58,7 +58,7 @@ public class Sts {
         try {
             setCd(cd);
         } catch (IllegalArgumentException e) {
-            collector.addError("ERROR_PATTERN_MISMATCH", e);
+            collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
         }
     }
 
@@ -90,7 +90,7 @@ public class Sts {
         try {
             setRsn(rsn);
         } catch (IllegalArgumentException e) {
-            collector.addError("ERROR_PATTERN_MISMATCH", e);
+            collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
         }
     }
 }
