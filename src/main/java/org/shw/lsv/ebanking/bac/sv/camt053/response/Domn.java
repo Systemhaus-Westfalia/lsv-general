@@ -16,12 +16,6 @@ public class Domn {
 
     public Domn() {}
 
-    /**
-     * Constructor with parameters.
-     * Initializes the object using values from RequestParams.
-     * @param params    the RequestParams containing the values to set<br>
-     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
-     */
     public Domn(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             if (params.getCatPurpCd() != null && !params.getCatPurpCd().isEmpty()) {

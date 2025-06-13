@@ -20,7 +20,7 @@ public class StmtOfAccountElement {
     String cdtDbtInd;
 
     @JsonProperty("Sts")
-    Sts sts;  // additional information about the type of payment being made.
+    Sts sts;  // additional information
 
     @JsonProperty("BookgDt")
     BookgOrValDt bookgDt;
