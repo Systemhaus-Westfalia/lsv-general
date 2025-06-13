@@ -22,10 +22,10 @@ public class StmtOfAccountElement {
     Sts sts;  // additional information about the type of payment being made.
 
     @JsonProperty("BookgDt")
-    BookgDt bookgDt;
+    BookgOrValDt bookgDt;
 
     @JsonProperty("ValDt")
-    ValDt valDt;
+    BookgOrValDt valDt;
 
     @JsonProperty("BkTxCd")
     BkTxCd bkTxCd;
@@ -41,8 +41,8 @@ public class StmtOfAccountElement {
             setPmtElementtAmt( new PmtElementtAmt(params, collector), collector);
             setCdtDbtInd(      params.getCdtDbtInd(), collector);
             setSts(            new Sts(params, collector), collector);
-            setBookgDt(        new BookgDt(params, collector), collector);
-            setValDt(          new ValDt(params, collector), collector);
+            setBookgDt(        new BookgOrValDt(params, EBankingConstants.CONTEXT_BOOKING_DATE, collector), collector);
+            setValDt(          new BookgOrValDt(params, EBankingConstants.CONTEXT_VALID_DATE, collector), collector);
             setBkTxCd(         new BkTxCd(params, collector), collector);
             setAddtlNtryInf(   params.getAddtlNtryInf(), collector);
         } catch (Exception e) {
@@ -177,7 +177,7 @@ public class StmtOfAccountElement {
     /**
      * @return the BookgDt object<br>
      */
-    public BookgDt getBookgDt() {
+    public BookgOrValDt getBookgDt() {
         return bookgDt;
     }
 
@@ -185,7 +185,7 @@ public class StmtOfAccountElement {
      * @param bookgDt the BookgDt to be set.<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setBookgDt(BookgDt bookgDt) {
+    public void setBookgDt(BookgOrValDt bookgDt) {
         if (bookgDt == null) {
             throw new IllegalArgumentException("Wrong parameter 'bookgDt' in setBookgDt()");
         }
@@ -196,7 +196,7 @@ public class StmtOfAccountElement {
      * @param bookgDt the BookgDt to be set.<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setBookgDt(BookgDt bookgDt, JsonValidationExceptionCollector collector) {
+    public void setBookgDt(BookgOrValDt bookgDt, JsonValidationExceptionCollector collector) {
         try {
             setBookgDt(bookgDt);
         } catch (IllegalArgumentException e) {
@@ -207,7 +207,7 @@ public class StmtOfAccountElement {
     /**
      * @return the ValDt object<br>
      */
-    public ValDt getValDt() {
+    public BookgOrValDt getValDt() {
         return valDt;
     }
 
@@ -215,7 +215,7 @@ public class StmtOfAccountElement {
      * @param valDt the ValDt to be set.<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setValDt(ValDt valDt) {
+    public void setValDt(BookgOrValDt valDt) {
         if (valDt == null) {
             throw new IllegalArgumentException("Wrong parameter 'valDt' in setValDt()");
         }
@@ -226,7 +226,7 @@ public class StmtOfAccountElement {
      * @param valDt the ValDt to be set.<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setValDt(ValDt valDt, JsonValidationExceptionCollector collector) {
+    public void setValDt(BookgOrValDt valDt, JsonValidationExceptionCollector collector) {
         try {
             setValDt(valDt);
         } catch (IllegalArgumentException e) {

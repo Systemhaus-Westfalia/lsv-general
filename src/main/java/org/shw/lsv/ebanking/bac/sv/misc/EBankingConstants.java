@@ -100,6 +100,7 @@ public class EBankingConstants {
 	public static final String ERROR_INVALID_BIC_OR_BEI_FORMAT = "Invalid BIC or BEI format";
 	public static final String ERROR_TMST0039RESPONSE_INIT     = "TMST0039Response initialization";
 	public static final String ERROR_STMT_OF_ACCT_ELEMENT_INIT = "StmtOfAccountElement initialization";
+	public static final String ERROR_BOOKGORVALDT_INIT         = "BookgOrValDt initialization";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
@@ -145,18 +146,21 @@ public class EBankingConstants {
 	public static final String PATTERN_ADDTLNTRYINF = "[0-9A-Za-z/\\-\\?:().,'\\+ ]{1,140}";
 
 
-	public static final String CONTEXT_FR        = "FR";
-	public static final String CONTEXT_TO        = "TO";
+	public static final String CONTEXT_FR           = "FR";
+	public static final String CONTEXT_TO           = "TO";
 
-	public static final String CONTEXT_AGT       = "AGT";
-	public static final String CONTEXT_PTYORGID  = "PTYORGID";
-	public static final String CONTEXT_RPTGREQ   = "RPTGREQ";
+	public static final String CONTEXT_AGT          = "AGT";
+	public static final String CONTEXT_PTYORGID     = "PTYORGID";
+	public static final String CONTEXT_RPTGREQ      = "RPTGREQ";
 
-	public static final String CONTEXT_DBTR       = "DBTR";
-	public static final String CONTEXT_DBTRACCT   = "DBTRACCT";
-	public static final String CONTEXT_CDTR       = "CDTR";
-	public static final String CONTEXT_CDTRACCT   = "CDTRACCT";
-	public static final String CONTEXT_PMTTPINF   = "PMTTPINF";
+	public static final String CONTEXT_DBTR          = "DBTR";
+	public static final String CONTEXT_DBTRACCT      = "DBTRACCT";
+	public static final String CONTEXT_CDTR          = "CDTR";
+	public static final String CONTEXT_CDTRACCT      = "CDTRACCT";
+	public static final String CONTEXT_PMTTPINF      = "PMTTPINF";
+
+	public static final String CONTEXT_BOOKING_DATE  = "BOOKING DATE";
+	public static final String CONTEXT_VALID_DATE    = "VALID DATE";
 
 
 	
