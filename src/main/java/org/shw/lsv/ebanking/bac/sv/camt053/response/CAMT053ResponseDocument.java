@@ -10,7 +10,30 @@ public class CAMT053ResponseDocument {
     @JsonProperty("BkToCstmrStmt")
     BkToCstmrStmt bkToCstmrStmt;
 
-    public CAMT053ResponseDocument() { }
+    public CAMT053ResponseDocument() {}
+
+    public CAMT053ResponseDocument(BkToCstmrStmt bkToCstmrStmt) {
+        this.bkToCstmrStmt = bkToCstmrStmt;
+    }
+
+    /**
+     * Validates the CAMT053ResponseDocument.
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void validate(JsonValidationExceptionCollector collector) {
+        try {
+            if (bkToCstmrStmt == null) {
+                throw new IllegalArgumentException("BkToCstmrStmt cannot be null");
+            }
+            // Optionally, validate nested object if it implements a validation interface
+            if (bkToCstmrStmt instanceof org.shw.lsv.ebanking.bac.sv.handling.Validatable) {
+                ((org.shw.lsv.ebanking.bac.sv.handling.Validatable) bkToCstmrStmt).validate(collector);
+            }
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+        }
+    }
+
 
     /**
      * @return the BkToCstmrStmt object<br>
@@ -38,24 +61,6 @@ public class CAMT053ResponseDocument {
         try {
             setBkToCstmrStmt(bkToCstmrStmt);
         } catch (IllegalArgumentException e) {
-            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
-        }
-    }
-
-    /**
-     * Validates the CAMT053ResponseDocument.
-     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
-     */
-    public void validate(JsonValidationExceptionCollector collector) {
-        try {
-            if (bkToCstmrStmt == null) {
-                throw new IllegalArgumentException("BkToCstmrStmt cannot be null");
-            }
-            // Optionally, validate nested object if it implements a validation interface
-            if (bkToCstmrStmt instanceof org.shw.lsv.ebanking.bac.sv.handling.Validatable) {
-                ((org.shw.lsv.ebanking.bac.sv.handling.Validatable) bkToCstmrStmt).validate(collector);
-            }
-        } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }

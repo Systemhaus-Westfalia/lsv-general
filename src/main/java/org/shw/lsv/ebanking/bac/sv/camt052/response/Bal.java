@@ -1,6 +1,7 @@
 package org.shw.lsv.ebanking.bac.sv.camt052.response;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,8 +21,7 @@ public class Bal  {
     Amt amt;
 
 
-   public Bal() {
-    }
+   public Bal() {}
 
 
     /*
@@ -33,6 +33,11 @@ public class Bal  {
         setCdtDbtInd(cdtDbtInd);
         setDt(dt);
         setAmt(amt);
+    }
+
+
+    public Bal(RequestParams params, JsonValidationExceptionCollector collector) {
+        //TODO Auto-generated constructor stub
     }
 
 

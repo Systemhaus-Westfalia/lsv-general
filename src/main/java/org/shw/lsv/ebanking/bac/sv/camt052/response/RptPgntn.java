@@ -1,6 +1,7 @@
 package org.shw.lsv.ebanking.bac.sv.camt052.response;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,6 +30,10 @@ public class RptPgntn {
         setLastPgInd(lastPgInd);
     }
 
+    public RptPgntn(RequestParams params, JsonValidationExceptionCollector collector) {
+        //TODO Auto-generated constructor stub
+    }
+
     public String getPgNb() {
         return pgNb;
     }
@@ -36,13 +41,15 @@ public class RptPgntn {
     /**
      * @param pgNb the PgNb to be set<br>
      * The parameter is validated: null not allowed.<br>
+     * Only allow positive integers, leading zeros allowed, up to 5 digits
+     * pattern = "^[0-9][0-9]{0,4}$"
      */
     public void setPgNb(String pgNb) {
-        if (pgNb == null || pgNb.isEmpty()) {
+        if (pgNb == null || !pgNb.matches(EBankingConstants.PATTERN_PGNB_ZERO)) {
             throw new IllegalArgumentException("Wrong parameter 'PgNb' (" + pgNb + ") in setPgNb()");
         }
         this.pgNb = pgNb;
-    }
+}
 
     /**
      * @param pgNb the PgNb to be set<br>

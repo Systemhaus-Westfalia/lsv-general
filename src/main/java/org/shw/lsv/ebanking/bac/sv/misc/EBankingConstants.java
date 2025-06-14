@@ -104,6 +104,7 @@ public class EBankingConstants {
 	public static final String ERROR_DOMN_INIT                 = "Domn initialization";
 	public static final String ERROR_BKTXCD_INIT               = "BkTxCd initialization";
 	public static final String ERROR_FMLY_INIT                 = "Fmly initialization";
+	public static final String ERROR_STMT_INIT                 = "Stmt initialization";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
@@ -148,6 +149,9 @@ public class EBankingConstants {
 	public static final String PATTERN_CDTDBTIND    = "CRDT|DBIT";
 	public static final String PATTERN_ADDTLNTRYINF = "[0-9A-Za-z/\\-\\?:().,'\\+ ]{1,140}";
 	public static final String PATTERN_CD_STATUS    = "[A-Z]{4}";
+	public static final String PATTERN_ELCTRNCSEQNB = "[0-9]{1,5}";
+	public static final String PATTERN_PGNB         = "^[1-9][0-9]{0,4}$"; // 1-5 digits, no leading zeros
+	public static final String PATTERN_PGNB_ZERO    = "^[0-9]{1,5}$"; // 1-5 digits, leading zeros allowed
 
 
 	public static final String CONTEXT_FR           = "FR";
@@ -156,6 +160,7 @@ public class EBankingConstants {
 	public static final String CONTEXT_AGT          = "AGT";
 	public static final String CONTEXT_PTYORGID     = "PTYORGID";
 	public static final String CONTEXT_RPTGREQ      = "RPTGREQ";
+	public static final String CONTEXT_STMT         = "STMT";
 
 	public static final String CONTEXT_DBTR          = "DBTR";
 	public static final String CONTEXT_DBTRACCT      = "DBTRACCT";

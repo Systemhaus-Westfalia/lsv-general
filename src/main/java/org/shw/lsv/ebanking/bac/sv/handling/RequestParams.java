@@ -70,6 +70,8 @@ public class RequestParams {
     private String     balanceAmt;
     private String     stmtOfAcctAmt;
     private String     subFmlyCd;
+    private Integer    balCount;
+    private Integer    stmtElemCount;
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -134,6 +136,8 @@ public class RequestParams {
     public String     getBalanceAmt()    { return balanceAmt;    }
     public String     getStmtOfAcctAmt() { return stmtOfAcctAmt; }
     public String     getSubFmlyCd()     { return subFmlyCd;     }
+    public Integer    getBalCount()      { return balCount;      }
+    public Integer    getStmtElemCount() { return stmtElemCount; }
 
 
     public RequestParams setBicfiFr(String bicfi) {
@@ -445,4 +449,13 @@ public class RequestParams {
         return this;
     }
 
+    public RequestParams setBalCount(Integer balCount) {
+        this.balCount = balCount;
+        return this;
+    }
+
+    public RequestParams setStmtElemCount(Integer stmtElemCount) {
+        this.stmtElemCount = stmtElemCount;
+        return this;
+    }
 }
