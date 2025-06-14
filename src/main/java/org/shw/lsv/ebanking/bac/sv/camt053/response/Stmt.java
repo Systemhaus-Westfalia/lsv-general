@@ -23,6 +23,9 @@ public class Stmt {
     @JsonProperty("ElctrncSeqNb")
     String elctrncSeqNb;
 
+    @JsonProperty("FrToDt")
+    FrToDt frToDt;
+
     @JsonProperty("Acct")
     Acct acct;
 
