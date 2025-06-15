@@ -105,6 +105,8 @@ public class EBankingConstants {
 	public static final String ERROR_BKTXCD_INIT               = "BkTxCd initialization";
 	public static final String ERROR_FMLY_INIT                 = "Fmly initialization";
 	public static final String ERROR_STMT_INIT                 = "Stmt initialization";
+    public static final String ERROR_NTRYDTLS_INIT             = "NtryDtls initialization";
+    public static final String ERROR_TXDTLS_INIT               = "TxDtls initialization";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
@@ -170,7 +172,5 @@ public class EBankingConstants {
 
 	public static final String CONTEXT_BOOKING_DATE  = "BOOKING DATE";
 	public static final String CONTEXT_VALID_DATE    = "VALID DATE";
-
-
 	
 }

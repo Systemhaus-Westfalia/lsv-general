@@ -72,6 +72,7 @@ public class RequestParams {
     private String     subFmlyCd;
     private Integer    balCount;
     private Integer    stmtElemCount;
+    private String     ntryDtlsAmt;
 
 
     public String     getBicfiFr()       { return bicfiFr;       }
@@ -138,6 +139,7 @@ public class RequestParams {
     public String     getSubFmlyCd()     { return subFmlyCd;     }
     public Integer    getBalCount()      { return balCount;      }
     public Integer    getStmtElemCount() { return stmtElemCount; }
+    public String     getNtryDtlsAmt()   { return ntryDtlsAmt;   }
 
 
     public RequestParams setBicfiFr(String bicfi) {
@@ -456,6 +458,11 @@ public class RequestParams {
 
     public RequestParams setStmtElemCount(Integer stmtElemCount) {
         this.stmtElemCount = stmtElemCount;
+        return this;
+    }
+
+    public RequestParams setNtryDtlsAmt(String ntryDtlsAmt) {
+        this.ntryDtlsAmt = ntryDtlsAmt;
         return this;
     }
 }
