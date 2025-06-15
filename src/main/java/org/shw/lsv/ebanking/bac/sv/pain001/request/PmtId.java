@@ -13,6 +13,8 @@ public class PmtId {
     @JsonProperty("EndToEndId")
     String endToEndId;  // unique identifier for each individual transaction within a payment batch.
 
+     public PmtId() {}
+
     public PmtId(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setEndToEndId(params.getEndToEndId(), collector);
