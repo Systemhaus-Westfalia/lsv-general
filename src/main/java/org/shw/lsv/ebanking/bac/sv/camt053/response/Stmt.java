@@ -3,7 +3,6 @@ package org.shw.lsv.ebanking.bac.sv.camt053.response;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.shw.lsv.ebanking.bac.sv.camt052.response.Bal;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.RptPgntn;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
@@ -37,11 +36,12 @@ public class Stmt {
 
     public Stmt() {}
 
-    public Stmt(String id, RptPgntn rptPgntn, String elctrncSeqNb, Acct acct, List<Bal> balances,
+    public Stmt(String id, RptPgntn rptPgntn, String elctrncSeqNb, FrToDt frToDt, Acct acct, List<Bal> balances,
             List<StmtOfAccountElement> stmtOfAccountElements) {
         this.id = id;
         this.rptPgntn = rptPgntn;
         this.elctrncSeqNb = elctrncSeqNb;
+        this.frToDt = frToDt;
         this.acct = acct;
         this.balances = balances;
         this.stmtOfAccountElements = stmtOfAccountElements;
@@ -52,6 +52,7 @@ public class Stmt {
             setId(params.getMsgId(), collector);
             setRptPgntn(new RptPgntn(params, collector), collector);
             setElctrncSeqNb(params.getEqseq(), collector);
+            setFrToDt(new FrToDt(params, collector), collector);
             setAcct(new Acct(params, EBankingConstants.CONTEXT_STMT, collector), collector);
 
             // Initialize balances list
@@ -170,6 +171,37 @@ public class Stmt {
     }
 
     /**
+     * @return the FrToDt object<br>
+     */
+    public FrToDt getFrToDt() {
+        return frToDt;
+    }
+
+    /**
+     * @param frToDt the FrToDt to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setFrToDt(FrToDt frToDt) {
+        if (frToDt == null) {
+            throw new IllegalArgumentException("Wrong parameter 'frToDt' in setFrToDt()");
+        }
+        this.frToDt = frToDt;
+    }
+
+    /**
+     * @param frToDt the FrToDt to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setFrToDt(FrToDt frToDt, JsonValidationExceptionCollector collector) {
+        try {
+            setFrToDt(frToDt);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+        }
+    }
+
+
+    /**
      * @return the Acct object<br>
      */
     public Acct getAcct() {
@@ -271,6 +303,9 @@ public class Stmt {
             if (rptPgntn == null) {
                 throw new IllegalArgumentException("RptPgntn cannot be null");
             }
+            if (frToDt == null) {
+                throw new IllegalArgumentException("FrToDt cannot be null");
+            }
             if (acct == null) {
                 throw new IllegalArgumentException("Acct cannot be null");
             }
@@ -283,6 +318,9 @@ public class Stmt {
             // Optionally, validate nested objects if they implement a validation interface
             if (rptPgntn instanceof org.shw.lsv.ebanking.bac.sv.handling.Validatable) {
                 ((org.shw.lsv.ebanking.bac.sv.handling.Validatable) rptPgntn).validate(collector);
+            }
+            if (frToDt instanceof org.shw.lsv.ebanking.bac.sv.handling.Validatable) {
+                ((org.shw.lsv.ebanking.bac.sv.handling.Validatable) frToDt).validate(collector);
             }
             if (acct instanceof org.shw.lsv.ebanking.bac.sv.handling.Validatable) {
                 ((org.shw.lsv.ebanking.bac.sv.handling.Validatable) acct).validate(collector);

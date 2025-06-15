@@ -34,6 +34,9 @@ public class StmtOfAccountElement {
     @JsonProperty("AddtlNtryInf")
     String addtlNtryInf;
 
+    @JsonProperty("NtryDtls")
+    NtryDtls ntryDtls;  // Entry Details
+
     public StmtOfAccountElement() { }
 
     public StmtOfAccountElement(RequestParams params, JsonValidationExceptionCollector collector) {
@@ -46,6 +49,7 @@ public class StmtOfAccountElement {
             setValDt(        new BookgOrValDt(params, EBankingConstants.CONTEXT_VALID_DATE, collector), collector);
             setBkTxCd(       new BkTxCd(params, collector), collector);
             setAddtlNtryInf( params.getAddtlNtryInf(), collector);
+            setNtryDtls(     new NtryDtls(params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_STMT_OF_ACCT_ELEMENT_INIT, e);
         }
@@ -294,6 +298,36 @@ public class StmtOfAccountElement {
             setAddtlNtryInf(addtlNtryInf);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_PATTERN_MISMATCH, e);
+        }
+    }
+
+    /**
+     * @return the NtryDtls object<br>
+     */
+    public NtryDtls getNtryDtls() {
+        return ntryDtls;
+    }
+
+    /**
+     * @param ntryDtls the NtryDtls to be set.<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setNtryDtls(NtryDtls ntryDtls) {
+        if (ntryDtls == null) {
+            throw new IllegalArgumentException("Wrong parameter 'ntryDtls' in setNtryDtls()");
+        }
+        this.ntryDtls = ntryDtls;
+    }
+
+    /**
+     * @param ntryDtls the NtryDtls to be set.<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setNtryDtls(NtryDtls ntryDtls, JsonValidationExceptionCollector collector) {
+        try {
+            setNtryDtls(ntryDtls);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 }
