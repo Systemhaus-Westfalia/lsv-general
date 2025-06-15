@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.pain001.request.PmtId;
 
 import java.util.regex.Pattern;
 
 public class TxDtls {
 
-    @JsonProperty("Refs")
-    Refs refs;
+    @JsonProperty("Refs")  // Field "Refs" is defined in the parent class "NtryDtls" in the JSON schema.
+    PmtId pmtId;           // Class PmtId contains field "EndToEndId".
 
     @JsonProperty("Amt")
     String amt;
@@ -23,7 +24,7 @@ public class TxDtls {
 
     public TxDtls(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setRefs(new Refs(params, collector), collector);
+            setPmtId(new PmtId(params, collector), collector);
 
             if (params.getNtryDtlsAmt() != null && !params.getNtryDtlsAmt().isEmpty()) {
                 setAmt(params.getNtryDtlsAmt(), collector);
@@ -37,30 +38,30 @@ public class TxDtls {
     }
 
     /**
-     * @return the Refs object<br>
+     * @return the PmtId object<br>
      */
-    public Refs getRefs() {
-        return refs;
+    public PmtId getPmtId() {
+        return pmtId;
     }
 
     /**
-     * @param refs the Refs to be set.<br>
+     * @param pmtId the PmtId to be set.<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setRefs(Refs refs) {
-        if (refs == null) {
-            throw new IllegalArgumentException("Wrong parameter 'refs' in setRefs()");
+    public void setPmtId(PmtId pmtId) {
+        if (pmtId == null) {
+            throw new IllegalArgumentException("Wrong parameter 'pmtId' in setPmtId()");
         }
-        this.refs = refs;
+        this.pmtId = pmtId;
     }
 
     /**
-     * @param refs the Refs to be set.<br>
+     * @param pmtId the PmtId to be set.<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setRefs(Refs refs, JsonValidationExceptionCollector collector) {
+    public void setPmtId(PmtId pmtId, JsonValidationExceptionCollector collector) {
         try {
-            setRefs(refs);
+            setPmtId(pmtId);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
