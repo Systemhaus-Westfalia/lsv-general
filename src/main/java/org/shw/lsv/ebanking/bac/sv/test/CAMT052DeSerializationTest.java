@@ -156,7 +156,7 @@ public class CAMT052DeSerializationTest {
         }
         System.err.println("********************************************");
         System.err.println("********************************************");
-        System.err.println("Ergebinisse:");
+        System.err.println("Ergebnisse:");
         System.err.println("*** AppHdr ***");
         System.err.println("    Fr-BICFI : "  + response.getcAMT052ResponseEnvelope().getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
         System.err.println("    To-BICFI : "  + response.getcAMT052ResponseEnvelope().getAppHdr().getTo().getfIId().getFinInstnId().getbICFI());
@@ -167,8 +167,10 @@ public class CAMT052DeSerializationTest {
         System.err.println("********************************************");
         System.err.println("*** CAMT052 Response Document ***");
         System.err.println("********************************************");
+        System.err.println("************* GrpHdr ***********************");
         System.err.println("    CreDtTm:   "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getGrpHdr().getCreDtTm());
         System.err.println("    MsgId:     "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getGrpHdr().getMsgId());
+
         System.err.println("    AcctId:    "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getAcct().getAcctId().getAcctIdOthr().getId());
         System.err.println("    Acct-Ccy:  "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getAcct().getCcy());
         System.err.println("    Bal-Amt:   "  + response.getcAMT052ResponseEnvelope().getcAMT052ResponseDocument().getBkToCstmrAcctRpt().getRpt().getBal().getAmt().getAmt());
