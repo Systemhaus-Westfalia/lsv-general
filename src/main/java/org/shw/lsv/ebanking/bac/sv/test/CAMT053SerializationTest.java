@@ -22,7 +22,8 @@ public class CAMT053SerializationTest {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        RequestParams params = createTestParams();
+        Integer  pageNumber = 0;
+        RequestParams params = createTestParams(pageNumber);
 
         try {
             // 3. Build request with test's collector
@@ -48,7 +49,7 @@ public class CAMT053SerializationTest {
         }
     }
 
-    private static RequestParams createTestParams() {
+    private static RequestParams createTestParams(Integer pageNumber) {
         String ESTADO_CUENTA_MESSAGE_ID = "EdC-ADClientName/(CuentaNr)";
 
         return new RequestParams()
@@ -94,7 +95,7 @@ public class CAMT053SerializationTest {
             .setFrdt("2025-06-01")                         // Start date for the reporting period
             .setTodt("2025-06-30")                         // End date for the reporting period
             .setTp(EBankingConstants.PATTERN_TP)                // Type of report, e.g., "ALL" for all elements
-            .setEqseq("1")                                // Sequence number for the report, used for pagination or ordering of reports
+            .setEqseq(pageNumber.toString())                    // Sequence number for the report, used for pagination or ordering of reports
             
             ;
     }
