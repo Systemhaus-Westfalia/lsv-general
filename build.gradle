@@ -68,6 +68,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.itextpdf/itextpdf
         api 'com.itextpdf:itextpdf:5.5.2'
 
+	//email
+	implementation 'com.sun.mail:javax.mail:1.6.2'
+
 
 
 }
