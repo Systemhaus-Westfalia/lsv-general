@@ -19,7 +19,6 @@
 package org.shw.process;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import org.compiere.model.MBPartner;
 import org.compiere.model.MDocType;

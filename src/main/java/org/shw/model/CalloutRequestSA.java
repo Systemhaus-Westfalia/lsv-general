@@ -16,6 +16,8 @@
  *****************************************************************************/
 package org.shw.model;
 
+import java.util.Properties;
+
 import org.adempiere.core.domains.models.X_C_Invoice;
 import org.adempiere.core.domains.models.X_C_Order;
 import org.adempiere.core.domains.models.X_C_Project;
@@ -25,12 +27,6 @@ import org.compiere.model.GridTab;
 import org.compiere.model.MRequestType;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Properties;
-import java.util.logging.Level;
 
 /**
  *	Request Callouts

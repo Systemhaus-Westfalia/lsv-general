@@ -1,11 +1,7 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_C_UOM;
@@ -14,7 +10,6 @@ import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
 import org.compiere.model.MClient;
-import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
@@ -24,7 +19,6 @@ import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ApendiceItemFactura;

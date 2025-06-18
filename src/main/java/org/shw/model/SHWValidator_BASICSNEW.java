@@ -26,7 +26,6 @@ import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.CLogger;
-import org.compiere.util.Trx;
 import org.eevolution.services.dsl.ProcessBuilder;
 import org.shw.lsv.einvoice.process.EInvoiceGenerateAndPost;
 

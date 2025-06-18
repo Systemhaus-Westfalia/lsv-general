@@ -24,7 +24,7 @@ import org.adempiere.core.domains.models.I_C_UOM;
 import org.adempiere.core.domains.models.I_M_PriceList;
 import org.adempiere.core.domains.models.I_M_PriceList_Version;
 import org.adempiere.core.domains.models.I_M_Product;
-import org.compiere.model.*;
+import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for LG_ProductPriceRateLine

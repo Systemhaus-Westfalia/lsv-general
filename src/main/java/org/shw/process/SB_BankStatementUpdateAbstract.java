@@ -17,6 +17,7 @@
 package org.shw.process;
 
 import java.math.BigDecimal;
+
 import org.compiere.process.SvrProcess;
 /** Generated Process for (SB_BankStatementUpdate)
  *  @author ADempiere (generated) 

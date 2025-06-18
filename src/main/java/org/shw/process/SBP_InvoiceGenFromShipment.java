@@ -18,7 +18,6 @@
 package org.shw.process;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
 
 import org.adempiere.process.InvoiceGenerateFromShipment;
 import org.adempiere.process.InvoiceGenerateFromShipmentAbstract;

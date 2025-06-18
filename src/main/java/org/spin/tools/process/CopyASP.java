@@ -17,9 +17,9 @@
 
 package org.spin.tools.process;
 
-import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.core.domains.models.I_ASP_ClientLevel;
 import org.adempiere.core.domains.models.X_ASP_ClientLevel;
+import org.adempiere.exceptions.AdempiereException;
 import org.spin.tools.util.CopyContextUtil;
 import org.spin.tools.util.CopyUtil;
 

@@ -17,13 +17,13 @@
 
 package org.spin.tools.process;
 
-import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.core.domains.models.I_C_Bank;
+import org.adempiere.core.domains.models.I_C_BankMatcher;
 import org.adempiere.core.domains.models.I_C_BankStatementMatcher;
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBank;
 import org.compiere.model.MBankStatementMatcher;
 import org.compiere.model.Query;
-import org.adempiere.core.domains.models.I_C_BankMatcher;
 import org.spin.model.MCBankMatcher;
 import org.spin.tools.util.CopyContextUtil;
 import org.spin.tools.util.CopyUtil;

@@ -16,19 +16,12 @@
  *****************************************************************************/
 package org.shw.process;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
 
 import org.adempiere.core.domains.models.X_I_Order;
 import org.compiere.model.MOrder;
 import org.compiere.model.MOrderLine;
-import org.compiere.model.MProductPrice;
-import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 /**

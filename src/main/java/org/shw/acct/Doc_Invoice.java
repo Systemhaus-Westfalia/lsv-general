@@ -28,10 +28,10 @@ import java.util.logging.Level;
 
 import org.adempiere.core.domains.models.I_C_Invoice;
 import org.compiere.acct.Doc;
+import org.compiere.acct.DocLine;
 import org.compiere.acct.DocTax;
 import org.compiere.acct.Fact;
 import org.compiere.acct.FactLine;
-import org.compiere.acct.DocLine;
 import org.compiere.model.MAccount;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MClientInfo;

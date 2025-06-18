@@ -23,10 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.adempiere.exceptions.AdempiereException;
-import org.compiere.model.MOrder;
 import org.adempiere.core.domains.models.X_C_Order;
 import org.adempiere.core.domains.models.X_C_OrderLine;
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.MOrder;
 import org.compiere.util.Env;
 import org.compiere.util.Trx;
 import org.compiere.util.Util;

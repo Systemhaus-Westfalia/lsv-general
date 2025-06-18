@@ -30,7 +30,6 @@ import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.POInfo;
 import org.compiere.util.Env;
-import org.shw.model.I_LCO_WithholdingRule;
 
 /** Generated Model for LCO_InvoiceWithholding
  *  @author Adempiere (generated) 

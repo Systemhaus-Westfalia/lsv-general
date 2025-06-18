@@ -17,14 +17,6 @@
 
 package org.shw.process;
 
-import java.util.List;
-
-import org.compiere.model.MDocType;
-import org.compiere.model.MInvoice;
-import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MOrder;
-import org.compiere.model.MOrderLine;
-import org.compiere.model.Query;
 import org.compiere.process.SvrProcess;
 
 /**

@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_AcctSchema;
 import org.compiere.model.MAcctSchema;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;

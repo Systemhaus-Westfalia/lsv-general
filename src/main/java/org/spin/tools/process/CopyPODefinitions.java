@@ -19,7 +19,6 @@ package org.spin.tools.process;
 
 import java.sql.Timestamp;
 
-import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.core.domains.models.I_AD_Org;
 import org.adempiere.core.domains.models.I_C_BPartner;
 import org.adempiere.core.domains.models.I_C_ConversionType;
@@ -32,6 +31,7 @@ import org.adempiere.core.domains.models.I_M_Product_Category;
 import org.adempiere.core.domains.models.I_M_Product_Class;
 import org.adempiere.core.domains.models.I_M_Product_Classification;
 import org.adempiere.core.domains.models.I_M_Product_Group;
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MConversionType;
 import org.compiere.model.MDiscountSchema;
 import org.compiere.model.MDiscountSchemaBreak;

@@ -24,10 +24,13 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.adempiere.core.domains.models.I_M_InOutLine;
-import org.compiere.model.*;
+import org.compiere.model.MInOut;
+import org.compiere.model.MInOutLine;
+import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MLandedCost;
+import org.compiere.model.Query;
 import org.compiere.process.ProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.DB;
 
 /**
  * Fill the Landed Cost based on Material Receipts Smart Browser Filter

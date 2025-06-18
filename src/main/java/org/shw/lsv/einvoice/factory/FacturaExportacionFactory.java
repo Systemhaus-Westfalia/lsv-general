@@ -1,11 +1,7 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +10,6 @@ import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
 import org.compiere.model.MClient;
 import org.compiere.model.MCountry;
-import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;

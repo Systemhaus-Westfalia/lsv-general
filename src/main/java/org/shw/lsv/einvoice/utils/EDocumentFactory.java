@@ -4,8 +4,8 @@
 package org.shw.lsv.einvoice.utils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -14,7 +14,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +27,6 @@ import org.adempiere.core.domains.models.X_E_BPType;
 import org.adempiere.core.domains.models.X_E_DocType;
 import org.adempiere.core.domains.models.X_E_Duties;
 import org.adempiere.core.domains.models.X_E_Enviroment;
-import org.adempiere.core.domains.models.X_E_PaymentTerm;
 import org.adempiere.core.domains.models.X_E_PlantType;
 import org.adempiere.core.domains.models.X_E_Recipient_Identification;
 import org.adempiere.core.domains.models.X_E_TimeSpan;

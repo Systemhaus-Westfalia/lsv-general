@@ -17,10 +17,10 @@
 
 package org.spin.tools.process;
 
-import org.adempiere.exceptions.AdempiereException;
 import org.adempiere.core.domains.models.I_AD_Org;
 import org.adempiere.core.domains.models.I_AD_Sequence;
 import org.adempiere.core.domains.models.I_C_DocType;
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MDocType;
 import org.compiere.model.MSequence;
 import org.compiere.util.Env;

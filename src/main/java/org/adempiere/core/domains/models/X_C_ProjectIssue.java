@@ -22,12 +22,6 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
-import org.adempiere.core.domains.models.I_C_DocType;
-import org.adempiere.core.domains.models.I_M_AttributeSetInstance;
-import org.adempiere.core.domains.models.I_M_InOutLine;
-import org.adempiere.core.domains.models.I_M_Locator;
-import org.adempiere.core.domains.models.I_M_Product;
-import org.adempiere.core.domains.models.I_S_TimeExpenseLine;
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;

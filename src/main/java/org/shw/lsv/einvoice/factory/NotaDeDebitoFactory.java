@@ -3,7 +3,6 @@ package org.shw.lsv.einvoice.factory;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +20,6 @@ import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
-import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.shw.lsv.einvoice.fendnotadedebitov3.CuerpoDocumentoItemNotaDeDebito;

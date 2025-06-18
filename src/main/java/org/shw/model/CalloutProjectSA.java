@@ -17,10 +17,8 @@
 package org.shw.model;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.Properties;
 
-import org.adempiere.model.GridTabWrapper;
 import org.compiere.model.CalloutEngine;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;

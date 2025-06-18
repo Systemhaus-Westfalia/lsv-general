@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.shw.lsv.einvoice.fencnotadecreditov1.CuerpoDocumentoItemNotaDeCredito;
 import org.shw.lsv.einvoice.utils.EDocument;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 import org.shw.lsv.einvoice.utils.PagosItem;

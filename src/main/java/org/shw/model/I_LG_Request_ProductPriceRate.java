@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 
 import org.adempiere.core.domains.models.I_M_Shipper;
 import org.adempiere.core.domains.models.I_R_Request;
-import org.compiere.model.*;
+import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Interface for LG_Request_ProductPriceRate

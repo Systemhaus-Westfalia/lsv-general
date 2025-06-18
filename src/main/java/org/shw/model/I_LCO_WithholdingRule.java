@@ -19,7 +19,8 @@ package org.shw.model;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-import org.adempiere.core.domains.models.*;
+import org.adempiere.core.domains.models.I_C_City;
+import org.adempiere.core.domains.models.I_C_TaxCategory;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 

@@ -19,16 +19,12 @@ import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.core.domains.models.I_AD_Org;
-import org.compiere.model.MMigration;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
-import org.compiere.process.MigrationApply;
-import org.compiere.process.ProcessInfo;
 import org.compiere.util.DB;
 import org.compiere.util.Util;
 import org.eevolution.services.dsl.ProcessBuilder;
-import org.spin.tools.process.CopyGLDefinitions;
 /**
  * Util class for copy entities
  * @author yamel

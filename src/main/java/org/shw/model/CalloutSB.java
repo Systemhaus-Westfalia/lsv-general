@@ -18,6 +18,7 @@ package org.shw.model;
 
 import java.math.BigDecimal;
 import java.util.Properties;
+
 import org.compiere.model.GridField;
 import org.compiere.util.CLogger;
 import org.compiere.util.Env;

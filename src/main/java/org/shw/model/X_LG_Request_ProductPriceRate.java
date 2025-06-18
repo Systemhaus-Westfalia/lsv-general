@@ -22,7 +22,10 @@ import java.util.Properties;
 
 import org.adempiere.core.domains.models.I_M_Shipper;
 import org.adempiere.core.domains.models.I_R_Request;
-import org.compiere.model.*;
+import org.compiere.model.I_Persistent;
+import org.compiere.model.MTable;
+import org.compiere.model.PO;
+import org.compiere.model.POInfo;
 
 /** Generated Model for LG_Request_ProductPriceRate
  *  @author Adempiere (generated) 

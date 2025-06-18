@@ -23,7 +23,10 @@ import java.util.Properties;
 
 import org.adempiere.core.domains.models.I_C_City;
 import org.adempiere.core.domains.models.I_C_TaxCategory;
-import org.compiere.model.*;
+import org.compiere.model.I_Persistent;
+import org.compiere.model.MTable;
+import org.compiere.model.PO;
+import org.compiere.model.POInfo;
 import org.compiere.util.KeyNamePair;
 
 /** Generated Model for LCO_WithholdingRule

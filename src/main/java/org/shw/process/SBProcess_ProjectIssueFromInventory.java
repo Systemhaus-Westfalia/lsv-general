@@ -19,7 +19,6 @@ package org.shw.process;
 
 import java.math.BigDecimal;
 
-import org.adempiere.core.domains.models.I_C_ProjectIssue;
 import org.adempiere.core.domains.models.X_C_ProjectIssue;
 import org.compiere.model.MCostDetail;
 import org.compiere.model.MInOutLine;

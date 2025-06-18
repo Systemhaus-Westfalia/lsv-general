@@ -21,7 +21,6 @@ import java.sql.Timestamp;
 
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
-import org.adempiere.core.domains.models.*;
 
 /** Generated Interface for C_ProjectIssue
  *  @author Adempiere (generated) 

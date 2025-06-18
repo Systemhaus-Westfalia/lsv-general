@@ -18,8 +18,9 @@ package org.shw.model;
 
 
 import java.sql.Timestamp;
+import java.util.regex.Pattern;
 
-import org.adempiere.core.domains.models.X_AD_Client;
+import org.adempiere.core.domains.models.X_E_Recipient_Identification;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MClient;
@@ -32,8 +33,6 @@ import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.CLogger;
-import org.compiere.util.Env;
-import org.compiere.util.Trx;
 import org.eevolution.services.dsl.ProcessBuilder;
 import org.shw.lsv.einvoice.process.EInvoiceGenerateAndPost;
 
@@ -102,6 +101,7 @@ public class EI_Validator implements ModelValidator
 
 		if (po.get_TableName().equals(MInvoice.Table_Name))
 		{
+			
 			if (type == ModelValidator.TYPE_BEFORE_NEW) {
 				MInvoice invoice = (MInvoice)po;
 				if (invoice.getReversal_ID()>0) {
@@ -118,7 +118,13 @@ public class EI_Validator implements ModelValidator
 				}
 			}
 		}
+		
 		if (po instanceof MBPartner) {
+			
+		}
+
+		if (po.get_TableName().equals(MOrder.Table_Name))
+		{
 			
 		}
 		
@@ -150,6 +156,7 @@ public class EI_Validator implements ModelValidator
 				Timestamp startdate = (Timestamp)MClient.get(po.getCtx()).get_Value("ei_startdate");
 				if (startdate == null || startdate.after(invoice.getDateAcct()))
 					return "";
+				
 				// if (invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado"))
 				//	  return "";
 				// Trx transaction = Trx.get(invoice.get_TrxName(), false);
@@ -177,33 +184,7 @@ public class EI_Validator implements ModelValidator
 			}			
 		}
 		
-		if (po instanceof MOrder) {
-			error = "";
-			MOrder order = (MOrder)po;
-			if (!order.isSOTrx())
-				return "";             
-			MDocType invoicedocType = (MDocType)order.getC_DocTypeTarget().getC_DocTypeInvoice();
-			if (invoicedocType.get_ValueAsInt("E_DocType_ID") <=0)
-				return "";
-			MClient client = new MClient(order.getCtx(), order.get_TrxName());
-			Timestamp startdate = (Timestamp)client.get_Value("ei_Startdate");
-			if (startdate == null)
-				return "";
-			if (order.getDateAcct().before(startdate))
-				return "";
-			MBPartner partner = (MBPartner)order.getC_BPartner();
-			Boolean eiCorrect =  (partner.get_ValueAsInt( "E_Activity_ID") >0 &&
-					partner.get_ValueAsInt( "E_BPType_ID") > 0 &&
-					partner.get_ValueAsInt( "E_Recipient_Identification_ID") > 0);
-			if (!eiCorrect)
-				return "Socio de Negocio: Configuracion factura electronica ";
-			Boolean addressCorrect = (order.getBill_Location().getC_Location().getC_City_ID()>0
-					&& order.getBill_Location().getC_Location().getC_Region_ID()>0
-					&& order.getBill_Location().getC_Location().getAddress1()!="NN");
-			if (!addressCorrect)
-				return "Socio de Negocio: Dirección";
-			return error;
-		}
+		if (po instanceof MOrder) {}
 
 
 
@@ -248,6 +229,45 @@ public class EI_Validator implements ModelValidator
 		sb.append ("]");
 		return sb.toString ();
 	}	//	toString
+	
+	public String controlOrderElectronicInvoice(PO po) {
+
+		String error = "";
+		MOrder order = (MOrder)po;
+		if (!order.isSOTrx())
+			return "";             
+		MDocType invoicedocType = (MDocType)order.getC_DocTypeTarget().getC_DocTypeInvoice();
+		if (invoicedocType.get_ValueAsInt("E_DocType_ID") <=0)
+			return "";
+		MClient client = new MClient(order.getCtx(), order.get_TrxName());
+		Timestamp startdate = (Timestamp)client.get_Value("ei_Startdate");
+		if (startdate == null)
+			return "";
+		if (order.getDateAcct().before(startdate))
+			return "";
+		MBPartner partner = (MBPartner)order.getC_BPartner();
+		Boolean eiCorrect =  (partner.get_ValueAsInt( "E_Activity_ID") >0 &&
+				partner.get_ValueAsInt( "E_BPType_ID") > 0 &&
+				partner.get_ValueAsInt( "E_Recipient_Identification_ID") > 0);
+		if (!eiCorrect)
+			return "Socio de Negocio: Configuracion factura electronica ";
+		Boolean addressCorrect = (order.getBill_Location().getC_Location().getC_City_ID()>0
+				&& order.getBill_Location().getC_Location().getC_Region_ID()>0
+				&& order.getBill_Location().getC_Location().getAddress1()!="NN");
+		if (!addressCorrect)
+			return "Socio de Negocio: Direcciï¿½n";
+		X_E_Recipient_Identification identification = new X_E_Recipient_Identification(po.getCtx(),partner.get_ValueAsInt( "E_Recipient_Identification_ID")
+				, po.get_TrxName());
+		if (identification.getValue().equals("36")) {
+			final String PATTERN = "^([0-9]{14}|[0-9]{9})$";
+			String nit = partner.getTaxID();
+			boolean patternOK = (nit!=null) && Pattern.matches(PATTERN, nit);  			
+			if(!patternOK)
+				error = "Formato de NIT no es correcto";			
+		}
+		return error;
+		
+	}
 
 	/**
 	 * Sample Validator Before Save Properties - to set mandatory properties on users

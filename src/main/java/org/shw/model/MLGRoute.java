@@ -27,7 +27,6 @@ import java.util.Properties;
 import org.compiere.model.MOrderLine;
 import org.compiere.model.MUOM;
 import org.compiere.model.Query;
-import org.compiere.model.*;
 import org.compiere.util.Env;
 
 /**
