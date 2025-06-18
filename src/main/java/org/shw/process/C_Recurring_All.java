@@ -18,12 +18,9 @@
 
 package org.shw.process;
 
-import org.adempiere.core.domains.models.I_AD_User;
 import org.adempiere.core.domains.models.I_C_Recurring;
 import org.compiere.model.MRecurring;
 import org.compiere.model.Query;
-import org.compiere.process.Recurring;
-import org.eevolution.services.dsl.ProcessBuilder;
 
 
 /** Generated Process for (C_Recurring_All)
