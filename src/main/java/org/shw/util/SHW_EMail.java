@@ -571,6 +571,11 @@ public final class SHW_EMail implements Serializable
 					props.put("mail.smtp.starttls.enable", "true");
 				}
 				//	
+
+
+                // *** ADD THE FOLLOWING LINE(S) HERE ***
+				props.put("mail.smtp.ssl.protocols", "TLSv1.2"); // Changed to only TLSv1.2
+				// *** END ADDITION ***
 				if(getAuthMechanism().equals(MEMailConfig.AUTHMECHANISM_NTLM)) {
 					props.put("mail.smtp.auth.mechanisms","NTLM");
 					if(domain != null)
