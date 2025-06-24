@@ -1,4 +1,4 @@
-package org.shw.lsv.ebanking.bac.sv.test;
+package org.shw.lsv.ebanking.bac.sv.test.saldo_cuenta.request;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -27,10 +27,8 @@ public class CAMT052SerializationTestWithFile {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("CAMT052 serialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
-        // Setup for file output
-        String dateSuffix     = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String outputFileName = String.format("%s_OUTPUT_%s.json", CLASS_NAME, dateSuffix);
-        String errorFileName  = String.format("%s_ERROR_%s.txt", CLASS_NAME, dateSuffix);
+        String outputFileName = String.format("%s_OUTPUT.json", CLASS_NAME);
+        String errorFileName  = String.format("%s_ERROR.txt", CLASS_NAME);
 
         Path outputDirPath = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY);
 

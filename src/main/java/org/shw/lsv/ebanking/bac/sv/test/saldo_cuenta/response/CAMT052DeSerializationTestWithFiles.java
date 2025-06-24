@@ -1,4 +1,4 @@
-package org.shw.lsv.ebanking.bac.sv.test;
+package org.shw.lsv.ebanking.bac.sv.test.saldo_cuenta.response;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
