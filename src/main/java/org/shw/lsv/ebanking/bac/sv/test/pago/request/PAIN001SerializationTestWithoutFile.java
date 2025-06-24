@@ -11,7 +11,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-public class PAIN001SerializationTest {
+public class PAIN001SerializationTestWithoutFile {
     public static void main(String[] args) {
         String jsonOutput = "";
 

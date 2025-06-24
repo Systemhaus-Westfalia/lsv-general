@@ -8,7 +8,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReport;
 
-public class PAIN001DeSerializationStatusReportTest {
+public class PAIN001DeSerializationStatusReportTestWithoutFile {
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("PAIN001 deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));

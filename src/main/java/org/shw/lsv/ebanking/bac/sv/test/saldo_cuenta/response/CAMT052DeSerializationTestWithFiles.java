@@ -25,7 +25,7 @@ public class CAMT052DeSerializationTestWithFiles {
         // Build file names
         String inputFileName  = CLASS_NAME + "_INPUT_FILE.json";
         String outputFileName = CLASS_NAME + "_OUTPUT.txt";
-        String errorFileName  = String.format("%s_ERRORS_%s.txt", CLASS_NAME, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        String errorFileName  = String.format("%s_ERRORS.txt", CLASS_NAME);
 
         // Build file paths
         Path baseDir        = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY);

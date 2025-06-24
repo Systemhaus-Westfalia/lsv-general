@@ -177,7 +177,7 @@ public class EBankingConstants {
 	public static final String CONTEXT_VALID_DATE    = "VALID DATE";
 
 	// Tests
-	public static final String TEST_FILES_DIRECTORY     = "json_files";
+	public static final String TEST_FILES_DIRECTORY     = "z_test_json_files";
 	public static final String TEST_BASE_DIRECTORY_PATH = "src/main/java/org/shw/lsv/ebanking/bac/sv/test";
 	
 }
