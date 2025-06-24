@@ -1,4 +1,4 @@
-package org.shw.lsv.ebanking.bac.sv.test;
+package org.shw.lsv.ebanking.bac.sv.test.pago.request;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
