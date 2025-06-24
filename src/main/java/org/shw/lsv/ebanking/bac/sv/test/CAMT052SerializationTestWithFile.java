@@ -1,22 +1,49 @@
 package org.shw.lsv.ebanking.bac.sv.test;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
-import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 
-public class CAMT052SerializationTest {
-public static void main(String[] args) {
-    String jsonOutput = "";
+public class CAMT052SerializationTestWithFile {
+    private static final String CLASS_NAME = CAMT052SerializationTestWithFile.class.getSimpleName();
+
+    public static void main(String[] args) {
+        String jsonOutput = "";
 
         LocalDateTime now = LocalDateTime.now();
         System.err.println("CAMT052 serialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+
+        // Setup for file output
+        String dateSuffix     = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String outputFileName = String.format("%s_OUTPUT_%s.json", CLASS_NAME, dateSuffix);
+        String errorFileName  = String.format("%s_ERROR_%s.txt", CLASS_NAME, dateSuffix);
+
+        Path outputDirPath = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY);
+
+        try {
+            Files.createDirectories(outputDirPath);
+        } catch (IOException e) {
+            System.err.println("Could not create output directory: " + outputDirPath.toAbsolutePath());
+            e.printStackTrace();
+            return;
+        }
+
+        Path outputFilePath = outputDirPath.resolve(outputFileName);
+        Path errorFilePath  = outputDirPath.resolve(errorFileName);
 
         // 1. Create collector for test diagnostics
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
@@ -27,7 +54,6 @@ public static void main(String[] args) {
         
         try {
             // 3. Build request with test's collector
-            // CAMT052Request request = RequestBuilder.build(params, collector);  // Deprecated. Kann spaeter geloescht werden
             CAMT052Request request = RequestBuilder.build(CAMT052Request.class, params, collector);
             
             // 4. Serialization test
@@ -37,6 +63,15 @@ public static void main(String[] args) {
             // 5. Print Json
             System.out.println("\nGenerated JSON:");
             System.out.println(jsonOutput);
+
+            // 6. Write JSON to file
+            try (BufferedWriter writer = Files.newBufferedWriter(outputFilePath)) {
+                writer.write(jsonOutput);
+                System.out.println("\nSuccessfully wrote JSON to: " + outputFilePath.toAbsolutePath());
+            } catch (IOException e) {
+                System.err.println("\nError writing JSON to file: " + e.getMessage());
+                e.printStackTrace(System.err);
+            }
             
             System.out.println("CAMT052 serialization succeeded without errors.\n");
             
@@ -44,9 +79,19 @@ public static void main(String[] args) {
             System.err.println("CAMT052 serialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         } catch (JsonValidationException e) {
-            System.err.println("CAMT052 serialization Test failed: " + e.getMessage());
+            // Print errors to console in a format consistent with deserialization tests
+            System.err.println("\nCritical validation failures:");
             System.err.println(e.getValidationErrors());
-            System.err.println("********************************************");
+
+            // Write error to file
+            String fileErrorMessage = "CAMT052 serialization Test failed: " + e.getMessage() + "\n" + e.getValidationErrors();
+            try (BufferedWriter writer = Files.newBufferedWriter(errorFilePath)) {
+                writer.write(fileErrorMessage);
+                System.err.println("\nSuccessfully wrote error details to: " + errorFilePath.toAbsolutePath());
+            } catch (IOException ioEx) {
+                System.err.println("\nError writing error details to file: " + ioEx.getMessage());
+                ioEx.printStackTrace(System.err);
+            }
         }
     }
 
@@ -72,21 +117,14 @@ public static void main(String[] args) {
             .setCreDt(        "2025-05-16T07:56:49-06:00")
 
             // Group Header
-            // Max. length: 35
-            // Examples: "test:case? (ok)", "abc/def-ghi:jkl(mno)pqr.stu,vwx'y+z"
-            // Usually not echoed in Response
             .setMsgId(        SALDO_MESSAGE_ID + "-02")                // ID assigned by the sender
 
             .setCreDtTm(      "2025-05-16T07:56:49-06:00")
 
             // Document
-
-            // Max length: 35
-            // Examples: "test:case? (ok)", "abc/def-ghi:jkl(mno)pqr.stu,vwx'y+z"
-            // Usually not echoed in Response
             .setReqdMsgNmId(  SALDO_MESSAGE_ID + "-03")                // Specifies the type of report being requested
 
-            .setAcctId(       "999888666")                      // Bank Account
+            .setAcctId(       "200268472")                      // Bank Account
             .setBicfiAcctOwnr("AMERICA3PLX")             // BIC of Company
                                                                        // Official definition: The BIC (SWIFT code) of the account owner’s bank (the agent).
             .setCcy(          "USD")

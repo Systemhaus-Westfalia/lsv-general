@@ -8,7 +8,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
-public class CAMT052DeSerializationTest {
+public class CAMT052DeSerializationTestWithoutFiles {
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("CAMT052 deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
