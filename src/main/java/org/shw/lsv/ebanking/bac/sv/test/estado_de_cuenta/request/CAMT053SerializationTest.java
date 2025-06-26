@@ -57,7 +57,7 @@ public class CAMT053SerializationTest {
             .setBicfiFr("AMERICA3PLX")                    // BIC of Company (festgelegt)
             // Official definition: The sending Bank Identifier Code.
             // "INVALIDBIC" Will trigger an error
-            .setBicfiTo("BAMCSVSSXXX")                  // BIC of bank (festgelegt)
+            .setBicfiTo("BAMCSVSS")                     // BIC of bank (festgelegt)
             // Official definition: The receiving Bank Identifier Code.
             // "INVALIDBIC" Will trigger an error
 

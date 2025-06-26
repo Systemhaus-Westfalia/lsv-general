@@ -60,7 +60,7 @@ public class TMST038SerializationTest {
             .setBicfiFr(      "AMERICA3PLX")                    // BIC of Company (festgelegt)
                                                                       // Official definition: The sending Bank Identifier Code.
                                                                       // "INVALIDBIC" Will trigger an error
-            .setBicfiTo(      "BAMCSVSSXXX")                  // BIC of bank (festgelegt)
+            .setBicfiTo(      "BAMCSVSS")                     // BIC of bank (festgelegt)
                                                                       // Official definition: The receiving Bank Identifier Code.
             .setBizMsgIdr(    PYMT_MESSAGE_ID)                        // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference.
             .setMsgDefIdr(    "TSMT.038.001.03")            // The message definition identifier, indicating the type of message being sent. Bei "Payment Consult Request" muß =TSMT.038.001.03

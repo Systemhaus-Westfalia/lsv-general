@@ -138,7 +138,7 @@ public class CAMT053CombinedPaginationTest {
         return new RequestParams()
             // AppHdr
             .setBicfiFr("AMERICA3PLX")
-            .setBicfiTo("BAMCSVSSXXX")
+            .setBicfiTo("BAMCSVSS")
             .setBizMsgIdr(ESTADO_CUENTA_MESSAGE_ID + "-Page-" + pageNumber) // Make BizMsgIdr unique per page
             .setMsgDefIdr("camt.060.001.05") // For CAMT053Request, this should be camt.053.001.08 as per CAMT053SerializationTest comments.
                                              // However, CAMT053SerializationTest uses camt.060.001.05. Clarify correct value.

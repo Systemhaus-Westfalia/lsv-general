@@ -67,7 +67,7 @@ public class PAIN001SerializationTestWithoutFile {
             .setBicfiFr(      "AMERICA3PLX")                    // BIC of Company (festgelegt)
                                                                       // Official definition: The sending Bank Identifier Code.
                                                                       // "INVALIDBIC" Will trigger an error
-            .setBicfiTo(      "BAMCSVSSXXX")                  // BIC of bank (festgelegt)
+            .setBicfiTo(      "BAMCSVSS")                     // BIC of bank (festgelegt)
                                                                       // Official definition: The receiving Bank Identifier Code.
                                                                       // "INVALIDBIC" Will trigger an error
             // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference.
@@ -123,7 +123,7 @@ public class PAIN001SerializationTestWithoutFile {
             .setInstdAmt(     "469.87")                       // Payment Amount
 
             // Choose one to determine the receivig Institution: BIC (Bank Identifier Code, SWIFT code) or MB:
-            .setBic(          "BAMCSVSSXXX")                       // BIC vom Receiver. Entweder BIC oder MmbId
+            .setBic(          "BAMCSVSS")                          // BIC vom Receiver. Entweder BIC oder MmbId
             //.setMmbId     (     "102")                               // MmbId (Clearing System Member Identifier):
                                                                        // An identifier assigned by a local clearing system (such as a national payment network). Entweder BIC oder MmbId
 
