@@ -46,7 +46,7 @@ public class CAMT052SerializationTestWithFile {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        RequestParams params = createTestParams();
+        RequestParams params = createTestParams(now);
         
         try {
             // 3. Build request with test's collector
@@ -91,8 +91,16 @@ public class CAMT052SerializationTestWithFile {
         }
     }
 
-    private static RequestParams createTestParams() {
+    private static RequestParams createTestParams(LocalDateTime now) {
         String SALDO_MESSAGE_ID = "Saldo-ADClientName/(CuentaNr)";
+
+        // Folgende Werte sind von BAC fest definiert
+        String MSGDEFIDR   = "camt.060.001.05";
+        String BIZSVC      = "swift.cbprplus.01";
+        String REQDMSGNMID = "AccountBalanceReportV08";
+        String XMLNS       = "urn:iso:std:iso:20022:tech:xsd:camt.060.001.05";
+
+        String formattedTimestamp = now.atOffset(EBankingConstants.ELSALVADOR_OFFSET).format(EBankingConstants.ISO_OFFSET_DATE_TIME_FORMATTER);
 
         return new RequestParams()
             // AppHdr
@@ -102,23 +110,25 @@ public class CAMT052SerializationTestWithFile {
             .setBicfiTo(      "BAMCSVSS")                     // BIC of bank (festgelegt)
                                                                       // Official definition: The receiving Bank Identifier Code.
                                                                       // "INVALIDBIC" Will trigger an error
-
             // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference.
             // This MAY BE echeoed in the response, but must not
             // Max length: 35
-            .setBizMsgIdr(    SALDO_MESSAGE_ID + "-01")
+            .setBizMsgIdr(    SALDO_MESSAGE_ID + "-01")                // ID assigned by the sender; es kann der gleiche sein wie bei setMsgId()
 
-            .setMsgDefIdr(    "camt.060.001.05")            // The message definition identifier, indicating the type of message being sent. Bei "Consulta Saldo Request" muß =() camt.052 ist das camt.060.001.05
-            .setBizSvc(       "swift.cbprplus.01")             // The business service identifier. Hier muß == "swift.cbprplus.01"
-            .setCreDt(        "2025-05-16T07:56:49-06:00")
-
-            // Group Header
-            .setMsgId(        SALDO_MESSAGE_ID + "-02")                // ID assigned by the sender
-
-            .setCreDtTm(      "2025-05-16T07:56:49-06:00")
+            .setMsgDefIdr(    MSGDEFIDR)                               // The message definition identifier, indicating the type of message being sent. Bei "Consulta Saldo Request" muß =() camt.052 ist das camt.060.001.05
+            .setBizSvc(       BIZSVC)                                  // The business service identifier. Hier muß == "swift.cbprplus.01"
+            .setCreDt(        formattedTimestamp)                      // Es wird erwartet ein DateTime, obwohl der name ist "Dt"
 
             // Document
-            .setReqdMsgNmId(  SALDO_MESSAGE_ID + "-03")                // Specifies the type of report being requested
+            .setXmlns(XMLNS)                                           // festgelegt bei BAC
+
+            // Group Header
+            .setMsgId(        SALDO_MESSAGE_ID + "-02")                // ID assigned by the sender; es kann der gleiche sein wie bei setBizMsgIdr()
+
+            .setCreDtTm(      formattedTimestamp)
+
+            // Document
+            .setReqdMsgNmId(  REQDMSGNMID)                              // Specifies the type of report being requested
 
             .setAcctId(       "200268472")                      // Bank Account
             .setBicfiAcctOwnr("AMERICA3PLX")             // BIC of Company

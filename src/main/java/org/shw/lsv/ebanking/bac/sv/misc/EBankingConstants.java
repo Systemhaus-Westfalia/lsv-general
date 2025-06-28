@@ -1,5 +1,6 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -8,8 +9,10 @@ import java.time.format.DateTimeFormatter;
 public class EBankingConstants {
     public static final DateTimeFormatter DATETIME_FORMATTER             = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public static final DateTimeFormatter ISO_OFFSET_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
-    public static final long TIMEZONE_SHIFT_EL_SALVADOR                  = 6; // 6 hours shift for the time zone (e.g., CET to UTC)
-    public static final long TIMEZONE_SHIFT_PANAMA                       = 5; // 4 hours shift for the time zone (e.g., CET to UTC)
+    public static final long TIMEZONE_SHIFT_EL_SALVADOR                  = -6; // 6 hours shift for the time zone (e.g., CET to UTC)
+    public static final long TIMEZONE_SHIFT_PANAMA                       = -5; // 4 hours shift for the time zone (e.g., CET to UTC)
+    public static final ZoneOffset ELSALVADOR_OFFSET = ZoneOffset.ofHours((int) EBankingConstants.TIMEZONE_SHIFT_EL_SALVADOR);
+    public static final ZoneOffset PANAMA_OFFSET     = ZoneOffset.ofHours((int) EBankingConstants.TIMEZONE_SHIFT_PANAMA);
 
 	public static final StringBuffer errorMessages = new StringBuffer();
 
