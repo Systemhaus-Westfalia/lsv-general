@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CAMT052Response implements Validatable {
     
-    @JsonProperty("Envelope")    // "Envelope" is the name of the field in the JSON
-    CAMT052ResponseEnvelope cAMT052ResponseEnvelope;
+    @JsonProperty("File")    // "File" is the name of the field in the JSON
+    CAMT052ResponseFile cAMT052ResponseFile;
 
 
     public CAMT052Response() {}
@@ -18,26 +18,26 @@ public class CAMT052Response implements Validatable {
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {
-            if (cAMT052ResponseEnvelope == null) {
-                throw new IllegalArgumentException("Envelope cannot be null");
+            if (cAMT052ResponseFile == null) {
+                throw new IllegalArgumentException("File cannot be null");
             }
 
             // Validate nested objects
-            if (cAMT052ResponseEnvelope instanceof Validatable) {
-                ((Validatable) cAMT052ResponseEnvelope).validate(collector);
+            if (cAMT052ResponseFile instanceof Validatable) {
+                ((Validatable) cAMT052ResponseFile).validate(collector);
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
     
-    public CAMT052ResponseEnvelope getcAMT052ResponseEnvelope() {
-        return cAMT052ResponseEnvelope;
+    public CAMT052ResponseFile getcAMT052ResponseFile() {
+        return cAMT052ResponseFile;
     }
 
 
-    public void setcAMT052ResponseEnvelope(CAMT052ResponseEnvelope cAMT052ResponseEnvelope) {
-        this.cAMT052ResponseEnvelope = cAMT052ResponseEnvelope;
+    public void setcAMT052ResponseFile(CAMT052ResponseFile cAMT052ResponseFile) {
+        this.cAMT052ResponseFile = cAMT052ResponseFile;
     }
 
 }
