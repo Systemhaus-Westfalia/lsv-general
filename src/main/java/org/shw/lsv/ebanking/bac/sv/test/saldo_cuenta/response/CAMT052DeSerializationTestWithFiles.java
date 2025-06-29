@@ -20,7 +20,8 @@ public class CAMT052DeSerializationTestWithFiles {
 
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
-        System.err.println(CLASS_NAME + " started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+        StringBuffer log  = new StringBuffer();
+        log.append(CLASS_NAME + " started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         // Build file names
         String inputFileName  = CLASS_NAME + "_INPUT_FILE.json";
@@ -36,7 +37,7 @@ public class CAMT052DeSerializationTestWithFiles {
         // Read test JSON from file
         String testJson = "";
         try {
-            System.err.println("Reading from file: " + inputFilePath.toAbsolutePath());
+            log.append("\nReading from file: " + inputFilePath.toAbsolutePath());
             testJson = Files.readString(inputFilePath);
         } catch (IOException e) {
             System.err.println("Could not read input file: " + inputFilePath.toAbsolutePath());
@@ -52,7 +53,7 @@ public class CAMT052DeSerializationTestWithFiles {
 
         // 3. Execute deserialization
         try {
-            System.out.println("Starting CAMT052 deserialization test...");
+            log.append("\nStarting CAMT052 deserialization test...");
             CAMT052Response response = processor.deserialize(testJson, CAMT052Response.class);
 
             // 4. Check for non-fatal warnings
@@ -61,18 +62,20 @@ public class CAMT052DeSerializationTestWithFiles {
                 System.err.println(errorContent);
                 writeToFile(errorFilePath, errorContent);
             } else {
-                System.out.println("CAMT052 Deserialization completed cleanly");
+                log.append("\nCAMT052 Deserialization completed cleanly");
             }
 
+            now = LocalDateTime.now();
+            log.append("\nCAMT052 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+
             // 5. Use the deserialized object and write summary to file
-            StringBuffer summary = new StringBuffer();
-            collectResponseSummary(response, summary);
+            log.append("\n--- Begin of Response Summary ---");
+            collectResponseSummary(response, log);
+            log.append("\n--- End of Response Summary ---\n");
 
-            System.err.println("\n--- Response Summary ---");
-            System.err.println(summary.toString());
-            System.err.println("--- End Response Summary ---\n");
+            System.err.println(log.toString());
 
-            writeToFile(outputFilePath, summary.toString());
+            writeToFile(outputFilePath, log.toString());
 
         } catch (JsonValidationException e) {
             String errorContent = "\nCritical validation failures:\n" + e.getValidationErrors();
@@ -81,49 +84,58 @@ public class CAMT052DeSerializationTestWithFiles {
         }
     }
 
-    private static void collectResponseSummary(CAMT052Response response, StringBuffer summary) {
-        LocalDateTime now = LocalDateTime.now();
-        System.err.println("CAMT052 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+    private static void collectResponseSummary(CAMT052Response response, StringBuffer log) {
+        CAMT052ResponseEnvelope responseEnvelope = null;
+        CAMT052ResponseDocument responseDocument = null;
 
-        System.out.println("CAMT052 Envelope present: " + (response.getcAMT052ResponseFile().getcAMT052ResponseEnvelope() != null));
-        if (response.getcAMT052ResponseFile().getcAMT052ResponseEnvelope() != null) {
-            System.out.println("CAMT052 Document present: " +
-                (response.getcAMT052ResponseFile().getcAMT052ResponseEnvelope().getcAMT052ResponseDocument() != null));
+        boolean isEnvelope = response.getcAMT052ResponseFile().getcAMT052ResponseEnvelope() != null;
+        if (isEnvelope) {
+            log.append("\nCAMT052 Envelope present: " + isEnvelope);
+            responseEnvelope   = response.getcAMT052ResponseFile().getcAMT052ResponseEnvelope();
+
+            boolean isDocument = responseEnvelope.getcAMT052ResponseDocument() != null;
+            if (isDocument) {
+                log.append("\nCAMT052 Document present: " + isDocument);
+                responseDocument = responseEnvelope.getcAMT052ResponseDocument();
+            } else {
+                log.append("\nCAMT052 Document is present: false");
+                return;
+            }
+        } else {
+            log.append("\nCAMT052 Envelop present: false");
+            return;
         }
 
-        CAMT052ResponseEnvelope responseEnvelope = response.getcAMT052ResponseFile().getcAMT052ResponseEnvelope();
-        CAMT052ResponseDocument responseDocument = responseEnvelope.getcAMT052ResponseDocument();
+        log.append("\n********************************************");
+        log.append("\n******* CAMT052 Response *******");
+        log.append("\n********************************************");
+        log.append("\n*** AppHdr ***");
+        log.append("\n    Fr-BICFI : "  + responseEnvelope.getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
+        log.append("\n    To-BICFI : "  + responseEnvelope.getAppHdr().getTo().getfIId().getFinInstnId().getbICFI());
+        log.append("\n    BizMshIdr: "  + responseEnvelope.getAppHdr().getBizMsgIdr());
+        log.append("\n    BizSvc:    "  + responseEnvelope.getAppHdr().getBizSvc());
+        log.append("\n    CreDt:     "  + responseEnvelope.getAppHdr().getCreDt());
+        log.append("\n    MsgDefIdr: "  + responseEnvelope.getAppHdr().getMsgDefIdr());
+        log.append("\n********************************************");
+        log.append("\n************* GrpHdr ***********************");
+        log.append("\n    CreDtTm:   "  + responseDocument.getBkToCstmrAcctRpt().getGrpHdr().getCreDtTm());
+        log.append("\n    MsgId:     "  + responseDocument.getBkToCstmrAcctRpt().getGrpHdr().getMsgId());
+        log.append("\n********************************************");
+        log.append("\n*** CAMT052 Response Document ***");
+        log.append("\n********************************************");
+        log.append("\n    AcctId:    "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getAcct().getAcctId().getAcctIdOthr().getId());
+        log.append("\n    Acct-Ccy:  "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getAcct().getCcy());
+        log.append("\n    Bal-Amt:   "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getBal().getAmt().getAmt());
+        log.append("\n    Bal-Ccy:   "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getBal().getAmt().getCcy());
+        log.append("\n    CdtDbtInd: "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getBal().getCdtDbtInd());
+        log.append("\n    Bal-DtTm:  "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getBal().getDt().getDtTm());
+        log.append("\n    Bal-Cd:    "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getBal().getTp().getCdOrPrtry().getCd());
+        log.append("\n    Id:        "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getId());
 
-        System.err.println("********************************************");
-        System.err.println("********************************************");
-        System.err.println("Ergebnisse:");
-        System.err.println("*** AppHdr ***");
-        System.err.println("    Fr-BICFI : "  + responseEnvelope.getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
-        System.err.println("    To-BICFI : "  + responseEnvelope.getAppHdr().getTo().getfIId().getFinInstnId().getbICFI());
-        System.err.println("    BizMshIdr: "  + responseEnvelope.getAppHdr().getBizMsgIdr());
-        System.err.println("    BizSvc:    "  + responseEnvelope.getAppHdr().getBizSvc());
-        System.err.println("    CreDt:     "  + responseEnvelope.getAppHdr().getCreDt());
-        System.err.println("    MsgDefIdr: "  + responseEnvelope.getAppHdr().getMsgDefIdr());
-        System.err.println("********************************************");
-        System.err.println("*** CAMT052 Response Document ***");
-        System.err.println("********************************************");
-        System.err.println("************* GrpHdr ***********************");
-        System.err.println("    CreDtTm:   "  + responseDocument.getBkToCstmrAcctRpt().getGrpHdr().getCreDtTm());
-        System.err.println("    MsgId:     "  + responseDocument.getBkToCstmrAcctRpt().getGrpHdr().getMsgId());
-
-        System.err.println("    AcctId:    "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getAcct().getAcctId().getAcctIdOthr().getId());
-        System.err.println("    Acct-Ccy:  "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getAcct().getCcy());
-        System.err.println("    Bal-Amt:   "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getBal().getAmt().getAmt());
-        System.err.println("    Bal-Ccy:   "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getBal().getAmt().getCcy());
-        System.err.println("    CdtDbtInd: "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getBal().getCdtDbtInd());
-        System.err.println("    Bal-DtTm:  "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getBal().getDt().getDtTm());
-        System.err.println("    Bal-Cd:    "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getBal().getTp().getCdOrPrtry().getCd());
-        System.err.println("    Id:        "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getId());
-
-        System.err.println("    Bal-RptId: "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getRptPgntn().getPgNb());
-        System.err.println("    LastPgInd: "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getRptPgntn().isLastPgInd());
-        System.err.println("********************************************");
-        System.err.println("********************************************");
+        log.append("\n    Bal-RptId: "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getRptPgntn().getPgNb());
+        log.append("\n    LastPgInd: "  + responseDocument.getBkToCstmrAcctRpt().getRpt().getRptPgntn().isLastPgInd());
+        log.append("\n********************************************");
+        log.append("\n********************************************");
     }
 
     private static void writeToFile(Path filePath, String content) {
