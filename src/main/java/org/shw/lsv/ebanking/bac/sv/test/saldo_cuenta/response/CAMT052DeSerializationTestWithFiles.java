@@ -7,6 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052Response;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseDocument;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseEnvelope;
@@ -29,10 +32,10 @@ public class CAMT052DeSerializationTestWithFiles {
         String errorFileName  = String.format("%s_ERRORS.txt", CLASS_NAME);
 
         // Build file paths
-        Path baseDir        = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY);
-        Path inputFilePath  = baseDir.resolve(inputFileName);
-        Path outputFilePath = baseDir.resolve(outputFileName);
-        Path errorFilePath  = baseDir.resolve(errorFileName);
+        Path baseDir          = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY);
+        Path inputFilePath    = baseDir.resolve(inputFileName);
+        Path outputFilePath   = baseDir.resolve(outputFileName);
+        Path errorFilePath    = baseDir.resolve(errorFileName);
 
         // Read test JSON from file
         String testJson = "";
@@ -78,9 +81,30 @@ public class CAMT052DeSerializationTestWithFiles {
             writeToFile(outputFilePath, log.toString());
 
         } catch (JsonValidationException e) {
-            String errorContent = "\nCritical validation failures:\n" + e.getValidationErrors();
-            System.err.println(errorContent);
-            writeToFile(errorFilePath, errorContent);
+            log.append("\nDeserialization to CAMT052Response failed. This may be a rejection message (admi.002).");
+            log.append("\nOriginal validation failures:\n" + e.getValidationErrors());
+
+            // Attempt to parse the JSON as a generic rejection message to extract details.
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode   = mapper.readTree(testJson);
+                JsonNode rsnNode    = rootNode.path("File").path("Envelope").path("Document").path("admi.002.001.01").path("Rsn");
+
+                if (!rsnNode.isMissingNode()) {
+                    // Beide Felder enthalten die Ablehnungsgründe
+                    String reasonCode = rsnNode.path("RjctgPtyRsn").asText("N/A");
+                    String reasonDesc = rsnNode.path("RsnDesc").asText("N/A");
+
+                    String rejectionSummary = String.format("\n\n--- Rejection Details Extracted ---\nReason Code: %s\nDescription: %s\n---------------------------------", reasonCode, reasonDesc);
+                    log.append(rejectionSummary);
+                } else {
+                    log.append("\n\nCould not find 'admi.002.001.01' rejection details in the JSON.");
+                }
+            } catch (IOException parseException) {
+                log.append("\n\nAdditionally, failed to parse the error response as a generic JSON object: " + parseException.getMessage());
+            }
+            System.err.println(log.toString());
+            writeToFile(errorFilePath, log.toString());
         }
     }
 
