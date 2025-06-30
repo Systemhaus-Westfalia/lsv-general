@@ -1,6 +1,10 @@
 package org.shw.lsv.ebanking.bac.sv.test.saldo_cuenta.response;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052Response;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseDocument;
@@ -12,7 +16,8 @@ import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 public class CAMT052DeSerializationTestWithoutFiles {
     public static void main(String[] args) {
-        LocalDateTime now = LocalDateTime.now();
+        boolean testSuccess = true; // Set to false to test the error case
+        LocalDateTime now   = LocalDateTime.now();
         System.err.println("CAMT052 deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         // 1. Create collector with explicit settings
@@ -22,8 +27,8 @@ public class CAMT052DeSerializationTestWithoutFiles {
         // 2. Inject collector into processor
         JsonProcessor processor = new JsonProcessor(collector);
 
-        // 3. Prepare test JSON (could also read from file)
-        String testJson = createTestJson();
+        // 3. Prepare test JSON
+        String testJson = testSuccess ? createTestJsonOK() : createTestJsonError();
 
         // 4. Execute deserialization
         try {
@@ -43,13 +48,33 @@ public class CAMT052DeSerializationTestWithoutFiles {
             printResponseSummary(response);
             
         } catch (JsonValidationException e) {
-            System.err.println("\nCritical validation failures:");
+            System.err.println("\nDeserialization to CAMT052Response failed. This may be a rejection message (admi.002).");
+            System.err.println("Original validation failures:");
             System.err.println(e.getValidationErrors());
+
+            // Attempt to parse the JSON as a generic rejection message to extract details.
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode   = mapper.readTree(testJson);
+                JsonNode rsnNode    = rootNode.path("File").path("Envelope").path("Document").path("admi.002.001.01").path("Rsn");
+
+                if (!rsnNode.isMissingNode()) {
+                    String reasonCode = rsnNode.path("RjctgPtyRsn").asText("N/A");
+                    String reasonDesc = rsnNode.path("RsnDesc").asText("N/A");
+
+                    String rejectionSummary = String.format("\n\n--- Rejection Details Extracted ---\nReason Code: %s\nDescription: %s\n---------------------------------", reasonCode, reasonDesc);
+                    System.err.println(rejectionSummary);
+                } else {
+                    System.err.println("\n\nCould not find 'admi.002.001.01' rejection details in the JSON.");
+                }
+            } catch (IOException parseException) {
+                System.err.println("\n\nAdditionally, failed to parse the error response as a generic JSON object: " + parseException.getMessage());
+            }
         }
     }
 
-    private static String createTestJson() {
-        // Example JSON that might trigger validation rules
+    private static String createTestJsonOK() {
+        // Example JSON for succes Response
         String jsonContent =
             "{\n" +
             "  \"File\": {\n" +
@@ -118,6 +143,30 @@ public class CAMT052DeSerializationTestWithoutFiles {
     
             return jsonContent;
         }
+
+    private static String createTestJsonError() {
+        // Example JSON for erroneous Response
+        String jsonContent =
+            "{\n" +
+            "  \"File\": {\n" +
+            "    \"Envelope\": {\n" +
+            "      \"Document\": {\n" +
+            "        \"admi.002.001.01\": {\n" +
+            "          \"RltdRef\": {\n" +
+            "            \"Ref\": \"2025-06-10T17:26:49-06:00\"\n" +
+            "          },\n" +
+            "          \"Rsn\": {\n" +
+            "            \"RjctgPtyRsn\": \"4\",\n" +
+            "            \"RsnDesc\": \"Error: No se ha encrontrado informacion de cuenta BAC o IBAN.\",\n" +
+            "            \"RjctnDtTm\": \"2025-06-10T17:26:49-06:00\"\n" +
+            "          }\n" +
+            "        }\n" +
+            "      }\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+        return jsonContent;
+    }
 
         
                // For error testing, you could:
