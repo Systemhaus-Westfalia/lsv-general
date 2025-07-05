@@ -961,6 +961,10 @@ public class SAValidatorNEW implements ModelValidator {
 		}
 		return "";
 	}
+	
+	private String InvoiceSplit(PO po) {
+		return "";
+	}
 
 	private String PaymentCreateOrderLine(PO A_PO) {
 		MPayment pay = (MPayment) A_PO;

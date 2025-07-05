@@ -574,7 +574,8 @@ public final class SHW_EMail implements Serializable
 
 
                 // *** ADD THE FOLLOWING LINE(S) HERE ***
-				props.put("mail.smtp.ssl.protocols", "TLSv1.2"); // Changed to only TLSv1.2
+				//props.put("mail.smtp.ssl.protocols", "TLSv1.2"); // Changed to only TLSv1.2
+				props.put("mail.smtp.ssl.protocols", "TLSv1.3"); // Changed to only TLSv1.2
 				// *** END ADDITION ***
 				if(getAuthMechanism().equals(MEMailConfig.AUTHMECHANISM_NTLM)) {
 					props.put("mail.smtp.auth.mechanisms","NTLM");
