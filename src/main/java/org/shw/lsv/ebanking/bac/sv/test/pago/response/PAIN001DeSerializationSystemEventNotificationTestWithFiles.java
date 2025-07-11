@@ -12,6 +12,8 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfn;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnDocument;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnEnvelope;
 
 public class PAIN001DeSerializationSystemEventNotificationTestWithFiles {
     private static final String CLASS_NAME = PAIN001DeSerializationSystemEventNotificationTestWithFiles.class.getSimpleName();
@@ -100,41 +102,43 @@ public class PAIN001DeSerializationSystemEventNotificationTestWithFiles {
      * @param summary The StringBuffer to append the summary to.
      */
     private static void collectResponseSummary(PAIN001ResponseEvtNtfn response, StringBuffer summary) {
-        summary.append("PAIN001 Envelope present: ").append(response.getpAIN001ResponseEvtNtfnEnvelope() != null).append("\n");
-        if (response.getpAIN001ResponseEvtNtfnEnvelope() != null) {
+        PAIN001ResponseEvtNtfnEnvelope envelope = response.getPain001ResponseEvtNtfnFile().getPain001ResponseEnvelope();
+        summary.append("PAIN001 Envelope present: ").append(envelope != null).append("\n");
+        if (envelope != null) {
+            PAIN001ResponseEvtNtfnDocument document = envelope.getpAIN001ResponseEvtNtfnDocument();
             summary.append("PAIN001 Document present: ")
-                   .append(response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument() != null)
+                   .append(document != null)
                    .append("\n");
-            if (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument() != null) {
+            if (document != null) {
                 summary.append("********************************************").append("\n");
                 summary.append("********************************************").append("\n");
                 summary.append("Ergebinisse:").append("\n");
                 summary.append("*** AppHdr ***").append("\n");
-                summary.append("    Fr-BICFI : ").append(response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getFr().getfIId().getFinInstnId().getbICFI()).append("\n");
-                summary.append("    BizMshIdr: ").append(response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getBizMsgIdr()).append("\n");
-                summary.append("    BizSvc:    ").append(response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getBizSvc()).append("\n");
-                summary.append("    CreDt:     ").append(response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getCreDt()).append("\n");
-                summary.append("    MsgDefIdr: ").append(response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getMsgDefIdr()).append("\n");
+                summary.append("    Fr-BICFI : ").append(envelope.getAppHdr().getFr().getfIId().getFinInstnId().getbICFI()).append("\n");
+                summary.append("    BizMshIdr: ").append(envelope.getAppHdr().getBizMsgIdr()).append("\n");
+                summary.append("    BizSvc:    ").append(envelope.getAppHdr().getBizSvc()).append("\n");
+                summary.append("    CreDt:     ").append(envelope.getAppHdr().getCreDt()).append("\n");
+                summary.append("    MsgDefIdr: ").append(envelope.getAppHdr().getMsgDefIdr()).append("\n");
                 summary.append("********************************************").append("\n");
                 summary.append("*** PAIN001 (System Event Notification) Response Document ***").append("\n");
                 summary.append("********************************************").append("\n");
                 summary.append("SysEvtNtfctn present: ")
-                       .append(response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn() != null)
+                       .append(document.getSysEvtNtfctn() != null)
                        .append("\n");
-                if (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn() != null) {
+                if (document.getSysEvtNtfctn() != null) {
                     summary.append("EvtInf present: ").append("\n");
                     summary.append("Erhaltene Variablen: ")
-                           .append(response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf() != null)
+                           .append(document.getSysEvtNtfctn().getEvtInf() != null)
                            .append("\n");
-                    if (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf() != null) {
+                    if (document.getSysEvtNtfctn().getEvtInf() != null) {
                         summary.append("    EvtCd  : ")
-                               .append(response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtCd())
+                               .append(document.getSysEvtNtfctn().getEvtInf().getEvtCd())
                                .append("\n");
                         summary.append("    EvtDesc: ")
-                               .append(response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtDesc())
+                               .append(document.getSysEvtNtfctn().getEvtInf().getEvtDesc())
                                .append("\n");
                         summary.append("    EvtTm  : ")
-                               .append(response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtTm())
+                               .append(document.getSysEvtNtfctn().getEvtInf().getEvtTm())
                                .append("\n");
                     }
                 }

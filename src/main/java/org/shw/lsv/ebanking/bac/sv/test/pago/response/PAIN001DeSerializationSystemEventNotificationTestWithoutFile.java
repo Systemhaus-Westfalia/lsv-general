@@ -7,6 +7,8 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfn;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnDocument;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnEnvelope;
 
 public class PAIN001DeSerializationSystemEventNotificationTestWithoutFile {
     public static void main(String[] args) {
@@ -114,36 +116,38 @@ public class PAIN001DeSerializationSystemEventNotificationTestWithoutFile {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("PAIN001 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
-        System.out.println("PAIN001 Envelope present: " + (response.getpAIN001ResponseEvtNtfnEnvelope() != null));
-        if (response.getpAIN001ResponseEvtNtfnEnvelope() != null) {
+        PAIN001ResponseEvtNtfnEnvelope envelope = response.getPain001ResponseEvtNtfnFile().getPain001ResponseEnvelope();
+        System.out.println("PAIN001 Envelope present: " + (envelope != null));
+        if (envelope != null) {
+            PAIN001ResponseEvtNtfnDocument document = envelope.getpAIN001ResponseEvtNtfnDocument();
             System.out.println("PAIN001 Document present: " +
-                (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument() != null));
-            if (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument() != null) {
+                (document != null));
+            if (document != null) {
                 System.err.println("********************************************");
                 System.err.println("********************************************");
                 System.err.println("Ergebinisse:");
                 System.err.println("*** AppHdr ***");
-                System.err.println("    Fr-BICFI : "  + response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
-                System.err.println("    BizMshIdr: "  + response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getBizMsgIdr());
-                System.err.println("    BizSvc:    "  + response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getBizSvc());
-                System.err.println("    CreDt:     "  + response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getCreDt());
-                System.err.println("    MsgDefIdr: "  + response.getpAIN001ResponseEvtNtfnEnvelope().getAppHdr().getMsgDefIdr());
+                System.err.println("    Fr-BICFI : "  + envelope.getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
+                System.err.println("    BizMshIdr: "  + envelope.getAppHdr().getBizMsgIdr());
+                System.err.println("    BizSvc:    "  + envelope.getAppHdr().getBizSvc());
+                System.err.println("    CreDt:     "  + envelope.getAppHdr().getCreDt());
+                System.err.println("    MsgDefIdr: "  + envelope.getAppHdr().getMsgDefIdr());
                 System.err.println("********************************************");
                 System.err.println("*** PAIN001 (System Event Notification) Response Document ***");
                 System.err.println("********************************************");
                 System.out.println("SysEvtNtfctn present: " +
-                    (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn() != null));
-                if (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn() != null) {
+                    (document.getSysEvtNtfctn() != null));
+                if (document.getSysEvtNtfctn() != null) {
                     System.out.println("EvtInf present: ");
                     System.out.println("Erhaltene Variablen: " +
-                        (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf() != null));
-                    if (response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf() != null) {
+                        (document.getSysEvtNtfctn().getEvtInf() != null));
+                    if (document.getSysEvtNtfctn().getEvtInf() != null) {
                         System.out.println("    EvtCd  : " +
-                            response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtCd());
+                            document.getSysEvtNtfctn().getEvtInf().getEvtCd());
                         System.out.println("    EvtDesc: " +
-                            response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtDesc());
+                            document.getSysEvtNtfctn().getEvtInf().getEvtDesc());
                         System.out.println("    EvtTm  : " +
-                            response.getpAIN001ResponseEvtNtfnEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtTm());
+                            document.getSysEvtNtfctn().getEvtInf().getEvtTm());
                     }
                 }
             }

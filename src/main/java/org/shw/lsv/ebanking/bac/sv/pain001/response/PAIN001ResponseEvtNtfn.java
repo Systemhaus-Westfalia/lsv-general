@@ -6,34 +6,50 @@ import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Root class for PAIN001 Event Notification Response.
+ */
 public class PAIN001ResponseEvtNtfn implements Validatable {
 
-    @JsonProperty("Envelope")    // "Envelope" is the name of the field in the JSON
-    PAIN001ResponseEvtNtfnEnvelope pAIN001ResponseEvtNtfnEnvelope;
+    @JsonProperty("File")    // "File" is the name of the field in the JSON
+    PAIN001ResponseEvtNtfnFile pain001ResponseEvtNtfnFile;
 
     public PAIN001ResponseEvtNtfn() {}
 
-    @Override
-    public void validate(JsonValidationExceptionCollector collector) {
-        try {
-            if (pAIN001ResponseEvtNtfnEnvelope == null) {
-                throw new IllegalArgumentException("Envelope cannot be null");
-            }
+    public PAIN001ResponseEvtNtfn(PAIN001ResponseEvtNtfnFile pain001ResponseEvtNtfnFile) {
+        setPain001ResponseEvtNtfnFile(pain001ResponseEvtNtfnFile);
+    }
 
-            // Validate nested objects
-            if (pAIN001ResponseEvtNtfnEnvelope instanceof Validatable) {
-                ((Validatable) pAIN001ResponseEvtNtfnEnvelope).validate(collector);
-            }
-        } catch (Exception e) {
+    public PAIN001ResponseEvtNtfnFile getPain001ResponseEvtNtfnFile() {
+        return pain001ResponseEvtNtfnFile;
+    }
+
+    public void setPain001ResponseEvtNtfnFile(PAIN001ResponseEvtNtfnFile pain001ResponseEvtNtfnFile) {
+        if (pain001ResponseEvtNtfnFile == null) {
+            throw new IllegalArgumentException("Wrong parameter 'pain001ResponseEvtNtfnFile' in setPain001ResponseEvtNtfnFile()");
+        }
+        this.pain001ResponseEvtNtfnFile = pain001ResponseEvtNtfnFile;
+    }
+
+    public void setPain001ResponseEvtNtfnFile(PAIN001ResponseEvtNtfnFile pain001ResponseEvtNtfnFile, JsonValidationExceptionCollector collector) {
+        try {
+            setPain001ResponseEvtNtfnFile(pain001ResponseEvtNtfnFile);
+        } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 
-    public PAIN001ResponseEvtNtfnEnvelope getpAIN001ResponseEvtNtfnEnvelope() {
-        return pAIN001ResponseEvtNtfnEnvelope;
-    }
-
-    public void setpAIN001ResponseEvtNtfnEnvelope(PAIN001ResponseEvtNtfnEnvelope pAIN001ResponseEvtNtfnEnvelope) {
-        this.pAIN001ResponseEvtNtfnEnvelope = pAIN001ResponseEvtNtfnEnvelope;
+    @Override
+    public void validate(JsonValidationExceptionCollector collector) {
+        try {
+            if (pain001ResponseEvtNtfnFile == null) {
+                throw new IllegalArgumentException("File cannot be null");
+            }
+            if (pain001ResponseEvtNtfnFile instanceof Validatable) {
+                ((Validatable) pain001ResponseEvtNtfnFile).validate(collector);
+            }
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+        }
     }
 }

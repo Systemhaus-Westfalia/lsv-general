@@ -7,6 +7,8 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReport;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReportDocument;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReportEnvelope;
 
 public class PAIN001DeSerializationStatusReportTestWithoutFile {
     public static void main(String[] args) {
@@ -114,43 +116,45 @@ public class PAIN001DeSerializationStatusReportTestWithoutFile {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
-        System.out.println("Envelope present: " + (response.getpAIN001ResponseStatusReportEnvelope() != null));
-        if (response.getpAIN001ResponseStatusReportEnvelope() != null) {
+        PAIN001ResponseStatusReportEnvelope envelope = response.getPain001ResponseStatusReportFile().getPain001ResponseEnvelope();
+        System.out.println("Envelope present: " + (envelope != null));
+        if (envelope != null) {
+            PAIN001ResponseStatusReportDocument document = envelope.getpAIN001ResponseStatusReportDocument();
             System.out.println("Document present: " +
-                (response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument() != null));
-            if (response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument() != null) {
+                (document != null));
+            if (document != null) {
                 System.err.println("********************************************");
                 System.err.println("********************************************");
                 System.err.println("Ergebinisse:");
                 System.err.println("*** AppHdr ***");
-                System.err.println("    Fr-BICFI : "  + response.getpAIN001ResponseStatusReportEnvelope().getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
-                System.err.println("    To-BICFI : "  + response.getpAIN001ResponseStatusReportEnvelope().getAppHdr().getTo().getfIId().getFinInstnId().getbICFI());
-                System.err.println("    BizMshIdr: "  + response.getpAIN001ResponseStatusReportEnvelope().getAppHdr().getBizMsgIdr());
-                System.err.println("    BizSvc:    "  + response.getpAIN001ResponseStatusReportEnvelope().getAppHdr().getBizSvc());
-                System.err.println("    CreDt:     "  + response.getpAIN001ResponseStatusReportEnvelope().getAppHdr().getCreDt());
-                System.err.println("    MsgDefIdr: "  + response.getpAIN001ResponseStatusReportEnvelope().getAppHdr().getMsgDefIdr());
+                System.err.println("    Fr-BICFI : "  + envelope.getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
+                System.err.println("    To-BICFI : "  + envelope.getAppHdr().getTo().getfIId().getFinInstnId().getbICFI());
+                System.err.println("    BizMshIdr: "  + envelope.getAppHdr().getBizMsgIdr());
+                System.err.println("    BizSvc:    "  + envelope.getAppHdr().getBizSvc());
+                System.err.println("    CreDt:     "  + envelope.getAppHdr().getCreDt());
+                System.err.println("    MsgDefIdr: "  + envelope.getAppHdr().getMsgDefIdr());
                 System.err.println("********************************************");
                 System.err.println("*** PAIN001 (Status Report) Response Document ***");
                 System.err.println("********************************************");
 
                 System.out.println("    xmlns    : " +
-                    response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getXmlns());
+                    document.getXmlns());
                 System.out.println("StsRptReq present: " +
-                    (response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq() != null));
-                if (response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq() != null) {
+                    (document.getStsRptReq() != null));
+                if (document.getStsRptReq() != null) {
                     System.out.println("ReqId present: " +
-                        (response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getReqId() != null));
-                    if (response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getReqId() != null) {
+                        (document.getStsRptReq().getReqId() != null));
+                    if (document.getStsRptReq().getReqId() != null) {
                         System.out.println("    Id      : " +
-                            response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getReqId().getId());
+                            document.getStsRptReq().getReqId().getId());
                         System.out.println("    CreDtTm : " +
-                            response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getReqId().getCreDtTm());
+                            document.getStsRptReq().getReqId().getCreDtTm());
                     }
                     System.out.println("NttiesToBeRptd present: " +
-                        (response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getNttiesToBeRptd() != null));
-                    if (response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getNttiesToBeRptd() != null) {
+                        (document.getStsRptReq().getNttiesToBeRptd() != null));
+                    if (document.getStsRptReq().getNttiesToBeRptd() != null) {
                         System.out.println("    BIC     : " +
-                            response.getpAIN001ResponseStatusReportEnvelope().getpAIN001ResponseStatusReportDocument().getStsRptReq().getNttiesToBeRptd().getbIC());
+                            document.getStsRptReq().getNttiesToBeRptd().getbIC());
                     }
                 }
             }
