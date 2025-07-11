@@ -90,6 +90,7 @@ public class EBankingConstants {
 	public static final String ERROR_CAMT053REQUEST_INIT       = "CAMT053Request initialization";
 
 
+	public static final String ERROR_PAIN001REQUESTFILE_INIT   = "PAIN001RequestFile initialization";
 	public static final String ERROR_PAIN001REQUEST_INIT       = "PAIN001Request initialization";
 	public static final String ERROR_CSTMRCDTTRFINITN_INIT     = "CstmrCdtTrfInitn initialization";
 	public static final String ERROR_CTGYPURP_INIT             = "CtgyPurp initialization";

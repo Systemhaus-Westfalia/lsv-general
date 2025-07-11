@@ -8,8 +8,8 @@ import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 public class PAIN001Request implements Validatable {
-    @JsonProperty("Envelope")
-    private PAIN001RequestEnvelope pAIN001RequestEnvelope;
+    @JsonProperty("file")    // "file" is the name of the field in the JSON
+    private PAIN001RequestFile pain001RequestFile;
 
     // Jackson constructor
     public PAIN001Request() {}
@@ -17,7 +17,7 @@ public class PAIN001Request implements Validatable {
     // Validation constructor
     public PAIN001Request(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setPain0012RequestEnvelope(new PAIN001RequestEnvelope(params, collector), collector);
+            setPain001RequestFile(new PAIN001RequestFile(params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_PAIN001REQUEST_INIT, e);
         }
@@ -26,48 +26,48 @@ public class PAIN001Request implements Validatable {
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {
-            if (pAIN001RequestEnvelope == null) {
-                throw new IllegalArgumentException(EBankingConstants.ERROR_ENVELOPE_NOT_NULL);
+            if (pain001RequestFile == null) {
+                throw new IllegalArgumentException("PAIN001RequestFile cannot be null");
             }
 
             // Validate nested objects
-            if (pAIN001RequestEnvelope instanceof Validatable) {
-                ((Validatable) pAIN001RequestEnvelope).validate(collector);
+            if (pain001RequestFile instanceof Validatable) {
+                ((Validatable) pain001RequestFile).validate(collector);
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 
-    public PAIN001RequestEnvelope getpAIN001RequestEnvelope() {
-        return pAIN001RequestEnvelope;
+    public PAIN001RequestFile getPain001RequestFile() {
+        return pain001RequestFile;
     }
 
 
 
     /**
-     * @param pain0012RequestEnvelope the PAIN001RequestEnvelope to be set.
+     * @param pain001RequestFile the PAIN001RequestFile to be set.
      */
-    public void setpAIN001RequestEnvelope(PAIN001RequestEnvelope pain0012RequestEnvelope) {
-        if (pain0012RequestEnvelope == null) {
+    public void setPain001RequestFile(PAIN001RequestFile pain001RequestFile) {
+        if (pain001RequestFile == null) {
             throw new IllegalArgumentException(
-                "Wrong parameter 'pain0012RequestEnvelope' in setpAIN001RequestEnvelope()"
+                "Wrong parameter 'pain001RequestFile' in setPain001RequestFile()"
             );
         }
-        this.pAIN001RequestEnvelope = pain0012RequestEnvelope;
+        this.pain001RequestFile = pain001RequestFile;
     }
 
 
 
     /**
-     * @param pain0012RequestEnvelope the PAIN001RequestEnvelope to be set.
+     * @param pain001RequestFile the PAIN001RequestFile to be set.
      * The parameter is validated: null not allowed.
      * @param collector the JsonValidationExceptionCollector to be set.
      */
-    public void setPain0012RequestEnvelope(PAIN001RequestEnvelope pain0012RequestEnvelope, 
+    public void setPain001RequestFile(PAIN001RequestFile pain001RequestFile, 
                                         JsonValidationExceptionCollector collector) {
         try {
-            setpAIN001RequestEnvelope(pain0012RequestEnvelope);
+            setPain001RequestFile(pain001RequestFile);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;
