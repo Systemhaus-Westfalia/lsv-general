@@ -19,7 +19,7 @@ import org.shw.lsv.ebanking.bac.sv.camt053.response.NtryDtls;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.TxDtls;
 import org.shw.lsv.ebanking.bac.sv.misc.Acct;
 
-public class CAMT053DeSerialization {
+public class CAMT053DeSerializationWithoutFile {
 
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();

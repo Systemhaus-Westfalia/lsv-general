@@ -14,7 +14,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.AppHdr;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
-public class CAMT053CombinedPaginationTest {
+public class CAMT053CombinedPaginationTestWithoutFile {
 
     // Simulate a scenario with a specific number of pages
     private static final int TOTAL_SIMULATED_PAGES = 3;
