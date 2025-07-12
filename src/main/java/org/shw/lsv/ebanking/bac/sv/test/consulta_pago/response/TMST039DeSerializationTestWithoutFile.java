@@ -7,6 +7,8 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.tmst039.response.TMST039Response;
+import org.shw.lsv.ebanking.bac.sv.tmst039.response.TMST039ResponseDocument;
+import org.shw.lsv.ebanking.bac.sv.tmst039.response.TMST039ResponseEnvelope;
 
 public class TMST039DeSerializationTestWithoutFile {
     public static void main(String[] args) {
@@ -145,50 +147,52 @@ public class TMST039DeSerializationTestWithoutFile {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("TMST039 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
-        System.out.println("TMST039 Envelope present: " + (response.getTMST039ResponseEnvelope() != null));
-        if (response.getTMST039ResponseEnvelope() != null) {
+        TMST039ResponseEnvelope envelope = response.getTmst039ResponseFile().getTMST039ResponseEnvelope();
+        System.out.println("TMST039 Envelope present: " + (envelope != null));
+        if (envelope != null) {
+                TMST039ResponseDocument document = envelope.getTMST039ResponseDocument();
             System.out.println("TMST039 Document present: " +
-                (response.getTMST039ResponseEnvelope().getTMST039ResponseDocument() != null));
-            if (response.getTMST039ResponseEnvelope().getTMST039ResponseDocument() != null) {
+                (document != null));
+            if (document != null) {
                 System.err.println("********************************************");
                 System.err.println("********************************************");
                 System.err.println("Ergebinisse:");
                 System.err.println("*** AppHdr ***");
-                System.err.println("    Fr-BICFI : "  + response.getTMST039ResponseEnvelope().getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
-                System.err.println("    To-BICFI : "  + response.getTMST039ResponseEnvelope().getAppHdr().getTo().getfIId().getFinInstnId().getbICFI());
-                System.err.println("    BizMshIdr: "  + response.getTMST039ResponseEnvelope().getAppHdr().getBizMsgIdr());
-                System.err.println("    BizSvc:    "  + response.getTMST039ResponseEnvelope().getAppHdr().getBizSvc());
-                System.err.println("    CreDt:     "  + response.getTMST039ResponseEnvelope().getAppHdr().getCreDt());
-                System.err.println("    MsgDefIdr: "  + response.getTMST039ResponseEnvelope().getAppHdr().getMsgDefIdr());
+                System.err.println("    Fr-BICFI : "  + envelope.getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
+                System.err.println("    To-BICFI : "  + envelope.getAppHdr().getTo().getfIId().getFinInstnId().getbICFI());
+                System.err.println("    BizMshIdr: "  + envelope.getAppHdr().getBizMsgIdr());
+                System.err.println("    BizSvc:    "  + envelope.getAppHdr().getBizSvc());
+                System.err.println("    CreDt:     "  + envelope.getAppHdr().getCreDt());
+                System.err.println("    MsgDefIdr: "  + envelope.getAppHdr().getMsgDefIdr());
                 System.err.println("********************************************");
                 System.err.println("*** TMST039 Response Document            ***");
                 System.err.println("********************************************");
                 System.out.println("xmlns: " +
-                    response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getXmlns());
+                    document.getXmlns());
                 System.out.println("StsRptRsp present: " +
-                    (response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp() != null));
-                if (response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp() != null) {
+                    (document.getStsRptRsp() != null));
+                if (document.getStsRptRsp() != null) {
                     System.out.println("ReqId present: " +
-                        (response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getReqId() != null));
-                    if (response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getReqId() != null) {
+                        (document.getStsRptRsp().getReqId() != null));
+                    if (document.getStsRptRsp().getReqId() != null) {
                         System.out.println("    Id      : " +
-                            response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getReqId().getId());
+                            document.getStsRptRsp().getReqId().getId());
                         System.out.println("    CreDtTm : " +
-                            response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getReqId().getCreDtTm());
+                            document.getStsRptRsp().getReqId().getCreDtTm());
                     }
                     System.out.println("NttiesRptd present: " +
-                        (response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getNttiesToBeRptd() != null));
-                    if (response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getNttiesToBeRptd() != null) {
+                        (document.getStsRptRsp().getNttiesToBeRptd() != null));
+                    if (document.getStsRptRsp().getNttiesToBeRptd() != null) {
                         System.out.println("    BIC     : " +
-                            response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getNttiesToBeRptd().getbIC());
+                            document.getStsRptRsp().getNttiesToBeRptd().getbIC());
                     }
                     System.out.println("Sts present: " +
-                        (response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getSts() != null));
-                    if (response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getSts() != null) {
+                        (document.getStsRptRsp().getSts() != null));
+                    if (document.getStsRptRsp().getSts() != null) {
                         System.out.println("    Cd      : " +
-                            response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getSts().getCd());
+                            document.getStsRptRsp().getSts().getCd());
                         System.out.println("    Rsn     : " +
-                            response.getTMST039ResponseEnvelope().getTMST039ResponseDocument().getStsRptRsp().getSts().getRsn());
+                            document.getStsRptRsp().getSts().getRsn());
                     }
                 }
             }

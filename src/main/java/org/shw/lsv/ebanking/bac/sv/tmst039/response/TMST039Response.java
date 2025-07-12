@@ -2,45 +2,51 @@ package org.shw.lsv.ebanking.bac.sv.tmst039.response;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TMST039Response implements Validatable {
 
-    @JsonProperty("Envelope")    // "Envelope" is the name of the field in the JSON
-    TMST039ResponseEnvelope tMST039ResponseEnvelope;
+    @JsonProperty("File")    // "File" is the name of the field in the JSON
+    TMST039ResponseFile tmst039ResponseFile;
 
     public TMST039Response() {}
+
+    public TMST039Response(TMST039ResponseFile tmst039ResponseFile) {
+        setTmst039ResponseFile(tmst039ResponseFile);
+    }
 
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {
-            if (tMST039ResponseEnvelope == null) {
-                throw new IllegalArgumentException("Envelope cannot be null");
+            if (tmst039ResponseFile == null) {
+                throw new IllegalArgumentException("File cannot be null");
             }
-            if (tMST039ResponseEnvelope instanceof Validatable) {
-                ((Validatable) tMST039ResponseEnvelope).validate(collector);
+            if (tmst039ResponseFile instanceof Validatable) {
+                ((Validatable) tmst039ResponseFile).validate(collector);
             }
         } catch (Exception e) {
-            collector.addError("ERROR_NULL_NOT_ALLOWED", e);
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 
-    public TMST039ResponseEnvelope getTMST039ResponseEnvelope() {
-        return tMST039ResponseEnvelope;
+    public TMST039ResponseFile getTmst039ResponseFile() {
+        return tmst039ResponseFile;
     }
 
-    public void setTMST039ResponseEnvelope(TMST039ResponseEnvelope tMST039ResponseEnvelope) {
-        if (tMST039ResponseEnvelope == null) {
-            throw new IllegalArgumentException("Wrong parameter 'tMST039ResponseEnvelope' in setTMST039ResponseEnvelope()");
+    public void setTmst039ResponseFile(TMST039ResponseFile tmst039ResponseFile) {
+        if (tmst039ResponseFile == null) {
+            throw new IllegalArgumentException("Wrong parameter 'tmst039ResponseFile' in setTmst039ResponseFile()");
         }
-        this.tMST039ResponseEnvelope = tMST039ResponseEnvelope;
+        this.tmst039ResponseFile = tmst039ResponseFile;
     }
 
-    public void setTMST039ResponseEnvelope(TMST039ResponseEnvelope tMST039ResponseEnvelope, JsonValidationExceptionCollector collector) {
+    public void setTmst039ResponseFile(TMST039ResponseFile tmst039ResponseFile, JsonValidationExceptionCollector collector) {
         try {
-            setTMST039ResponseEnvelope(tMST039ResponseEnvelope);
+            setTmst039ResponseFile(tmst039ResponseFile);
         } catch (IllegalArgumentException e) {
-            collector.addError("ERROR_NULL_NOT_ALLOWED", e);
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 }
