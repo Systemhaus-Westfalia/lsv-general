@@ -3,9 +3,9 @@ package org.shw.lsv.ebanking.bac.sv.test.consulta_pago.request;
 import java.time.LocalDateTime;
 
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReport;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.tmst038.request.TMST038RequestStatusReport;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
@@ -28,7 +28,7 @@ public class TMST038StatusReportSerializationTest {
             // 3. Build request with test's collector
             // TMST038 Request is the same as PAIN001ResponseStatusReport.
             // This is the reason why PAIN001ResponseStatusReport is used here.
-            PAIN001ResponseStatusReport request = RequestBuilder.build(PAIN001ResponseStatusReport.class, params, collector);
+            TMST038RequestStatusReport request = RequestBuilder.build(TMST038RequestStatusReport.class, params, collector);
 
             // 4. Serialization test
             JsonProcessor processor = new JsonProcessor(collector);

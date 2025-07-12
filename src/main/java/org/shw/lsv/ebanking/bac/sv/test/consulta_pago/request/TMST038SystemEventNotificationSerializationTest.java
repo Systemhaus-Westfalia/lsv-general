@@ -3,9 +3,9 @@ package org.shw.lsv.ebanking.bac.sv.test.consulta_pago.request;
 import java.time.LocalDateTime;
 
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfn;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.tmst038.request.TMST038RequestEvtNtfn;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
@@ -27,7 +27,7 @@ public class TMST038SystemEventNotificationSerializationTest {
         try {
             // 3. Build request with test's collector
             // A System Event Notification is represented by PAIN001ResponseEvtNtfn
-            PAIN001ResponseEvtNtfn request = RequestBuilder.build(PAIN001ResponseEvtNtfn.class, params, collector);
+            TMST038RequestEvtNtfn request = RequestBuilder.build(TMST038RequestEvtNtfn.class, params, collector);
 
             // 4. Serialization test
             JsonProcessor processor = new JsonProcessor(collector);
