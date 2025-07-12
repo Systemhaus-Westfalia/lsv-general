@@ -8,7 +8,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.tmst039.response.TMST039Response;
 
-public class TMST039DeSerializationTest {
+public class TMST039DeSerializationTestWithoutFile {
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("TMST039 Deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));

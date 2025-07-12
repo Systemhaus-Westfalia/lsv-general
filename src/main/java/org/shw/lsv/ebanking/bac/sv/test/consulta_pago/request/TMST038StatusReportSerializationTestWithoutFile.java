@@ -10,7 +10,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-public class TMST038StatusReportSerializationTest {
+public class TMST038StatusReportSerializationTestWithoutFile {
     public static void main(String[] args) {
         String jsonOutput = "";
 
