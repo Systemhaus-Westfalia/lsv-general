@@ -8,18 +8,18 @@ import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request Consulta de Saldo CATM053
+ * Request Consulta de Saldo CAMT053
  */
 public class CAMT053Request implements Validatable {
 
-    @JsonProperty("Envelope")    // "Envelope" is the name of the field in the JSON
-    CAMT053RequestEnvelope cAMT052RequestEnvelope;
+    @JsonProperty("file")    // "file" is the name of the field in the JSON
+    CAMT053RequestFile camt053RequestFile;
 
     public CAMT053Request() {}
 
     public CAMT053Request(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setcAMT052RequestEnvelope(new CAMT053RequestEnvelope(params, collector), collector);
+            setCamt053RequestFile(new CAMT053RequestFile(params, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CAMT053REQUEST_INIT, e);
         }
@@ -28,46 +28,46 @@ public class CAMT053Request implements Validatable {
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {
-            if (cAMT052RequestEnvelope == null) {
-                throw new IllegalArgumentException(EBankingConstants.ERROR_ENVELOPE_NOT_NULL);
+            if (camt053RequestFile == null) {
+                throw new IllegalArgumentException("Property 'file' cannot be null");
             }
 
             // Validate nested objects
-            if (cAMT052RequestEnvelope instanceof Validatable) {
-                ((Validatable) cAMT052RequestEnvelope).validate(collector);
+            if (camt053RequestFile instanceof Validatable) {
+                ((Validatable) camt053RequestFile).validate(collector);
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 
-    public CAMT053RequestEnvelope getcAMT052RequestEnvelope() {
-        return cAMT052RequestEnvelope;
+    public CAMT053RequestFile getCamt053RequestFile() {
+        return camt053RequestFile;
     }
 
     /**
-     * @param cAMT052RequestEnvelope the CATM053RequestEnvelope to be set.
+     * @param camt053RequestFile the CAMT053RequestFile to be set.
      * The parameter is validated: null not allowed.
      * @param collector the JsonValidationExceptionCollector to be set.
      */
-    public void setcAMT052RequestEnvelope(CAMT053RequestEnvelope cAMT052RequestEnvelope,
+    public void setCamt053RequestFile(CAMT053RequestFile camt053RequestFile,
                                           JsonValidationExceptionCollector collector) {
         try {
-            setcAMT052RequestEnvelope(cAMT052RequestEnvelope);
+            setCamt053RequestFile(camt053RequestFile);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 
     /**
-     * @param cAMT052RequestEnvelope the CATM053RequestEnvelope to be set.
+     * @param camt053RequestFile the CAMT053RequestFile to be set.
      */
-    public void setcAMT052RequestEnvelope(CAMT053RequestEnvelope cAMT052RequestEnvelope) {
-        if (cAMT052RequestEnvelope == null) {
+    public void setCamt053RequestFile(CAMT053RequestFile camt053RequestFile) {
+        if (camt053RequestFile == null) {
             throw new IllegalArgumentException(
-                "Wrong parameter 'envelopeCATM053Request' in setcAMT052RequestEnvelope()"
+                "Wrong parameter 'camt053RequestFile' in setCamt053RequestFile()"
             );
         }
-        this.cAMT052RequestEnvelope = cAMT052RequestEnvelope;
+        this.camt053RequestFile = camt053RequestFile;
     }
 }

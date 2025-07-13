@@ -10,6 +10,8 @@ import org.shw.lsv.ebanking.bac.sv.misc.GrpHdr;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.BkToCstmrStmt;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.CAMT053Response;
+import org.shw.lsv.ebanking.bac.sv.camt053.response.CAMT053ResponseDocument;
+import org.shw.lsv.ebanking.bac.sv.camt053.response.CAMT053ResponseEnvelope;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.Stmt;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.RptPgntn;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.FrToDt;
@@ -323,18 +325,20 @@ public class CAMT053DeSerializationWithoutFile {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("CAMT053 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
-        System.out.println("CAMT053 Envelope present: " + (response.getcAMT053ResponseEnvelope() != null));
+        CAMT053ResponseEnvelope envelope = response.getCamt053ResponseFile().getCamt053ResponseEnvelope();
+        System.out.println("CAMT053 Envelope present: " + (envelope != null));
 
-        if (response.getcAMT053ResponseEnvelope() != null) {
+        if (envelope != null) {
+            CAMT053ResponseDocument document = envelope.getcAMT053ResponseDocument();
             System.out.println("CAMT053 Document present: " +
-                (response.getcAMT053ResponseEnvelope().getcAMT053ResponseDocument() != null));
+                (document != null));
 
             System.err.println("********************************************");
             System.err.println("********************************************");
             System.err.println("Ergebnisse:");
 
             System.err.println("*** AppHdr ***");
-            AppHdr appHdr = response.getcAMT053ResponseEnvelope().getAppHdr();
+            AppHdr appHdr = envelope.getAppHdr();
             if (appHdr != null) {
                 String frBicfi = "Not available";
                 if (appHdr.getFr() != null && appHdr.getFr().getfIId() != null && appHdr.getFr().getfIId().getFinInstnId() != null) {
@@ -359,10 +363,10 @@ public class CAMT053DeSerializationWithoutFile {
             System.err.println("********************************************");
             System.err.println("******** CAMT053 Response Document ******** *");
             System.err.println("********************************************");
-            if (response.getcAMT053ResponseEnvelope().getcAMT053ResponseDocument() != null &&
-                response.getcAMT053ResponseEnvelope().getcAMT053ResponseDocument().getBkToCstmrStmt() != null) {
+            if (document != null &&
+                document.getBkToCstmrStmt() != null) {
 
-                BkToCstmrStmt bkToCstmrStmt = response.getcAMT053ResponseEnvelope().getcAMT053ResponseDocument().getBkToCstmrStmt();
+                BkToCstmrStmt bkToCstmrStmt = document.getBkToCstmrStmt();
                 if (bkToCstmrStmt.getGrpHdr() != null) {
                     GrpHdr grpHdr = bkToCstmrStmt.getGrpHdr();
                     System.err.println("    MsgId:     "  + grpHdr.getMsgId());
@@ -537,6 +541,6 @@ public class CAMT053DeSerializationWithoutFile {
             System.err.println("********************************************");
             System.err.println("********************************************");
 
-        } // End of if (response.getcAMT053ResponseEnvelope() != null)
+        } // End of if (envelope != null)
     }
 }

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.RptPgntn;
 import org.shw.lsv.ebanking.bac.sv.camt053.request.CAMT053Request;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.CAMT053Response;
+import org.shw.lsv.ebanking.bac.sv.camt053.response.CAMT053ResponseDocument;
+import org.shw.lsv.ebanking.bac.sv.camt053.response.CAMT053ResponseEnvelope;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.BkToCstmrStmt;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.Stmt;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
@@ -85,11 +87,21 @@ public class CAMT053CombinedPaginationTestWithoutFile {
                 printResponseSummary(deserializedResponse);
 
                 // 4. Pagination Logic
-                Stmt stmt = deserializedResponse.getcAMT053ResponseEnvelope().getcAMT053ResponseDocument().getBkToCstmrStmt().getStmt();
+                // Safely navigate the object hierarchy to avoid NullPointerException
+                Stmt stmt = null;
+                if (deserializedResponse != null && deserializedResponse.getCamt053ResponseFile() != null) {
+                    CAMT053ResponseEnvelope envelope = deserializedResponse.getCamt053ResponseFile().getCamt053ResponseEnvelope();
+                    if (envelope != null && envelope.getcAMT053ResponseDocument() != null) {
+                        BkToCstmrStmt bkToCstmrStmt = envelope.getcAMT053ResponseDocument().getBkToCstmrStmt();
+                        if (bkToCstmrStmt != null) {
+                            stmt = bkToCstmrStmt.getStmt();
+                        }
+                    }
+                }
                 if (stmt != null && stmt.getRptPgntn() != null) {
-                    RptPgntn rptPgntn = stmt.getRptPgntn();
+                    RptPgntn rptPgntn      = stmt.getRptPgntn();
                     String responsePgNbStr = rptPgntn.getPgNb();
-                    isLastPageReceived = rptPgntn.isLastPgInd();
+                    isLastPageReceived     = rptPgntn.isLastPgInd();
 
                     System.out.println("\nPagination Info from Response:");
                     System.out.println("  Response Page Number (PgNb): " + responsePgNbStr);
@@ -217,12 +229,16 @@ public class CAMT053CombinedPaginationTestWithoutFile {
     // Copied and adapted from CAMT053DeSerialization for brevity.
     // Ensure all necessary classes (AppHdr, GrpHdr, etc.) are imported.
     private static void printResponseSummary(CAMT053Response response) {
-        if (response == null || response.getcAMT053ResponseEnvelope() == null) {
-            System.err.println("Response or Envelope is null. Cannot print summary.");
+        if (response == null ||
+            response.getCamt053ResponseFile() == null ||
+            response.getCamt053ResponseFile().getCamt053ResponseEnvelope() == null) {
+            System.err.println("Response, File or Envelope is null. Cannot print summary.");
             return;
         }
+        CAMT053ResponseEnvelope envelope = response.getCamt053ResponseFile().getCamt053ResponseEnvelope();
+
         System.err.println("--- Response Summary ---");
-        AppHdr appHdr = response.getcAMT053ResponseEnvelope().getAppHdr();
+        AppHdr appHdr = envelope.getAppHdr();
         if (appHdr != null) {
             System.err.println("AppHdr.BizMsgIdr: " + appHdr.getBizMsgIdr());
             System.err.println("AppHdr.MsgDefIdr: " + appHdr.getMsgDefIdr());
@@ -230,9 +246,10 @@ public class CAMT053CombinedPaginationTestWithoutFile {
             System.err.println("AppHdr not available.");
         }
 
-        if (response.getcAMT053ResponseEnvelope().getcAMT053ResponseDocument() != null &&
-            response.getcAMT053ResponseEnvelope().getcAMT053ResponseDocument().getBkToCstmrStmt() != null) {
-            BkToCstmrStmt bkToCstmrStmt = response.getcAMT053ResponseEnvelope().getcAMT053ResponseDocument().getBkToCstmrStmt();
+        CAMT053ResponseDocument document = envelope.getcAMT053ResponseDocument();
+        if (document != null &&
+            document.getBkToCstmrStmt() != null) {
+            BkToCstmrStmt bkToCstmrStmt = document.getBkToCstmrStmt();
             if (bkToCstmrStmt.getGrpHdr() != null) {
                 System.err.println("GrpHdr.MsgId: " + bkToCstmrStmt.getGrpHdr().getMsgId());
             }

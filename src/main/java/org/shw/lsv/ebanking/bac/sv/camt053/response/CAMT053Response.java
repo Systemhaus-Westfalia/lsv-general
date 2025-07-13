@@ -8,32 +8,47 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CAMT053Response implements Validatable {
 
-    @JsonProperty("Envelope")    // "Envelope" is the name of the field in the JSON
-    CAMT053ResponseEnvelope cAMT053ResponseEnvelope;
+    @JsonProperty("File")    // "File" is the name of the field in the JSON
+    CAMT053ResponseFile camt053ResponseFile;
 
     public CAMT053Response() {}
+
+    public CAMT053Response(CAMT053ResponseFile camt053ResponseFile) {
+        setCamt053ResponseFile(camt053ResponseFile);
+    }
 
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {
-            if (cAMT053ResponseEnvelope == null) {
-                throw new IllegalArgumentException("Envelope cannot be null");
+            if (camt053ResponseFile == null) {
+                throw new IllegalArgumentException("File cannot be null");
             }
 
             // Validate nested objects
-            if (cAMT053ResponseEnvelope instanceof Validatable) {
-                ((Validatable) cAMT053ResponseEnvelope).validate(collector);
+            if (camt053ResponseFile instanceof Validatable) {
+                ((Validatable) camt053ResponseFile).validate(collector);
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 
-    public CAMT053ResponseEnvelope getcAMT053ResponseEnvelope() {
-        return cAMT053ResponseEnvelope;
+    public CAMT053ResponseFile getCamt053ResponseFile() {
+        return camt053ResponseFile;
     }
 
-    public void setcAMT053ResponseEnvelope(CAMT053ResponseEnvelope cAMT053ResponseEnvelope) {
-        this.cAMT053ResponseEnvelope = cAMT053ResponseEnvelope;
+    public void setCamt053ResponseFile(CAMT053ResponseFile camt053ResponseFile) {
+        if (camt053ResponseFile == null) {
+            throw new IllegalArgumentException("Wrong parameter 'camt053ResponseFile' in setCamt053ResponseFile()");
+        }
+        this.camt053ResponseFile = camt053ResponseFile;
+    }
+
+    public void setCamt053ResponseFile(CAMT053ResponseFile camt053ResponseFile, JsonValidationExceptionCollector collector) {
+        try {
+            setCamt053ResponseFile(camt053ResponseFile);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+        }
     }
 }

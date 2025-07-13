@@ -50,7 +50,9 @@ public class EBankingConstants {
 	public static final String ERROR_REQUEST_BUILDING          = "Error while building the Request";
 	public static final String ERROR_REQUEST_PARAM             = "One or more parameters for the Request are invalid";
 	public static final String ERROR_CAMT052REQUEST_INIT       = "CAMT052Request initialization";
-	public static final String ERROR_CAMT052REQUESTFILE_INIT   = "CAMT052Request file initialization";;
+	public static final String ERROR_CAMT052REQUESTFILE_INIT   = "CAMT052Request file initialization";
+	public static final String ERROR_CAMT053REQUEST_INIT       = "CAMT053Request initialization";
+	public static final String ERROR_CAMT053REQUESTFILE_INIT   = "CAMT053Request file initialization";
 	public static final String ERROR_DOCUMENT_INIT             = "Document initialization";
 	public static final String ERROR_REQUEST_ENVELOP_INIT      = "Request Envelope initialization";
 	public static final String ERROR_APPHDR_INIT               = "AppHdr initialization";
@@ -87,7 +89,6 @@ public class EBankingConstants {
     public static final String ERROR_EVTINF_INIT               = "EvtInf initialization";
     public static final String ERROR_STS_INIT                  = "Sts initialization";
     public static final String ERROR_STSRPTRSP_INIT            = "StsRptRsp initialization";
-	public static final String ERROR_CAMT053REQUEST_INIT       = "CAMT053Request initialization";
 
 
 	public static final String ERROR_PAIN001REQUESTFILE_INIT   = "PAIN001RequestFile initialization";
