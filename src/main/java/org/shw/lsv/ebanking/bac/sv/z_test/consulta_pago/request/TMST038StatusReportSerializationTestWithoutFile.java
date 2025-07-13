@@ -1,4 +1,4 @@
-package org.shw.lsv.ebanking.bac.sv.test.consulta_pago.request;
+package org.shw.lsv.ebanking.bac.sv.z_test.consulta_pago.request;
 
 import java.time.LocalDateTime;
 

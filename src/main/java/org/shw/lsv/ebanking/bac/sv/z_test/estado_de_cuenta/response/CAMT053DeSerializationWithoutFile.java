@@ -1,4 +1,4 @@
-package org.shw.lsv.ebanking.bac.sv.test.estado_de_cuenta.response;
+package org.shw.lsv.ebanking.bac.sv.z_test.estado_de_cuenta.response;
 
 import java.time.LocalDateTime;
 

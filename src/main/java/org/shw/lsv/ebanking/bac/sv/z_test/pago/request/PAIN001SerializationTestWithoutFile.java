@@ -1,11 +1,6 @@
-package org.shw.lsv.ebanking.bac.sv.test.pago.request;
+package org.shw.lsv.ebanking.bac.sv.z_test.pago.request;
 
 import java.math.BigDecimal;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
@@ -16,30 +11,12 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
-public class PAIN001SerializationTestWithFile {
-    private static final String CLASS_NAME = PAIN001SerializationTestWithFile.class.getSimpleName();
-
+public class PAIN001SerializationTestWithoutFile {
     public static void main(String[] args) {
         String jsonOutput = "";
 
         LocalDateTime now = LocalDateTime.now();
         System.err.println("PAIN001 serialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
-
-        String outputFileName = String.format("%s_OUTPUT.json", CLASS_NAME);
-        String errorFileName  = String.format("%s_ERROR.txt", CLASS_NAME);
-
-        Path outputDirPath = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY);
-
-        try {
-            Files.createDirectories(outputDirPath);
-        } catch (IOException e) {
-            System.err.println("Could not create output directory: " + outputDirPath.toAbsolutePath());
-            e.printStackTrace();
-            return;
-        }
-
-        Path outputFilePath = outputDirPath.resolve(outputFileName);
-        Path errorFilePath  = outputDirPath.resolve(errorFileName);
 
         // 1. Create collector for test diagnostics
         JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
@@ -50,6 +27,7 @@ public class PAIN001SerializationTestWithFile {
         
         try {
             // 3. Build request with test's collector
+            //PAIN001Request request = RequestBuilder.build(params, collector);  // Deprecated. Kann spaeter geloescht werden
             PAIN001Request request = RequestBuilder.build(PAIN001Request.class, params, collector);
             
             // 4. Serialization test
@@ -59,15 +37,6 @@ public class PAIN001SerializationTestWithFile {
             // 5. Print Json
             System.out.println("\nGenerated JSON:");
             System.out.println(jsonOutput);
-
-            // 6. Write JSON to file
-            try (BufferedWriter writer = Files.newBufferedWriter(outputFilePath)) {
-                writer.write(jsonOutput);
-                System.out.println("\nSuccessfully wrote JSON to: " + outputFilePath.toAbsolutePath());
-            } catch (IOException e) {
-                System.err.println("\nError writing JSON to file: " + e.getMessage());
-                e.printStackTrace(System.err);
-            }
             
             System.out.println("PAIN001 serialization succeeded without errors.\n");
             
@@ -75,17 +44,9 @@ public class PAIN001SerializationTestWithFile {
             System.err.println("PAIN001 serialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
         } catch (JsonValidationException e) {
-            System.err.println("\nCritical validation failures:");
+            System.err.println("PAIN001 serialization Test failed: " + e.getMessage());
             System.err.println(e.getValidationErrors());
-
-            String fileErrorMessage = "PAIN001 serialization Test failed: " + e.getMessage() + "\n" + e.getValidationErrors();
-            try (BufferedWriter writer = Files.newBufferedWriter(errorFilePath)) {
-                writer.write(fileErrorMessage);
-                System.err.println("\nSuccessfully wrote error details to: " + errorFilePath.toAbsolutePath());
-            } catch (IOException ioEx) {
-                System.err.println("\nError writing error details to file: " + ioEx.getMessage());
-                ioEx.printStackTrace(System.err);
-            }
+            System.err.println("********************************************");
         }
     }
 
@@ -178,4 +139,5 @@ public class PAIN001SerializationTestWithFile {
             .setRmtncInf(     "Referencia a factura numero NV-112")
             ;
     }
+
 }
