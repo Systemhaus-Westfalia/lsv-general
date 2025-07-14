@@ -183,7 +183,10 @@ public class EBankingConstants {
 	public static final String CONTEXT_VALID_DATE    = "VALID DATE";
 
 	// Tests
-	public static final String TEST_FILES_DIRECTORY     = "z_test_json_files";
-	public static final String TEST_BASE_DIRECTORY_PATH = "src/main/java/org/shw/lsv/ebanking/bac/sv/test";
+	public static final String TEST_BASE_DIRECTORY_PATH                 = "src/main/java/org/shw/lsv/ebanking/bac/sv/z_test_json_files";
+	public static final String TEST_FILES_DIRECTORY_SALDO_CUENTA        = "saldo_cuenta";
+	public static final String TEST_FILES_DIRECTORY_PAGO                = "pago";
+	public static final String TEST_FILES_DIRECTORY_CONSULTA_SALDO_PAGO = "consulta_pago";
+	public static final String TEST_FILES_DIRECTORY_ESTADO_CUENTA       = "estado_de_cuenta";
 	
 }

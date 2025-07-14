@@ -28,7 +28,7 @@ public class CAMT052SerializationTestWithFile {
         String outputFileName = String.format("%s_OUTPUT.json", CLASS_NAME);
         String errorFileName  = String.format("%s_ERROR.txt", CLASS_NAME);
 
-        Path outputDirPath = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY);
+        Path outputDirPath = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY_SALDO_CUENTA);
 
         try {
             Files.createDirectories(outputDirPath);

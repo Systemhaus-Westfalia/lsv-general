@@ -28,7 +28,7 @@ public class PAIN001DeSerializationStatusReportTestWithFiles {
         String errorFileName  = String.format("%s_ERRORS.txt", CLASS_NAME);
 
         // Build file paths
-        Path baseDir        = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY);
+        Path baseDir        = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY_PAGO);
         Path inputFilePath  = baseDir.resolve(inputFileName);
         Path outputFilePath = baseDir.resolve(outputFileName);
         Path errorFilePath  = baseDir.resolve(errorFileName);
