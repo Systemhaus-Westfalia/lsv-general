@@ -40,8 +40,10 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPOS;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MTax;
+import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Language;
@@ -405,15 +407,27 @@ public abstract class EDocumentFactory {
 	}
 
 	public String createNumeroControl(MInvoice invoice, MClient client) {
-		MOrg org = new MOrg(invoice.getCtx(), invoice.getAD_Org_ID(), invoice.get_TrxName());
 		String prefix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getPrefix()).orElse("");
 		String documentno = invoice.getDocumentNo().replace(prefix,"");
 		String suffix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getSuffix()).orElse("");	
 		documentno = documentno.replace(suffix,"");
 		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
-		String pos = invoice.getC_POS().getName()==null?"PV01":invoice.getC_POS().getName();
-		X_E_PlantType plantType = client_getE_PlantType(client);
-		String idPosCompany = "M001" + pos;
+		String pos = "";
+		if (invoice.getC_POS_ID()>0) {
+			MPOS mpos = (MPOS)invoice.getC_POS();
+			pos = mpos.get_ValueAsString("ei_POS");
+		}
+		else
+		{
+			MPOS mpos = new Query(invoice.getCtx(), MPOS.Table_Name, "AD_Org_ID=? ", trxName)
+					.setParameters(invoice.getAD_Org_ID())
+					.setOnlyActiveRecords(true)
+					.setOrderBy("C_POS_ID")
+					.first();
+			pos = mpos.get_ValueAsString("ei_POS");
+		}
+		MOrgInfo orgInfo = MOrgInfo.get(invoice.getCtx(), invoice.getAD_Org_ID(), invoice.get_TrxName());
+		String idPosCompany = orgInfo.get_ValueAsString("ei_Sucursal") + pos;
 		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
 				+ "-"+ StringUtils.leftPad(idPosCompany, 8,"0") + "-"+ idIdentification;
 		return numeroControl;
