@@ -19,15 +19,23 @@
 package org.shw.lsv.einvoice.process;
 
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.adempiere.core.domains.models.I_AD_ChangeLog;
+import org.adempiere.core.domains.models.I_AD_Column;
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.MChangeLog;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MMailText;
+import org.compiere.model.MProcess;
 import org.compiere.model.Query;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.DB;
@@ -53,6 +61,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	@Override
 	protected String doIt() throws Exception
 	{
+		UpdateToken();
 		StringBuffer result = new StringBuffer();
 		if (isDirectPrint()) {
 		Integer id = (Integer)getRecord_ID();
@@ -458,7 +467,37 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	
 	
 	}
-	
+	private String UpdateToken() {
+		String whereClause = "ad_element_ID = (select ad_element_ID from ad_element where columnname = 'ei_jwt')"
+				+ "AND AD_Table_ID=112";
+		int columnID = new Query(getCtx(), I_AD_Column.Table_Name, whereClause, get_TrxName())
+				.firstIdOnly();
+		String whereClauseChangeLog = "AD_Column_ID=? AND AD_Client_ID=?";
+		MChangeLog changeLog = new Query(getCtx(), I_AD_ChangeLog.Table_Name, whereClauseChangeLog, get_TrxName())
+				.setParameters(columnID, getAD_Client_ID())
+				.setOrderBy(I_AD_ChangeLog.COLUMNNAME_Created + " DESC")
+				.first();		
+		ZoneId zoneID =   ZoneId.of("America/El_Salvador");
+        LocalDate currentDate = LocalDate.now(zoneID);
+        Instant instant = changeLog.getCreated().toInstant();
+        ZonedDateTime zonedchangeLogCreated = ZonedDateTime.ofInstant(instant, zoneID);
+        LocalDate zonedchangeLogDate = zonedchangeLogCreated.toLocalDate();
+        Boolean isactualday =  currentDate.isEqual(zonedchangeLogDate);
+        if (!isactualday) {
+
+			ProcessInfo  processInfo =
+					ProcessBuilder.create(getCtx())
+					.process(EInvoiceGetToken.getProcessId())
+					.withTitle(EInvoiceGetToken.getProcessName())
+					.withParameter(MInvoice.COLUMNNAME_AD_Client_ID, getAD_Client_ID())
+					.withoutTransactionClose()
+					.execute(get_TrxName()); 
+			if (processInfo.isError())
+				throw new AdempiereException(processInfo.getSummary());
+        }
+
+		return "";
+	}
 	
 	
 	

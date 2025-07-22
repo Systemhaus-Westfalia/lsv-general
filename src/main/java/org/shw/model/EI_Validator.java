@@ -18,11 +18,15 @@ package org.shw.model;
 
 
 import java.sql.Timestamp;
+import java.time.ZoneId;
 import java.util.regex.Pattern;
 
+import org.adempiere.core.domains.models.I_AD_ChangeLog;
+import org.adempiere.core.domains.models.I_AD_Column;
 import org.adempiere.core.domains.models.X_E_Recipient_Identification;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MChangeLog;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
@@ -31,6 +35,7 @@ import org.compiere.model.MProcess;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
+import org.compiere.model.Query;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.CLogger;
 import org.eevolution.services.dsl.ProcessBuilder;
@@ -165,7 +170,7 @@ public class EI_Validator implements ModelValidator
 
 				if (docType.get_ValueAsInt("E_DocType_ID") <= 0) return ""; 
 
-				System.out.println(" ei_validator docvalidate_beforePost start publish for "  + invoice.getDocumentNo());					 
+				System.out.println(" ei_validator docvalidate_beforePost start publish for "  + invoice.getDocumentNo());
 				ProcessInfo  processInfo =
 						ProcessBuilder.create(invoice.getCtx())
 						.process(EInvoiceGenerateAndPost.getProcessId())
