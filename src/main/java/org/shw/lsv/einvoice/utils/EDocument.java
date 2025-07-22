@@ -165,6 +165,7 @@ public class EDocument {
 	public static final int		TIPOOPERACION_CONTIGENCIA			=2;
 	public static final int		CONDICIONOPERACION_AL_CONTADO		=1;
 	public static final int		CONDICIONOPERACION_A_CREDITO		=2;
+	public static final int		TIPOITEM_ALL						=3;
 	public static final int		TIPOITEM_SERVICIO					=2;
 	
 }

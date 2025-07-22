@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempiere.core.domains.models.X_C_UOM;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -464,14 +465,16 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
             		invoice_ei_codigoGeneracion(refInvoice)
             			;  
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMITEM, i);
-			jsonCuerpoDocumentoItem.put(NotaDeCredito.TIPOITEM, 2);
+			jsonCuerpoDocumentoItem.put(NotaDeCredito.TIPOITEM, NotaDeCredito.TIPOITEM_ALL);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMERODOCUMENTO, numerodocumentno);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CANTIDAD, invoiceLine.getQtyInvoiced());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CODTRIBUTO, "");  // String codTributo = "20";
-			jsonCuerpoDocumentoItem.put(NotaDeCredito.UNIMEDIDA, 59);
+
+			X_C_UOM uom = (X_C_UOM)invoiceLine.getC_UOM();
+			jsonCuerpoDocumentoItem.put(NotaDeCredito.UNIMEDIDA, uom_getValue(uom));
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.DESCRIPCION, invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName());
-			jsonCuerpoDocumentoItem.put(NotaDeCredito.PRECIOUNI, invoiceLine.getPriceActual());
+			jsonCuerpoDocumentoItem.put(NotaDeCredito.PRECIOUNI, invoiceLine.getPriceEntered());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.MONTODESCU, Env.ZERO);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.VENTANOSUJ, ventaNoSuj);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.VENTAEXENTA, ventaExenta);

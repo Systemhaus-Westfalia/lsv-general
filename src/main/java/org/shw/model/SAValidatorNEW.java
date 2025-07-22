@@ -76,6 +76,8 @@ import org.compiere.util.Env;
 import org.compiere.util.Ini;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
+import org.spin.queue.model.MADQueue;
+import org.spin.queue.notification.model.MADNotificationQueue;
 
 /**
  * Validator Example Implementation
@@ -217,6 +219,19 @@ public class SAValidatorNEW implements ModelValidator {
 			if (type == TYPE_BEFORE_NEW)
 				//error = requestUpdateBpartner(po)
 				;
+			
+		}
+		if (po.get_TableName().equals(MADNotificationQueue.Table_Name)) {
+			if (type == TYPE_BEFORE_NEW) {
+				MADNotificationQueue notificationQueue = (MADNotificationQueue)po;
+				
+				MADQueue queue = (MADQueue)notificationQueue.getAD_Queue();
+				if (queue.getAD_Table_ID()==318) {
+					MInvoice invoice = new MInvoice(notificationQueue.getCtx(), queue.getRecord_ID(), notificationQueue.get_TrxName());
+					notificationQueue.setDescription(notificationQueue.getDescription() + " No de Documento " + invoice.get_ValueAsString("ei_numeroControl"));
+					
+				}
+			}
 			
 		}
 

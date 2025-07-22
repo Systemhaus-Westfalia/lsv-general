@@ -421,7 +421,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.NUMITEM, i);
-			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.TIPOITEM, 2);
+			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.TIPOITEM, FacturaSujetoExcluido.TIPOITEM_SERVICIO);
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CANTIDAD, qtyInvoiced);
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.CODIGO, productvalue);
 			jsonCuerpoDocumentoItem.put(FacturaSujetoExcluido.UNIMEDIDA, 59);

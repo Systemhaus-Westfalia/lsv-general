@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Properties;
 
+import org.adempiere.core.domains.models.X_C_UOM;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -412,12 +413,12 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			else if (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_IVA) ) {
 				ventaGravada = invoiceLine.getLineNetAmt(); 
 			}
-			precioUnitario = isVentanoGravada? Env.ZERO:invoiceLine.getPriceActual();
+			precioUnitario = isVentanoGravada? Env.ZERO:invoiceLine.getPriceEntered();
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
                 
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.NUMITEM, i);
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.CANTIDAD, invoiceLine.getQtyInvoiced());
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.CANTIDAD, invoiceLine.getQtyEntered());
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
 			
 			JSONArray jsonTributosArray = new JSONArray();
@@ -436,8 +437,9 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 				description = description.substring(0, 998);
 			jsonTributosArray.put("C3");
 			jsonCuerpoDocumentoItem. put( FacturaExportacion.TRIBUTOS, jsonTributosArray); //tributosItems.add("20");
-			
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.UNIMEDIDA, 59);
+
+			X_C_UOM uom = (X_C_UOM)invoiceLine.getC_UOM();
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.UNIMEDIDA, uom_getValue(uom));
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.DESCRIPCION, description);
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.PRECIOUNI, precioUnitario);
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.MONTODESCU, Env.ZERO);

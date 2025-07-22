@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+import org.adempiere.core.domains.models.X_C_UOM;
 import org.adempiere.core.domains.models.X_E_Activity;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
@@ -486,7 +487,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			BigDecimal ventaGravada 			= Env.ZERO;
 			BigDecimal ventaNoGravada 			= Env.ZERO;
 			BigDecimal ivaItem 					= Env.ZERO;
-			BigDecimal precioUnitario 			= invoiceLine.getPriceActual();
+			BigDecimal precioUnitario 			= invoiceLine.getPriceEntered();
 			String codTributo 					= "";
 			MTax tax 							= (MTax)invoiceLine.getC_Tax();
 
@@ -524,11 +525,13 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			if (description.length()>999)
 				description = description.substring(0, 998);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.NUMITEM, i);
-			jsonCuerpoDocumentoItem.put(CreditoFiscal.TIPOITEM, CreditoFiscal.TIPOITEM_SERVICIO);
-			jsonCuerpoDocumentoItem.put(CreditoFiscal.CANTIDAD, invoiceLine.getQtyInvoiced());
+			jsonCuerpoDocumentoItem.put(CreditoFiscal.TIPOITEM, CreditoFiscal.TIPOITEM_ALL);
+			jsonCuerpoDocumentoItem.put(CreditoFiscal.CANTIDAD, invoiceLine.getQtyEntered());
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.CODIGO, invoiceLine.getM_Product_ID()>0? 
 					invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getC_ChargeType().getValue());
-			jsonCuerpoDocumentoItem.put(CreditoFiscal.UNIMEDIDA, 59);
+
+			X_C_UOM uom = (X_C_UOM)invoiceLine.getC_UOM();
+			jsonCuerpoDocumentoItem.put(CreditoFiscal.UNIMEDIDA, uom_getValue(uom));
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.DESCRIPCION, description);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.PRECIOUNI, precioUnitario);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.MONTODESCU, Env.ZERO);
@@ -579,7 +582,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 				String codTributo 					= "";
 
 				jsonCuerpoDocumentoItem.put(CreditoFiscal.NUMITEM, i);
-				jsonCuerpoDocumentoItem.put(CreditoFiscal.TIPOITEM, CreditoFiscal.TIPOITEM_SERVICIO);
+				jsonCuerpoDocumentoItem.put(CreditoFiscal.TIPOITEM, CreditoFiscal.TIPOITEM_ALL);
 				jsonCuerpoDocumentoItem.put(CreditoFiscal.CANTIDAD, qtyInvoiced);
 				jsonCuerpoDocumentoItem.put(CreditoFiscal.CODIGO, productvalue);
 				jsonCuerpoDocumentoItem.put(CreditoFiscal.UNIMEDIDA, 59);
