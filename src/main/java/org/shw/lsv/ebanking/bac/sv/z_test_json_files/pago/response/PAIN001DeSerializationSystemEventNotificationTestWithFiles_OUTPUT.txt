@@ -1,0 +1,22 @@
+PAIN001 Envelope present: true
+PAIN001 Document present: true
+********************************************
+********************************************
+Ergebinisse:
+*** AppHdr ***
+    Fr-BICFI : BMILHNTE
+    BizMshIdr: 8034
+    BizSvc:    swift.cbprplus.02
+    CreDt:     2024-07-23T12:47:32-06:00
+    MsgDefIdr: ADMIN.004.001.02
+********************************************
+*** PAIN001 (System Event Notification) Response Document ***
+********************************************
+SysEvtNtfctn present: true
+EvtInf present: 
+Erhaltene Variablen: true
+    EvtCd  : RCVD
+    EvtDesc: Solicitud recibida. Su pago se esta procesando o se procesara en la fecha indicada en el mensaje. Consulte mas tarde.
+    EvtTm  : 2024-07-23T12:47:32-06:00
+********************************************
+********************************************

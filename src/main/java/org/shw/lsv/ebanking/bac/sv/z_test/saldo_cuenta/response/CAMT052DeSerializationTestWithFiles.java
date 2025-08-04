@@ -32,7 +32,9 @@ public class CAMT052DeSerializationTestWithFiles {
         String errorFileName  = String.format("%s_ERRORS.txt", CLASS_NAME);
 
         // Build file paths
-        Path baseDir          = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY_SALDO_CUENTA);
+        Path baseDir          = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, 
+            EBankingConstants.TEST_FILES_DIRECTORY_SALDO_CUENTA,
+            EBankingConstants.TEST_FILES_RESPONSE);
         Path inputFilePath    = baseDir.resolve(inputFileName);
         Path outputFilePath   = baseDir.resolve(outputFileName);
         Path errorFilePath    = baseDir.resolve(errorFileName);

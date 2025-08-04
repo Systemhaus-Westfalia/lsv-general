@@ -1,0 +1,38 @@
+CAMT052DeSerializationTestWithFiles started at: 2025-07-23 01:20:42
+Reading from file: /data2/entwicklung/shw_repositories_2024/lsv-general/src/main/java/org/shw/lsv/ebanking/bac/sv/z_test_json_files/saldo_cuenta/response/CAMT052DeSerializationTestWithFiles_INPUT_FILE.json
+Starting CAMT052 deserialization test...
+CAMT052 Deserialization completed cleanly
+CAMT052 Deserialization finished at: 2025-07-23 01:20:42
+--- Begin of Response Summary ---
+CAMT052 Envelope present: true
+CAMT052 Document present: true
+********************************************
+******* CAMT052 Response *******
+********************************************
+*** AppHdr ***
+    Fr-BICFI : BAMCSVSS
+    To-BICFI : AMERICA3PLX
+    BizMshIdr: 2213703
+    BizSvc:    swift.cbprplus.02
+    CreDt:     2025-06-28T13:06:22-06:00
+    MsgDefIdr: AccountBalanceReportV08
+********************************************
+************* GrpHdr ***********************
+    CreDtTm:   2025-06-28T13:06:22-06:00
+    MsgId:     2213703
+********************************************
+*** CAMT052 Response Document ***
+********************************************
+    AcctId:    200268472
+    Acct-Ccy:  USD
+    Bal-Amt:   55555555555.00
+    Bal-Ccy:   USD
+    CdtDbtInd: CRDT
+    Bal-DtTm:  2025-06-28T13:06:22-06:00
+    Bal-Cd:    ITAV
+    Id:        2025062813062260000
+    Bal-RptId: 1
+    LastPgInd: true
+********************************************
+********************************************
+--- End of Response Summary ---

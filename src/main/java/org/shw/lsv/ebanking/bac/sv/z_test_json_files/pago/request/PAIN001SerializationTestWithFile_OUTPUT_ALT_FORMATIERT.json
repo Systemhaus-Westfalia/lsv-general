@@ -1,0 +1,222 @@
+{
+  "file": {
+    "Envelope": {
+      "AppHdr": {
+        "Fr": {
+          "FIId": {
+            "FinInstnId": {
+              "BICFI": "AMERICA3PLX"
+            }
+          }
+        },
+        "To": {
+          "FIId": {
+            "FinInstnId": {
+              "BICFI": "BAMCSVSS"
+            }
+          }
+        },
+        "BizMsgIdr": "Pago-ADClientName/(CuentaNr)",
+        "MsgDefIdr": "PAIN.001.001.03",
+        "BizSvc": "swift.cbprplus.01",
+        "CreDt": "2025-05-16T07:56:49-06:00"
+      },
+      "Document": {
+        "CstmrCdtTrfInitn": {
+          "GrpHdr": {
+            "MsgId": "PYMT-0001",
+            "CreDtTm": "2025-05-16T07:56:49-06:00",
+            "NbOfTxs": 3,
+            "CtrlSum": 469.87,
+            "InitgPty": {
+              "Nm": "Sistemas Aereos",
+              "Id": {
+                "OrgId": {
+                  "BICOrBEI": "AMERICA3PLX"
+                }
+              }
+            }
+          },
+          "PmtInf": {
+            "PmtInfId": "PYMT-0001",
+            "PmtMtd": "TRF",
+            "NbOfTxs": 3,
+            "CtrlSum": 469.87,
+            "PmtTpInf": {
+              "CtgyPurp": {
+                "Cd": "SUPP"
+              }
+            },
+            "ReqdExctnDt": "2023-06-27",
+            "Dbtr": {
+              "Nm": "Sistemas Aereos",
+              "Id": {
+                "OrgId": {
+                  "Othr": {
+                    "Id": "06140904181038"
+                  }
+                }
+              }
+            },
+            "DbtrAcct": {
+              "Id": {
+                "IBAN": "CR42010200690010163989"
+              }
+            },
+            "DbtrAgt": {
+              "FinInstnId": {
+                "BIC": "AMERICA3PLX",
+                "PstlAdr": {
+                  "Ctry": "SV"
+                }
+              }
+            },
+            "CdtTrfTxInf": [
+              {
+                "PmtId": {
+                  "EndToEndId": "PYMT-0001"
+                },
+                "PmtTpInf": {
+                  "InstrPrty": "NORM"
+                },
+                "Amt": {
+                  "InstdAmt": {
+                    "InstdAmt": "469.87",
+                    "Ccy": "USD"
+                  }
+                },
+                "CdtrAgt": {
+                  "FinInstnId": {
+                    "BIC": "BAMCSVSS"
+                  }
+                },
+                "Cdtr": {
+                  "Nm": "Nombre cliente destino",
+                  "Id": {
+                    "OrgId": {
+                      "Othr": {
+                        "Id": "987654321"
+                      }
+                    }
+                  }
+                },
+                "CdtrAcct": {
+                  "Id": {
+                    "IBAN": "CR42010200690010112233"
+                  },
+                  "Tp": {
+                    "Cd": "CACC"
+                  }
+                },
+                "RmtInf": {
+                  "Strd": {
+                    "RfrdDocInf": {
+                      "Nb": "06140904181038"
+                    }
+                  }
+                },
+                "Purp": {
+                  "Prtry": "Motivo del pago es el siguiente..."
+                }
+              },
+              {
+                "PmtId": {
+                  "EndToEndId": "PYMT-0001"
+                },
+                "PmtTpInf": {
+                  "InstrPrty": "NORM"
+                },
+                "Amt": {
+                  "InstdAmt": {
+                    "InstdAmt": "469.87",
+                    "Ccy": "USD"
+                  }
+                },
+                "CdtrAgt": {
+                  "FinInstnId": {
+                    "BIC": "BAMCSVSS"
+                  }
+                },
+                "Cdtr": {
+                  "Nm": "Nombre cliente destino",
+                  "Id": {
+                    "OrgId": {
+                      "Othr": {
+                        "Id": "987654321"
+                      }
+                    }
+                  }
+                },
+                "CdtrAcct": {
+                  "Id": {
+                    "IBAN": "CR42010200690010112233"
+                  },
+                  "Tp": {
+                    "Cd": "CACC"
+                  }
+                },
+                "RmtInf": {
+                  "Strd": {
+                    "RfrdDocInf": {
+                      "Nb": "06140904181038"
+                    }
+                  }
+                },
+                "Purp": {
+                  "Prtry": "Motivo del pago es el siguiente..."
+                }
+              },
+              {
+                "PmtId": {
+                  "EndToEndId": "PYMT-0001"
+                },
+                "PmtTpInf": {
+                  "InstrPrty": "NORM"
+                },
+                "Amt": {
+                  "InstdAmt": {
+                    "InstdAmt": "469.87",
+                    "Ccy": "USD"
+                  }
+                },
+                "CdtrAgt": {
+                  "FinInstnId": {
+                    "BIC": "BAMCSVSS"
+                  }
+                },
+                "Cdtr": {
+                  "Nm": "Nombre cliente destino",
+                  "Id": {
+                    "OrgId": {
+                      "Othr": {
+                        "Id": "987654321"
+                      }
+                    }
+                  }
+                },
+                "CdtrAcct": {
+                  "Id": {
+                    "IBAN": "CR42010200690010112233"
+                  },
+                  "Tp": {
+                    "Cd": "CACC"
+                  }
+                },
+                "RmtInf": {
+                  "Strd": {
+                    "RfrdDocInf": {
+                      "Nb": "06140904181038"
+                    }
+                  }
+                },
+                "Purp": {
+                  "Prtry": "Motivo del pago es el siguiente..."
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

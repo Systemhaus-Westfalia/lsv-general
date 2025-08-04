@@ -1,0 +1,14 @@
+CAMT052DeSerializationTestWithFiles started at: 2025-07-14 08:19:33
+Reading from file: /data2/entwicklung/shw_repositories_2024/lsv-general/src/main/java/org/shw/lsv/ebanking/bac/sv/z_test_json_files/saldo_cuenta/CAMT052DeSerializationTestWithFiles_INPUT_FILE.json
+Starting CAMT052 deserialization test...
+Deserialization to CAMT052Response failed. This may be a rejection message (admi.002).
+Original validation failures:
+[2025-07-14 08:19:33.557][Deserialization error] Unrecognized field "admi.002.001.01" (class org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseDocument), not marked as ignorable (one known property: "BkToCstmrAcctRpt"])
+ at [Source: (String)"{"File":{"Envelope":{"Document":{"admi.002.001.01":{"RltdRef":{"Ref":"2025-06-10T17:26:49-06:00"},"Rsn":{"RjctgPtyRsn":"4","RsnDesc":"Error: No se ha encrontrado informacion de cuenta BAC o IBAN.","RjctnDtTm":"2025-06-10T17:26:49-06:00"}}}}}}
+"; line: 1, column: 53] (through reference chain: org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052Response["File"]->org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseFile["Envelope"]->org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseEnvelope["Document"]->org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseDocument["admi.002.001.01"])
+
+
+--- Rejection Details Extracted ---
+Reason Code: 4
+Description: Error: No se ha encrontrado informacion de cuenta BAC o IBAN.
+---------------------------------

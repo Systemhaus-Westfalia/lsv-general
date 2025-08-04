@@ -188,5 +188,7 @@ public class EBankingConstants {
 	public static final String TEST_FILES_DIRECTORY_PAGO                = "pago";
 	public static final String TEST_FILES_DIRECTORY_CONSULTA_SALDO_PAGO = "consulta_pago";
 	public static final String TEST_FILES_DIRECTORY_ESTADO_CUENTA       = "estado_de_cuenta";
+	public static final String TEST_FILES_REQUEST                       = "request";
+	public static final String TEST_FILES_RESPONSE                      = "response";
 	
 }

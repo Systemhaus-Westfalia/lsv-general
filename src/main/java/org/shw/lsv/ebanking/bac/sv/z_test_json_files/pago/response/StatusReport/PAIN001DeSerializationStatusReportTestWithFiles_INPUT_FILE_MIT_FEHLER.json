@@ -1,0 +1,36 @@
+{
+    "Envelope": {
+        "AppHdr": {
+            "Fr": {
+                "FIId": {
+                    "FinInstnId": {
+                        "BICFI": "AMERICA3PLX"
+                    }
+                }
+            },
+            "To": {
+                "FIId": {
+                    "FinInstnId": {
+                        "BICFI": "BCINPAPA"
+                    }
+                }
+            },
+            "BizMsgIdr": "Prueba_01",
+            "MsgDefIdr": "TSMT.038.001.03",
+            "BizSvc": "swift.cbprplus.01",
+            "CreDt": "2022-08-16T08:00:00-06:00"
+        },
+        "Document": {
+            "xmlns": "urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03",
+            "StsRptReq": {
+                "ReqId": {
+                    "Id": "E2E-1234567890",
+                    "CreDtTm": "2022-05-20T12:21:35"
+                },
+                "NttiesToBeRptd": {
+                    "BIC": "AMERICA3PLX"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+
+Critical validation failures:
+[2025-07-14 08:44:17.063][Deserialization error] Unrecognized field "Envelope" (class org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfn), not marked as ignorable (one known property: "File"])
+ at [Source: (String)"{
+    "Envelope": {
+        "AppHdr": {
+            "Fr": {
+                "FIId": {
+                    "FinInstnId": {
+                        "BICFI": "BMILHNTE"
+                    }
+                }
+            },
+            "To": {
+                "FIId": {
+                    "FinInstnId": {
+                        "BICFI": "DUMMYMASTER"
+                    }
+                }
+            },
+            "BizMsgIdr": "8034",
+            "MsgDefIdr": "ADMIN.004.001.02",
+            "BizS"[truncated 461 chars]; line: 2, column: 18] (through reference chain: org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfn["Envelope"])

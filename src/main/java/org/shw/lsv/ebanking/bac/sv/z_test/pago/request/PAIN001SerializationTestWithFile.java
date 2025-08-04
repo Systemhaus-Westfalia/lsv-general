@@ -28,7 +28,9 @@ public class PAIN001SerializationTestWithFile {
         String outputFileName = String.format("%s_OUTPUT.json", CLASS_NAME);
         String errorFileName  = String.format("%s_ERROR.txt", CLASS_NAME);
 
-        Path outputDirPath = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, EBankingConstants.TEST_FILES_DIRECTORY_PAGO);
+        Path outputDirPath = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, 
+            EBankingConstants.TEST_FILES_DIRECTORY_PAGO,
+            EBankingConstants.TEST_FILES_REQUEST);
 
         try {
             Files.createDirectories(outputDirPath);
@@ -114,8 +116,9 @@ public class PAIN001SerializationTestWithFile {
             // Max length: 35
             .setBizMsgIdr(    PYMT_MESSAGE_ID)
 
-            .setMsgDefIdr(    "PAIN.001.001.03")            // The message definition identifier, indicating the type of message being sent. Bei "Payment Request" muß =PAIN.001.001.03
-            .setBizSvc(       "swift.cbprplus.01")             // The business service identifier. Hier muß == "swift.cbprplus.01"
+            .setMsgDefIdr(    "PaymentInitiationServiceV03")  // The message definition identifier, indicating the type of message being sent. 
+                                                                        // Bei "Payment Request" muß ==PaymentInitiationServiceV03
+            .setBizSvc(       "swift.cbprplus.01")               // The business service identifier. Hier muß == "swift.cbprplus.01"
             .setCreDt(        "2025-05-16T07:56:49-06:00")
 
             // Group Header
@@ -130,7 +133,7 @@ public class PAIN001SerializationTestWithFile {
             // Helps the bank associate the payment with your internal records.
             .setPmtInfId(       PYMT_DOCUMENT_ID)
 
-            .setNbOfTxs(      Integer.valueOf(3))                   // Normalerweise 1, weil wir immmer jeweils nur 1 Zahlung vornehmen. Number of transactions
+            .setNbOfTxs(      Integer.valueOf(1))                   // Normalerweise 1, weil wir immmer jeweils nur 1 Zahlung vornehmen. Number of transactions
             .setCtrlSum(      new BigDecimal("469.87"))           // Payment Amout.
             .setNameInitParty("Sistemas Aereos")                   // AD_Client.name: Name of the Initiating Party: The party that initiates the payment (the sender/customer).s
 
@@ -145,7 +148,7 @@ public class PAIN001SerializationTestWithFile {
             .setIbanDbtrAcct( "CR42010200690010163989")  // IBAN from Sender. IBAN is set by each bank.
 
             .setBicOrBEI(     "AMERICA3PLX")                 // Identifier for the initiating party, which can be a BIC (Bank Identifier Code) or BEI (Business Entity Identifier).
-            .setBicDbtr(      "AMERICA3PLX")
+            .setBicDbtr(      "BAMCSVSS")
             .setCountry(      "SV")
 
             // Payment Element

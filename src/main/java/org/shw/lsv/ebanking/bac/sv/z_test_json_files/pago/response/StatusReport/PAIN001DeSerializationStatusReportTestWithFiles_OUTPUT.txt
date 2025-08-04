@@ -1,0 +1,24 @@
+Envelope present: true
+Document present: true
+********************************************
+********************************************
+Ergebinisse:
+*** AppHdr ***
+    Fr-BICFI : AMERICA3PLX
+    To-BICFI : BCINPAPA
+    BizMshIdr: Prueba_01
+    BizSvc:    swift.cbprplus.01
+    CreDt:     2022-08-16T08:00:00-06:00
+    MsgDefIdr: TSMT.038.001.03
+********************************************
+*** PAIN001 (Status Report) Response Document ***
+********************************************
+    xmlns    : urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03
+StsRptReq present: true
+ReqId present: true
+    Id      : E2E-1234567890
+    CreDtTm : 2022-05-20T12:21:35
+NttiesToBeRptd present: true
+    BIC     : AMERICA3PLX
+********************************************
+********************************************
