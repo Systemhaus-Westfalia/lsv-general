@@ -1,1 +1,64 @@
-{"File":{"Envelope":{"AppHdr":{"Fr":{"FIId":{"FinInstnId":{"BICFI":"BAMCSVSS"}}},"To":{"FIId":{"FinInstnId":{"BICFI":"AMERICA3PLX"}}},"BizMsgIdr":"2213703","MsgDefIdr":"AccountBalanceReportV08","BizSvc":"swift.cbprplus.02","CreDt":"2025-06-28T13:06:22-06:00"},"Document":{"BkToCstmrAcctRpt":{"GrpHdr":{"MsgId":"2213703","CreDtTm":"2025-06-28T13:06:22-06:00"},"Rpt":{"Id":"2025062813062260000","RptPgntn":{"PgNb":"1","LastPgInd":"true"},"Acct":{"Id":{"Othr":{"Id":"200268472"}},"Ccy":"USD"},"Bal":{"Tp":{"CdOrPrtry":{"Cd":"ITAV"}},"CdtDbtInd":"CRDT","Dt":{"DtTm":"2025-06-28T13:06:22-06:00"},"Amt":{"Ccy":"USD","Amt":"55555555555.00"}}}}}}}}
+{
+    "File": {
+        "Envelope": {
+            "AppHdr": {
+                "Fr": {
+                    "FIId": {
+                        "FinInstnId": {
+                            "BICFI": "BAMCSVSS"
+                        }
+                    }
+                },
+                "To": {
+                    "FIId": {
+                        "FinInstnId": {
+                            "BICFI": "AMERICA3PLX"
+                        }
+                    }
+                },
+                "BizMsgIdr": "3618738",
+                "MsgDefIdr": "AccountBalanceReportV08",
+                "BizSvc": "swift.cbprplus.02",
+                "CreDt": "2025-08-07T08:49:15-06:00"
+            },
+            "Document": {
+                "BkToCstmrAcctRpt": {
+                    "GrpHdr": {
+                        "MsgId": "3618738",
+                        "CreDtTm": "2025-08-07T08:49:15-06:00"
+                    },
+                    "Rpt": {
+                        "Id": "202508078491560000",
+                        "RptPgntn": {
+                            "PgNb": "1",
+                            "LastPgInd": "true"
+                        },
+                        "Acct": {
+                            "Id": {
+                                "Othr": {
+                                    "Id": "200268472"
+                                }
+                            },
+                            "Ccy": "USD"
+                        },
+                        "Bal": {
+                            "Tp": {
+                                "CdOrPrtry": {
+                                    "Cd": "ITAV"
+                                }
+                            },
+                            "CdtDbtInd": "CRDT",
+                            "Dt": {
+                                "DtTm": "2025-08-07T08:49:15-06:00"
+                            },
+                            "Amt": {
+                                "Ccy": "USD",
+                                "Amt": "55555555095.00"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

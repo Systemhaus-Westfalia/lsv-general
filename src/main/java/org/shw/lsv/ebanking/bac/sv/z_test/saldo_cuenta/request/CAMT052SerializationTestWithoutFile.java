@@ -52,30 +52,31 @@ public static void main(String[] args) {
     }
 
     private static RequestParams createTestParams() {
-        String SALDO_MESSAGE_ID = "Saldo-ADClientName/(CuentaNr)";
-
-        // Folgende Werte sind von BAC fest definiert
-        // Im Test habe ich Currency und XMLNS ausgelassen, ohne Fehler zu erzeugen.
-        String MSGDEFIDR   = "camt.060.001.05";
-        String BIZSVC      = "swift.cbprplus.01";
-        String REQDMSGNMID = "AccountBalanceReportV08";
-        String XMLNS       = "urn:iso:std:iso:20022:tech:xsd:camt.060.001.05";
-
-        String currentTimestamp = TestDateUtils.getCurrentApiTimestamp();
+        // Folgende Parameter müssen Werte enthalten, damit Serialisierung klappt:
+        String BIC_SISTEMAS_AEREOS = "AMERICA3PLX"; // BIC of Company
+        String BIC_BAC_EL_SALVADOR = "BAMCSVSS"; // BIC of BAC EL Salvador
+        String SALDO_MESSAGE_ID    = "Saldo-ADClientName/(CuentaNr)";
+        String MSGDEFIDR           = "camt.060.001.05";
+        String BIZSVC              = "swift.cbprplus.01";
+        String REQDMSGNMID         = "AccountBalanceReportV08";
+        String XMLNS               = "urn:iso:std:iso:20022:tech:xsd:camt.060.001.05";  // Im Test habe ich Currency und XMLNS ausgelassen, ohne Fehler zu erzeugen.
+        String CURRENCY            = "USD";
+        String BAC_ACCOUNT_ID      = "200268472"; // Bank Account ID
+        String currentTimestamp    = TestDateUtils.getCurrentApiTimestamp();
 
         return new RequestParams()
             // AppHdr
-            .setBicfiFr(      "AMERICA3PLX")                    // BIC of Company (festgelegt)
-                                                                      // Official definition: The sending Bank Identifier Code.
-                                                                      // "INVALIDBIC" Will trigger an error
-            .setBicfiTo(      "BAMCSVSS")                     // BIC of bank (festgelegt)
-                                                                      // Official definition: The receiving Bank Identifier Code.
-                                                                      // "INVALIDBIC" Will trigger an error
+            .setBicfiFr(      BIC_SISTEMAS_AEREOS)                     // BIC of Company (festgelegt)
+                                                                       // Official definition: The sending Bank Identifier Code.
+                                                                       // "INVALIDBIC" Will trigger an error
+            .setBicfiTo(      BIC_BAC_EL_SALVADOR)                     // BIC of bank (festgelegt)
+                                                                       // Official definition: The receiving Bank Identifier Code.
+                                                                       // "INVALIDBIC" Will trigger an error
 
             // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference.
             // This MAY BE echeoed in the response, but must not
             // Max length: 35
-            .setBizMsgIdr(    SALDO_MESSAGE_ID + "-01")                // ID assigned by the sender; es kann der gleiche sein wie bei setMsgId()
+            .setBizMsgIdr(    SALDO_MESSAGE_ID)                        // ID assigned by the sender; es kann der gleiche sein wie bei setMsgId()
 
             .setMsgDefIdr(    MSGDEFIDR)                               // The message definition identifier, indicating the type of message being sent. Bei "Consulta Saldo Request" muß =() camt.052 ist das camt.060.001.05
             .setBizSvc(       BIZSVC)                                  // The business service identifier. Hier muß == "swift.cbprplus.01"
@@ -88,7 +89,7 @@ public static void main(String[] args) {
             // Max. length: 35
             // Examples: "test:case? (ok)", "abc/def-ghi:jkl(mno)pqr.stu,vwx'y+z"
             // Usually not echoed in Response
-            .setMsgId(        SALDO_MESSAGE_ID + "-02")                // ID assigned by the sender; es kann der gleiche sein wie bei setBizMsgIdr()
+            .setMsgId(        SALDO_MESSAGE_ID)                // ID assigned by the sender; es kann der gleiche sein wie bei setBizMsgIdr()
 
             .setCreDtTm(      currentTimestamp)
 
@@ -97,12 +98,12 @@ public static void main(String[] args) {
             // Max length: 35
             // Examples: "test:case? (ok)", "abc/def-ghi:jkl(mno)pqr.stu,vwx'y+z"
             // Usually not echoed in Response
-            .setReqdMsgNmId(  REQDMSGNMID)                              // Specifies the type of report being requested
+            .setReqdMsgNmId(  REQDMSGNMID)                     // Specifies the type of report being requested
 
-            .setAcctId(       "200268472")                      // Bank Account
-            .setBicfiAcctOwnr("AMERICA3PLX")             // BIC of Company
-                                                                       // Official definition: The BIC (SWIFT code) of the account owner’s bank (the agent).
-            .setCcy(          "USD")
+            .setAcctId(       BAC_ACCOUNT_ID)                  // Bank Account
+            .setBicfiAcctOwnr(BIC_SISTEMAS_AEREOS)             // BIC of Company
+                                                               // Official definition: The BIC (SWIFT code) of the account owner’s bank (the agent).
+            .setCcy(          CURRENCY)
             ;
     }
 }

@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
  * 
  */
 public class EBankingConstants {
+	// Zeiten und Daten
     public static final DateTimeFormatter DATETIME_FORMATTER             = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     public static final DateTimeFormatter ISO_OFFSET_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
     public static final long TIMEZONE_SHIFT_EL_SALVADOR                  = -6; // 6 hours shift for the time zone (e.g., CET to UTC)
