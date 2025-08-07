@@ -91,10 +91,11 @@ public class PAIN001SerializationTestWithoutFile {
             // Often matches GrpHdr/MsgId (if only one payment instruction exists).
             // In production, this could be:a payment order ID (e.g., "PO-987654").
             // Helps the bank associate the payment with your internal records.
-            .setPmtInfId(       PYMT_DOCUMENT_ID)
+            .setPmtInfId(     PYMT_DOCUMENT_ID)
 
             .setNbOfTxs(      Integer.valueOf(3))                   // Normalerweise 1, weil wir immmer jeweils nur 1 Zahlung vornehmen. Number of transactions
             .setCtrlSum(      new BigDecimal("469.87"))           // Payment Amout.
+            .setCcy(          "USD")
             .setNameInitParty("Sistemas Aereos")                   // AD_Client.name: Name of the Initiating Party: The party that initiates the payment (the sender/customer).s
 
             //Document

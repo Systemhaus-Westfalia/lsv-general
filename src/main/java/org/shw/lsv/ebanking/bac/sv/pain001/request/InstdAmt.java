@@ -6,13 +6,16 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InstdAmt {
     @JsonProperty("InstdAmt")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     String instdAmt;
     
-    @JsonProperty("Ccy")
+    @JsonProperty("-Ccy")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     String ccy;
 
     public InstdAmt() { }
