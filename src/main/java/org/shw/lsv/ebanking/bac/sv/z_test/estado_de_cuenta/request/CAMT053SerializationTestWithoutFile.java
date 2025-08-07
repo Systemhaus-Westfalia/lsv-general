@@ -3,12 +3,13 @@ package org.shw.lsv.ebanking.bac.sv.z_test.estado_de_cuenta.request;
 import java.time.LocalDateTime;
 
 import org.shw.lsv.ebanking.bac.sv.camt053.request.CAMT053Request;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
-import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.z_test.util.TestDateUtils;
 
 public class CAMT053SerializationTestWithoutFile {
     public static void main(String[] args) {
@@ -51,6 +52,7 @@ public class CAMT053SerializationTestWithoutFile {
 
     private static RequestParams createTestParams(Integer pageNumber) {
         String ESTADO_CUENTA_MESSAGE_ID = "EdC-ADClientName/(CuentaNr)";
+        String currentTimestamp         = TestDateUtils.getCurrentApiTimestamp();
 
         return new RequestParams()
             // AppHdr
@@ -68,7 +70,7 @@ public class CAMT053SerializationTestWithoutFile {
 
             .setMsgDefIdr("camt.060.001.05")          // The message definition identifier, indicating the type of message being sent. For CAMT053Request, must be camt.053.001.08
             .setBizSvc("swift.cbprplus.01")              // The business service identifier. Must be "swift.cbprplus.01"
-            .setCreDt("2025-06-12T07:42:49-06:00")
+            .setCreDt(currentTimestamp)
 
             .setXmlns("urn:iso:std:iso:20022:tech:xsd:camt.060.001.05") // The XML namespace for the message, indicating the standard and version used
 
@@ -78,7 +80,7 @@ public class CAMT053SerializationTestWithoutFile {
             // Usually not echoed in Response
             .setMsgId(ESTADO_CUENTA_MESSAGE_ID + "-02")         // ID assigned by the sender
 
-            .setCreDtTm("2025-06-12T07:42:49-06:00")
+            .setCreDtTm(currentTimestamp)
 
             // Document
 
@@ -92,8 +94,8 @@ public class CAMT053SerializationTestWithoutFile {
             // Official definition: The BIC (SWIFT code) of the account owner’s bank (the agent).
             .setCcy("USD")
             
-            .setFrdt("2025-06-01")                         // Start date for the reporting period
-            .setTodt("2025-06-30")                         // End date for the reporting period
+            .setFrdt(TestDateUtils.getPreviousMonthStartDate()) // Start date for the reporting period
+            .setTodt(TestDateUtils.getPreviousMonthEndDate())   // End date for the reporting period
             .setTp(EBankingConstants.PATTERN_TP)                // Type of report, e.g., "ALL" for all elements
             .setEqseq(pageNumber.toString())                    // Sequence number for the report, used for pagination or ordering of reports
             

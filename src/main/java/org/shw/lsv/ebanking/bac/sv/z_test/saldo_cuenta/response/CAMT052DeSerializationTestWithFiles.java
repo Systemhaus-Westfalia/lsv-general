@@ -7,9 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052Response;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseDocument;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseEnvelope;
@@ -17,6 +14,9 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CAMT052DeSerializationTestWithFiles {
     private static final String CLASS_NAME = CAMT052DeSerializationTestWithFiles.class.getSimpleName();

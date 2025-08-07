@@ -3,9 +3,6 @@ package org.shw.lsv.ebanking.bac.sv.z_test.saldo_cuenta.response;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052Response;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseDocument;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseEnvelope;
@@ -13,6 +10,9 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CAMT052DeSerializationTestWithoutFiles {
     public static void main(String[] args) {

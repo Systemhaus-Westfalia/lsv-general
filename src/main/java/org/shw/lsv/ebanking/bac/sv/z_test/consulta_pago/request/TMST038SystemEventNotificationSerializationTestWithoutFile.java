@@ -2,13 +2,14 @@ package org.shw.lsv.ebanking.bac.sv.z_test.consulta_pago.request;
 
 import java.time.LocalDateTime;
 
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
-import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
-import org.shw.lsv.ebanking.bac.sv.tmst038.request.TMST038RequestEvtNtfn;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.tmst038.request.TMST038RequestEvtNtfn;
+import org.shw.lsv.ebanking.bac.sv.z_test.util.TestDateUtils;
 
 public class TMST038SystemEventNotificationSerializationTestWithoutFile {
     public static void main(String[] args) {
@@ -55,7 +56,8 @@ public class TMST038SystemEventNotificationSerializationTestWithoutFile {
      * @return RequestParams for the test.
      */
     private static RequestParams createTestParams() {
-        String PYMT_MESSAGE_ID = "SysEvt-ADClientName/(CuentaNr)";
+        String PYMT_MESSAGE_ID  = "SysEvt-ADClientName/(CuentaNr)";
+        String currentTimestamp = TestDateUtils.getCurrentApiTimestamp();
 
         return new RequestParams()
 
@@ -65,11 +67,11 @@ public class TMST038SystemEventNotificationSerializationTestWithoutFile {
             .setBizMsgIdr(PYMT_MESSAGE_ID)
             .setMsgDefIdr("ADMIN.004.001.02") // Message definition for System Event Notification
             .setBizSvc("swift.cbprplus.02")
-            .setCreDt("2024-07-25T10:30:00-06:00")
+            .setCreDt(currentTimestamp)
 
             // Document -> SysEvtNtfctn -> EvtInf
             .setEvtCd("RCVD")
             .setEvtDesc("Solicitud recibida. Su pago se esta procesando o se procesara en la fecha indicada en el mensaje. Consulte mas tarde.")
-            .setEvtTm("2024-07-25T10:30:00-06:00");
+            .setEvtTm(currentTimestamp);
     }
 }

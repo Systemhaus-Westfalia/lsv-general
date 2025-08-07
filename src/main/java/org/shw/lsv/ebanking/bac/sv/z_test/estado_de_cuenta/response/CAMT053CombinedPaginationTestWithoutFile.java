@@ -1,12 +1,13 @@
 package org.shw.lsv.ebanking.bac.sv.z_test.estado_de_cuenta.response;
 
 import java.time.LocalDateTime;
+
 import org.shw.lsv.ebanking.bac.sv.camt052.response.RptPgntn;
 import org.shw.lsv.ebanking.bac.sv.camt053.request.CAMT053Request;
+import org.shw.lsv.ebanking.bac.sv.camt053.response.BkToCstmrStmt;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.CAMT053Response;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.CAMT053ResponseDocument;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.CAMT053ResponseEnvelope;
-import org.shw.lsv.ebanking.bac.sv.camt053.response.BkToCstmrStmt;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.Stmt;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;

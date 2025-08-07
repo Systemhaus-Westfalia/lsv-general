@@ -2,13 +2,14 @@ package org.shw.lsv.ebanking.bac.sv.z_test.consulta_pago.request;
 
 import java.time.LocalDateTime;
 
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
-import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
-import org.shw.lsv.ebanking.bac.sv.tmst038.request.TMST038RequestStatusReport;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.tmst038.request.TMST038RequestStatusReport;
+import org.shw.lsv.ebanking.bac.sv.z_test.util.TestDateUtils;
 
 public class TMST038StatusReportSerializationTestWithoutFile {
     public static void main(String[] args) {
@@ -51,8 +52,9 @@ public class TMST038StatusReportSerializationTestWithoutFile {
     }
 
     private static RequestParams createTestParams() {
-        String PYMT_MESSAGE_ID = "ConsPago-ADClientName/(CuentaNr)";
+        String PYMT_MESSAGE_ID  = "ConsPago-ADClientName/(CuentaNr)";
         String PYMT_DOCUMENT_ID = "PYMT-0001";  // Ich glaube, das ist die DocumentNr, die in der Antwort referenziert wird.
+        String currentTimestamp = TestDateUtils.getCurrentApiTimestamp();
 
         return new RequestParams()
 
@@ -65,13 +67,13 @@ public class TMST038StatusReportSerializationTestWithoutFile {
             .setBizMsgIdr(    PYMT_MESSAGE_ID)                        // BizMsgIdr is a unique message ID, assigned by the sender for tracking and reference.
             .setMsgDefIdr(    "TSMT.038.001.03")            // The message definition identifier, indicating the type of message being sent. Bei "Payment Consult Request" muß =TSMT.038.001.03
             .setBizSvc(       "swift.cbprplus.01")             // The business service identifier. Hier muß == "swift.cbprplus.01"
-            .setCreDt(        "2025-06-10T17:26:49-06:00")
+            .setCreDt(        currentTimestamp)
 
             // Document
-            .setXmlns(    "urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03") // XML namespace for the message
-            .setMsgId(    PYMT_DOCUMENT_ID) 
-            .setCreDtTm("2025-06-10T17:26:49-06:00")
-            .setBic(        "AMERICA3PLX");                        // BIC of Company
+            .setXmlns(        "urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03") // XML namespace for the message
+            .setMsgId(        PYMT_DOCUMENT_ID)
+            .setCreDtTm(      currentTimestamp)
+            .setBic(          "AMERICA3PLX");                      // BIC of Company
                                                                        // Official definition: The BIC (SWIFT code) of the account’s bank.
     }
 }

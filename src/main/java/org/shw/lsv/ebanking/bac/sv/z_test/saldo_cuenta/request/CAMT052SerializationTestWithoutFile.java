@@ -3,12 +3,13 @@ package org.shw.lsv.ebanking.bac.sv.z_test.saldo_cuenta.request;
 import java.time.LocalDateTime;
 
 import org.shw.lsv.ebanking.bac.sv.camt052.request.CAMT052Request;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
-import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.z_test.util.TestDateUtils;
 
 
 public class CAMT052SerializationTestWithoutFile {
@@ -23,7 +24,7 @@ public static void main(String[] args) {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        RequestParams params = createTestParams(now);
+        RequestParams params = createTestParams();
         
         try {
             // 3. Build request with test's collector
@@ -50,7 +51,7 @@ public static void main(String[] args) {
         }
     }
 
-    private static RequestParams createTestParams(LocalDateTime now) {
+    private static RequestParams createTestParams() {
         String SALDO_MESSAGE_ID = "Saldo-ADClientName/(CuentaNr)";
 
         // Folgende Werte sind von BAC fest definiert
@@ -60,7 +61,7 @@ public static void main(String[] args) {
         String REQDMSGNMID = "AccountBalanceReportV08";
         String XMLNS       = "urn:iso:std:iso:20022:tech:xsd:camt.060.001.05";
 
-        String formattedTimestamp = now.atOffset(EBankingConstants.ELSALVADOR_OFFSET).format(EBankingConstants.ISO_OFFSET_DATE_TIME_FORMATTER);
+        String currentTimestamp = TestDateUtils.getCurrentApiTimestamp();
 
         return new RequestParams()
             // AppHdr
@@ -78,7 +79,7 @@ public static void main(String[] args) {
 
             .setMsgDefIdr(    MSGDEFIDR)                               // The message definition identifier, indicating the type of message being sent. Bei "Consulta Saldo Request" muß =() camt.052 ist das camt.060.001.05
             .setBizSvc(       BIZSVC)                                  // The business service identifier. Hier muß == "swift.cbprplus.01"
-            .setCreDt(        formattedTimestamp)                      // Es wird erwartet ein DateTime, obwohl der name ist "Dt"
+            .setCreDt(        currentTimestamp)                        // Es wird erwartet ein DateTime, obwohl der name ist "Dt"
 
             // Document
             .setXmlns(XMLNS)                                           // festgelegt bei BAC
@@ -89,7 +90,7 @@ public static void main(String[] args) {
             // Usually not echoed in Response
             .setMsgId(        SALDO_MESSAGE_ID + "-02")                // ID assigned by the sender; es kann der gleiche sein wie bei setBizMsgIdr()
 
-            .setCreDtTm(      formattedTimestamp)
+            .setCreDtTm(      currentTimestamp)
 
             // Document
 

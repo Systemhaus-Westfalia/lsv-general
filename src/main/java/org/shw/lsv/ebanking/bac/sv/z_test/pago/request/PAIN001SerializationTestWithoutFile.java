@@ -3,13 +3,14 @@ package org.shw.lsv.ebanking.bac.sv.z_test.pago.request;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
-import org.shw.lsv.ebanking.bac.sv.pain001.request.PAIN001Request;
-import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
-import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.pain001.request.PAIN001Request;
+import org.shw.lsv.ebanking.bac.sv.z_test.util.TestDateUtils;
 
 public class PAIN001SerializationTestWithoutFile {
     public static void main(String[] args) {
@@ -51,8 +52,9 @@ public class PAIN001SerializationTestWithoutFile {
     }
 
     private static RequestParams createTestParams() {
-        String PYMT_MESSAGE_ID = "Pago-ADClientName/(CuentaNr)";
+        String PYMT_MESSAGE_ID  = "Pago-ADClientName/(CuentaNr)";
         String PYMT_DOCUMENT_ID = "PYMT-0001";  // Ich glaube, das ist die DocumentNr, die in der Antwort NICHT zurueckgeliefert wird.
+        String currentTimestamp = TestDateUtils.getCurrentApiTimestamp();
 
         return new RequestParams()
 
@@ -75,14 +77,14 @@ public class PAIN001SerializationTestWithoutFile {
             // Max length: 35
             .setBizMsgIdr(    PYMT_MESSAGE_ID)
 
-            .setMsgDefIdr(    "PAIN.001.001.03")            // The message definition identifier, indicating the type of message being sent. Bei "Payment Request" muß =PAIN.001.001.03
-            .setBizSvc(       "swift.cbprplus.01")             // The business service identifier. Hier muß == "swift.cbprplus.01"
-            .setCreDt(        "2025-05-16T07:56:49-06:00")
+            .setMsgDefIdr(    "PaymentInitiationServiceV03") // Muss so sein.
+            .setBizSvc(       "swift.cbprplus.01")              // The business service identifier. Hier muß == "swift.cbprplus.01"
+            .setCreDt(        currentTimestamp)
 
             // Group Header
             .setMsgId(        PYMT_DOCUMENT_ID)                       // Unique identifier for the payment group (all transactions in this request).
             // TODO: wo wird "PmtInfId"  mit PYMT_DOCUMENT_ID gesetzt?
-            .setCreDtTm(      "2025-05-16T07:56:49-06:00")
+            .setCreDtTm(      currentTimestamp)
             .setPmtMtd(       "TRF")                           // Transfer immer. TRF oder CHK
 
             // Unique identifier for the payment instruction set (e.g., one set of creditor/amount details).
@@ -97,7 +99,7 @@ public class PAIN001SerializationTestWithoutFile {
 
             //Document
             .setCatPurpCd(    "SUPP")                       // SUPP als Konstante erstmal. Es koennen viele andere Werte angegeben werden.
-            .setReqdExctnDt(  "2023-06-27")
+            .setReqdExctnDt(  TestDateUtils.getTodayDate())
             .setNameDebtor(   "Sistemas Aereos")           // AD_Client.name:  Name of the Debtor: The party whose account will be debited (payer).
             .setDbtrId(       "06140904181038")                // NIT vom AD_Client. Debtor Identifier: Unique ID for the debtor (payer), often a tax ID or customer number.
 
