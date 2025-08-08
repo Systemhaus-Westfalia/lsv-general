@@ -16,6 +16,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.AppHdr;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.z_test.util.TestRequestParamsFactory;
 
 public class CAMT053CombinedPaginationTestWithoutFile {
 
@@ -38,7 +39,7 @@ public class CAMT053CombinedPaginationTestWithoutFile {
             JsonValidationExceptionCollector requestCollector = new JsonValidationExceptionCollector();
             requestCollector.setPrintImmediately(true);
 
-            RequestParams params = createRequestParams(currentPageToRequest);
+            RequestParams params = TestRequestParamsFactory.createCamt053Params(currentPageToRequest);
             String requestJsonOutput = "";
             CAMT053Response deserializedResponse = null;
 

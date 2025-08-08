@@ -10,6 +10,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.tmst038.request.TMST038RequestStatusReport;
 import org.shw.lsv.ebanking.bac.sv.z_test.util.TestDateUtils;
+import org.shw.lsv.ebanking.bac.sv.z_test.util.TestRequestParamsFactory;
 
 public class TMST038StatusReportSerializationTestWithoutFile {
     public static void main(String[] args) {
@@ -23,7 +24,7 @@ public class TMST038StatusReportSerializationTestWithoutFile {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        RequestParams params = createTestParams();
+        RequestParams params = TestRequestParamsFactory.createTmst038StatusReportParams();
 
         try {
             // 3. Build request with test's collector

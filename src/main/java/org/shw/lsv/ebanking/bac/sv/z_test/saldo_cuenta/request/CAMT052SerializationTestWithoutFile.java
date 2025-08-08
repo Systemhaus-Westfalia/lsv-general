@@ -10,6 +10,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.z_test.util.TestDateUtils;
+import org.shw.lsv.ebanking.bac.sv.z_test.util.TestRequestParamsFactory;
 
 
 public class CAMT052SerializationTestWithoutFile {
@@ -24,7 +25,7 @@ public static void main(String[] args) {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        RequestParams params = createTestParams();
+        RequestParams params = TestRequestParamsFactory.createCamt052Params();
         
         try {
             // 3. Build request with test's collector
