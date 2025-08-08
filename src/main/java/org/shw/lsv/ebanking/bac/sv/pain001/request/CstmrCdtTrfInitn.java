@@ -1,5 +1,8 @@
 package org.shw.lsv.ebanking.bac.sv.pain001.request;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
@@ -12,14 +15,16 @@ public class CstmrCdtTrfInitn {
     GrpHdr grpHdr;
     
     @JsonProperty("PmtInf")
-    PmtInf pmtInf;
+    List<PmtInf> pmtInf;
 
     public CstmrCdtTrfInitn() {}
 
     public CstmrCdtTrfInitn(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setGrpHdr(new GrpHdr(params, collector), collector);
-            setPmtInf(new PmtInf(params, collector), collector);
+            List<PmtInf> pmtInfList = new ArrayList<>();
+            pmtInfList.add(new PmtInf(params, collector));
+            setPmtInf(pmtInfList, collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CSTMRCDTTRFINITN_INIT, e);
         }
@@ -62,7 +67,7 @@ public class CstmrCdtTrfInitn {
     /**
      * @return the PmtInf object<br>
      */
-    public PmtInf getPmtInf() {
+    public List<PmtInf> getPmtInf() {
         return pmtInf;
     }
 
@@ -70,20 +75,20 @@ public class CstmrCdtTrfInitn {
      * @param pmtInf the PmtInf to be set<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setPmtInf(PmtInf pmtInf) {
-        if (pmtInf == null) {
+    public void setPmtInf(List<PmtInf> pmtInf) {
+        if (pmtInf == null || pmtInf.isEmpty()) {
             throw new IllegalArgumentException("Wrong parameter 'pmtInf' in setPmtInf()");
         }
         this.pmtInf = pmtInf;
     }
 
     /**
-     * @param pmtInf the PmtInf to be set<br>
+     * @param pmtInfList the PmtInf list to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setPmtInf(PmtInf pmtInf, JsonValidationExceptionCollector collector) {
+    public void setPmtInf(List<PmtInf> pmtInfList, JsonValidationExceptionCollector collector) {
         try {
-            setPmtInf(pmtInf);
+            setPmtInf(pmtInfList);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;

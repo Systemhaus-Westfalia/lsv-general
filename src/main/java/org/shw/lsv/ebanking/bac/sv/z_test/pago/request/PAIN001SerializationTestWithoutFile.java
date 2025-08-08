@@ -80,7 +80,7 @@ public class PAIN001SerializationTestWithoutFile {
         String currentDate           = TestDateUtils.getTodayDate();
         Integer numberOfTransactions = Integer.valueOf(1); // Number of transactions
 
-        String PAYMENT_AMOUNT        = "469.87"; // Payment Amount
+        String PAYMENT_AMOUNT        = "21.87"; // Payment Amount
         BigDecimal paymentAmount     = new BigDecimal(PAYMENT_AMOUNT);
 
 

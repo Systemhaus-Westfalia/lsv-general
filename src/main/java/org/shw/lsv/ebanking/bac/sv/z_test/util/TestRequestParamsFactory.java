@@ -80,7 +80,7 @@ public final class TestRequestParamsFactory {
         String currentDate           = TestDateUtils.getTodayDate();
         Integer numberOfTransactions = 1;
 
-        String PAYMENT_AMOUNT        = "469.87";
+        String PAYMENT_AMOUNT        = "21.87";
         BigDecimal paymentAmount     = new BigDecimal(PAYMENT_AMOUNT);
 
         return new RequestParams()
