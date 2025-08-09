@@ -1,5 +1,7 @@
 package org.shw.lsv.ebanking.bac.sv.pain001.request;
 
+import java.util.Objects;
+
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
@@ -62,6 +64,19 @@ public class CtgyPurp {
             collector.addError("ERROR_PATTERN_MISMATCH", e);
             //throw e;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CtgyPurp ctgyPurp = (CtgyPurp) o;
+        return Objects.equals(cd, ctgyPurp.cd);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cd);
     }
 
 }

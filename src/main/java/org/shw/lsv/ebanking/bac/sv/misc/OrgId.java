@@ -1,10 +1,13 @@
 package org.shw.lsv.ebanking.bac.sv.misc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,9 +23,16 @@ public class OrgId {
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude fields with null values
 	String anyBIC=null;        // Choice AcctOwnr_OrgId_1: Business identification code of the organisation.
 
-    @JsonProperty("Othr")      // "Othr" is the name of the field in the JSON
+    // In der Schema-Definitionen kann "IdOthr" sowohl ein einzelnes Objekt wie ein Array eines Objektes sein;
+    // deswegen habe ich hier beides im folgenden als Java-, aber nicht als Json-Properties angelegt.
+    // Ansonsten gibt es Runtime-Fehler.
+    // Das richtige Objekt wird angelegt und spaeter serialisiert sei es  als Element oder als Array.
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Exclude fields with null values
     IdOthr idOthr=null;  // Choice AcctOwnr_OrgId_2: Identification assigned by an institution.
+
+    // New field for array representation, used for specific schemas like PAIN.001
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    List<IdOthr> othrList = null;
 
 
     public OrgId() { }
@@ -32,17 +42,35 @@ public class OrgId {
             if ( !(params.getAnyBIC() == null || params.getAnyBIC().isEmpty()) ) {
                 // Hier darf man bei Payments nicht gelangen!!
                 setAnyBIC(params.getAnyBIC(), collector);
+            } else {
+                // For PAIN.001's Creditor/Debtor, the schema expects an array for "Othr".
+                // For other contexts, it expects a single object.
+                if (EBankingConstants.CONTEXT_CDTR.equals(context) || EBankingConstants.CONTEXT_DBTR.equals(context)) {
+                    List<IdOthr> tempList = new ArrayList<>();
+                    tempList.add(new IdOthr(params, context, collector));
+                    setOthrList(tempList, collector);
+                } else {
+                    setIdOthr(new IdOthr(params, context, collector), collector);
+                }
             }
-            else {
-                setIdOthr(new IdOthr(params, context, collector), collector);
-            }
-
-			
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_ORGID_INIT, e);
         }
     }
 
+    /**
+     * Virtual property for Jackson serialization.
+     * This method resolves the conflict by providing a single source for the "Othr" property.
+     * It returns either the List or the single object, whichever is populated.
+     * @return The object to be serialized as "Othr".
+     */
+    @JsonProperty("Othr")
+    public Object getOthr() {
+        if (othrList != null) {
+            return othrList;
+        }
+        return idOthr;
+    }
 
     /**
 	 * @return the AnyBIC
@@ -80,6 +108,7 @@ public class OrgId {
         }
     }
 
+    @JsonIgnore // Hide this from Jackson to prevent conflict with the virtual getOthr()
 	public IdOthr getIdOthr() {
         return idOthr;
     }
@@ -107,6 +136,36 @@ public class OrgId {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;
         }
-}
+    }
 
+    /**
+     * @return the othrList
+     */
+    @JsonIgnore // Hide this from Jackson to prevent conflict with the virtual getOthr()
+    public List<IdOthr> getOthrList() {
+        return othrList;
+    }
+
+    /**
+     * @param othrList the othrList to be set<br>
+     * The parameter is validated: null or empty not allowed.<br>
+     */
+    public void setOthrList(List<IdOthr> othrList) {
+        if (othrList == null || othrList.isEmpty()) {
+            throw new IllegalArgumentException("Wrong parameter 'othrList' in setOthrList()");
+        }
+        this.othrList = othrList;
+    }
+
+    /**
+     * @param othrList the othrList to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setOthrList(List<IdOthr> othrList, JsonValidationExceptionCollector collector) {
+        try {
+            setOthrList(othrList);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+        }
+    }
 }

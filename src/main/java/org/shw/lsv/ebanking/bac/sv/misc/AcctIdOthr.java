@@ -16,13 +16,15 @@ public class AcctIdOthr {
     public AcctIdOthr() {}
 
 
-	public AcctIdOthr(RequestParams params, JsonValidationExceptionCollector collector) {
-        try {
-            if ( !(params.getAcctId() == null || params.getAcctId().isEmpty()) ) {
+	public AcctIdOthr(RequestParams params, String context, JsonValidationExceptionCollector collector) {
+        try {  // TODO: sich vergewissern, dass alle drei gleichzeitig vorkomment koennen!! Bei Payments sind DbtrAcctId und CdtrAcctId moeglich.
+            if ( context.equals(EBankingConstants.CONTEXT_RPTGREQ) && ( !(params.getAcctId() == null || params.getAcctId().isEmpty()) )) {
 				setId(params.getAcctId(), collector);			// # 2
-            } else if ( !(params.getDbtrAcctId() == null || params.getDbtrAcctId().isEmpty()) ) {
+            }
+			if (context.equals(EBankingConstants.CONTEXT_DBTRACCT)  && ( !(params.getDbtrAcctId() == null || params.getDbtrAcctId().isEmpty()) )) {
 				setId(params.getDbtrAcctId(), collector);			// # 6
-            } else if ( !(params.getCdtrAcctId() == null || params.getCdtrAcctId().isEmpty()) ) {
+            }
+			if (context.equals(EBankingConstants.CONTEXT_CDTRACCT)  && ( !(params.getCdtrAcctId() == null || params.getCdtrAcctId().isEmpty()) )) {
 				setId(params.getCdtrAcctId(), collector);			// # 8
             }
         } catch (Exception e) {

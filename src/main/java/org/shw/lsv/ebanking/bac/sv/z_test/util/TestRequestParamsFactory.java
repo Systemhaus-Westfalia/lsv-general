@@ -53,40 +53,45 @@ public final class TestRequestParamsFactory {
      * Creates RequestParams for a PAIN.001 (Payment Initiation) request.
      * @return A fully configured RequestParams object for a PAIN.001 test.
      */
-    public static RequestParams createPain001Params() {
+    public static RequestParams createPain001Params_Domestico() {
         String BIC_SISTEMAS_AEREOS   = "AMERICA3PLX";
         String BIC_BAC_EL_SALVADOR   = "BAMCSVSS";
-        String PYMT_MESSAGE_ID       = "Pago-ADClientName/(CuentaNr)";
-        String PYMT_DOCUMENT_ID      = "PYMT-0001";
+        //String PYMT_MESSAGE_ID       = "Pago-ADClientName/(CuentaNr)";
+        String PYMT_DOCUMENT_ID      = "PYMT-DOMESTICO-" + TestDateUtils.getTodayDate() + "-" + // Generate a unique ID for testing purposes by appending a random 5-digit number.
+                                        java.util.concurrent.ThreadLocalRandom.current().nextInt(10000, 100000);
         String MSGDEFIDR             = "PaymentInitiationServiceV03";
         String BIZSVC                = "swift.cbprplus.01";
         String CURRENCY              = "USD";
+        String FININSTNID_MMBID      = "001";   // Código local de banco destino (Indica si es una transferencia hacia una cuenta BAC o a otro banco (ACH/SINPE)), los valores esperados para ambiente de pruebas son:
+                                                // ACH/SINPE (Panamá: 1588, Costa Rica: 151, Nicaragua: 001, Honduras: 001, El Salvador: 001, Guatemala: 101) (Este es solo un ejemplo, solicitar a su ejecutivo la lista completa de códigos de banco ACH, de ser necesario)
+                                                // ENTRE CUENTAS BAC (Panamá: 1384, Costa Rica: 102, Nicaragua: 007, Honduras: 024, El Salvador: 025, Guatemala: 042)
+
         String BAC_ACCOUNT_ID        = "200268472"; // Bank Account ID
         String PAYMENT_METHOD        = "TRF";
         String SENDER_NAME           = "Sistemas Aereos";
-        String SENDER_TAX_ID         = "06140904181038";
-        String SENDER_IBAN           = "CR4201020069001010163989";
-        String RECEIVER_NAME         = "Nombre cliente destino";
-        String RECEIVER_TAX_ID       = "987654321";
+        //String SENDER_IBAN           = "CR4201020069001010163989";
+        String RECEIVER_NAME         = "Nombre del proveedor";
+        String CODIGO_PROVEEDOR      = "Codigo del Proveedor";
         String INSTRUCTION_PRIORITY  = "NORM";
-        String RECEIVER_IBAN         = "CR42010200690010112233";
+        String RECEIVER_ACCOUNT      = "999888777";
         String COUNTRY               = "SV";
         String CAT_PURPOSE_CD        = "SUPP";
-        String CRDTR_ACCT_CD         = "CACC";
-        String PAYMENT_PURPOSE       = "Motivo del pago es el siguiente...";
-        String RMNNC_INF             = "Referencia a factura numero NV-112";
+        //String CRDTR_ACCT_CD         = "CACC";
+        //String PAYMENT_PURPOSE       = "Motivo del pago es el siguiente...";
+        //String RMNNC_INF             = "Referencia a factura numero NV-112";
+        String PAYMENT_REFERENCE     = "06140904181038";  // Max 35 Zeichen
 
         String currentTimestamp      = TestDateUtils.getCurrentApiTimestamp();
         String currentDate           = TestDateUtils.getTodayDate();
         Integer numberOfTransactions = 1;
 
-        String PAYMENT_AMOUNT        = "21.87";
+        String PAYMENT_AMOUNT        = "31.87";
         BigDecimal paymentAmount     = new BigDecimal(PAYMENT_AMOUNT);
 
         return new RequestParams()
             .setBicfiFr(       BIC_SISTEMAS_AEREOS)
             .setBicfiTo(       BIC_BAC_EL_SALVADOR)
-            .setBizMsgIdr(     PYMT_MESSAGE_ID)
+            .setBizMsgIdr(     PYMT_DOCUMENT_ID)
             .setMsgDefIdr(     MSGDEFIDR)
             .setBizSvc(        BIZSVC)
             .setCreDt(         currentTimestamp)
@@ -97,29 +102,29 @@ public final class TestRequestParamsFactory {
             .setNbOfTxs(       numberOfTransactions)
             .setCtrlSum(       paymentAmount)
             .setCcy(           CURRENCY)
-            .setNameInitParty( SENDER_NAME)
+            .setNameInitParty( RECEIVER_NAME)
             .setCatPurpCd(     CAT_PURPOSE_CD)
             .setReqdExctnDt(   currentDate)
             .setNameDebtor(    SENDER_NAME)
-            .setDbtrId(        SENDER_TAX_ID)
 
             // Choose one Account Number:
-            //.setDbtrAcctId(   BAC_ACCOUNT_ID)  // Das oder IBAN. Debtor Identifier: Unique ID for the debtor (payer), often a tax ID or customer number.
-            .setIbanDbtrAcct(  SENDER_IBAN)
+            .setDbtrAcctId(    BAC_ACCOUNT_ID)  // Das oder IBAN. Debtor Identifier: Unique ID for the debtor (payer), often a tax ID or customer number.
+            //.setIbanDbtrAcct(  SENDER_IBAN)
 
             .setBicOrBEI(      BIC_SISTEMAS_AEREOS)
-            .setBicDbtr(       BIC_SISTEMAS_AEREOS)
+            .setBicDbtr(       BIC_BAC_EL_SALVADOR)
             .setCountry(       COUNTRY)
             .setEndToEndId(    PYMT_DOCUMENT_ID)
             .setInstrPrty(     INSTRUCTION_PRIORITY)
             .setInstdAmt(      PAYMENT_AMOUNT)
-            .setBic(           BIC_BAC_EL_SALVADOR)
+            .setMmbId(         FININSTNID_MMBID)
             .setNameCreditor(  RECEIVER_NAME)
-            .setCdtrId(        RECEIVER_TAX_ID)
-            .setIbanCdtrAcct(  RECEIVER_IBAN)
-            .setCdtrAcctCd(    CRDTR_ACCT_CD)
-            .setPymtPurpose(   PAYMENT_PURPOSE)
-            .setRmtncInf(      RMNNC_INF);
+            .setCdtrId(        CODIGO_PROVEEDOR)
+            .setCdtrAcctId(    RECEIVER_ACCOUNT)
+            //.setCdtrAcctCd(    CRDTR_ACCT_CD)
+            //.setPymtPurpose(   PAYMENT_PURPOSE)
+            //.setRmtncInf(      RMNNC_INF)
+            .setRfrdDocInfNb(  PAYMENT_REFERENCE);
     }
 
     /**

@@ -5,6 +5,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.misc.AcctId;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CdtrAcct {
@@ -13,6 +14,7 @@ public class CdtrAcct {
     AcctId acctId;
 
     @JsonProperty("Tp")  // "Tp" is the name of the field in the JSON
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT) // Exclude if it has default values (e.g., all fields are null)
     CtgyPurp ctgyPurp;   // Type of account or type of purpose
 
     public CdtrAcct() {}
@@ -23,8 +25,12 @@ public class CdtrAcct {
      */
     public CdtrAcct(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
-            setAcctId(new AcctId(params, context, collector), collector);
-            setCtgyPurp(new CtgyPurp(params, EBankingConstants.CONTEXT_CDTRACCT, collector), collector);
+            setAcctId(new AcctId(params, EBankingConstants.CONTEXT_CDTRACCT, collector), collector);
+
+            // Only create and set CtgyPurp if the required parameter exists.
+            if (params.getCdtrAcctCd() != null && !params.getCdtrAcctCd().isEmpty()) {
+                setCtgyPurp(new CtgyPurp(params, EBankingConstants.CONTEXT_CDTRACCT, collector), collector);
+            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CDTRACCT_INIT, e);
         }

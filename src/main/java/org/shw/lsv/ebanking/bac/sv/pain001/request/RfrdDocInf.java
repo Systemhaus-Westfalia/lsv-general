@@ -12,7 +12,7 @@ public class RfrdDocInf {
 
         public RfrdDocInf(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setNb(params.getDbtrId(), collector);
+            setNb(params.getRfrdDocInfNb(), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_RFRDDOCINF_INIT, e);
         }

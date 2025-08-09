@@ -32,21 +32,25 @@ public class AcctId {
             if ( context.equals(EBankingConstants.CONTEXT_CDTRACCT)) {
                 if ( !(params.getIbanCdtrAcct() == null || params.getIbanCdtrAcct().isEmpty()) ) {
                     setIBAN(params.getIbanCdtrAcct(), collector);
+                } else if (( !(params.getCdtrAcctId() == null || params.getCdtrAcctId().isEmpty()) ) ) {
+                    setAcctIdOthr(new AcctIdOthr(params, EBankingConstants.CONTEXT_CDTRACCT, collector), collector);
                 }
             } else if ( context.equals(EBankingConstants.CONTEXT_DBTRACCT)) {
                 if (( !(params.getIbanDbtrAcct() == null || params.getIbanDbtrAcct().isEmpty()) ) ) {
                     setIBAN(params.getIbanDbtrAcct(), collector);
+                } else if (( !(params.getDbtrAcctId() == null || params.getDbtrAcctId().isEmpty()) ) ) {
+                    setAcctIdOthr(new AcctIdOthr(params, EBankingConstants.CONTEXT_DBTRACCT, collector), collector);
                 }
             } else if ( context.equals(EBankingConstants.CONTEXT_RPTGREQ)) {
                 if (( !(params.getIbanRptgReq() == null || params.getIbanRptgReq().isEmpty()) ) ) {
                     setIBAN(params.getIbanRptgReq(), collector);
                 } else if (( !(params.getAcctId() == null || params.getAcctId().isEmpty()) ) ) {
-                    setAcctIdOthr(new AcctIdOthr(params, collector), collector);
+                    setAcctIdOthr(new AcctIdOthr(params, EBankingConstants.CONTEXT_RPTGREQ, collector), collector);
                 }
             } else {
                 // Komme ich ueberhaupt hierhin??
                 // TODO: alle Tests durchgehen, ob es einen Fall gibt, wo ich hierhin komme
-                setAcctIdOthr(new AcctIdOthr(params, collector), collector);
+                setAcctIdOthr(new AcctIdOthr(params, null, collector), collector);
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_ACCTID_INIT, e);

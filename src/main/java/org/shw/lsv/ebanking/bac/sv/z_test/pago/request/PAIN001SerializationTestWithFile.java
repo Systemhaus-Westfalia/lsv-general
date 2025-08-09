@@ -50,7 +50,7 @@ public class PAIN001SerializationTestWithFile {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        RequestParams params = TestRequestParamsFactory.createPain001Params();
+        RequestParams params = TestRequestParamsFactory.createPain001Params_Domestico();
         
         try {
             // 3. Build request with test's collector
