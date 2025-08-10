@@ -5,6 +5,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.misc.Id;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Cdtr {
@@ -15,12 +16,23 @@ public class Cdtr {
     @JsonProperty("Id")
     Id id;
 
+    @JsonProperty("PstlAdr")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    PstlAdr pstlAdr;
+
     public Cdtr() {}
 
     public Cdtr(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
             setNm(params.getNameCreditor(), collector);
             setId(new Id(params, EBankingConstants.CONTEXT_CDTR, collector), collector);
+
+            // Only create and set PstlAdr if there is address information available.
+            if ((params.getCdtrCity()    != null && !params.getCdtrCity().isEmpty()) ||
+                (params.getCdtrCountry() != null && !params.getCdtrCountry().isEmpty()) ||
+                (params.getCdtrAddress() != null && !params.getCdtrAddress().isEmpty())) {
+                setPstlAdr(new PstlAdr(params, EBankingConstants.CONTEXT_CDTR, collector), collector);
+            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CDTR_INIT, e);
         }
@@ -92,6 +104,36 @@ public class Cdtr {
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             //throw e;
+        }
+    }
+
+    /**
+     * @return the PstlAdr object<br>
+     */
+    public PstlAdr getPstlAdr() {
+        return pstlAdr;
+    }
+
+    /**
+     * @param pstlAdr the PstlAdr to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setPstlAdr(PstlAdr pstlAdr) {
+        if (pstlAdr == null) {
+            throw new IllegalArgumentException("Wrong parameter 'pstlAdr' in setPstlAdr()");
+        }
+        this.pstlAdr = pstlAdr;
+    }
+
+    /**
+     * @param pstlAdr the PstlAdr to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setPstlAdr(PstlAdr pstlAdr, JsonValidationExceptionCollector collector) {
+        try {
+            setPstlAdr(pstlAdr);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 }

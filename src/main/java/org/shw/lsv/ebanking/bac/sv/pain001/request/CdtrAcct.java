@@ -5,17 +5,13 @@ import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.misc.AcctId;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CdtrAcct {
+    // TODO: ueberpruefen, ob nur "Id" als Property vorkommt, oder ob es noch andere gibt.
 
     @JsonProperty("Id")   // "Id" is the name of the field in the JSON
     AcctId acctId;
-
-    @JsonProperty("Tp")  // "Tp" is the name of the field in the JSON
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT) // Exclude if it has default values (e.g., all fields are null)
-    CtgyPurp ctgyPurp;   // Type of account or type of purpose
 
     public CdtrAcct() {}
 
@@ -26,11 +22,6 @@ public class CdtrAcct {
     public CdtrAcct(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
             setAcctId(new AcctId(params, EBankingConstants.CONTEXT_CDTRACCT, collector), collector);
-
-            // Only create and set CtgyPurp if the required parameter exists.
-            if (params.getCdtrAcctCd() != null && !params.getCdtrAcctCd().isEmpty()) {
-                setCtgyPurp(new CtgyPurp(params, EBankingConstants.CONTEXT_CDTRACCT, collector), collector);
-            }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CDTRACCT_INIT, e);
         }
@@ -61,36 +52,6 @@ public class CdtrAcct {
     public void setAcctId(AcctId acctId, JsonValidationExceptionCollector collector) {
         try {
             setAcctId(acctId);
-        } catch (IllegalArgumentException e) {
-            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
-        }
-    }
-
-    /**
-     * @return the CtgyPurp object<br>
-     */
-    public CtgyPurp getCtgyPurp() {
-        return ctgyPurp;
-    }
-
-    /**
-     * @param ctgyPurp the CtgyPurp to be set<br>
-     * The parameter is validated: null not allowed.<br>
-     */
-    public void setCtgyPurp(CtgyPurp ctgyPurp) {
-        if (ctgyPurp == null) {
-            throw new IllegalArgumentException("Wrong parameter 'ctgyPurp' in setCtgyPurp()");
-        }
-        this.ctgyPurp = ctgyPurp;
-    }
-
-    /**
-     * @param ctgyPurp the CtgyPurp to be set<br>
-     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
-     */
-    public void setCtgyPurp(CtgyPurp ctgyPurp, JsonValidationExceptionCollector collector) {
-        try {
-            setCtgyPurp(ctgyPurp);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }

@@ -32,10 +32,10 @@ public class FinInstnIdDbtr {
      * @param params    Request parameters containing necessary data.
      * @param collector Collector for validation exceptions.
      */
-    public FinInstnIdDbtr(RequestParams params, JsonValidationExceptionCollector collector) {
+    public FinInstnIdDbtr(RequestParams params, String context, JsonValidationExceptionCollector collector) {
         try {
             setBIC(params.getBicDbtr(), collector);
-            setPstlAdr ( new PstlAdr( params, collector), collector);
+            setPstlAdr ( new PstlAdr( params, context, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_PMTTPINF_INIT, e);
         }

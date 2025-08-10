@@ -25,7 +25,7 @@ public class PAIN001SerializationTestWithoutFile {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        RequestParams params = TestRequestParamsFactory.createPain001Params_Domestico();
+        RequestParams params = TestRequestParamsFactory.createPain001Params_International();
         
         try {
             // 3. Build request with test's collector
@@ -138,7 +138,7 @@ public class PAIN001SerializationTestWithoutFile {
 
             .setBicOrBEI(     BIC_SISTEMAS_AEREOS)                 // Identifier for the initiating party, which can be a BIC (Bank Identifier Code) or BEI (Business Entity Identifier).
             .setBicDbtr(      BIC_SISTEMAS_AEREOS)
-            .setCountry(      COUNTRY)
+            .setDbtrAgtCountry(      COUNTRY)
 
             // Payment Element
             .setEndToEndId(   PYMT_DOCUMENT_ID)                        // Damit es nur eine einzige ID gibt im Payment (also hier) und im Payment Consult Request.

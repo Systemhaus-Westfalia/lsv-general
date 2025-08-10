@@ -22,7 +22,7 @@ public class DbtrAgt {
      */
     public DbtrAgt(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setFinInstnIdDbtr ( new FinInstnIdDbtr( params, collector), collector);
+            setFinInstnIdDbtr ( new FinInstnIdDbtr( params, EBankingConstants.CONTEXT_DBTRAGT, collector), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_DBTRAGT_INIT, e);
         }

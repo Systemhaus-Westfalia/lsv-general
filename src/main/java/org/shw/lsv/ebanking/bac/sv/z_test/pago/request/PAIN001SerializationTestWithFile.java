@@ -172,7 +172,7 @@ public class PAIN001SerializationTestWithFile {
 
             .setBicOrBEI(     BIC_SISTEMAS_AEREOS)                 // Identifier for the initiating party, which can be a BIC (Bank Identifier Code) or BEI (Business Entity Identifier).
             .setBicDbtr(      BIC_SISTEMAS_AEREOS)
-            .setCountry(      COUNTRY)
+            .setDbtrAgtCountry(      COUNTRY)
 
             // Payment Element
             .setEndToEndId(   PYMT_DOCUMENT_ID)                        // Damit es nur eine einzige ID gibt im Payment (also hier) und im Payment Consult Request.

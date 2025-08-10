@@ -30,6 +30,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
     @JsonProperty("RmtInf")
     RmtInf rmtInf;  // Remittance Information
 
+    @JsonProperty("Tp")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    Tp tp;
+
     @JsonProperty("Purp")
     @JsonInclude(JsonInclude.Include.NON_NULL)  // Include Purp only if it is not null
     Purp purp;  // Purpose of the payment (optional, but often included for regulatory or informational purposes)
@@ -46,12 +50,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
             setCdtrAcct(        new CdtrAcct(        params, EBankingConstants.CONTEXT_CDTRACCT, collector), collector);
             setRmtInf(          new RmtInf(          params, collector), collector);
 
+            if (params.getTpCd() != null && !params.getTpCd().isEmpty()) {
+                setTp(new Tp(params, collector), collector);
+            }
+
             if ( !(params.getPymtPurpose() == null || params.getPymtPurpose ().isEmpty()) ) {
                 setPurp( new Purp(params, collector), collector);
             }
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_PAYMENT_ELEMENT_INIT, e);
         }
+
+        /*System.out.println("Purp before serialization: " + this.getPurp());
+        if (this.getPurp() != null)
+            System.out.println("Prtry: " + this.getPurp().getPrtry()); */
+
     }
 
 
@@ -320,6 +333,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
     public void setPurp(Purp purp, JsonValidationExceptionCollector collector) {
         try {
             setPurp(purp);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+            // throw e;
+        }
+    }
+
+    /**
+     * @return the Tp object<br>
+     */
+    public Tp getTp() {
+        return tp;
+    }
+
+    /**
+     * @param tp the Tp to be set<br>
+     * The parameter is validated: null not allowed.<br>
+     */
+    public void setTp(Tp tp) {
+        if (tp == null) {
+            throw new IllegalArgumentException("Wrong parameter 'tp' in setTp()");
+        }
+        this.tp = tp;
+    }
+
+    /**
+     * @param tp the Tp to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setTp(Tp tp, JsonValidationExceptionCollector collector) {
+        try {
+            setTp(tp);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
             // throw e;

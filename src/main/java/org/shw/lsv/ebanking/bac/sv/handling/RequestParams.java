@@ -50,7 +50,12 @@ public class RequestParams {
     private String     cdtrAcctCd; // Category Purpose Code
     private String     bic;        // BIC  (Business Identifier Code)
     private String     bicDbtr;    // Debtor BIC  (Business Identifier Code)
-    private String     country;    // Country code, e.g. "DE" for Germany
+    private String     dbtrAgtCountry;    // Country code, e.g. "DE" for Germany
+    private String     dbtrAgtCity;
+    private String     dbtrAgtAddress;
+    private String     cdtrCountry;    // Country code, e.g. "SV" for El Salvador
+    private String     cdtrCity;
+    private String     cdtrAddress;
 
     private String     endToEndId; // End-to-End Identification
     private String     instrPrty;  // Instruction Priority, e.g. "NORM" for Normal
@@ -74,74 +79,81 @@ public class RequestParams {
     private Integer    stmtElemCount;
     private String     ntryDtlsAmt;
     private String     rfrdDocInfNb;
+    private String     tpCd;
+    
 
-    public String     getBicfiFr()       { return bicfiFr;       }
-    public String     getBicfiTo()       { return bicfiTo;       }
-    public String     getBicfiAcctOwnr() { return bicfiAcctOwnr; }
-    public String     getBizMsgIdr()     { return bizMsgIdr;     }
-    public String     getCreDt()         { return creDt;         }
-    public String     getCurrency()      { return currency;      }
-    public String     getMsgDefIdr()     { return msgDefIdr;     }
-    public String     getBizSvc()        { return bizSvc;        }
-    public String     getAnyBIC()        { return anyBIC;        }
-    public String     getFrOthrId()      { return frOthrId;      }
-    public String     getToOthrId()      { return toOthrId;      }
-    public String     getPrtry()         { return prtry;         }
-    public String     getMsgId()         { return msgId;         }
-    public String     getCreDtTm()       { return creDtTm;       }
-    public String     getReqdMsgNmId()   { return reqdMsgNmId;   }
-    public String     getCcy()           { return ccy;           }
-    public String     getIbanDbtrAcct()  { return ibanDbtrAcct;  }
-    public String     getIbanCdtrAcct()  { return ibanCdtrAcct;  }
-    public String     getIbanRptgReq()   { return ibanRptgReq;   }
-    public String     getAcctId()        { return acctId;        }
-    public String     getTp()            { return tp;            }
-    public String     getFrdt()          { return frdt;          }
-    public String     getTodt()          { return todt;          }
-    public String     getEqseq()         { return eqseq;         }
-    public String     getPmtMtd()        { return pmtMtd;        }
-    public Integer    getNbOfTxs()       { return nbOfTxs;       }
-    public BigDecimal getCtrlSum()       { return ctrlSum;       }
-    public String     getNameInitParty() { return nameInitParty; }
-    public String     getNameDebtor()    { return nameDebtor;    }
-    public String     getNameCreditor()  { return nameCreditor;  }
-    public String     getBicOrBEI()      { return bicOrBEI;      }
-    public String     getReqdExctnDt()   { return reqdExctnDt;   }
-    public String     getDbtrAcctId()    { return dbtrAcctId;    }
-    public String     getCatPurpCd()     { return catPurpCd;     }
-    public String     getBic()           { return bic;           }
-    public String     getBicDbtr()       { return bicDbtr;       }
-    public String     getCountry()       { return country;       }
-    public String     getEndToEndId()    { return endToEndId;    }
-    public String     getInstrPrty()     { return instrPrty;     }
-    public String     getInstdAmt()      { return instdAmt;      }
-    public String     getMmbId()         { return mmbId;         }
-    public String     getDbtrId()        { return dbtrId;        }
-    public String     getAcctOwntPtyId() { return acctOwntPtyId; }
-    public String     getCdtrId()        { return cdtrId;        }
-    public String     getCdtrAcctId()    { return cdtrAcctId;    }
-    public String     getCdtrAcctCd()    { return cdtrAcctCd;    }
-    public String     getPymtPurpose()   { return pymtPurpose;   }
-    public String     getRmtncInf()      { return rmtncInf;      }
-    public String     getEvtCd()         { return evtCd;         }
-    public String     getEvtDesc()       { return evtDesc;       }
-    public String     getEvtTm()         { return evtTm;         }
-    public String     getXmlns()         { return xmlns;         }
-    public String     getPmtInfId()      { return pmtInfId;      }
-    public String     getRsn()           { return rsn;           }
-    public String     getNtryRef()       { return ntryRef;       }
-    public String     getCdtDbtInd()     { return cdtDbtInd;     }
-    public String     getAddtlNtryInf()  { return addtlNtryInf;  }
-    public String     getBookgDt()       { return bookgDt;       }
-    public String     getValDt()         { return valDt;         }
-    public String     getBalanceAmt()    { return balanceAmt;    }
-    public String     getStmtOfAcctAmt() { return stmtOfAcctAmt; }
-    public String     getSubFmlyCd()     { return subFmlyCd;     }
-    public Integer    getBalCount()      { return balCount;      }
-    public Integer    getStmtElemCount() { return stmtElemCount; }
-    public String     getNtryDtlsAmt()   { return ntryDtlsAmt;   }
-    public String     getRfrdDocInfNb()  { return rfrdDocInfNb;  }
-
+    public String     getBicfiFr()         { return bicfiFr;        }
+    public String     getBicfiTo()         { return bicfiTo;        }
+    public String     getBicfiAcctOwnr()   { return bicfiAcctOwnr;  }
+    public String     getBizMsgIdr()       { return bizMsgIdr;      }
+    public String     getCreDt()           { return creDt;          }
+    public String     getCurrency()        { return currency;       }
+    public String     getMsgDefIdr()       { return msgDefIdr;      }
+    public String     getBizSvc()          { return bizSvc;         }
+    public String     getAnyBIC()          { return anyBIC;         }
+    public String     getFrOthrId()        { return frOthrId;       }
+    public String     getToOthrId()        { return toOthrId;       }
+    public String     getPrtry()           { return prtry;          }
+    public String     getMsgId()           { return msgId;          }
+    public String     getCreDtTm()         { return creDtTm;        }
+    public String     getReqdMsgNmId()     { return reqdMsgNmId;    }
+    public String     getCcy()             { return ccy;            }
+    public String     getIbanDbtrAcct()    { return ibanDbtrAcct;   }
+    public String     getIbanCdtrAcct()    { return ibanCdtrAcct;   }
+    public String     getIbanRptgReq()     { return ibanRptgReq;    }
+    public String     getAcctId()          { return acctId;         }
+    public String     getTp()              { return tp;             }
+    public String     getFrdt()            { return frdt;           }
+    public String     getTodt()            { return todt;           }
+    public String     getEqseq()           { return eqseq;          }
+    public String     getPmtMtd()          { return pmtMtd;         }
+    public Integer    getNbOfTxs()         { return nbOfTxs;        }
+    public BigDecimal getCtrlSum()         { return ctrlSum;        }
+    public String     getNameInitParty()   { return nameInitParty;  }
+    public String     getNameDebtor()      { return nameDebtor;     }
+    public String     getNameCreditor()    { return nameCreditor;   }
+    public String     getBicOrBEI()        { return bicOrBEI;       }
+    public String     getReqdExctnDt()     { return reqdExctnDt;    }
+    public String     getDbtrAcctId()      { return dbtrAcctId;     }
+    public String     getCatPurpCd()       { return catPurpCd;      }
+    public String     getBic()             { return bic;            }
+    public String     getBicDbtr()         { return bicDbtr;        }
+    public String     getEndToEndId()      { return endToEndId;     }
+    public String     getInstrPrty()       { return instrPrty;      }
+    public String     getInstdAmt()        { return instdAmt;       }
+    public String     getMmbId()           { return mmbId;          }
+    public String     getDbtrId()          { return dbtrId;         }
+    public String     getAcctOwntPtyId()   { return acctOwntPtyId;  }
+    public String     getCdtrId()          { return cdtrId;         }
+    public String     getCdtrAcctId()      { return cdtrAcctId;     }
+    public String     getCdtrAcctCd()      { return cdtrAcctCd;     }
+    public String     getPymtPurpose()     { return pymtPurpose;    }
+    public String     getRmtncInf()        { return rmtncInf;       }
+    public String     getEvtCd()           { return evtCd;          }
+    public String     getEvtDesc()         { return evtDesc;        }
+    public String     getEvtTm()           { return evtTm;          }
+    public String     getXmlns()           { return xmlns;          }
+    public String     getPmtInfId()        { return pmtInfId;       }
+    public String     getRsn()             { return rsn;            }
+    public String     getNtryRef()         { return ntryRef;        }
+    public String     getCdtDbtInd()       { return cdtDbtInd;      }
+    public String     getAddtlNtryInf()    { return addtlNtryInf;   }
+    public String     getBookgDt()         { return bookgDt;        }
+    public String     getValDt()           { return valDt;          }
+    public String     getBalanceAmt()      { return balanceAmt;     }
+    public String     getStmtOfAcctAmt()   { return stmtOfAcctAmt;  }
+    public String     getSubFmlyCd()       { return subFmlyCd;      }
+    public Integer    getBalCount()        { return balCount;       }
+    public Integer    getStmtElemCount()   { return stmtElemCount;  }
+    public String     getNtryDtlsAmt()     { return ntryDtlsAmt;    }
+    public String     getRfrdDocInfNb()    { return rfrdDocInfNb;   }
+    public String     getDbtrAgtCountry()  { return dbtrAgtCountry; }
+    public String     getDbtrAgtCity()     { return dbtrAgtCity;    }
+    public String     getDbtrAgtAddress()  { return dbtrAgtAddress; }
+    public String     getCdtrCountry()     { return cdtrCountry;    }
+    public String     getCdtrCity()        { return cdtrCity;       }
+    public String     getCdtrAddress()     { return cdtrAddress;    }
+    public String     getTpCd()            { return tpCd;           }
 
     public RequestParams setBicfiFr(String bicfi) {
         this.bicfiFr = bicfi;
@@ -294,8 +306,8 @@ public class RequestParams {
         return this;
     }
 
-    public RequestParams setCountry(String country) {
-        this.country = country;
+    public RequestParams setDbtrAgtCountry(String country) {
+        this.dbtrAgtCountry = country;
         return this;
     }
 
@@ -471,4 +483,35 @@ public class RequestParams {
         this.rfrdDocInfNb = rfrdDocInfNb;
         return this;
     }
+
+    public RequestParams setDbtrAgtCity(String city) {
+        this.dbtrAgtCity = city;
+        return this;
+    }
+
+    public RequestParams setDbtrAgtAddress(String addressLine) {
+        this.dbtrAgtAddress = addressLine;
+        return this;
+    }
+
+    public RequestParams setCdtrCountry(String cdtrCountry) {
+        this.cdtrCountry = cdtrCountry;
+        return this;
+    }
+
+    public RequestParams setCdtrCity(String cdtrCity) {
+        this.cdtrCity = cdtrCity;
+        return this;
+    }
+
+    public RequestParams setCdtrAddress(String cdtrAddress) {
+        this.cdtrAddress = cdtrAddress;
+        return this;
+    }
+
+    public RequestParams setTpCd(String tpCd) {
+        this.tpCd = tpCd;
+        return this;
+    }
+
 }
