@@ -13,7 +13,7 @@ public class ClrSysMmbId {
 
         public ClrSysMmbId(RequestParams params, JsonValidationExceptionCollector collector) {
         try {
-            setMmbId(params.getMmbId(), collector);
+            setMmbId(params.getCdtrAgtMmmb(), collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_CLRSYSMMBID_INIT, e);
         }

@@ -25,7 +25,7 @@ public class PAIN001SerializationTestWithoutFile {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        RequestParams params = TestRequestParamsFactory.createPain001Params_International();
+        RequestParams params = TestRequestParamsFactory.createPain001Params_BAC_to_BAC();
         
         try {
             // 3. Build request with test's collector

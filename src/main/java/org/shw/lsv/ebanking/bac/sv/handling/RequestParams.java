@@ -60,7 +60,7 @@ public class RequestParams {
     private String     endToEndId; // End-to-End Identification
     private String     instrPrty;  // Instruction Priority, e.g. "NORM" for Normal
     private String     instdAmt;   // Amount to be transferred in a single payment transaction
-    private String     mmbId;
+    private String     cdtrAgtMmmb;
     private String     rmtncInf;
     private String     evtCd;
     private String     evtDesc;
@@ -121,7 +121,7 @@ public class RequestParams {
     public String     getEndToEndId()      { return endToEndId;     }
     public String     getInstrPrty()       { return instrPrty;      }
     public String     getInstdAmt()        { return instdAmt;       }
-    public String     getMmbId()           { return mmbId;          }
+    public String     getCdtrAgtMmmb()     { return cdtrAgtMmmb;    }
     public String     getDbtrId()          { return dbtrId;         }
     public String     getAcctOwntPtyId()   { return acctOwntPtyId;  }
     public String     getCdtrId()          { return cdtrId;         }
@@ -331,8 +331,8 @@ public class RequestParams {
         return this;
     }
 
-    public RequestParams setMmbId(String mmbId) {
-        this.mmbId = mmbId;
+    public RequestParams setCdtrAgtMmmb(String mmbId) {
+        this.cdtrAgtMmmb = mmbId;
         return this;
     }
 

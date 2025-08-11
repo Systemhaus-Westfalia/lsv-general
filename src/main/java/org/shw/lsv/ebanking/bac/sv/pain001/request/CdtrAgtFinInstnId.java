@@ -17,11 +17,12 @@ public class CdtrAgtFinInstnId {
     @JsonInclude(JsonInclude.Include.NON_NULL) // Include only if not null
     ClrSysMmbId clrSysMmbId;
 
-       public CdtrAgtFinInstnId(RequestParams params, JsonValidationExceptionCollector collector) {
+    public CdtrAgtFinInstnId(RequestParams params, JsonValidationExceptionCollector collector) {
+    // TODO: So wie es jetzt programmiert ist, kann im besten Falle, nur eine Property instanziiert werden. Nachpruefen, ob das stimmt.
         try {
             if ( !(params.getBic() == null || params.getBic().isEmpty()) ) {
                 setBIC(params.getBic(), collector);
-            } else {
+            } else if ( !(params.getCdtrAgtMmmb() == null || params.getCdtrAgtMmmb().isEmpty()) )  {
                 setClrSysMmbId(new ClrSysMmbId(params, collector), collector);
             }
         } catch (Exception e) {

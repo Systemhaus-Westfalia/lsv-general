@@ -117,7 +117,7 @@ public final class TestRequestParamsFactory {
             .setEndToEndId(    PYMT_DOCUMENT_ID)
             .setInstrPrty(     INSTRUCTION_PRIORITY)
             .setInstdAmt(      PAYMENT_AMOUNT)
-            .setMmbId(         FININSTNID_MMBID)
+            .setCdtrAgtMmmb(   FININSTNID_MMBID)
             .setNameCreditor(  RECEIVER_NAME)
             .setCdtrId(        CODIGO_PROVEEDOR)
             .setCdtrAcctId(    RECEIVER_ACCOUNT)
@@ -154,7 +154,7 @@ public final class TestRequestParamsFactory {
         String CDTR_ADDRESS          = "100 sur Mall Galeria";
         String PAYMENT_REFERENCE     = "06140904181038";  // Max 35 Zeichen
         String PAYMENT_PURPOSE       = "26.3"; // APLICA PARA EL SALVADOR ÚNICAMENTE. Código propietario, listado de códigos definidos localmente para el concepto de transferencia solicitado por el banco central de El Salvador
-        String TYPE_CODE             = "SVGS"; // Este campo NO es necesario para Costa Rica. Especifica la naturaleza o el uso de la cuenta, los valores esperados son: 
+        String TYPE_CODE             = "SVGS"; // Este campo NO es necesario para Costa Rica. Especifica la naturaleza o el uso de la cuenta, los valores esperados son:
                                                // SVGS: Cuenta de ahorros, CASH: Cuenta Corriente, LOAN: Cuenta para préstamos y tarjetas
         String currentTimestamp      = TestDateUtils.getCurrentApiTimestamp();
         String currentDate           = TestDateUtils.getTodayDate();
@@ -205,6 +205,70 @@ public final class TestRequestParamsFactory {
             .setTpCd(          TYPE_CODE)
             //.setCdtrAcctCd(    CRDTR_ACCT_CD)
             //.setRmtncInf(      RMNNC_INF)
+            .setRfrdDocInfNb(  PAYMENT_REFERENCE);
+    }
+
+    /**
+     * Creates RequestParams for a PAIN.001 (Payment Initiation) international account request.
+     * @return A fully configured RequestParams object for a PAIN.001 test.
+     */
+    public static RequestParams createPain001Params_BAC_to_BAC() {
+        String BIC_SISTEMAS_AEREOS   = "AMERICA3PLX";
+        String BIC_BAC_EL_SALVADOR   = "BAMCSVSS";
+        String PYMT_DOCUMENT_ID      = "PYMT-BAC-TO-BAC-" + TestDateUtils.getTodayDate() + "-" + // Generate a unique ID for testing purposes by appending a random 5-digit number.
+                                        java.util.concurrent.ThreadLocalRandom.current().nextInt(10000, 100000);
+        String MSGDEFIDR             = "PaymentInitiationServiceV03";
+        String BIZSVC                = "swift.cbprplus.01";
+        String CURRENCY              = "USD";
+        String CDTR_AGT_MEMBER       = "025";  // Código local de banco destino (Indica si es una transferencia hacia una cuenta BAC o a otro banco (ACH/SINPE)), los valores esperados para ambiente de pruebas son:
+                                               // ACH/SINPE (Panamá: 1588, Costa Rica: 151, Nicaragua: 001, Honduras: 001, El Salvador: 001, Guatemala: 101) (Este es solo un ejemplo, solicitar a su ejecutivo la lista completa de códigos de banco ACH, de ser necesario)
+                                               // ENTRE CUENTAS BAC (Panamá: 1384, Costa Rica: 102, Nicaragua: 007, Honduras: 024, El Salvador: 025, Guatemala: 042)
+        String BAC_ACCOUNT_ID        = "200268472"; // Bank Account ID
+        String PAYMENT_METHOD        = "TRF";
+        String SENDER_NAME           = "Sistemas Aereos";
+        String RECEIVER_NAME         = "Nombre del proveedor";
+        String CODIGO_PROVEEDOR      = "Codigo del Proveedor";
+        String INSTRUCTION_PRIORITY  = "NORM";
+        String RECEIVER_ACCOUNT      = "999888777";
+        String DBTR_AGT_COUNTRY       = "SV";
+        String CAT_PURPOSE_CD        = "SUPP";
+        String PAYMENT_REFERENCE     = "06140904181038";  // Max 35 Zeichen
+        String currentTimestamp      = TestDateUtils.getCurrentApiTimestamp();
+        String currentDate           = TestDateUtils.getTodayDate();
+        Integer numberOfTransactions = 1;
+
+        String PAYMENT_AMOUNT        = "7.39";
+        BigDecimal paymentAmount     = new BigDecimal(PAYMENT_AMOUNT);
+
+        return new RequestParams()
+            .setBicfiFr(       BIC_SISTEMAS_AEREOS)
+            .setBicfiTo(       BIC_BAC_EL_SALVADOR)
+            .setBizMsgIdr(     PYMT_DOCUMENT_ID)
+            .setMsgDefIdr(     MSGDEFIDR)
+            .setBizSvc(        BIZSVC)
+            .setCreDt(         currentTimestamp)
+            .setMsgId(         PYMT_DOCUMENT_ID)
+            .setCreDtTm(       currentTimestamp)
+            .setPmtMtd(        PAYMENT_METHOD)
+            .setPmtInfId(      PYMT_DOCUMENT_ID)
+            .setNbOfTxs(       numberOfTransactions)
+            .setCtrlSum(       paymentAmount)
+            .setCcy(           CURRENCY)
+            .setNameInitParty( SENDER_NAME)
+            .setCatPurpCd(     CAT_PURPOSE_CD)
+            .setReqdExctnDt(   currentDate)
+            .setNameDebtor(    SENDER_NAME)
+            .setDbtrAcctId(    BAC_ACCOUNT_ID)
+            .setBicOrBEI(      BIC_SISTEMAS_AEREOS)
+            .setBicDbtr(       BIC_BAC_EL_SALVADOR)
+            .setDbtrAgtCountry(DBTR_AGT_COUNTRY)
+            .setEndToEndId(    PYMT_DOCUMENT_ID)
+            .setInstrPrty(     INSTRUCTION_PRIORITY)
+            .setInstdAmt(      PAYMENT_AMOUNT)
+            .setCdtrAgtMmmb(   CDTR_AGT_MEMBER)
+            .setNameCreditor(  RECEIVER_NAME)
+            .setCdtrId(        CODIGO_PROVEEDOR)
+            .setCdtrAcctId(    RECEIVER_ACCOUNT)
             .setRfrdDocInfNb(  PAYMENT_REFERENCE);
     }
 
