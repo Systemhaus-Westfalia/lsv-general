@@ -279,7 +279,7 @@ public final class TestRequestParamsFactory {
     public static RequestParams createTmst038StatusReportParams() {
         String BIC_SISTEMAS_AEREOS = "AMERICA3PLX";
         String BIC_BAC_EL_SALVADOR = "BAMCSVSS";
-        String PYMT_MESSAGE_ID     = "ConsPago-ADClientName/(CuentaNr)";
+        String PYMT_MESSAGE_ID     = "PYMT-DOMESTICO-2025-08-09-43904";
         String MSGDEFIDR           = "TSMT.038.001.03";
         String BIZSVC              = "swift.cbprplus.01";
         String XMLNS               = "urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03";
@@ -295,7 +295,7 @@ public final class TestRequestParamsFactory {
             .setBizSvc(    BIZSVC)
             .setCreDt(     currentTimestamp)
             .setXmlns(     XMLNS)
-            .setMsgId(     PYMT_DOCUMENT_ID)
+            .setMsgId(     PYMT_MESSAGE_ID)
             .setCreDtTm(   currentTimestamp)
             .setBic(       BIC_SISTEMAS_AEREOS);
     }
@@ -308,23 +308,23 @@ public final class TestRequestParamsFactory {
     public static RequestParams createTmst038SysEvtNtfnParams() {
         String BIC_SISTEMAS_AEREOS = "AMERICA3PLX";
         String BIC_BAC_EL_SALVADOR = "BAMCSVSS";
-        String PYMT_MESSAGE_ID     = "SysEvt-ADClientName/(CuentaNr)";
-        String MSGDEFIDR           = "ADMIN.004.001.02";
-        String BIZSVC              = "swift.cbprplus.02";
+        String PYMT_MESSAGE_ID     = "PYMT-DOMESTICO-2025-08-09-43904";
+        String MSGDEFIDR           = "TSMT.038.001.03";
+        String BIZSVC              = "swift.cbprplus.01";
         String EVT_CD              = "RCVD";
         String EVT_DESC            = "Solicitud recibida. Su pago se esta procesando o se procesara en la fecha indicada en el mensaje. Consulte mas tarde.";
         String currentTimestamp    = TestDateUtils.getCurrentApiTimestamp();
 
         return new RequestParams()
-            .setBicfiFr(BIC_BAC_EL_SALVADOR)
-            .setBicfiTo(BIC_SISTEMAS_AEREOS)
-            .setBizMsgIdr(PYMT_MESSAGE_ID)
-            .setMsgDefIdr(MSGDEFIDR)
-            .setBizSvc(BIZSVC)
-            .setCreDt(currentTimestamp)
-            .setEvtCd(EVT_CD)
-            .setEvtDesc(EVT_DESC)
-            .setEvtTm(currentTimestamp);
+            .setBicfiFr(   BIC_SISTEMAS_AEREOS)
+            .setBicfiTo(   BIC_BAC_EL_SALVADOR)
+            .setBizMsgIdr( PYMT_MESSAGE_ID)
+            .setMsgDefIdr( MSGDEFIDR)
+            .setBizSvc(    BIZSVC)
+            .setCreDt(     currentTimestamp)
+            .setEvtCd(     EVT_CD)
+            .setEvtDesc(   EVT_DESC)
+            .setEvtTm(     currentTimestamp);
     }
 
     /**
