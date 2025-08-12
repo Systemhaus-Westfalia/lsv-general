@@ -1,8 +1,10 @@
 package org.shw.lsv.ebanking.bac.sv.tmst038.request;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnEnvelope;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnFile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,8 +19,8 @@ public class TMST038RequestEvtNtfn implements Validatable {
 
     public TMST038RequestEvtNtfn() {}
 
-    public TMST038RequestEvtNtfn(PAIN001ResponseEvtNtfnFile pain001ResponseEvtNtfnFile) {
-        setPain001ResponseEvtNtfnFile(pain001ResponseEvtNtfnFile);
+    public TMST038RequestEvtNtfn(RequestParams params, JsonValidationExceptionCollector collector) {
+        setPain001ResponseEvtNtfnFile(new PAIN001ResponseEvtNtfnFile(new PAIN001ResponseEvtNtfnEnvelope(params, collector)), collector);
     }
 
     public PAIN001ResponseEvtNtfnFile getPain001ResponseEvtNtfnFile() {

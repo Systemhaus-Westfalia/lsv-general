@@ -5,28 +5,28 @@
                 "Fr": {
                     "FIId": {
                         "FinInstnId": {
-                            "BICFI": "BMILHNTE"
+                            "BICFI": "BAMCSVSS"
                         }
                     }
                 },
                 "To": {
                     "FIId": {
                         "FinInstnId": {
-                            "BICFI": "DUMMYMASTER"
+                            "BICFI": "AMERICA3PLX"
                         }
                     }
                 },
                 "BizMsgIdr": "8034",
                 "MsgDefIdr": "ADMIN.004.001.02",
                 "BizSvc": "swift.cbprplus.02",
-                "CreDt": "2024-07-23T12:47:32-06:00"
+                "CreDt": "2025-08-10T14:33:11-06:00"
             },
             "Document": {
                 "SysEvtNtfctn": {
                     "EvtInf": {
                         "EvtCd": "RCVD",
-                        "EvtDesc": "Solicitud recibida. Su pago se esta procesando o se procesara en la fecha indicada en el mensaje. Consulte mas tarde.",
-                        "EvtTm": "2024-07-23T12:47:32-06:00"
+                        "EvtDesc": "Solicitud recibida. Su pago se esta procesando o se procesara en la       fecha indicada en el mensaje. Consulte mas tarde.",
+                        "EvtTm": "2025-08-10T14:33:11-06:00"
                     }
                 }
             }

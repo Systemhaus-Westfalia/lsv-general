@@ -1,6 +1,7 @@
 package org.shw.lsv.ebanking.bac.sv.pain001.response;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,6 +12,10 @@ public class PAIN001ResponseEvtNtfnDocument {
     SysEvtNtfctn sysEvtNtfctn;  // System Event Notification.
 
     public PAIN001ResponseEvtNtfnDocument() { }
+
+    public PAIN001ResponseEvtNtfnDocument(RequestParams params, JsonValidationExceptionCollector collector) {
+        setSysEvtNtfctn(new SysEvtNtfctn(params, collector), collector);}
+
 
     /**
     * @return the SysEvtNtfctn object<br>

@@ -1,6 +1,7 @@
 package org.shw.lsv.ebanking.bac.sv.pain001.response;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.AppHdr;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
@@ -15,6 +16,15 @@ public class PAIN001ResponseEvtNtfnEnvelope {
     PAIN001ResponseEvtNtfnDocument pAIN001ResponseEvtNtfnDocument;
 
     public PAIN001ResponseEvtNtfnEnvelope() {}
+
+    public PAIN001ResponseEvtNtfnEnvelope(RequestParams params, JsonValidationExceptionCollector collector) {
+        try {
+            setAppHdr(new AppHdr(params, collector), collector);
+            setpAIN001ResponseEvtNtfnDocument(new PAIN001ResponseEvtNtfnDocument(params, collector), collector);
+        } catch (Exception e) {
+            collector.addError(EBankingConstants.ERROR_REQUEST_ENVELOP_INIT, e);
+        }
+    }
 
     public AppHdr getAppHdr() {
         return appHdr;
