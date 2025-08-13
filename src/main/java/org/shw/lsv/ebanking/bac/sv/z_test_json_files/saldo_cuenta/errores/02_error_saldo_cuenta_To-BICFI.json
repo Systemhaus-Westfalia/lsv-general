@@ -1,0 +1,14 @@
+{
+    "File": {
+        "Envelope": {
+            "Document": {
+                "admi.002.001.01": {
+                    "Rsn": {
+                        "RjctgPtyRsn": "-3",
+                        "RsnDesc": "Queue not configured for the country: "
+                    }
+                }
+            }
+        }
+    }
+}

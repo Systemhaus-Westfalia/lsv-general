@@ -1,8 +1,8 @@
-CAMT052DeSerializationTestWithFiles started at: 2025-08-13 12:49:00
+CAMT052DeSerializationTestWithFiles started at: 2025-08-07 08:56:22
 Reading from file: /data2/entwicklung/shw_repositories_2024/lsv-general/src/main/java/org/shw/lsv/ebanking/bac/sv/z_test_json_files/saldo_cuenta/response/CAMT052DeSerializationTestWithFiles_INPUT_FILE.json
 Starting CAMT052 deserialization test...
 CAMT052 Deserialization completed cleanly
-CAMT052 Deserialization finished at: 2025-08-13 12:49:00
+CAMT052 Deserialization finished at: 2025-08-07 08:56:23
 --- Begin of Response Summary ---
 CAMT052 Envelope present: true
 CAMT052 Document present: true

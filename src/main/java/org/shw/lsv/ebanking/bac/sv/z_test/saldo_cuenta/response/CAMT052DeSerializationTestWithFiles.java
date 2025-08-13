@@ -10,13 +10,11 @@ import java.time.LocalDateTime;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052Response;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseDocument;
 import org.shw.lsv.ebanking.bac.sv.camt052.response.CAMT052ResponseEnvelope;
+import org.shw.lsv.ebanking.bac.sv.camt052.response.Rejection;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CAMT052DeSerializationTestWithFiles {
     private static final String CLASS_NAME = CAMT052DeSerializationTestWithFiles.class.getSimpleName();
@@ -73,38 +71,34 @@ public class CAMT052DeSerializationTestWithFiles {
             now = LocalDateTime.now();
             log.append("\nCAMT052 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
-            // 5. Use the deserialized object and write summary to file
-            log.append("\n--- Begin of Response Summary ---");
-            collectResponseSummary(response, log);
-            log.append("\n--- End of Response Summary ---\n");
+            // 5. Check for success or rejection and collect the appropriate summary
+            CAMT052ResponseDocument document = response.getcAMT052ResponseFile().getcAMT052ResponseEnvelope().getcAMT052ResponseDocument();
+            if (document != null && document.getRejection() != null) {
+                log.append("\n--- Begin of Rejection Summary ---");
+                Rejection rejection = document.getRejection();
+                if (rejection.getRsn() != null) {
+                    log.append("\nRejection Message Received:");
+                    log.append("\nReason Code: ").append(rejection.getRsn().getRjctgPtyRsn());
+                    log.append("\nDescription: ").append(rejection.getRsn().getRsnDesc());
+                } else {
+                    log.append("\nRejection object present but Reason (Rsn) is null.");
+                }
+                log.append("\n--- End of Rejection Summary ---\n");
+            } else if (document != null && document.getBkToCstmrAcctRpt() != null) {
+                log.append("\n--- Begin of Response Summary ---");
+                collectResponseSummary(response, log);
+                log.append("\n--- End of Response Summary ---\n");
+            } else {
+                log.append("\n\nDeserialization successful, but response document contains neither a report nor a rejection.");
+            }
 
             System.err.println(log.toString());
-
             writeToFile(outputFilePath, log.toString());
 
         } catch (JsonValidationException e) {
-            log.append("\nDeserialization to CAMT052Response failed. This may be a rejection message (admi.002).");
-            log.append("\nOriginal validation failures:\n" + e.getValidationErrors());
-
-            // Attempt to parse the JSON as a generic rejection message to extract details.
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode rootNode   = mapper.readTree(testJson);
-                JsonNode rsnNode    = rootNode.path("File").path("Envelope").path("Document").path("admi.002.001.01").path("Rsn");
-
-                if (!rsnNode.isMissingNode()) {
-                    // Beide Felder enthalten die Ablehnungsgründe
-                    String reasonCode = rsnNode.path("RjctgPtyRsn").asText("N/A");
-                    String reasonDesc = rsnNode.path("RsnDesc").asText("N/A");
-
-                    String rejectionSummary = String.format("\n\n--- Rejection Details Extracted ---\nReason Code: %s\nDescription: %s\n---------------------------------", reasonCode, reasonDesc);
-                    log.append(rejectionSummary);
-                } else {
-                    log.append("\n\nCould not find 'admi.002.001.01' rejection details in the JSON.");
-                }
-            } catch (IOException parseException) {
-                log.append("\n\nAdditionally, failed to parse the error response as a generic JSON object: " + parseException.getMessage());
-            }
+            // This now only catches true, unexpected deserialization failures
+            String errorContent = "\nCritical validation failures:\n" + e.getValidationErrors();
+            log.append(errorContent);
             System.err.println(log.toString());
             writeToFile(errorFilePath, log.toString());
         }

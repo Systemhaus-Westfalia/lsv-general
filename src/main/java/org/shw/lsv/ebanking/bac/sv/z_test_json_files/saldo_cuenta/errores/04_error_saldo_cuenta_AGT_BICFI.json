@@ -1,0 +1,14 @@
+{
+    "File": {
+        "Envelope": {
+            "Document": {
+                "admi.002.001.01": {
+                    "Rsn": {
+                        "RjctgPtyRsn": "27",
+                        "RsnDesc": "Transaccion no puede ser procesada, comuniquese con el ejecutivo."
+                    }
+                }
+            }
+        }
+    }
+}
