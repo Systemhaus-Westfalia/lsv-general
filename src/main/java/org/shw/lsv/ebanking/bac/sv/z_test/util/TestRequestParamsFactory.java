@@ -85,7 +85,7 @@ public final class TestRequestParamsFactory {
         String currentDate           = TestDateUtils.getTodayDate();
         Integer numberOfTransactions = 1;
 
-        String PAYMENT_AMOUNT        = "22.44";
+        String PAYMENT_AMOUNT        = "11.02";
         BigDecimal paymentAmount     = new BigDecimal(PAYMENT_AMOUNT);
 
         return new RequestParams()
@@ -160,7 +160,7 @@ public final class TestRequestParamsFactory {
         String currentDate           = TestDateUtils.getTodayDate();
         Integer numberOfTransactions = 1;
 
-        String PAYMENT_AMOUNT        = "32.76";
+        String PAYMENT_AMOUNT        = "11.02";
         BigDecimal paymentAmount     = new BigDecimal(PAYMENT_AMOUNT);
 
         return new RequestParams()
@@ -237,7 +237,7 @@ public final class TestRequestParamsFactory {
         String currentDate           = TestDateUtils.getTodayDate();
         Integer numberOfTransactions = 1;
 
-        String PAYMENT_AMOUNT        = "7.39";
+        String PAYMENT_AMOUNT        = "11.03";
         BigDecimal paymentAmount     = new BigDecimal(PAYMENT_AMOUNT);
 
         return new RequestParams()
@@ -279,7 +279,7 @@ public final class TestRequestParamsFactory {
     public static RequestParams createTmst038StatusReportParams() {
         String BIC_SISTEMAS_AEREOS = "AMERICA3PLX";
         String BIC_BAC_EL_SALVADOR = "BAMCSVSS";
-        String PYMT_MESSAGE_ID     = "PYMT-DOMESTICO-2025-08-09-43904";
+        String PYMT_MESSAGE_ID     = "PYMT-BAC-TO-BAC-2025-08-12-46017";
         String MSGDEFIDR           = "TSMT.038.001.03";
         String BIZSVC              = "swift.cbprplus.01";
         String XMLNS               = "urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03";

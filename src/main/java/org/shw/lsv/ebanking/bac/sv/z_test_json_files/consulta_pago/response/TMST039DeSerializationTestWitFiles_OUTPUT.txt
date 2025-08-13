@@ -1,0 +1,15 @@
+********************************************
+Ergebnisse der Zahlungsabfrage:
+********************************************
+BizMsgIdr: 3844941
+MsgDefIdr: PYMT-DOMESTICO-2025-08-09-43904
+
+Original Control Sum: 22.44
+Payment Info Status: ACSC
+Status Reason Info: Instrucciones procesadas
+
+--- Transaction Details ---
+Transaction Status ID: ACSP
+Transaction Status: ACSP
+Transaction Status Reason: Transaccion enviada para su procesamiento
+********************************************
