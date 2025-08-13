@@ -337,10 +337,11 @@ public final class TestRequestParamsFactory {
         String BIC_BAC_EL_SALVADOR      = "BAMCSVSS";
         String ESTADO_CUENTA_MESSAGE_ID = "EdC-ADClientName/(CuentaNr)";
         String MSGDEFIDR                = "camt.060.001.05";
+        String REQDMSGNMID              = "camt.053.001.08";
         String BIZSVC                   = "swift.cbprplus.01";
         String XMLNS                    = "urn:iso:std:iso:20022:tech:xsd:camt.060.001.05";
         String BAC_ACCOUNT_ID           = "200268472";
-        String CURRENCY                 = "USD";
+        //String CURRENCY                 = "USD";
         String TP                       = EBankingConstants.PATTERN_TP;
 
         String currentTimestamp         = TestDateUtils.getCurrentApiTimestamp();
@@ -357,12 +358,12 @@ public final class TestRequestParamsFactory {
             .setXmlns(         XMLNS)
             .setMsgId(         ESTADO_CUENTA_MESSAGE_ID  + "-Grp-" + pageNumber.toString())
             .setCreDtTm(       currentTimestamp)
-            .setReqdMsgNmId(   ESTADO_CUENTA_MESSAGE_ID  + "-Doc-" + pageNumber.toString())
+            .setReqdMsgNmId(   REQDMSGNMID)
             .setAcctId(        BAC_ACCOUNT_ID)
             .setBicfiAcctOwnr( BIC_SISTEMAS_AEREOS)
-            .setCcy(           CURRENCY)
-            .setFrdt(          previousMonthStartDate)
-            .setTodt(          previousMonthEndDate)
+            //.setCcy(           CURRENCY)
+            .setFrdt(          "2025-07-01")
+            .setTodt(          "2025-08-12")
             .setTp(            TP)
             .setEqseq(         pageNumber.toString());
     }

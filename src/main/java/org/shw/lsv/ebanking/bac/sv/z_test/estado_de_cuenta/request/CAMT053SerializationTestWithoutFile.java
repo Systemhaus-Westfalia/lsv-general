@@ -24,7 +24,7 @@ public class CAMT053SerializationTestWithoutFile {
         collector.setPrintImmediately(true); // See errors as they happen
 
         // 2. Build test parameters
-        Integer  pageNumber = 0;
+        Integer  pageNumber = 1;
         RequestParams params = TestRequestParamsFactory.createCamt053Params(pageNumber);
 
         try {
