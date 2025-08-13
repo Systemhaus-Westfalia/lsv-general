@@ -1,0 +1,244 @@
+CAMT053 Envelope present: true
+CAMT053 Document present: true
+********************************************
+Ergebnisse:
+*** AppHdr ***
+    Fr-BICFI : BAMCSVSS
+    To-BICFI : AMERICA3PLX
+    BizMsgIdr: 3898263
+    MsgDefIdr: camt.053.001.08
+    BizSvc:    swift.cbprplus.02
+    CreDt:     2025-08-13T01:16:02-06:00
+********************************************
+******** CAMT053 Response Document ********
+********************************************
+    MsgId:     3898263
+    CreDtTm:   2025-08-13T01:16:02-06:00
+************* Stmt ***********************
+    Id:             3898263202508130116029501
+    StmtPgntn-PgNb: 1
+    StmtPgntn-Last: true
+    ElctrncSeqNb:   813
+    FrToDt-FrDtTm:  2025-07-01T00:00:00+00:00
+    FrToDt-ToDtTm:  2025-08-12T23:59:59+00:00
+    Acct-Id:        200268472
+    Acct-Ccy:       USD
+*** Balances ***
+      Balance[0]:
+        Tp-Cd:       OPBD
+        CdtDbtInd:   DBIT
+        Dt:          2025-07-01
+        Amt-Ccy:     USD
+        Amt-Amt:     555555555.99
+      Balance[1]:
+        Tp-Cd:       CLBD
+        CdtDbtInd:   DBIT
+        Dt:          2025-08-12
+        Amt-Ccy:     USD
+        Amt-Amt:     555557573.38
+********  StmtOfAccountElements  ***********
+      Ntry[0]:
+        NtryRef:        104887
+        Amt-Ccy:        USD
+        Amt-Amt:        7.39
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-11
+        ValDt-Dt:       2025-08-11
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Tef DCD  a Nombre del proveedo
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-BAC-TO-BAC-
+            Amt:             7.39
+            CdtDbtInd:       DBIT
+      Ntry[1]:
+        NtryRef:        7561
+        Amt-Ccy:        USD
+        Amt-Amt:        11.02
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-12
+        ValDt-Dt:       2025-08-12
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   W/T-S07561 Nombre del prove
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-INTERNACION
+            Amt:             11.02
+            CdtDbtInd:       DBIT
+      Ntry[2]:
+        NtryRef:        103967
+        Amt-Ccy:        USD
+        Amt-Amt:        17
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-06
+        ValDt-Dt:       2025-08-06
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Tef DCD  a Proveedor BAC 001
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PAGO-BAC-000001
+            Amt:             17
+            CdtDbtInd:       DBIT
+      Ntry[3]:
+        NtryRef:        7509
+        Amt-Ccy:        USD
+        Amt-Amt:        931
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-06
+        ValDt-Dt:       2025-08-06
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   W/T-S07509 CLIENTE02
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PAGO-INT-000002
+            Amt:             931
+            CdtDbtInd:       DBIT
+      Ntry[4]:
+        NtryRef:        104536
+        Amt-Ccy:        USD
+        Amt-Amt:        22.44
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-09
+        ValDt-Dt:       2025-08-09
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Empresa SA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-DOMESTICO-2
+            Amt:             22.44
+            CdtDbtInd:       DBIT
+      Ntry[5]:
+        NtryRef:        7542
+        Amt-Ccy:        USD
+        Amt-Amt:        32.76
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-11
+        ValDt-Dt:       2025-08-11
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   W/T-S07542 Nombre del prove
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-INTERNACION
+            Amt:             32.76
+            CdtDbtInd:       DBIT
+      Ntry[6]:
+        NtryRef:        104949
+        Amt-Ccy:        USD
+        Amt-Amt:        11.01
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-12
+        ValDt-Dt:       2025-08-12
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Empresa SA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-DOMESTICO-2
+            Amt:             11.01
+            CdtDbtInd:       DBIT
+      Ntry[7]:
+        NtryRef:        104950
+        Amt-Ccy:        USD
+        Amt-Amt:        11.03
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-12
+        ValDt-Dt:       2025-08-12
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Tef DCD  a Nombre del proveedo
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-BAC-TO-BAC-
+            Amt:             11.03
+            CdtDbtInd:       DBIT
+      Ntry[8]:
+        NtryRef:        103968
+        Amt-Ccy:        USD
+        Amt-Amt:        460
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-06
+        ValDt-Dt:       2025-08-06
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   12345678901234567891
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PAGO-DOMESTICO-0
+            Amt:             460
+            CdtDbtInd:       DBIT
+      Ntry[9]:
+        NtryRef:        103841
+        Amt-Ccy:        USD
+        Amt-Amt:        460
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-05
+        ValDt-Dt:       2025-08-05
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   12345678901234567891
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: TEF ACH/SINPE/DO
+            Amt:             460
+            CdtDbtInd:       DBIT
+      Ntry[10]:
+        NtryRef:        104531
+        Amt-Ccy:        USD
+        Amt-Amt:        31.87
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-08
+        ValDt-Dt:       2025-08-08
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Empresa SA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-DOMESTICO-2
+            Amt:             31.87
+            CdtDbtInd:       DBIT
+      Ntry[11]:
+        NtryRef:        104530
+        Amt-Ccy:        USD
+        Amt-Amt:        21.87
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-08
+        ValDt-Dt:       2025-08-08
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Empresa SA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-DOMESTICO-2
+            Amt:             21.87
+            CdtDbtInd:       DBIT
+********************************************

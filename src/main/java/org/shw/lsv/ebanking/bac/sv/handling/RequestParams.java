@@ -77,6 +77,7 @@ public class RequestParams {
     private String     subFmlyCd;
     private Integer    balCount;
     private Integer    stmtElemCount;
+    private Integer    ntryDtlsCount;
     private String     ntryDtlsAmt;
     private String     rfrdDocInfNb;
     private String     tpCd;
@@ -145,6 +146,7 @@ public class RequestParams {
     public String     getSubFmlyCd()       { return subFmlyCd;      }
     public Integer    getBalCount()        { return balCount;       }
     public Integer    getStmtElemCount()   { return stmtElemCount;  }
+    public Integer    getNtryDtlsCount()   { return ntryDtlsCount;  }
     public String     getNtryDtlsAmt()     { return ntryDtlsAmt;    }
     public String     getRfrdDocInfNb()    { return rfrdDocInfNb;   }
     public String     getDbtrAgtCountry()  { return dbtrAgtCountry; }
@@ -471,6 +473,11 @@ public class RequestParams {
 
     public RequestParams setStmtElemCount(Integer stmtElemCount) {
         this.stmtElemCount = stmtElemCount;
+        return this;
+    }
+
+    public RequestParams setNtryDtlsCount(Integer ntryDtlsCount) {
+        this.ntryDtlsCount = ntryDtlsCount;
         return this;
     }
 

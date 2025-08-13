@@ -1,5 +1,7 @@
 package org.shw.lsv.ebanking.bac.sv.camt053.response;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
@@ -35,7 +37,7 @@ public class StmtOfAccountElement {
     String addtlNtryInf;
 
     @JsonProperty("NtryDtls")
-    NtryDtls ntryDtls;  // Entry Details
+    List<NtryDtls> ntryDtls;  // Entry Details
 
     public StmtOfAccountElement() { }
 
@@ -49,7 +51,15 @@ public class StmtOfAccountElement {
             setValDt(        new BookgOrValDt(params, EBankingConstants.CONTEXT_VALID_DATE, collector), collector);
             setBkTxCd(       new BkTxCd(params, collector), collector);
             setAddtlNtryInf( params.getAddtlNtryInf(), collector);
-            setNtryDtls(     new NtryDtls(params, collector), collector);
+
+            // Initialize NtryDtls list, similar to how Stmt handles its lists.
+            // This assumes a parameter like 'getNtryDtlsCount' exists in RequestParams.
+            int ntryDtlsCount = params.getNtryDtlsCount() != null ? params.getNtryDtlsCount() : 0;
+            List<NtryDtls> ntryDtlsList = new ArrayList<>();
+            for (int i = 0; i < ntryDtlsCount; i++) {
+                ntryDtlsList.add(new NtryDtls(params, collector));
+            }
+            setNtryDtls(ntryDtlsList, collector);
         } catch (Exception e) {
             collector.addError(EBankingConstants.ERROR_STMT_OF_ACCT_ELEMENT_INIT, e);
         }
@@ -302,17 +312,17 @@ public class StmtOfAccountElement {
     }
 
     /**
-     * @return the NtryDtls object<br>
+     * @return the list of NtryDtls objects<br>
      */
-    public NtryDtls getNtryDtls() {
+    public List<NtryDtls> getNtryDtls() {
         return ntryDtls;
     }
 
     /**
-     * @param ntryDtls the NtryDtls to be set.<br>
+     * @param ntryDtls the list of NtryDtls to be set.<br>
      * The parameter is validated: null not allowed.<br>
      */
-    public void setNtryDtls(NtryDtls ntryDtls) {
+    public void setNtryDtls(List<NtryDtls> ntryDtls) {
         if (ntryDtls == null) {
             throw new IllegalArgumentException("Wrong parameter 'ntryDtls' in setNtryDtls()");
         }
@@ -320,10 +330,10 @@ public class StmtOfAccountElement {
     }
 
     /**
-     * @param ntryDtls the NtryDtls to be set.<br>
+     * @param ntryDtls the list of NtryDtls to be set.<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setNtryDtls(NtryDtls ntryDtls, JsonValidationExceptionCollector collector) {
+    public void setNtryDtls(List<NtryDtls> ntryDtls, JsonValidationExceptionCollector collector) {
         try {
             setNtryDtls(ntryDtls);
         } catch (IllegalArgumentException e) {

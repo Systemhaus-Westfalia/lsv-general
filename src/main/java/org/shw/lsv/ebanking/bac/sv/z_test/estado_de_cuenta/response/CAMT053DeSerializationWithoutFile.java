@@ -1,6 +1,7 @@
 package org.shw.lsv.ebanking.bac.sv.z_test.estado_de_cuenta.response;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.shw.lsv.ebanking.bac.sv.camt052.response.RptPgntn;
 import org.shw.lsv.ebanking.bac.sv.camt053.response.Bal;
@@ -51,7 +52,7 @@ public class CAMT053DeSerializationWithoutFile {
 
             // 6. Use the deserialized object
             System.out.println("\nCAMT053 Deserialized object details:");
-            printResponseSummary(response);
+            collectResponseSummary(response);
 
         } catch (JsonValidationException e) {
             System.err.println("\nCritical validation failures:");
@@ -321,7 +322,7 @@ public class CAMT053DeSerializationWithoutFile {
         return jsonContent;
     }
 
-    private static void printResponseSummary(CAMT053Response response) {
+    private static void collectResponseSummary(CAMT053Response response) {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("CAMT053 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
@@ -508,19 +509,32 @@ public class CAMT053DeSerializationWithoutFile {
 
                                 System.err.println("        AddtlNtryInf:   " + (entry.getAddtlNtryInf() != null ? entry.getAddtlNtryInf() : "Not available"));
 
-                                NtryDtls ntryDtls = entry.getNtryDtls();
-                                if (ntryDtls != null && ntryDtls.getTxDtls() != null) {
-                                    TxDtls txDtls = ntryDtls.getTxDtls();
-                                    System.err.println("        NtryDtls-TxDtls:");
-                                    if (txDtls.getPmtId() != null) {
-                                        System.err.println("          Refs-EndToEndId: " + (txDtls.getPmtId().getEndToEndId() != null ? txDtls.getPmtId().getEndToEndId() : "Not available"));
-                                    } else {
-                                        System.err.println("          Refs:            Not available");
+                                List<NtryDtls> ntryDtlsList = entry.getNtryDtls();
+                                if (ntryDtlsList != null && !ntryDtlsList.isEmpty()) {
+                                    int ntryDtlsIndex = 0;
+                                    for (NtryDtls ntryDtls : ntryDtlsList) {
+                                        System.err.println("        NtryDtls[" + ntryDtlsIndex + "]:");
+                                        if (ntryDtls != null && ntryDtls.getTxDtls() != null) {
+                                            TxDtls txDtls = ntryDtls.getTxDtls();
+                                            System.err.println("          TxDtls:");
+                                            if (txDtls.getPmtId() != null) {
+                                                System.err.println("            Refs-EndToEndId: " + (txDtls.getPmtId().getEndToEndId() != null ? txDtls.getPmtId().getEndToEndId() : "Not available"));
+                                            } else {
+                                                System.err.println("            Refs:            Not available");
+                                            }
+                                            if (txDtls.getAmt() != null) {
+                                                System.err.println("            Amt:             " + (txDtls.getAmt().getAmt() != null ? txDtls.getAmt().getAmt() : "Not available"));
+                                            } else {
+                                                System.err.println("            Amt:             Not available");
+                                            }
+                                            System.err.println("            CdtDbtInd:       " + (txDtls.getCdtDbtInd() != null ? txDtls.getCdtDbtInd() : "Not available"));
+                                        } else {
+                                            System.err.println("          NtryDtls object is null or has no TxDtls");
+                                        }
+                                        ntryDtlsIndex++;
                                     }
-                                    System.err.println("          Amt:             " + (txDtls.getAmt() != null ? txDtls.getAmt() : "Not available"));
-                                    System.err.println("          CdtDbtInd:       " + (txDtls.getCdtDbtInd() != null ? txDtls.getCdtDbtInd() : "Not available"));
                                 } else {
-                                    System.err.println("        NtryDtls-TxDtls: Not available");
+                                    System.err.println("        NtryDtls: Not available or empty");
                                 }
                             } else {
                                 System.err.println("        Ntry object is null");

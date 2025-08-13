@@ -1,12 +1,12 @@
 package org.shw.lsv.ebanking.bac.sv.camt053.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.shw.lsv.ebanking.bac.sv.camt052.response.Amt;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.pain001.request.PmtId;
-
-import java.util.regex.Pattern;
 
 public class TxDtls {
 
@@ -14,7 +14,7 @@ public class TxDtls {
     PmtId pmtId;           // Class PmtId contains field "EndToEndId".
 
     @JsonProperty("Amt")
-    String amt;
+    Amt amt;
 
     @JsonProperty("CdtDbtInd")
     String cdtDbtInd;
@@ -27,7 +27,9 @@ public class TxDtls {
             setPmtId(new PmtId(params, collector), collector);
 
             if (params.getNtryDtlsAmt() != null && !params.getNtryDtlsAmt().isEmpty()) {
-                setAmt(params.getNtryDtlsAmt(), collector);
+                // The Amt class constructor validates the amount format.
+                // The setAmt method in this class will handle the object itself.
+                setAmt(new Amt(params.getNtryDtlsAmt()), collector);
             }
             if (params.getCdtDbtInd() != null && !params.getCdtDbtInd().isEmpty()) {
                 setCdtDbtInd(params.getCdtDbtInd(), collector);
@@ -70,22 +72,17 @@ public class TxDtls {
     /**
      * @return the Amt<br>
      */
-    public String getAmt() {
+    public Amt getAmt() {
         return amt;
     }
 
     /**
      * @param amt the Amt to be set<br>
-     * <p>
-     * Pattern: "\d+(\.\d{1,2})?"; (Allows integers, one decimal, or two decimals)
-     * <p>
-     * The parameter is validated.<br>
+     * The parameter is validated: null not allowed.<br>
      */
-    public void setAmt(String amt) {
-        boolean patternOK = (amt != null) && Pattern.matches(EBankingConstants.PATTERN_CURRENCY_AMT, amt);
-
-        if (!patternOK) {
-            throw new IllegalArgumentException("Wrong parameter 'amt' (" + amt + ") in setAmt()");
+    public void setAmt(Amt amt) {
+        if (amt == null) {
+            throw new IllegalArgumentException("Wrong parameter 'amt' in setAmt()");
         }
         this.amt = amt;
     }
@@ -94,11 +91,13 @@ public class TxDtls {
      * @param amt the Amt to be set<br>
      * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
      */
-    public void setAmt(String amt, JsonValidationExceptionCollector collector) {
+    public void setAmt(Amt amt, JsonValidationExceptionCollector collector) {
         try {
             setAmt(amt);
         } catch (IllegalArgumentException e) {
-            collector.addError(EBankingConstants.ERROR_INVALID_AMT_FORMAT, e);
+            // The format validation is now handled by the Amt class constructor.
+            // This setter only checks for null.
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }
     }
 
