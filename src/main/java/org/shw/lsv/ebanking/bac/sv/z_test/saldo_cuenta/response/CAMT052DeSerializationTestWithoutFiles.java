@@ -142,22 +142,18 @@ public class CAMT052DeSerializationTestWithoutFiles {
         // Example JSON for erroneous Response
         String jsonContent =
             "{\n" +
-            "  \"File\": {\n" +
-            "    \"Envelope\": {\n" +
-            "      \"Document\": {\n" +
-            "        \"admi.002.001.01\": {\n" +
-            "          \"RltdRef\": {\n" +
-            "            \"Ref\": \"2025-06-10T17:26:49-06:00\"\n" +
-            "          },\n" +
-            "          \"Rsn\": {\n" +
-            "            \"RjctgPtyRsn\": \"4\",\n" +
-            "            \"RsnDesc\": \"Error: No se ha encrontrado informacion de cuenta BAC o IBAN.\",\n" +
-            "            \"RjctnDtTm\": \"2025-06-10T17:26:49-06:00\"\n" +
-            "          }\n" +
+            "    \"File\": {\n" +
+            "        \"Envelope\": {\n" +
+            "            \"Document\": {\n" +
+            "                \"admi.002.001.01\": {\n" +
+            "                    \"Rsn\": {\n" +
+            "                        \"RjctgPtyRsn\": \"-3\",\n" +
+            "                        \"RsnDesc\": \"Queue not configured for the country: \"\n" +
+            "                    }\n" +
+            "                }\n" +
+            "            }\n" +
             "        }\n" +
-            "      }\n" +
             "    }\n" +
-            "  }\n" +
             "}";
         return jsonContent;
     }

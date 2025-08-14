@@ -6,12 +6,15 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.misc.Rejection;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReport;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReportDocument;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReportEnvelope;
 
 public class PAIN001DeSerializationStatusReportTestWithoutFile {
     public static void main(String[] args) {
+        boolean testSuccess = true; // Set to false to test the error case
+
         LocalDateTime now = LocalDateTime.now();
         System.err.println("PAIN001 deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
@@ -23,7 +26,7 @@ public class PAIN001DeSerializationStatusReportTestWithoutFile {
         JsonProcessor processor = new JsonProcessor(collector);
 
         // 3. Prepare test JSON (could also read from file)
-        String testJson = createTestJson();
+        String testJson = testSuccess ? createTestJsonOK() : createTestJsonError();
 
         // 4. Execute deserialization
         try {
@@ -32,15 +35,32 @@ public class PAIN001DeSerializationStatusReportTestWithoutFile {
 
             // 5. Check for non-fatal warnings
             if (collector.hasErrors()) {
-                System.out.println("\nPAIN001 deserialization succeeded with warnings:");
-                System.out.println(collector.getAllErrors());
+                System.err.println("\nPAIN001 Deserialization succeeded with warnings/errors:\n" + collector.getAllErrors());
             } else {
                 System.out.println("PAIN001 deserialization completed cleanly");
             }
 
-            // 6. Use the deserialized object
-            System.out.println("\nPAIN001 deserialized object details:");
-            printResponseSummary(response);
+            // 6. Check for success or rejection and print the appropriate summary
+            PAIN001ResponseStatusReportEnvelope envelope = response.getPain001ResponseStatusReportFile().getPain001ResponseEnvelope();
+            PAIN001ResponseStatusReportDocument document = envelope.getpAIN001ResponseStatusReportDocument();
+
+            if (document != null && document.getRejection() != null) {
+                System.err.println("\n--- Begin of Rejection Summary ---");
+                Rejection rejection = document.getRejection();
+                if (rejection.getRsn() != null) {
+                    System.err.println("Rejection Message Received:");
+                    System.err.println("Reason Code: " + rejection.getRsn().getRjctgPtyRsn());
+                    System.err.println("Description: " + rejection.getRsn().getRsnDesc());
+                } else {
+                    System.err.println("Rejection object present but Reason (Rsn) is null.");
+                }
+                System.err.println("--- End of Rejection Summary ---\n");
+            } else if (document != null && document.getStsRptReq() != null) {
+                System.out.println("\nPAIN001 deserialized object details:");
+                printResponseSummary(response);
+            } else {
+                System.err.println("\n\nDeserialization successful, but response document contains neither a report nor a rejection.");
+            }
 
         } catch (JsonValidationException e) {
             System.err.println("\nCritical validation failures:");
@@ -48,7 +68,7 @@ public class PAIN001DeSerializationStatusReportTestWithoutFile {
         }
     }
 
-    private static String createTestJson() {
+    private static String createTestJsonOK() {
         // StsRptReq -> ReqId -> Id should be the same as PmtInf of Request
         String jsonContent =
             "{\n" +
@@ -82,6 +102,26 @@ public class PAIN001DeSerializationStatusReportTestWithoutFile {
             "                },\n" +
             "                \"NttiesToBeRptd\": {\n" +
             "                    \"BIC\": \"AMERICA3PLX\"\n" +
+            "                }\n" +
+            "            }\n" +
+            "        }\n" +
+            "    }\n" +
+            "}";
+        return jsonContent;
+    }
+
+    private static String createTestJsonError() {
+        // Example JSON for a rejection message
+        String jsonContent =
+            "{\n" +
+            "    \"File\": {\n" +
+            "        \"Envelope\": {\n" +
+            "            \"Document\": {\n" +
+            "                \"admi.002.001.01\": {\n" +
+            "                    \"Rsn\": {\n" +
+            "                        \"RjctgPtyRsn\": \"27\",\n" +
+            "                        \"RsnDesc\": \"Transaccion no puede ser procesada, comuniquese con el ejecutivo.\"\n" +
+            "                    }\n" +
             "                }\n" +
             "            }\n" +
             "        }\n" +

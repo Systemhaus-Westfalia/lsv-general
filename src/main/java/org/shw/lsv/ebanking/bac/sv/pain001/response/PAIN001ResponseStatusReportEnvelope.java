@@ -30,14 +30,21 @@ public class PAIN001ResponseStatusReportEnvelope implements Validatable {
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {
-            if (appHdr == null) {
-                throw new IllegalArgumentException("AppHdr cannot be null");
-            }
             if (pAIN001ResponseStatusReportDocument == null) {
                 throw new IllegalArgumentException("Document cannot be null");
             }
-            if (appHdr instanceof Validatable) {
-                ((Validatable) appHdr).validate(collector);
+
+            // A rejection message (admi.002.001.01) does not contain an AppHdr.
+            // Therefore, AppHdr is only mandatory if the document is NOT a rejection.
+            boolean isRejection = pAIN001ResponseStatusReportDocument.getRejection() != null;
+
+            if (!isRejection) {
+                if (appHdr == null) {
+                    throw new IllegalArgumentException("AppHdr cannot be null for a successful status report");
+                }
+                if (appHdr instanceof Validatable) {
+                    ((Validatable) appHdr).validate(collector);
+                }
             }
             if (pAIN001ResponseStatusReportDocument instanceof Validatable) {
                 ((Validatable) pAIN001ResponseStatusReportDocument).validate(collector);

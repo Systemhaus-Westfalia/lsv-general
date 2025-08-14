@@ -4,6 +4,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.handling.Validatable;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.misc.Rejection;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,6 +18,10 @@ public class PAIN001ResponseStatusReportDocument implements Validatable {
     @JsonProperty("StsRptReq")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     StsRptReq stsRptReq;
+
+    @JsonProperty("admi.002.001.01")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    Rejection rejection;
 
     /**
      * Default constructor.
@@ -40,12 +45,16 @@ public class PAIN001ResponseStatusReportDocument implements Validatable {
     @Override
     public void validate(JsonValidationExceptionCollector collector) {
         try {
-            if (stsRptReq == null) {
-                throw new IllegalArgumentException("stsRptReq cannot be null");
+            // A document must contain either a status report or a rejection.
+            boolean hasStsRpt = stsRptReq != null;
+            boolean hasRejection = rejection != null;
+
+            if (!hasStsRpt && !hasRejection) {
+                throw new IllegalArgumentException("Document must contain either a StsRptReq or a Rejection.");
             }
 
-            // Validate nested objects
-            if (stsRptReq instanceof Validatable) {
+            // Only validate the StsRptReq if it exists. Rejection has no validation.
+            if (hasStsRpt && stsRptReq instanceof Validatable) {
                 ((Validatable) stsRptReq).validate(collector);
             }
         } catch (Exception e) {
@@ -127,6 +136,32 @@ public class PAIN001ResponseStatusReportDocument implements Validatable {
     public void setStsRptReq(StsRptReq stsRptReq, JsonValidationExceptionCollector collector) {
         try {
             setStsRptReq(stsRptReq);
+        } catch (IllegalArgumentException e) {
+            collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
+        }
+    }
+
+    /**
+    * @return the Rejection object<br>
+    */
+    public Rejection getRejection() {
+        return rejection;
+    }
+
+    /**
+     * @param rejection the Rejection to be set<br>
+     */
+    public void setRejection(Rejection rejection) {
+        this.rejection = rejection;
+    }
+
+    /**
+     * @param rejection the Rejection to be set<br>
+     * @param collector the JsonValidationExceptionCollector to collect validation errors.<br>
+     */
+    public void setRejection(Rejection rejection, JsonValidationExceptionCollector collector) {
+        try {
+            setRejection(rejection);
         } catch (IllegalArgumentException e) {
             collector.addError(EBankingConstants.ERROR_NULL_NOT_ALLOWED, e);
         }

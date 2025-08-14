@@ -11,6 +11,7 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.misc.Rejection;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfn;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnDocument;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnEnvelope;
@@ -77,14 +78,31 @@ public class PAIN001DeSerializationSystemEventNotificationTestWithFiles {
                 System.out.println("PAIN001 Deserialization completed cleanly");
             }
 
-            // 5. Use the deserialized object and collect summary
+            // 5. Check for success or rejection and collect the appropriate summary
             StringBuffer summary = new StringBuffer();
-            collectResponseSummary(response, summary);
+            PAIN001ResponseEvtNtfnEnvelope envelope = response.getPain001ResponseEvtNtfnFile().getPain001ResponseEnvelope();
+            PAIN001ResponseEvtNtfnDocument document = envelope.getpAIN001ResponseEvtNtfnDocument();
 
-            System.err.println("\n--- Response Summary ---");
+            if (document != null && document.getRejection() != null) {
+                summary.append("\n--- Begin of Rejection Summary ---");
+                Rejection rejection = document.getRejection();
+                if (rejection.getRsn() != null) {
+                    summary.append("\nRejection Message Received:");
+                    summary.append("\nReason Code: ").append(rejection.getRsn().getRjctgPtyRsn());
+                    summary.append("\nDescription: ").append(rejection.getRsn().getRsnDesc());
+                } else {
+                    summary.append("\nRejection object present but Reason (Rsn) is null.");
+                }
+                summary.append("\n--- End of Rejection Summary ---\n");
+            } else if (document != null && document.getSysEvtNtfctn() != null) {
+                summary.append("\n--- Begin of Response Summary ---");
+                collectResponseSummary(response, summary);
+                summary.append("\n--- End of Response Summary ---\n");
+            } else {
+                summary.append("\n\nDeserialization successful, but response document contains neither a notification nor a rejection.");
+            }
+
             System.err.println(summary.toString());
-            System.err.println("--- End Response Summary ---\n");
-
             writeToFile(outputFilePath, summary.toString());
 
         } catch (JsonValidationException e) {
