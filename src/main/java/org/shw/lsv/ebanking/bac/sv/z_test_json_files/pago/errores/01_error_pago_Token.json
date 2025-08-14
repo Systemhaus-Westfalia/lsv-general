@@ -1,0 +1,5 @@
+{
+    "httpCode": "401",
+    "httpMessage": "Unauthorized",
+    "moreInformation": "Cannot pass the security checks that are required by the target API or operation, Enable debug headers for more details."
+}

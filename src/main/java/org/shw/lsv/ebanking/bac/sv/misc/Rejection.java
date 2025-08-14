@@ -1,9 +1,8 @@
-package org.shw.lsv.ebanking.bac.sv.camt052.response;
+package org.shw.lsv.ebanking.bac.sv.misc;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
-import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 
 /**
  * Models the content of an "admi.002.001.01" rejection message.

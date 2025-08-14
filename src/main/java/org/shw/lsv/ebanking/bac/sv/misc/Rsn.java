@@ -1,4 +1,4 @@
-package org.shw.lsv.ebanking.bac.sv.camt052.response;
+package org.shw.lsv.ebanking.bac.sv.misc;
 
 import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 
