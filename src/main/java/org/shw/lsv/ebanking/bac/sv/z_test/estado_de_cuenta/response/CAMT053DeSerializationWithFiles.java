@@ -26,6 +26,7 @@ import org.shw.lsv.ebanking.bac.sv.misc.Acct;
 import org.shw.lsv.ebanking.bac.sv.misc.AppHdr;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.misc.GrpHdr;
+import org.shw.lsv.ebanking.bac.sv.misc.Rejection;
 
 public class CAMT053DeSerializationWithFiles {
     private static final String CLASS_NAME = CAMT053DeSerializationWithFiles.class.getSimpleName();
@@ -88,14 +89,37 @@ public class CAMT053DeSerializationWithFiles {
                 System.out.println("CAMT053 Deserialization completed cleanly");
             }
 
-            // 5. Use the deserialized object and collect summary
+            // 5. Check for success or rejection and collect the appropriate summary
             StringBuffer summary = new StringBuffer();
-            collectResponseSummary(response, summary);
+            CAMT053ResponseEnvelope envelope = response.getCamt053ResponseFile().getCamt053ResponseEnvelope();
+            CAMT053ResponseDocument document = envelope.getcAMT053ResponseDocument();
 
-            System.err.println("\n--- Response Summary ---");
+            if (document != null && document.getBkToCstmrStmt() != null) {
+                summary.append("\n--- Begin of Response Summary ---");
+                collectResponseSummary(response, summary);
+                summary.append("\n--- End of Response Summary ---");
+            } else if (document != null && document.getRejection() != null) {
+                summary.append("\n--- Begin of Rejection Summary ---");
+                Rejection rejection = document.getRejection();
+                if (rejection.getRltdRef() != null && rejection.getRltdRef().getRef() != null) {
+                    summary.append("\nRelated Reference: ").append(rejection.getRltdRef().getRef());
+                }
+                if (rejection.getRsn() != null) {
+                    summary.append("\nRejection Message Received:");
+                    if (rejection.getRsn().getRjctnDtTm() != null) {
+                        summary.append("\nRejection DateTime: ").append(rejection.getRsn().getRjctnDtTm());
+                    }
+                    summary.append("\nReason Code: ").append(rejection.getRsn().getRjctgPtyRsn());
+                    summary.append("\nDescription: ").append(rejection.getRsn().getRsnDesc());
+                } else {
+                    summary.append("\nRejection object present but Reason (Rsn) is null.");
+                }
+                summary.append("\n--- End of Rejection Summary ---\n");
+            } else {
+                summary.append("\n\nDeserialization successful, but response document contains neither a statement nor a rejection.");
+            }
+
             System.err.println(summary.toString());
-            System.err.println("--- End Response Summary ---\n");
-
             writeToFile(outputFilePath, summary.toString());
 
         } catch (JsonValidationException e) {

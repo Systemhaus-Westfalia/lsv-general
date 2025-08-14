@@ -21,10 +21,12 @@ import org.shw.lsv.ebanking.bac.sv.misc.Acct;
 import org.shw.lsv.ebanking.bac.sv.misc.AppHdr;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.misc.GrpHdr;
+import org.shw.lsv.ebanking.bac.sv.misc.Rejection;
 
 public class CAMT053DeSerializationWithoutFile {
 
     public static void main(String[] args) {
+        boolean testSuccess = false; // Set to false to test the error case
         LocalDateTime now = LocalDateTime.now();
         System.err.println("CAMT053 Deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
@@ -35,7 +37,7 @@ public class CAMT053DeSerializationWithoutFile {
         JsonProcessor processor = new JsonProcessor(collector);
 
         // 3. Prepare test JSON (could also read from file)
-        String testJson = createTestJson();
+        String testJson = testSuccess ? createTestJsonOK() : createTestJsonError();
 
         // 4. Execute deserialization
         try {
@@ -50,9 +52,33 @@ public class CAMT053DeSerializationWithoutFile {
                 System.out.println("CAMT053 Deserialization completed cleanly");
             }
 
-            // 6. Use the deserialized object
-            System.out.println("\nCAMT053 Deserialized object details:");
-            collectResponseSummary(response);
+            // 6. Check for success or rejection and print the appropriate summary
+            CAMT053ResponseEnvelope envelope = response.getCamt053ResponseFile().getCamt053ResponseEnvelope();
+            CAMT053ResponseDocument document = envelope.getcAMT053ResponseDocument();
+
+            if (document != null && document.getBkToCstmrStmt() != null) {
+                System.out.println("\nCAMT053 Deserialized object details:");
+                printResponseSummary(response);
+            } else if (document != null && document.getRejection() != null) {
+                System.err.println("\n--- Begin of Rejection Summary ---");
+                Rejection rejection = document.getRejection();
+                if (rejection.getRltdRef() != null && rejection.getRltdRef().getRef() != null) {
+                    System.err.println("Related Reference: " + rejection.getRltdRef().getRef());
+                }
+                if (rejection.getRsn() != null) {
+                    System.err.println("Rejection Message Received:");
+                    if (rejection.getRsn().getRjctnDtTm() != null) {
+                        System.err.println("Rejection DateTime: " + rejection.getRsn().getRjctnDtTm());
+                    }
+                    System.err.println("Reason Code: " + rejection.getRsn().getRjctgPtyRsn());
+                    System.err.println("Description: " + rejection.getRsn().getRsnDesc());
+                } else {
+                    System.err.println("Rejection object present but Reason (Rsn) is null.");
+                }
+                System.err.println("--- End of Rejection Summary ---\n");
+            } else {
+                System.err.println("\n\nDeserialization successful, but response document contains neither a statement nor a rejection.");
+            }
 
         } catch (JsonValidationException e) {
             System.err.println("\nCritical validation failures:");
@@ -60,9 +86,10 @@ public class CAMT053DeSerializationWithoutFile {
         }
     }
 
-    private static String createTestJson() {
+    private static String createTestJsonOK() {
         String jsonContent =
             "{\n" +
+            "  \"File\": {\n" +
             "  \"Envelope\": {\n" +
             "    \"AppHdr\": {\n" +
             "      \"Fr\": {\n" +
@@ -318,11 +345,35 @@ public class CAMT053DeSerializationWithoutFile {
             "      }\n" +
             "    }\n" +
             "  }\n" +
+            "}\n" +
             "}";
         return jsonContent;
     }
 
-    private static void collectResponseSummary(CAMT053Response response) {
+    private static String createTestJsonError() {
+        String jsonContent =
+            "{\n" +
+            "    \"File\": {\n" +
+            "        \"Envelope\": {\n" +
+            "            \"Document\": {\n" +
+            "                \"admi.002.001.01\": {\n" +
+            "                    \"RltdRef\": {\n" +
+            "                        \"Ref\": \"2025-08-14T10:09:40\"\n" +
+            "                    },\n" +
+            "                    \"Rsn\": {\n" +
+            "                        \"RjctnDtTm\": \"2025-08-14T10:09:40\",\n" +
+            "                        \"RjctgPtyRsn\": \"2\",\n" +
+            "                        \"RsnDesc\": \"Error:  Fecha Invalida. Validar los campos de fecha.\"\n" +
+            "                    }\n" +
+            "                }\n" +
+            "            }\n" +
+            "        }\n" +
+            "    }\n" +
+            "}";
+        return jsonContent;
+    }
+
+    private static void printResponseSummary(CAMT053Response response) {
         LocalDateTime now = LocalDateTime.now();
         System.err.println("CAMT053 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 

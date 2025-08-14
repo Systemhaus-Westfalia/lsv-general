@@ -1,4 +1,5 @@
-CAMT053 Envelope present: true
+
+--- Begin of Response Summary ---CAMT053 Envelope present: true
 CAMT053 Document present: true
 ********************************************
 Ergebnisse:
@@ -242,3 +243,5 @@ Ergebnisse:
             Amt:             21.87
             CdtDbtInd:       DBIT
 ********************************************
+
+--- End of Response Summary ---
