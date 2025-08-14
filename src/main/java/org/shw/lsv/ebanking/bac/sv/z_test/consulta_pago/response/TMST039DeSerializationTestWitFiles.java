@@ -25,9 +25,8 @@ public class TMST039DeSerializationTestWitFiles {
         String errorFileName  = String.format("%s_ERRORS.txt", CLASS_NAME);
 
         // Build file paths
-        // Note: You may want to create a constant in EBankingConstants for "consulta_pago"
         Path baseDir        = Paths.get(EBankingConstants.TEST_BASE_DIRECTORY_PATH, 
-            "consulta_pago", 
+            EBankingConstants.TEST_FILES_DIRECTORY_CONSULTA_PAGO, 
             EBankingConstants.TEST_FILES_RESPONSE);
         Path inputFilePath  = baseDir.resolve(inputFileName);
         Path outputFilePath = baseDir.resolve(outputFileName);
@@ -62,16 +61,30 @@ public class TMST039DeSerializationTestWitFiles {
             System.out.println("Starting TMST039 JSON parsing test...");
             JsonNode rootNode = mapper.readTree(testJson);
 
-            // 3. Use the parsed JsonNode and collect a summary of required fields
+            // 3. Check for success, rejection, or error format and collect the appropriate summary
             StringBuffer summary = new StringBuffer();
-            collectResponseSummary(rootNode, summary);
+            JsonNode documentNode = rootNode.path("File").path("Envelope").path("Document");
 
-            System.err.println("\n--- Response Summary ---");
+            if (documentNode.has("CstmrPmtStsRpt")) {
+                summary.append("--- Begin of TMST.039 Success Summary ---\n");
+                collectSuccessSummary(rootNode, summary);
+                summary.append("--- End of TMST.039 Success Summary ---\n");
+            } else if (documentNode.has("admi.002.001.01")) {
+                summary.append("--- Begin of Rejection Summary ---\n");
+                collectRejectionSummary(documentNode, summary);
+                summary.append("--- End of Rejection Summary ---\n");
+            } else if (rootNode.has("httpCode")) {
+                summary.append("--- Begin of HTTP Error Summary ---\n");
+                collectErrorSummary(rootNode, summary);
+                summary.append("--- End of HTTP Error Summary ---\n");
+            } else {
+                summary.append("Unknown JSON format. Neither a known success, rejection, nor an error response.\n");
+                summary.append("JSON Content: \n").append(rootNode.toPrettyString());
+            }
+
             System.err.println(summary.toString());
-            System.err.println("--- End Response Summary ---\n");
-
             writeToFile(outputFilePath, summary.toString());
-            System.out.println("TMST039 parsing completed cleanly.");
+            System.out.println("\nTMST039 parsing completed.");
 
         } catch (IllegalArgumentException e) {
             String errorContent = "\nJSON validation failure: " + e.getMessage();
@@ -87,18 +100,57 @@ public class TMST039DeSerializationTestWitFiles {
         System.err.println(CLASS_NAME + " finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
     }
 
-    private static void collectResponseSummary(JsonNode rootNode, StringBuffer summary) {
+
+    /*
+        * Zu erwartetes Ergebnis:
+        *TMST039 Deserialization started at: 2025-06-10 03:04:14
+        Starting TMST039 deserialization test...
+        TMST039 Deserialization completed cleanly
+
+        TMST039 Deserialized object details:
+        TMST039 Deserialization finished at: 2025-06-10 03:04:15
+        Envelope present: true
+        TMST039 Document present: true
+        ********************************************
+        ********************************************
+        Ergebinisse:
+        *** AppHdr ***
+            Fr-BICFI : BAMCSVSS
+            To-BICFI : BAMCSVSS
+            BizMshIdr: RespConsPago-ADClientName/(CuentaNr
+            BizSvc:    swift.cbprplus.01
+            CreDt:     2025-06-10T17:27:10-06:00
+            MsgDefIdr: TSMT.039.001.03
+        ********************************************
+        *** TMST039 Response Document            ***
+        ********************************************
+        xmlns: urn:iso:std:iso:20022:tech:xsd:tsmt.039.001.03
+        StsRptRsp present: true
+        ReqId present: true
+            Id      : PYMT-0001
+            CreDtTm : 2025-06-10T17:26:49-06:00
+        NttiesRptd present: true
+            BIC     : BAMCSVSS
+        Sts present: true
+            Cd      : ACCP
+            Rsn     : Payment found and accepted
+        ********************************************
+        *******************************************
+    */
+    private static void collectSuccessSummary(JsonNode rootNode, StringBuffer summary) {
         summary.append("********************************************\n");
-        summary.append("Ergebnisse der Zahlungsabfrage:\n");
+        summary.append("Ergebnisse der Zahlungsabfrage (TMST.039):\n");
         summary.append("********************************************\n");
 
         // AppHdr fields
+        summary.append("Fr-BICFI: ").append(getRequiredText(rootNode, "File", "Envelope", "AppHdr", "Fr", "FIId", "FinInstnId", "BICFI")).append("\n");
+        summary.append("To-BICFI: ").append(getRequiredText(rootNode, "File", "Envelope", "AppHdr", "To", "FIId", "FinInstnId", "BICFI")).append("\n");
         summary.append("BizMsgIdr: ").append(getRequiredText(rootNode, "File", "Envelope", "AppHdr", "BizMsgIdr")).append("\n");
         summary.append("MsgDefIdr: ").append(getRequiredText(rootNode, "File", "Envelope", "AppHdr", "MsgDefIdr")).append("\n");
+        summary.append("BizSvc: ").append(getRequiredText(rootNode, "File", "Envelope", "AppHdr", "BizSvc")).append("\n");
+        summary.append("CreDt: ").append(getRequiredText(rootNode, "File", "Envelope", "AppHdr", "CreDt")).append("\n");
         summary.append("\n");
 
-        // OrgnlPmtInfAndSts fields
-        summary.append("Original Control Sum: ").append(getRequiredText(rootNode, "File", "Envelope", "Document", "CstmrPmtStsRpt", "OrgnlPmtInfAndSts", "OrgnlCtrlSum")).append("\n");
         summary.append("Payment Info Status: ").append(getRequiredText(rootNode, "File", "Envelope", "Document", "CstmrPmtStsRpt", "OrgnlPmtInfAndSts", "PmtInfSts")).append("\n");
         summary.append("Status Reason Info: ").append(getRequiredText(rootNode, "File", "Envelope", "Document", "CstmrPmtStsRpt", "OrgnlPmtInfAndSts", "StsRsnInf", "AddtlInf")).append("\n");
         summary.append("\n");
@@ -116,6 +168,29 @@ public class TMST039DeSerializationTestWitFiles {
         summary.append("Transaction Status ID: ").append(getRequiredText(firstTx, "StsId")).append("\n");
         summary.append("Transaction Status: ").append(getRequiredText(firstTx, "TxSts")).append("\n");
         summary.append("Transaction Status Reason: ").append(getRequiredText(firstTx, "StsRsnInf", "AddtlInf")).append("\n");
+
+        summary.append("********************************************\n");
+    }
+
+    private static void collectRejectionSummary(JsonNode documentNode, StringBuffer summary) {
+        summary.append("********************************************\n");
+        summary.append("Rejection Message Received:\n");
+        summary.append("********************************************\n");
+
+        summary.append("Reason Code: ").append(getRequiredText(documentNode, "admi.002.001.01", "Rsn", "RjctgPtyRsn")).append("\n");
+        summary.append("Description: ").append(getRequiredText(documentNode, "admi.002.001.01", "Rsn", "RsnDesc")).append("\n");
+
+        summary.append("********************************************\n");
+    }
+
+    private static void collectErrorSummary(JsonNode rootNode, StringBuffer summary) {
+        summary.append("********************************************\n");
+        summary.append("HTTP Error Response Received:\n");
+        summary.append("********************************************\n");
+
+        summary.append("HTTP Code: ").append(getRequiredText(rootNode, "httpCode")).append("\n");
+        summary.append("HTTP Message: ").append(getRequiredText(rootNode, "httpMessage")).append("\n");
+        summary.append("More Information: ").append(getRequiredText(rootNode, "moreInformation")).append("\n");
 
         summary.append("********************************************\n");
     }

@@ -1,0 +1,126 @@
+{
+  "File": {
+    "Envelope": {
+      "AppHdr": {
+        "Fr": {
+          "FIId": {
+            "FinInstnId": {
+              "BICFI": "BAMCSVSS"
+            }
+          }
+        },
+        "To": {
+          "FIId": {
+            "FinInstnId": {
+              "BICFI": "AMERICA3PLX"
+            }
+          }
+        },
+        "BizMsgIdr": "3968863",
+        "MsgDefIdr": "PYMT-BAC-TO-BAC-2025-08-12-46017",
+        "BizSvc": "swift.cbprplus.02",
+        "CreDt": "2025-08-14T08:27:43-06:00"
+      },
+      "Document": {
+        "CstmrPmtStsRpt": {
+          "GrpHdr": {
+            "MsgId": "L2-PYMT-BAC-TO-BAC-2025-08-12-46017",
+            "CreDtTm": "2025-08-14T08:27:43-06:00",
+            "InitgPty": {
+              "Id": {
+                "OrgId": {
+                  "BICOrBEI": "BAMCSVSSXXX"
+                }
+              }
+            },
+            "FwdgAgt": {
+              "FinInstnId": {
+                "BIC": "BAMCSVSSXXX"
+              }
+            }
+          },
+          "OrgnlGrpInfAndSts": {
+            "OrgnlMsgId": "PYMT-BAC-TO-BAC-2025-08-12-46017",
+            "OrgnlMsgNmId": "PAIN.001.001.03",
+            "OrgnlCreDtTm": "2025-08-12T05:26:29-06:00",
+            "OrgnlNbOfTxs": "1",
+            "OrgnlCtrlSum": "11.03",
+            "GrpSts": "ACSC",
+            "StsRsnInf": {
+              "AddtlInf": "Instrucciones procesadas"
+            },
+            "NbOfTxsPerSts": [
+              {
+                "DtldNbOfTxs": "1",
+                "DtldSts": "ACSC",
+                "DtldCtrlSum": "11.03"
+              }
+            ]
+          },
+          "OrgnlPmtInfAndSts": {
+            "OrgnlPmtInfId": "PYMT-BAC-TO-BAC-2025-08-12-46017",
+            "OrgnlNbOfTxs": "1",
+            "OrgnlCtrlSum": "11.03",
+            "PmtInfSts": "ACSC",
+            "StsRsnInf": {
+              "AddtlInf": "Instrucciones procesadas"
+            },
+            "NbOfTxsPerSts": [
+              {
+                "DtldNbOfTxs": "1",
+                "DtldSts": "ACSC",
+                "DtldCtrlSum": "11.03"
+              }
+            ],
+            "TxInfAndSts": [
+              {
+                "StsId": "ACSC",
+                "OrgnlEndToEndId": "PYMT-BAC-TO-BAC-2025-08-12-46017",
+                "TxSts": "ACSC",
+                "StsRsnInf": {
+                  "Rsn": {
+                    "Prtry": "0"
+                  },
+                  "AddtlInf": "Transaccion aplicada"
+                },
+                "OrgnlTxRef": {
+                  "Amt": {
+                    "InstdAmt": {
+                      "-Ccy": "USD",
+                      "InstdAmt": "11.03"
+                    }
+                  },
+                  "ReqdExctnDt": "2025-08-12",
+                  "CdtrAgt": {
+                    "FinInstnId": {
+                      "ClrSysMmbId": {
+                        "MmbId": "025"
+                      }
+                    }
+                  },
+                  "Cdtr": {
+                    "Nm": "Nombre del proveedor",
+                    "Id": {
+                      "OrgId": {
+                        "Othr": {
+                          "Id": "Codigo del Proveedor"
+                        }
+                      }
+                    }
+                  },
+                  "CdtrAcct": {
+                    "Id": {
+                      "Othr": {
+                        "Id": "999888777"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

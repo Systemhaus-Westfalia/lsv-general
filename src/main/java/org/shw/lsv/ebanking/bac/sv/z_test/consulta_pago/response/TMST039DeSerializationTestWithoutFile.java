@@ -1,50 +1,61 @@
 package org.shw.lsv.ebanking.bac.sv.z_test.consulta_pago.response;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
-import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
-import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
-import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
-import org.shw.lsv.ebanking.bac.sv.tmst039.response.TMST039Response;
-import org.shw.lsv.ebanking.bac.sv.tmst039.response.TMST039ResponseDocument;
-import org.shw.lsv.ebanking.bac.sv.tmst039.response.TMST039ResponseEnvelope;
 
 public class TMST039DeSerializationTestWithoutFile {
     public static void main(String[] args) {
+        boolean testSuccess = false; // Set to false to test the error case
+
         LocalDateTime now = LocalDateTime.now();
         System.err.println("TMST039 Deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
-        // 1. Create collector with explicit settings
-        JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
-        //collector.setPrintImmediately(true); // Print errors as they occur
-
-        // 2. Inject collector into processor
-        JsonProcessor processor = new JsonProcessor(collector);
+        // 1. Create an ObjectMapper to parse the JSON
+        ObjectMapper mapper = new ObjectMapper();
 
         // 3. Prepare test JSON (could also read from file)
-        String testJson = createTestJson();
+        String testJson = testSuccess ? createTestJsonOK() : createTestJsonError();
 
-        // 4. Execute deserialization
+        // 4. Execute parsing to a generic JsonNode tree
         try {
-            System.out.println("Starting TMST039 deserialization test...");
-            TMST039Response response = processor.deserialize(testJson, TMST039Response.class);
+            System.out.println("Starting TMST039 JSON parsing test...");
+            JsonNode rootNode = mapper.readTree(testJson);
 
-            // 5. Check for non-fatal warnings
-            if (collector.hasErrors()) {
-                System.out.println("\nTMST039 Deserialization succeeded with warnings:");
-                System.out.println(collector.getAllErrors());
+            // 5. Check for success, rejection, or error format and collect the appropriate summary
+            StringBuffer summary = new StringBuffer();
+            JsonNode documentNode = rootNode.path("File").path("Envelope").path("Document");
+
+            if (documentNode.has("CstmrPmtStsRpt")) {
+                summary.append("--- Begin of TMST.039 Success Summary ---\n");
+                collectSuccessSummary(rootNode, summary);
+                summary.append("--- End of TMST.039 Success Summary ---\n");
+            } else if (documentNode.has("admi.002.001.01")) {
+                summary.append("--- Begin of Rejection Summary ---\n");
+                collectRejectionSummary(documentNode, summary);
+                summary.append("--- End of Rejection Summary ---\n");
+            } else if (rootNode.has("httpCode")) {
+                summary.append("--- Begin of HTTP Error Summary ---\n");
+                collectErrorSummary(rootNode, summary);
+                summary.append("--- End of HTTP Error Summary ---\n");
             } else {
-                System.out.println("TMST039 Deserialization completed cleanly");
+                summary.append("Unknown JSON format. Neither a known success, rejection, nor an error response.\n");
+                summary.append("JSON Content: \n").append(rootNode.toPrettyString());
             }
 
-            // 6. Use the deserialized object
-            System.out.println("\nTMST039 Deserialized object details:");
-            printResponseSummary(response);
+            System.err.println(summary.toString());
+            System.out.println("\nTMST039 parsing completed.");
 
-        } catch (JsonValidationException e) {
-            System.err.println("\nCritical validation failures:");
-            System.err.println(e.getValidationErrors());
+        } catch (IllegalArgumentException e) {
+            String errorContent = "\nJSON validation failure: " + e.getMessage();
+            System.err.println(errorContent);
+        } catch (IOException e) {
+            String errorContent = "\nCritical JSON parsing failure:\n" + e.getMessage();
+            System.err.println(errorContent);
         }
     }
 
@@ -68,7 +79,7 @@ public class TMST039DeSerializationTestWithoutFile {
     *   TECH	Technical Error
     *   WARN	Warning
     */
-    private static String createTestJson() {
+    private static String createTestJsonOK() {
         // Ohne Blanks und unsichtbare Zeichen (also, wie erwartet wird):
         //7String jsonContent = "{\"Envelope\":{\"AppHdr\":{\"Fr\":{\"FIId\":{\"FinInstnId\":{\"BICFI\":\"BAMCSVSS\"}}},\"To\":{\"FIId\":{\"FinInstnId\":{\"BICFI\":\"BAMCSVSS\"}}},\"BizMsgIdr\":\"RespConsPago-ADClientName/(CuentaNr\",\"MsgDefIdr\":\"TSMT.039.001.03\",\"BizSvc\":\"swift.cbprplus.01\",\"CreDt\":\"2025-06-10T17:27:10-06:00\"},\"Document\":{\"xmlns\":\"urn:iso:std:iso:20022:tech:xsd:tsmt.039.001.03\",\"StsRptRsp\":{\"ReqId\":{\"Id\":\"PYMT-0001\",\"CreDtTm\":\"2025-06-10T17:26:49-06:00\"},\"NttiesRptd\":{\"BIC\":\"BAMCSVSS\"},\"Sts\":{\"Cd\":\"ACCP\",\"Rsn\":\"Payment found and accepted\"}}}}}";
         
@@ -105,99 +116,122 @@ public class TMST039DeSerializationTestWithoutFile {
         return jsonContent;
     }
 
-
+    private static String createTestJsonError() {
+        String jsonContent =
+            "{\n" +
+            "    \"httpCode\": \"400\",\n" +
+            "    \"httpMessage\": \"Bad Request\",\n" +
+            "    \"moreInformation\": \"Invalid JSON property value\"\n" +
+            "}";
+        return jsonContent;
+    }
 
     /*
-    * Zu erwartetes Ergebnis:
-    *TMST039 Deserialization started at: 2025-06-10 03:04:14
-    Starting TMST039 deserialization test...
-    TMST039 Deserialization completed cleanly
+        * Zu erwartetes Ergebnis:
+        *TMST039 Deserialization started at: 2025-06-10 03:04:14
+        Starting TMST039 deserialization test...
+        TMST039 Deserialization completed cleanly
 
-    TMST039 Deserialized object details:
-    TMST039 Deserialization finished at: 2025-06-10 03:04:15
-    Envelope present: true
-    TMST039 Document present: true
-    ********************************************
-    ********************************************
-    Ergebinisse:
-    *** AppHdr ***
-        Fr-BICFI : BAMCSVSS
-        To-BICFI : BAMCSVSS
-        BizMshIdr: RespConsPago-ADClientName/(CuentaNr
-        BizSvc:    swift.cbprplus.01
-        CreDt:     2025-06-10T17:27:10-06:00
-        MsgDefIdr: TSMT.039.001.03
-    ********************************************
-    *** TMST039 Response Document            ***
-    ********************************************
-    xmlns: urn:iso:std:iso:20022:tech:xsd:tsmt.039.001.03
-    StsRptRsp present: true
-    ReqId present: true
-        Id      : PYMT-0001
-        CreDtTm : 2025-06-10T17:26:49-06:00
-    NttiesRptd present: true
-        BIC     : BAMCSVSS
-    Sts present: true
-        Cd      : ACCP
-        Rsn     : Payment found and accepted
-    ********************************************
-    *******************************************
+        TMST039 Deserialized object details:
+        TMST039 Deserialization finished at: 2025-06-10 03:04:15
+        Envelope present: true
+        TMST039 Document present: true
+        ********************************************
+        ********************************************
+        Ergebinisse:
+        *** AppHdr ***
+            Fr-BICFI : BAMCSVSS
+            To-BICFI : BAMCSVSS
+            BizMshIdr: RespConsPago-ADClientName/(CuentaNr
+            BizSvc:    swift.cbprplus.01
+            CreDt:     2025-06-10T17:27:10-06:00
+            MsgDefIdr: TSMT.039.001.03
+        ********************************************
+        *** TMST039 Response Document            ***
+        ********************************************
+        xmlns: urn:iso:std:iso:20022:tech:xsd:tsmt.039.001.03
+        StsRptRsp present: true
+        ReqId present: true
+            Id      : PYMT-0001
+            CreDtTm : 2025-06-10T17:26:49-06:00
+        NttiesRptd present: true
+            BIC     : BAMCSVSS
+        Sts present: true
+            Cd      : ACCP
+            Rsn     : Payment found and accepted
+        ********************************************
+        *******************************************
     */
-    private static void printResponseSummary(TMST039Response response) {
-        LocalDateTime now = LocalDateTime.now();
-        System.err.println("TMST039 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+    private static void collectSuccessSummary(JsonNode rootNode, StringBuffer summary) {
+        summary.append("********************************************\n");
+        summary.append("Ergebnisse der Zahlungsabfrage:\n");
+        summary.append("********************************************\n");
 
-        TMST039ResponseEnvelope envelope = response.getTmst039ResponseFile().getTMST039ResponseEnvelope();
-        System.out.println("TMST039 Envelope present: " + (envelope != null));
-        if (envelope != null) {
-                TMST039ResponseDocument document = envelope.getTMST039ResponseDocument();
-            System.out.println("TMST039 Document present: " +
-                (document != null));
-            if (document != null) {
-                System.err.println("********************************************");
-                System.err.println("********************************************");
-                System.err.println("Ergebinisse:");
-                System.err.println("*** AppHdr ***");
-                System.err.println("    Fr-BICFI : "  + envelope.getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
-                System.err.println("    To-BICFI : "  + envelope.getAppHdr().getTo().getfIId().getFinInstnId().getbICFI());
-                System.err.println("    BizMshIdr: "  + envelope.getAppHdr().getBizMsgIdr());
-                System.err.println("    BizSvc:    "  + envelope.getAppHdr().getBizSvc());
-                System.err.println("    CreDt:     "  + envelope.getAppHdr().getCreDt());
-                System.err.println("    MsgDefIdr: "  + envelope.getAppHdr().getMsgDefIdr());
-                System.err.println("********************************************");
-                System.err.println("*** TMST039 Response Document            ***");
-                System.err.println("********************************************");
-                System.out.println("xmlns: " +
-                    document.getXmlns());
-                System.out.println("StsRptRsp present: " +
-                    (document.getStsRptRsp() != null));
-                if (document.getStsRptRsp() != null) {
-                    System.out.println("ReqId present: " +
-                        (document.getStsRptRsp().getReqId() != null));
-                    if (document.getStsRptRsp().getReqId() != null) {
-                        System.out.println("    Id      : " +
-                            document.getStsRptRsp().getReqId().getId());
-                        System.out.println("    CreDtTm : " +
-                            document.getStsRptRsp().getReqId().getCreDtTm());
-                    }
-                    System.out.println("NttiesRptd present: " +
-                        (document.getStsRptRsp().getNttiesToBeRptd() != null));
-                    if (document.getStsRptRsp().getNttiesToBeRptd() != null) {
-                        System.out.println("    BIC     : " +
-                            document.getStsRptRsp().getNttiesToBeRptd().getbIC());
-                    }
-                    System.out.println("Sts present: " +
-                        (document.getStsRptRsp().getSts() != null));
-                    if (document.getStsRptRsp().getSts() != null) {
-                        System.out.println("    Cd      : " +
-                            document.getStsRptRsp().getSts().getCd());
-                        System.out.println("    Rsn     : " +
-                            document.getStsRptRsp().getSts().getRsn());
-                    }
-                }
+        // AppHdr fields
+        summary.append("Fr-BICFI: ").append(getRequiredText(rootNode, "Envelope", "AppHdr", "Fr", "FIId", "FinInstnId", "BICFI")).append("\n");
+        summary.append("To-BICFI: ").append(getRequiredText(rootNode, "Envelope", "AppHdr", "To", "FIId", "FinInstnId", "BICFI")).append("\n");
+        summary.append("BizMsgIdr: ").append(getRequiredText(rootNode, "Envelope", "AppHdr", "BizMsgIdr")).append("\n");
+        summary.append("MsgDefIdr: ").append(getRequiredText(rootNode, "Envelope", "AppHdr", "MsgDefIdr")).append("\n");
+        summary.append("BizSvc: ").append(getRequiredText(rootNode, "Envelope", "AppHdr", "BizSvc")).append("\n");
+        summary.append("CreDt: ").append(getRequiredText(rootNode, "Envelope", "AppHdr", "CreDt")).append("\n");
+        summary.append("\n");
+
+        // Document fields
+        summary.append("xmlns: ").append(getRequiredText(rootNode, "Envelope", "Document", "xmlns")).append("\n");
+        summary.append("ReqId Id: ").append(getRequiredText(rootNode, "Envelope", "Document", "StsRptRsp", "ReqId", "Id")).append("\n");
+        summary.append("ReqId CreDtTm: ").append(getRequiredText(rootNode, "Envelope", "Document", "StsRptRsp", "ReqId", "CreDtTm")).append("\n");
+        summary.append("NttiesRptd BIC: ").append(getRequiredText(rootNode, "Envelope", "Document", "StsRptRsp", "NttiesRptd", "BIC")).append("\n");
+        summary.append("Status Cd: ").append(getRequiredText(rootNode, "Envelope", "Document", "StsRptRsp", "Sts", "Cd")).append("\n");
+        summary.append("Status Rsn: ").append(getRequiredText(rootNode, "Envelope", "Document", "StsRptRsp", "Sts", "Rsn")).append("\n");
+
+        summary.append("********************************************\n");
+    }
+
+    private static void collectRejectionSummary(JsonNode documentNode, StringBuffer summary) {
+        summary.append("********************************************\n");
+        summary.append("Rejection Message Received:\n");
+        summary.append("********************************************\n");
+
+        summary.append("Reason Code: ").append(getRequiredText(documentNode, "admi.002.001.01", "Rsn", "RjctgPtyRsn")).append("\n");
+        summary.append("Description: ").append(getRequiredText(documentNode, "admi.002.001.01", "Rsn", "RsnDesc")).append("\n");
+
+        summary.append("********************************************\n");
+    }
+
+    private static void collectErrorSummary(JsonNode rootNode, StringBuffer summary) {
+        summary.append("********************************************\n");
+        summary.append("HTTP Error Response Received:\n");
+        summary.append("********************************************\n");
+
+        summary.append("HTTP Code: ").append(getRequiredText(rootNode, "httpCode")).append("\n");
+        summary.append("HTTP Message: ").append(getRequiredText(rootNode, "httpMessage")).append("\n");
+        summary.append("More Information: ").append(getRequiredText(rootNode, "moreInformation")).append("\n");
+
+        summary.append("********************************************\n");
+    }
+
+    /**
+     * Navigates a JsonNode tree using a specified path and returns the text value.
+     * Throws an exception if the path is invalid, or if the final node is not a non-empty text field.
+     *
+     * @param node The root JsonNode to start from.
+     * @param path A sequence of strings representing the path to the desired field.
+     * @return The non-empty string value of the target field.
+     * @throws IllegalArgumentException if the path is invalid or the target field is missing/empty.
+     */
+    private static String getRequiredText(JsonNode node, String... path) {
+        JsonNode currentNode = node;
+        for (String field : path) {
+            currentNode = currentNode.path(field);
+            if (currentNode.isMissingNode()) {
+                throw new IllegalArgumentException("Required JSON path is missing. Failed at segment '" + field + "' in path: " + String.join(".", path));
             }
         }
-        System.err.println("********************************************");
-        System.err.println("********************************************");
+
+        if (!currentNode.isTextual() || currentNode.asText().trim().isEmpty()) {
+            throw new IllegalArgumentException("Required JSON field is missing, not text, or empty: " + String.join(".", path));
+        }
+
+        return currentNode.asText();
     }
 }

@@ -1,0 +1,14 @@
+{
+    "File": {
+        "Envelope": {
+            "Document": {
+                "admi.002.001.01": {
+                    "Rsn": {
+                        "RjctgPtyRsn": "1010",
+                        "RsnDesc": "Numero de envio del archivo duplicado"
+                    }
+                }
+            }
+        }
+    }
+}
