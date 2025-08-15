@@ -16,6 +16,12 @@ public class EBankingConstants {
     public static final ZoneOffset PANAMA_OFFSET     = ZoneOffset.ofHours((int) EBankingConstants.TIMEZONE_SHIFT_PANAMA);
 
 	public static final StringBuffer errorMessages = new StringBuffer();
+	
+
+	public static final String SWIFTBAC     		= "BAMCSVSS";
+	public static final String TRANSFERBACTOBAC    	= "BACTOBAC";
+	public static final String TRANSFERDOM     		= "BACDOM";
+	public static final String TRANSFERINT     		= "BACINT";
 
 	public static final String ITAV 		= "ITAV";  // InterimAvailable
 	public static final String ITBD 		= "ITBD";  // InterimBooked
@@ -117,6 +123,10 @@ public class EBankingConstants {
 	public static final String ERROR_STMT_INIT                 = "Stmt initialization";
     public static final String ERROR_NTRYDTLS_INIT             = "NtryDtls initialization";
     public static final String ERROR_TXDTLS_INIT               = "TxDtls initialization";
+    
+
+    public static final String REQUEST_RECIBIDO      		   = "RCVD";
+    public static final String VALIDATIONOK		               = "OK";
 
 
 	public static final String PATTERN_BIZSVC       = "[a-z0-9]{1,10}.([a-z0-9]{1,10}.)+\\d{2}";
@@ -139,6 +149,7 @@ public class EBankingConstants {
 	public static final String PATTERN_MMBID        = "[A-Z0-9]{1,35}";
 
 	public static final String PATTERN_CURRENCY_AMT = "\\d+(\\.\\d{1,2})?";
+	public static final String PATTERN_SWIFT        = "^([A-Z]{4})([A-Z]{2})([A-Z0-9]{2})([A-Z0-9]{3})?$";
 	// Laut copilot sind folgende Eigenschaften dieses Patterns:
 	// Matches: Integers (123), one decimal (123.4), two decimals (123.45)
 	//  - Does NOT match: More than two decimals (123.456)
