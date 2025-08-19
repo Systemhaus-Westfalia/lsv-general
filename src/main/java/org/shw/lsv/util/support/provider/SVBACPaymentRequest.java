@@ -48,8 +48,11 @@ import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestBuilder;
 import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.misc.Rejection;
 import org.shw.lsv.ebanking.bac.sv.pain001.request.PAIN001Request;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfn;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnDocument;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnEnvelope;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnFile;
 import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReport;
 import org.shw.lsv.ebanking.bac.sv.process.SVBACGetToken;
@@ -179,6 +182,7 @@ public class SVBACPaymentRequest implements IDeclarationProvider {
 	
 
 	public String sendPaymentRequestBACtoBAC() throws Exception {
+		String result = "";
 		MPayment payment = new MPayment(Env.getCtx(), paymentID, getTransactionName());
 		getToken(payment);
 
@@ -186,43 +190,40 @@ public class SVBACPaymentRequest implements IDeclarationProvider {
 		this.path = registration.getParameterValue(PATH); 
 
 
-        String jsonOutput = "";
+		String jsonOutput = "";
 
-        LocalDateTime now = LocalDateTime.now();
-        System.err.println("PAIN001 serialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+		LocalDateTime now = LocalDateTime.now();
+		System.err.println("PAIN001 serialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
-        // 1. Create collector for test diagnostics
-        JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
-        collector.setPrintImmediately(true); // See errors as they happen
+		// 1. Create collector for test diagnostics
+		JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
+		collector.setPrintImmediately(true); // See errors as they happen
 
-        // 2. Build test parameters
-        RequestParams params = RequestParamsFactory.createPain001Params_BAC_to_BAC(payment);
-        
-        try {
-            // 3. Build request with test's collector
-            //PAIN001Request request = RequestBuilder.build(params, collector);  // Deprecated. Kann spaeter geloescht werden
-            PAIN001Request request = RequestBuilder.build(PAIN001Request.class, params, collector);
-            
-            // 4. Serialization test
-            JsonProcessor processor = new JsonProcessor(collector);
-            jsonOutput = processor.serialize(request);
+		// 2. Build test parameters
+		RequestParams params = RequestParamsFactory.createPain001Params_BAC_to_BAC(payment);
 
-            // 5. Print Json
-            System.out.println("\nGenerated JSON:");
-            System.out.println(jsonOutput);
-            
-            System.out.println("PAIN001 serialization succeeded without errors.\n");
-            
-            now = LocalDateTime.now();
-            System.err.println("PAIN001 serialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+		try {
+			PAIN001Request request = RequestBuilder.build(PAIN001Request.class, params, collector);
 
-        } catch (JsonValidationException e) {
-            System.err.println("PAIN001 serialization Test failed: " + e.getMessage());
-            System.err.println(e.getValidationErrors());
-            System.err.println("********************************************");
-        }
-    
-		//setNewtoken(      "AAIgNmI0NDM2MTVmN2FkZjExYjExNDlmMDNkYTFjMGYxMGalUSEOvwZOiKZcGrLJskf1oWNQg-aUYVt0iWdgdM-ooKEEij7_Y2zaD1_a_zCCb1SpyfhYMHUI8JuvpZergcBkCMhxPU0H1sQ66vg8AjunX3aVE139IIYs8IPAFXkRvLo");
+			// 4. Serialization test
+			JsonProcessor processor = new JsonProcessor(collector);
+			jsonOutput = processor.serialize(request);
+
+			// 5. Print Json
+			System.out.println("\nGenerated JSON:");
+			System.out.println(jsonOutput);
+
+			System.out.println("PAIN001 serialization succeeded without errors.\n");
+
+			now = LocalDateTime.now();
+			System.err.println("PAIN001 serialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+
+		} catch (JsonValidationException e) {
+			System.err.println("PAIN001 serialization Test failed: " + e.getMessage());
+			System.err.println(e.getValidationErrors());
+			System.err.println("********************************************");
+		}
+
 		String newTokenMan = "";
 		newTokenMan = getNewtoken();
 		Invocation.Builder invocationBuilder = getClient().target(providerHost)
@@ -249,44 +250,58 @@ public class SVBACPaymentRequest implements IDeclarationProvider {
 		}
 
 
-        // 2. Inject collector into processor
-        JsonProcessor processor = new JsonProcessor(collector);
+		JsonProcessor processor = new JsonProcessor(collector);
 		if(response.getStatus() !=200 && response.getStatus() != 201) {
 			return "";
 		}
 
 		else if (response.getStatus() ==200 ) 
-		{
-			
+		{			
+			System.out.println("Starting TMST039 deserialization test...");          
 
-			JSONObject jsonResponse = new JSONObject(output);
-            System.out.println("Starting TMST039 deserialization test...");
+			// 3. Execute deserialization
+			try {
+				PAIN001ResponseEvtNtfn responseEvt = processor.deserialize(output, PAIN001ResponseEvtNtfn.class);
+				PAIN001ResponseEvtNtfnEnvelope envelope = responseEvt.getPain001ResponseEvtNtfnFile().getPain001ResponseEnvelope();
+				PAIN001ResponseEvtNtfnDocument document = envelope.getpAIN001ResponseEvtNtfnDocument();
 
-            PAIN001ResponseEvtNtfn responseStatus = processor.deserialize(output.toString(), PAIN001ResponseEvtNtfn.class);
-            PAIN001ResponseEvtNtfnFile evtNtfnFile =     responseStatus.getPain001ResponseEvtNtfnFile();
-            String evtCd = evtNtfnFile.getPain001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtCd();
-            String evtMsg = evtNtfnFile.getPain001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtDesc();
-            payment.set_ValueOfColumn("evtCd", evtCd);
-            payment.set_ValueOfColumn("EvtDesc", evtMsg);
-            payment.saveEx();
+				if (document != null && document.getRejection() != null) {
+					Rejection rejection = document.getRejection();
+					if (rejection.getRsn() != null) {
+						payment.set_ValueOfColumn("evtCd", rejection.getRsn().getRjctgPtyRsn());
+						payment.set_ValueOfColumn("EvtDesc", rejection.getRsn().getRsnDesc());
+					} else {
 
-            // 5. Check for non-fatal warnings
-            if (collector.hasErrors()) {
-                System.out.println("\nTMST039 Deserialization succeeded with warnings:");
-                System.out.println(collector.getAllErrors());
-            } else {
-                System.out.println("TMST039 Deserialization completed cleanly");
-            }
+						payment.set_ValueOfColumn("EvtDesc", "Rejection object present but Reason (Rsn) is null.");
+					}
+				}
 
-            // 6. Use the deserialized object
-            System.out.println("\nTMST039 Deserialized object details:");        
+				else if (document != null && document.getSysEvtNtfctn() != null) {
+					collectResponseSummary(responseEvt, payment);
+				} 
+				else {
+					result = ("Deserialization successful, but response document contains neither a notification nor a rejection.");
+				}           
+
+				// 5. Check for non-fatal warnings
+				if (collector.hasErrors()) {
+					result = "TMST039 Deserialization succeeded with warnings:";
+					System.out.println(collector.getAllErrors());
+				} else {
+					result = "TMST039 Deserialization completed cleanly";
+				}
+
+
+			}catch (JsonValidationException e) {
+				result  = "\nCritical validation failures:\n" + e.getValidationErrors();
+			}
+
 		}
-
-		else{}
-		return null;
+		return result;
 	}
 	
 	public String sendPaymentRequestBACtoDOM() throws Exception {
+		String result = "";
 		MPayment payment = new MPayment(Env.getCtx(), paymentID, getTransactionName());
 		getToken(payment);
 
@@ -305,15 +320,11 @@ public class SVBACPaymentRequest implements IDeclarationProvider {
         RequestParams params = RequestParamsFactory.createPain001Params_Domestico(payment);
         
         try {
-            // 3. Build request with test's collector
-            //PAIN001Request request = RequestBuilder.build(params, collector);  // Deprecated. Kann spaeter geloescht werden
             PAIN001Request request = RequestBuilder.build(PAIN001Request.class, params, collector);
             
-            // 4. Serialization test
             JsonProcessor processor = new JsonProcessor(collector);
             jsonOutput = processor.serialize(request);
 
-            // 5. Print Json
             System.out.println("\nGenerated JSON:");
             System.out.println(jsonOutput);
             
@@ -327,8 +338,6 @@ public class SVBACPaymentRequest implements IDeclarationProvider {
             System.err.println(e.getValidationErrors());
             System.err.println("********************************************");
         }
-    
-		//setNewtoken(      "AAIgNmI0NDM2MTVmN2FkZjExYjExNDlmMDNkYTFjMGYxMGalUSEOvwZOiKZcGrLJskf1oWNQg-aUYVt0iWdgdM-ooKEEij7_Y2zaD1_a_zCCb1SpyfhYMHUI8JuvpZergcBkCMhxPU0H1sQ66vg8AjunX3aVE139IIYs8IPAFXkRvLo");
 		String newTokenMan = "";
 		newTokenMan = getNewtoken();
 		Invocation.Builder invocationBuilder = getClient().target(providerHost)
@@ -343,6 +352,7 @@ public class SVBACPaymentRequest implements IDeclarationProvider {
 				.header("X-IBM-Client-Id", "6b443615f7adf11b1149f03da1c0f10f");
 
 
+
 		System.out.println("Request: " + jsonOutput);
 		Entity<String> entity = Entity.json(jsonOutput);
 		Response response = invocationBuilder.post(entity);
@@ -355,41 +365,170 @@ public class SVBACPaymentRequest implements IDeclarationProvider {
 		}
 
 
-        // 2. Inject collector into processor
-        JsonProcessor processor = new JsonProcessor(collector);
-		JSONObject jsonResponse = new JSONObject(output);
+		JsonProcessor processor = new JsonProcessor(collector);
 		if(response.getStatus() !=200 && response.getStatus() != 201) {
 			return "";
 		}
 
 		else if (response.getStatus() ==200 ) 
-		{
-			
+		{			
+			System.out.println("Starting TMST039 deserialization test...");          
 
-            System.out.println("Starting TMST039 deserialization test...");
+			// 3. Execute deserialization
+			try {
+				PAIN001ResponseEvtNtfn responseEvt = processor.deserialize(output, PAIN001ResponseEvtNtfn.class);
+				PAIN001ResponseEvtNtfnEnvelope envelope = responseEvt.getPain001ResponseEvtNtfnFile().getPain001ResponseEnvelope();
+				PAIN001ResponseEvtNtfnDocument document = envelope.getpAIN001ResponseEvtNtfnDocument();
 
-            PAIN001ResponseEvtNtfn responseStatus = processor.deserialize(output.toString(), PAIN001ResponseEvtNtfn.class);
-            PAIN001ResponseEvtNtfnFile evtNtfnFile =     responseStatus.getPain001ResponseEvtNtfnFile();
-            String evtCd = evtNtfnFile.getPain001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtCd();
-            String evtMsg = evtNtfnFile.getPain001ResponseEnvelope().getpAIN001ResponseEvtNtfnDocument().getSysEvtNtfctn().getEvtInf().getEvtDesc();
-            payment.set_ValueOfColumn("evtCd", evtCd);
-            payment.set_ValueOfColumn("EvtDesc", evtMsg);
-            payment.saveEx();
+				if (document != null && document.getRejection() != null) {
+					Rejection rejection = document.getRejection();
+					if (rejection.getRsn() != null) {
+						payment.set_ValueOfColumn("evtCd", rejection.getRsn().getRjctgPtyRsn());
+						payment.set_ValueOfColumn("EvtDesc", rejection.getRsn().getRsnDesc());
+					} else {
 
-            // 5. Check for non-fatal warnings
-            if (collector.hasErrors()) {
-                System.out.println("\nTMST039 Deserialization succeeded with warnings:");
-                System.out.println(collector.getAllErrors());
-            } else {
-                System.out.println("TMST039 Deserialization completed cleanly");
-            }
+						payment.set_ValueOfColumn("EvtDesc", "Rejection object present but Reason (Rsn) is null.");
+					}
+				}
 
-            // 6. Use the deserialized object
-            System.out.println("\nTMST039 Deserialized object details:");        
+				else if (document != null && document.getSysEvtNtfctn() != null) {
+					collectResponseSummary(responseEvt, payment);
+				} 
+				else {
+					result = ("Deserialization successful, but response document contains neither a notification nor a rejection.");
+				}           
+
+				// 5. Check for non-fatal warnings
+				if (collector.hasErrors()) {
+					result = "TMST039 Deserialization succeeded with warnings:";
+					System.out.println(collector.getAllErrors());
+				} else {
+					result = "TMST039 Deserialization completed cleanly";
+				}
+
+
+			}catch (JsonValidationException e) {
+				result  = "\nCritical validation failures:\n" + e.getValidationErrors();
+			}
+
+		}
+		return result;
+	}
+	
+
+	public String sendPaymentRequestBACtoInt() throws Exception {
+		String result = "";
+		MPayment payment = new MPayment(Env.getCtx(), paymentID, getTransactionName());
+		getToken(payment);
+
+		this.providerHost = registration.getParameterValue(PROVIDER_HOST);
+		this.path = registration.getParameterValue(PATH); 
+        String jsonOutput = "";
+
+        LocalDateTime now = LocalDateTime.now();
+        System.err.println("PAIN001 serialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+
+        // 1. Create collector for test diagnostics
+        JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
+        collector.setPrintImmediately(true); // See errors as they happen
+
+        // 2. Build test parameters
+        RequestParams params = RequestParamsFactory.createPain001Params_Domestico(payment);
+        
+        try {
+            PAIN001Request request = RequestBuilder.build(PAIN001Request.class, params, collector);
+            
+            JsonProcessor processor = new JsonProcessor(collector);
+            jsonOutput = processor.serialize(request);
+
+            System.out.println("\nGenerated JSON:");
+            System.out.println(jsonOutput);
+            
+            System.out.println("PAIN001 serialization succeeded without errors.\n");
+            
+            now = LocalDateTime.now();
+            System.err.println("PAIN001 serialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+
+        } catch (JsonValidationException e) {
+            System.err.println("PAIN001 serialization Test failed: " + e.getMessage());
+            System.err.println(e.getValidationErrors());
+            System.err.println("********************************************");
+        }
+		String newTokenMan = "";
+		newTokenMan = getNewtoken();
+		Invocation.Builder invocationBuilder = getClient().target(providerHost)
+				.path(path)
+				//.path("api")
+				//.path("procesar-json")	
+				//.path("3pl")
+				.request(MediaType.APPLICATION_JSON)
+				.header(HttpHeaders.AUTHORIZATION, "Bearer " + newTokenMan)
+				.header(HttpHeaders.CONTENT_TYPE, "application/json")
+				.header(HttpHeaders.ACCEPT, "*/*")
+				.header("X-IBM-Client-Id", "6b443615f7adf11b1149f03da1c0f10f");
+
+
+
+		System.out.println("Request: " + jsonOutput);
+		Entity<String> entity = Entity.json(jsonOutput);
+		Response response = invocationBuilder.post(entity);
+
+
+		int status = response.getStatus();
+		String output = response.readEntity(String.class);
+		if (response.getStatus() == 403 || status == 401) {
+			return "";
 		}
 
-		else{}
-		return null;
+
+		JsonProcessor processor = new JsonProcessor(collector);
+		if(response.getStatus() !=200 && response.getStatus() != 201) {
+			return "";
+		}
+
+		else if (response.getStatus() ==200 ) 
+		{			
+			System.out.println("Starting TMST039 deserialization test...");          
+
+			// 3. Execute deserialization
+			try {
+				PAIN001ResponseEvtNtfn responseEvt = processor.deserialize(output, PAIN001ResponseEvtNtfn.class);
+				PAIN001ResponseEvtNtfnEnvelope envelope = responseEvt.getPain001ResponseEvtNtfnFile().getPain001ResponseEnvelope();
+				PAIN001ResponseEvtNtfnDocument document = envelope.getpAIN001ResponseEvtNtfnDocument();
+
+				if (document != null && document.getRejection() != null) {
+					Rejection rejection = document.getRejection();
+					if (rejection.getRsn() != null) {
+						payment.set_ValueOfColumn("evtCd", rejection.getRsn().getRjctgPtyRsn());
+						payment.set_ValueOfColumn("EvtDesc", rejection.getRsn().getRsnDesc());
+					} else {
+
+						payment.set_ValueOfColumn("EvtDesc", "Rejection object present but Reason (Rsn) is null.");
+					}
+				}
+
+				else if (document != null && document.getSysEvtNtfctn() != null) {
+					collectResponseSummary(responseEvt, payment);
+				} 
+				else {
+					result = ("Deserialization successful, but response document contains neither a notification nor a rejection.");
+				}           
+
+				// 5. Check for non-fatal warnings
+				if (collector.hasErrors()) {
+					result = "TMST039 Deserialization succeeded with warnings:";
+					System.out.println(collector.getAllErrors());
+				} else {
+					result = "TMST039 Deserialization completed cleanly";
+				}
+
+
+			}catch (JsonValidationException e) {
+				result  = "\nCritical validation failures:\n" + e.getValidationErrors();
+			}
+
+		}
+		return result;
 	}
 	
 	public String getToken(MPayment payment) {				 
@@ -452,6 +591,25 @@ public class SVBACPaymentRequest implements IDeclarationProvider {
 			return new ElectronicInvoice((MInvoice) entity);
 		}
 		return null;
+	}
+	
+	private static void collectResponseSummary(PAIN001ResponseEvtNtfn response, MPayment payment) {
+		PAIN001ResponseEvtNtfnEnvelope envelope = response.getPain001ResponseEvtNtfnFile().getPain001ResponseEnvelope();
+		if (envelope != null) {
+			PAIN001ResponseEvtNtfnDocument document = envelope.getpAIN001ResponseEvtNtfnDocument();
+			if (document != null) {
+				if (document.getSysEvtNtfctn() != null) {
+					if (document.getSysEvtNtfctn() != null)
+						if (document.getSysEvtNtfctn().getEvtInf() != null) {
+							payment.set_ValueOfColumn("evtCd", document.getSysEvtNtfctn().getEvtInf().getEvtCd());
+
+							payment.set_ValueOfColumn("EvtDesc", document.getSysEvtNtfctn().getEvtInf().getEvtDesc());
+							payment.set_ValueOfColumn("EvtTime", document.getSysEvtNtfctn().getEvtInf().getEvtTm());
+							payment.saveEx();
+						}
+				}
+			}
+		}
 	}
 	
 	

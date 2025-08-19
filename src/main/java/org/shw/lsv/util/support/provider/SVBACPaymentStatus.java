@@ -31,6 +31,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MBankAccount;
 import org.compiere.model.MClient;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MPayment;
 import org.compiere.model.PO;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.Env;
@@ -51,6 +52,9 @@ import org.shw.lsv.ebanking.bac.sv.handling.RequestParams;
 import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
 import org.shw.lsv.ebanking.bac.sv.misc.Rejection;
 import org.shw.lsv.ebanking.bac.sv.process.SVBACGetToken;
+import org.shw.lsv.ebanking.bac.sv.tmst038.request.TMST038RequestStatusReport;
+import org.shw.lsv.ebanking.bac.sv.tmst039.response.TMST039Response;
+import org.shw.lsv.ebanking.bac.sv.tmst039.response.TMST039ResponseDocument;
 import org.shw.lsv.ebanking.bac.sv.util.RequestParamsFactory;
 import org.shw.lsv.util.support.IDeclarationDocument;
 import org.shw.lsv.util.support.IDeclarationProvider;
@@ -62,7 +66,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * 	A implementation class for findex.la provider using LSV
  * 	@author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
  */
-public class SVBACBalance implements IDeclarationProvider {
+public class SVBACPaymentStatus implements IDeclarationProvider {
 	public static final int HTTP_RESPONSE_200_OK = 200;
 	public static final int HTTP_RESPONSE_201_CREATED = 201;
 	private final String PROVIDER_HOST =  "providerhost"; 
@@ -82,12 +86,12 @@ public class SVBACBalance implements IDeclarationProvider {
 	private MClient client = null;
 	private MADAppRegistration registration = null;
 	private MADAppRegistration registrationToken = null;
-	private int bankAccountID=0;
+	private int paymentID = 0;
 	private String transactionName = "";
 	
 	
 
-	public SVBACBalance() {
+	public SVBACPaymentStatus() {
 	}
 	
 	/**
@@ -137,13 +141,6 @@ public class SVBACBalance implements IDeclarationProvider {
 		return ADClientId;
 	}
 
-	public int getBankAccountID() {
-		return bankAccountID;
-	}
-
-	public void setBankAccountID(int bankAccountID) {
-		this.bankAccountID = bankAccountID;
-	}
 
 	public String getTransactionName() {
 		return transactionName;
@@ -166,6 +163,14 @@ public class SVBACBalance implements IDeclarationProvider {
 	}	
 	
 
+	public int getPaymentID() {
+		return paymentID;
+	}
+
+	public void setPaymentID(int paymentID) {
+		this.paymentID = paymentID;
+	}
+
 	public boolean isVoided() {
 		return voided;
 	}
@@ -181,10 +186,10 @@ public class SVBACBalance implements IDeclarationProvider {
 	}
 	
 
-	public String getBalance() throws Exception {
+	public String getStatus() throws Exception {
 		String result = "";
-		MBankAccount bankAccount = new MBankAccount(Env.getCtx(), bankAccountID, getTransactionName());
-		getToken();
+		MPayment payment = new MPayment(Env.getCtx(), paymentID, getTransactionName());
+		getToken(payment);
 
 		this.providerHost = registration.getParameterValue(PROVIDER_HOST);
 		this.path = registration.getParameterValue(PATH); 
@@ -199,12 +204,12 @@ public class SVBACBalance implements IDeclarationProvider {
 		collector.setPrintImmediately(true); // See errors as they happen
 
 		// 2. Build test parameters
-		RequestParams params = RequestParamsFactory.createCamt052Params(bankAccount);
+		RequestParams params = RequestParamsFactory.createTmst038StatusReportParams(payment);
 
 		try {
 			// 3. Build request with test's collector
 			// CAMT052Request request = RequestBuilder.build(params, collector);  // Deprecated. Kann spaeter geloescht werden
-			CAMT052Request request = RequestBuilder.build(CAMT052Request.class, params, collector);
+            TMST038RequestStatusReport request = RequestBuilder.build(TMST038RequestStatusReport.class, params, collector);
 
 			// 4. Serialization test
 			JsonProcessor processor = new JsonProcessor(collector);
@@ -214,10 +219,10 @@ public class SVBACBalance implements IDeclarationProvider {
 			System.out.println("\nGenerated JSON:");
 			System.out.println(jsonOutput);
 
-			System.out.println("CAMT052 serialization succeeded without errors.\n");
+			System.out.println("TMST038RequestStatusReport serialization succeeded without errors.\n");
 
 			now = LocalDateTime.now();
-			System.err.println("CAMT052 serialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+			System.err.println("TMST038RequestStatusReport serialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
 
 		} catch (JsonValidationException e) {
 			System.err.println("CAMT052 serialization Test failed: " + e.getMessage());
@@ -263,42 +268,42 @@ public class SVBACBalance implements IDeclarationProvider {
 		{
 			StringBuffer log = new StringBuffer();
 
-            CAMT052Response  camt052Response= processor.deserialize(jsonResponse.toString(), CAMT052Response.class);
+			TMST039Response  tmst039Response    = processor.deserialize(jsonResponse.toString(), TMST039Response.class);
             
-            CAMT052ResponseDocument document = camt052Response.getcAMT052ResponseFile().getcAMT052ResponseEnvelope().getcAMT052ResponseDocument();
-            if (document != null && document.getRejection() != null) {
-                log.append("\n--- Begin of Rejection Summary ---");
-                Rejection rejection = document.getRejection();
-                if (rejection.getRsn() != null) {
-                    log.append("\nRejection Message Received:");
-                    log.append("\nReason Code: ").append(rejection.getRsn().getRjctgPtyRsn());
-                    log.append("\nDescription: ").append(rejection.getRsn().getRsnDesc());
-                    result = log.toString();
-                } else {
-                    log.append("\nRejection object present but Reason (Rsn) is null.");
-                    result = log.toString();
-                }
-                log.append("\n--- End of Rejection Summary ---\n");
-            } else if (document != null && document.getBkToCstmrAcctRpt() != null) {
-                log.append("\n--- Begin of Response Summary ---");
-                collectResponseSummary(camt052Response, log, bankAccount);
-                log.append("\n--- End of Response Summary ---\n");
-                result = log.toString();
-            } else {
-                log.append("\n\nDeserialization successful, but response document contains neither a report nor a rejection.");
-            }
+			TMST039ResponseDocument document = tmst039Response.getTmst039ResponseFile().getTMST039ResponseEnvelope().getTMST039ResponseDocument();
+            //if (document != null && document.getStsRptRsp().get  != null) {
+             //   log.append("\n--- Begin of Rejection Summary ---");
+             //   Rejection rejection = document.getRejection();
+             //   if (rejection.getRsn() != null) {
+             //       log.append("\nRejection Message Received:");
+             //       log.append("\nReason Code: ").append(rejection.getRsn().getRjctgPtyRsn());
+             //       log.append("\nDescription: ").append(rejection.getRsn().getRsnDesc());
+              //      result = log.toString();
+              //  } else {
+              //      log.append("\nRejection object present but Reason (Rsn) is null.");
+              //      result = log.toString();
+             //   }
+             //   log.append("\n--- End of Rejection Summary ---\n");
+           // } else if (document != null && document.getBkToCstmrAcctRpt() != null) {
+             //   log.append("\n--- Begin of Response Summary ---");
+            //    collectResponseSummary(camt052Response, log, bankAccount);
+            //    log.append("\n--- End of Response Summary ---\n");
+            //    result = log.toString();
+           // } else {
+           //     log.append("\n\nDeserialization successful, but response document contains neither a report nor a rejection.");
+           // }
             		}
 
-		else{}
+		//else{}
 		return result;
 	}
 	
-	public String getToken() {				 
+	public String getToken(MPayment payment) {				 
 		ProcessInfo  processInfo =
 				ProcessBuilder.create(Env.getCtx())
 				.process(SVBACGetToken.getProcessId())
 				.withTitle(SVBACGetToken.getProcessName())
-				.withRecordId(MBankAccount.Table_ID, bankAccountID)
+				.withRecordId(MBankAccount.Table_ID, payment.getC_BankAccount_ID())
 				.withoutTransactionClose()
 				.execute(getTransactionName()); 
 		String result = processInfo.getSummary();

@@ -297,14 +297,16 @@ public final class RequestParamsFactory {
      * Creates RequestParams for a TSMT.038 (Status Report) request.
      * @return A fully configured RequestParams object for a TSMT.038 Status Report test.
      */
-    public static RequestParams createTmst038StatusReportParams() {
-        String BIC_SISTEMAS_AEREOS = "AMERICA3PLX";
-        String BIC_BAC_EL_SALVADOR = "BAMCSVSS";
+    public static RequestParams createTmst038StatusReportParams(MPayment payment) {
+    	MBankAccount bankAccount = (MBankAccount)payment.getC_BankAccount();
+    	MBank bank = (MBank)bankAccount.getC_Bank();
+        String BIC_SISTEMAS_AEREOS   = bank.get_ValueAsString("BIC_SISTEMAS_AEREOS");
+        String BIC_BAC_EL_SALVADOR   = bank.getSwiftCode();
         String PYMT_MESSAGE_ID     = "PYMT-DOMESTICO-2025-08-09-43904";
         String MSGDEFIDR           = "TSMT.038.001.03";
-        String BIZSVC              = "swift.cbprplus.01";
+        String BIZSVC                = bank.get_ValueAsString("BIZSVC");
         String XMLNS               = "urn:iso:std:iso:20022:tech:xsd:tsmt.038.001.03";
-        String PYMT_DOCUMENT_ID    = "PYMT-0001";
+        String PYMT_DOCUMENT_ID    = payment.getDocumentNo();
 
         String currentTimestamp = TestDateUtils.getCurrentApiTimestamp();
 
@@ -353,15 +355,17 @@ public final class RequestParamsFactory {
      * @param pageNumber The page number for pagination.
      * @return A fully configured RequestParams object for a CAMT.053 test.
      */
-    public static RequestParams createCamt053Params(Integer pageNumber) {
-        String BIC_SISTEMAS_AEREOS      = "AMERICA3PLX";
-        String BIC_BAC_EL_SALVADOR      = "BAMCSVSS";
+    public static RequestParams createCamt053Params(Integer pageNumber, MBankAccount bankAccount) {
+    	MBank  bank = bankAccount.getBank();
+        String BIC_SISTEMAS_AEREOS 		= bank.get_ValueAsString("BIC_SISTEMAS_AEREOS"); //"AMERICA3PLX"; // BIC of Company	
+        String BIC_BAC_EL_SALVADOR 		= bank.getSwiftCode(); //"BAMCSVSS"; // BIC of BAC EL Salvador
         String ESTADO_CUENTA_MESSAGE_ID = "EdC-ADClientName/(CuentaNr)";
-        String MSGDEFIDR                = "camt.060.001.05";
-        String BIZSVC                   = "swift.cbprplus.01";
-        String XMLNS                    = "urn:iso:std:iso:20022:tech:xsd:camt.060.001.05";
-        String BAC_ACCOUNT_ID           = "200268472";
-        String CURRENCY                 = "USD";
+        String MSGDEFIDR           		= bank.get_ValueAsString("MSGDEFIDR");//camt.060.001.05";
+        String REQDMSGNMID              = "camt.053.001.08";
+        String BIZSVC              		= bank.get_ValueAsString("BIZSVC"); //"swift.cbprplus.01";
+        String XMLNS                    = bank.get_ValueAsString("XMLNS"); //"urn:iso:std:iso:20022:tech:xsd:camt.060.001.05";
+        String BAC_ACCOUNT_ID           = bankAccount.getAccountNo();
+        String CURRENCY                 = bankAccount.getC_Currency().getISO_Code();
         String TP                       = EBankingConstants.PATTERN_TP;
 
         String currentTimestamp         = TestDateUtils.getCurrentApiTimestamp();
@@ -378,12 +382,10 @@ public final class RequestParamsFactory {
             .setXmlns(         XMLNS)
             .setMsgId(         ESTADO_CUENTA_MESSAGE_ID  + "-Grp-" + pageNumber.toString())
             .setCreDtTm(       currentTimestamp)
-            .setReqdMsgNmId(   ESTADO_CUENTA_MESSAGE_ID  + "-Doc-" + pageNumber.toString())
+            .setReqdMsgNmId(   REQDMSGNMID)
             .setAcctId(        BAC_ACCOUNT_ID)
             .setBicfiAcctOwnr( BIC_SISTEMAS_AEREOS)
             .setCcy(           CURRENCY)
-            .setFrdt(          previousMonthStartDate)
-            .setTodt(          previousMonthEndDate)
             .setTp(            TP)
             .setEqseq(         pageNumber.toString());
     }
