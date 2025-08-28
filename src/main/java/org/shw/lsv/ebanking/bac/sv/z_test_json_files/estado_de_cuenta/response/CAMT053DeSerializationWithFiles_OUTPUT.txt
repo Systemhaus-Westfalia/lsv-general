@@ -1,27 +1,29 @@
 
---- Begin of Response Summary ---CAMT053 Envelope present: true
+--- Begin of Response Summary ---
+CAMT052 Envelope present: true
+CAMT052 Document present: trueCAMT053 Envelope present: true
 CAMT053 Document present: true
 ********************************************
 Ergebnisse:
 *** AppHdr ***
     Fr-BICFI : BAMCSVSS
     To-BICFI : AMERICA3PLX
-    BizMsgIdr: 3898263
+    BizMsgIdr: 4268225
     MsgDefIdr: camt.053.001.08
     BizSvc:    swift.cbprplus.02
-    CreDt:     2025-08-13T01:16:02-06:00
+    CreDt:     2025-08-20T00:39:57-06:00
 ********************************************
 ******** CAMT053 Response Document ********
 ********************************************
-    MsgId:     3898263
-    CreDtTm:   2025-08-13T01:16:02-06:00
+    MsgId:     4268225
+    CreDtTm:   2025-08-20T00:39:57-06:00
 ************* Stmt ***********************
-    Id:             3898263202508130116029501
+    Id:             4268225202508200039573628
     StmtPgntn-PgNb: 1
     StmtPgntn-Last: true
-    ElctrncSeqNb:   813
+    ElctrncSeqNb:   820
     FrToDt-FrDtTm:  2025-07-01T00:00:00+00:00
-    FrToDt-ToDtTm:  2025-08-12T23:59:59+00:00
+    FrToDt-ToDtTm:  2025-08-19T23:59:59+00:00
     Acct-Id:        200268472
     Acct-Ccy:       USD
 *** Balances ***
@@ -34,9 +36,9 @@ Ergebnisse:
       Balance[1]:
         Tp-Cd:       CLBD
         CdtDbtInd:   DBIT
-        Dt:          2025-08-12
+        Dt:          2025-08-19
         Amt-Ccy:     USD
-        Amt-Amt:     555557573.38
+        Amt-Amt:     555594432.16
 ********  StmtOfAccountElements  ***********
       Ntry[0]:
         NtryRef:        104887
@@ -73,6 +75,40 @@ Ergebnisse:
             Amt:             11.02
             CdtDbtInd:       DBIT
       Ntry[2]:
+        NtryRef:        105173
+        Amt-Ccy:        USD
+        Amt-Amt:        7.39
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-13
+        ValDt-Dt:       2025-08-13
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Tef DCD  a ASESUISA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-BAC-TO-BAC-
+            Amt:             7.39
+            CdtDbtInd:       DBIT
+      Ntry[3]:
+        NtryRef:        105172
+        Amt-Ccy:        USD
+        Amt-Amt:        7.39
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-13
+        ValDt-Dt:       2025-08-13
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Tef DCD  a ASESUISA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-BAC-TO-BAC-
+            Amt:             7.39
+            CdtDbtInd:       DBIT
+      Ntry[4]:
         NtryRef:        103967
         Amt-Ccy:        USD
         Amt-Amt:        17
@@ -89,7 +125,24 @@ Ergebnisse:
             Refs-EndToEndId: PAGO-BAC-000001
             Amt:             17
             CdtDbtInd:       DBIT
-      Ntry[3]:
+      Ntry[5]:
+        NtryRef:        105282
+        Amt-Ccy:        USD
+        Amt-Amt:        9206.4
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-14
+        ValDt-Dt:       2025-08-14
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   0199ASESUISA 1145331
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-DOMESTICO-2
+            Amt:             9206.4
+            CdtDbtInd:       DBIT
+      Ntry[6]:
         NtryRef:        7509
         Amt-Ccy:        USD
         Amt-Amt:        931
@@ -106,7 +159,7 @@ Ergebnisse:
             Refs-EndToEndId: PAGO-INT-000002
             Amt:             931
             CdtDbtInd:       DBIT
-      Ntry[4]:
+      Ntry[7]:
         NtryRef:        104536
         Amt-Ccy:        USD
         Amt-Amt:        22.44
@@ -123,7 +176,24 @@ Ergebnisse:
             Refs-EndToEndId: PYMT-DOMESTICO-2
             Amt:             22.44
             CdtDbtInd:       DBIT
-      Ntry[5]:
+      Ntry[8]:
+        NtryRef:        105280
+        Amt-Ccy:        USD
+        Amt-Amt:        9206.4
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-14
+        ValDt-Dt:       2025-08-14
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Tef DCD  a ASESUISA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-BAC-TO-BAC-
+            Amt:             9206.4
+            CdtDbtInd:       DBIT
+      Ntry[9]:
         NtryRef:        7542
         Amt-Ccy:        USD
         Amt-Amt:        32.76
@@ -140,7 +210,7 @@ Ergebnisse:
             Refs-EndToEndId: PYMT-INTERNACION
             Amt:             32.76
             CdtDbtInd:       DBIT
-      Ntry[6]:
+      Ntry[10]:
         NtryRef:        104949
         Amt-Ccy:        USD
         Amt-Amt:        11.01
@@ -157,7 +227,24 @@ Ergebnisse:
             Refs-EndToEndId: PYMT-DOMESTICO-2
             Amt:             11.01
             CdtDbtInd:       DBIT
-      Ntry[7]:
+      Ntry[11]:
+        NtryRef:        105232
+        Amt-Ccy:        USD
+        Amt-Amt:        11.01
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-14
+        ValDt-Dt:       2025-08-14
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Empresa SA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-DOMESTICO-2
+            Amt:             11.01
+            CdtDbtInd:       DBIT
+      Ntry[12]:
         NtryRef:        104950
         Amt-Ccy:        USD
         Amt-Amt:        11.03
@@ -174,7 +261,7 @@ Ergebnisse:
             Refs-EndToEndId: PYMT-BAC-TO-BAC-
             Amt:             11.03
             CdtDbtInd:       DBIT
-      Ntry[8]:
+      Ntry[13]:
         NtryRef:        103968
         Amt-Ccy:        USD
         Amt-Amt:        460
@@ -191,7 +278,7 @@ Ergebnisse:
             Refs-EndToEndId: PAGO-DOMESTICO-0
             Amt:             460
             CdtDbtInd:       DBIT
-      Ntry[9]:
+      Ntry[14]:
         NtryRef:        103841
         Amt-Ccy:        USD
         Amt-Amt:        460
@@ -208,7 +295,58 @@ Ergebnisse:
             Refs-EndToEndId: TEF ACH/SINPE/DO
             Amt:             460
             CdtDbtInd:       DBIT
-      Ntry[10]:
+      Ntry[15]:
+        NtryRef:        105281
+        Amt-Ccy:        USD
+        Amt-Amt:        9206.4
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-14
+        ValDt-Dt:       2025-08-14
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Tef DCD  a ASESUISA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-BAC-TO-BAC-
+            Amt:             9206.4
+            CdtDbtInd:       DBIT
+      Ntry[16]:
+        NtryRef:        105174
+        Amt-Ccy:        USD
+        Amt-Amt:        7.39
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-13
+        ValDt-Dt:       2025-08-13
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Tef DCD  a ASESUISA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-BAC-TO-BAC-
+            Amt:             7.39
+            CdtDbtInd:       DBIT
+      Ntry[17]:
+        NtryRef:        105284
+        Amt-Ccy:        USD
+        Amt-Amt:        9206.4
+        CdtDbtInd:      DBIT
+        Sts-Cd:         BOOK
+        BookgDt-Dt:     2025-08-14
+        ValDt-Dt:       2025-08-14
+        BkTxCd-Domn-Cd: NTRF
+        BkTxCd-Fmly-Cd: NTAV
+        BkTxCd-SubFmly: NTAV
+        AddtlNtryInf:   Tef DCD  a ASESUISA
+        NtryDtls[0]:
+          TxDtls:
+            Refs-EndToEndId: PYMT-BAC-TO-BAC-
+            Amt:             9206.4
+            CdtDbtInd:       DBIT
+      Ntry[18]:
         NtryRef:        104531
         Amt-Ccy:        USD
         Amt-Amt:        31.87
@@ -225,7 +363,7 @@ Ergebnisse:
             Refs-EndToEndId: PYMT-DOMESTICO-2
             Amt:             31.87
             CdtDbtInd:       DBIT
-      Ntry[11]:
+      Ntry[19]:
         NtryRef:        104530
         Amt-Ccy:        USD
         Amt-Amt:        21.87
@@ -243,5 +381,3 @@ Ergebnisse:
             Amt:             21.87
             CdtDbtInd:       DBIT
 ********************************************
-
---- End of Response Summary ---

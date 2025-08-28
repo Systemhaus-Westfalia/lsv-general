@@ -438,9 +438,9 @@ public class SVBACStatmentOfAccount implements IDeclarationProvider {
                             String debcred = entry.getCdtDbtInd();
                             BigDecimal multiplier = Env.ONE;
                             if (debcred.equals(EBankingConstants.DBIT))
-                            	multiplier.negate();
+                            	multiplier = multiplier.negate();
                         	impbankStatement.setStmtAmt(amt.multiply(multiplier));
-                        	impbankStatement.setTrxAmt(amt);
+                        	impbankStatement.setTrxAmt(amt.multiply(multiplier));
                         	String bookgDt = (entry.getBookgDt() != null) ? entry.getBookgDt().getDt() : "N/A";
                         	if (bookgDt.equals("\"N/A\""))
                             	return "error";
