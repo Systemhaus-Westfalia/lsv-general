@@ -93,9 +93,9 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 		System.out.println("Process EInvoiceGenerateAndPost: started with Client '" + client.getName() + "', ID: " + getClientId());
 		registration = new Query(getCtx(), MADAppRegistration.Table_Name, "EXISTS(SELECT 1 FROM AD_AppSupport s "
 				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
-				+ "AND s.ApplicationType = ?"
-				+ "AND s.IsActive = 'Y'"
-				+ "AND s.Classname = ?)", get_TrxName())
+				+ "AND s.ApplicationType = ? "
+				+ "AND s.IsActive = 'Y' "
+				+ "AND s.Classname = ?) ", get_TrxName())
 				.setParameters(applicationType, SVMinHacienda.class.getName())
 				.<MADAppRegistration>first();
 

@@ -18,16 +18,20 @@
 
 package org.shw.lsv.einvoice.process;
 
+import java.sql.Timestamp;
+
 import org.compiere.model.MClient;
+import org.compiere.model.MInvoice;
 import org.compiere.model.Query;
-import org.shw.lsv.util.support.provider.SVMinHaciendaToken;
+import org.compiere.util.Env;
+import org.shw.lsv.util.support.provider.SVMinHacienda;
 import org.spin.model.MADAppRegistration;
 
-/** Generated Process for (EInvoiceGetToken)
+/** Generated Process for (EInvoiceContingencia)
  *  @author ADempiere (generated) 
  *  @version Release 3.9.4
  */
-public class EInvoiceGetToken extends EInvoiceGetTokenAbstract
+public class EInvoiceContingencia extends EInvoiceContingenciaAbstract
 {
 	@Override
 	protected void prepare()
@@ -41,41 +45,38 @@ public class EInvoiceGetToken extends EInvoiceGetTokenAbstract
 
 
 		StringBuffer errorMessages = new StringBuffer();
+		int noCompletados = 0;
 		String applicationType = IGenerateAndPost.getApplicationType();
 		MADAppRegistration registration = null;
+		Timestamp startdate = null;
 		String errorMessage= "";
-		registration = new Query(getCtx(), MADAppRegistration.Table_Name, " AD_Client_ID=? AND EXISTS(SELECT 1 FROM AD_AppSupport s "
+		MClient client = new MClient(getCtx(),Env.getAD_Client_ID(getCtx()), get_TrxName());
+
+		startdate = (Timestamp)(client.get_Value("ei_Startdate"));
+		System.out.println("\n" + "******************************************************");
+		System.out.println("Process EInvoiceGenerateAndPost: started with Client '" + client.getName() + "', ID: " + client.getAD_Client_ID());
+		registration = new Query(getCtx(), MADAppRegistration.Table_Name, "EXISTS(SELECT 1 FROM AD_AppSupport s "
 				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
 				+ "AND s.ApplicationType = ? "
-				+ "AND s.IsActive = 'Y'"
-				+ "AND s.Classname = ?)", get_TrxName())
-				.setParameters(getClientId(),  applicationType, SVMinHaciendaToken.class.getName())
+				+ "AND s.IsActive = 'Y' "
+				+ "AND s.Classname = ?) ", get_TrxName())
+				.setParameters(applicationType, SVMinHacienda.class.getName())
 				.<MADAppRegistration>first();
 
 		if(registration==null) {
-			errorMessage = "Process GenerateToken : no registration for Application Type " + applicationType;
+			errorMessage = "Process EInvoiceGenerateAndPost : no registration for Application Type " + applicationType;
 			errorMessages.append(errorMessage);
 			System.out.println(errorMessage);
 			return errorMessage.toString();
 		}
-
-		SVMinHaciendaToken sv_minhaciendaToken = new SVMinHaciendaToken();
-		MClient client = new MClient(getCtx(), getClientId(), get_TrxName());
-		sv_minhaciendaToken.setAD_Client(client);
-		sv_minhaciendaToken.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
-		
-		try {
-			errorMessage = sv_minhaciendaToken.publishDocument(null);
-		} catch (Exception e) {
-			String error = "Error al procesar documento #" + " " + e;
-			System.out.println(error);
-		}
-		finally {
-		}
-		System.out.println("Token Generado"); 
-
-
-
-		return errorMessage;
+		MInvoice invoice = new MInvoice(getCtx(), getInvoiceId(), get_TrxName());
+		invoice.set_ValueOfColumn("isContingencia", true);
+		invoice.saveEx();
+		SVMinHacienda sv_minhacienda = new SVMinHacienda();
+		sv_minhacienda.setVoided(false);
+		sv_minhacienda.setADClientID(client.getAD_Client_ID());
+		sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID());
+		sv_minhacienda.publishDocument(invoice);
+		return "";
 	}
 }

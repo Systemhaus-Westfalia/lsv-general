@@ -23,6 +23,7 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MOrgInfo;
 import org.compiere.util.Env;
 import org.shw.lsv.einvoice.factory.AnulacionFactory;
+import org.shw.lsv.einvoice.factory.ContingenciaFactory;
 import org.shw.lsv.einvoice.factory.CreditoFiscalFactory;
 import org.shw.lsv.einvoice.factory.FacturaExportacionFactory;
 import org.shw.lsv.einvoice.factory.FacturaFactory;
@@ -71,7 +72,8 @@ public class ElectronicInvoice implements IDeclarationDocument {
 				
 		boolean existsWithholding = false;	
 
-		boolean isContingencia = true;
+		boolean isContingencia = false;
+		isContingencia = invoice.get_ValueAsBoolean("isContingencia");
 		client = new MClient(invoice.getCtx(), invoice.getAD_Client_ID(), invoice.get_TrxName());
 		int orgID = invoice.getAD_Org_ID();		
 		orgInfo= MOrgInfo.get(invoice.getCtx(), orgID, invoice.get_TrxName());
@@ -151,7 +153,10 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		} else if (existsWithholding) {
 			documentFactory = new RetencionFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Retencion'");
-		} else if (e_DocType.getValue().equals("03")) {		//Credito Fiscal
+		} else if (isContingencia) {
+			documentFactory = new ContingenciaFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
+			System.out.println("Se procesa el tipo de documento 'Retencion'");
+		}else if (e_DocType.getValue().equals("03")) {		//Credito Fiscal
 			documentFactory = new CreditoFiscalFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Credito Fiscal'");
 		} else if (e_DocType.getValue().equals("05")) {		//Nota de Credito
