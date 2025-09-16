@@ -441,7 +441,6 @@ public class FacturaFactory extends EDocumentFactory {
 			BigDecimal ventaGravada 	= Env.ZERO;
 			BigDecimal ventaNoGravada 	= Env.ZERO;
 			BigDecimal ivaItem 			= Env.ZERO;
-			String codTributo 			= "";
 			String codigo = invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue()
 					: invoiceLine.getC_Charge().getName().substring(0,3);
 			boolean isventaNoGravada = (invoiceLine.getC_Tax().getTaxIndicator().equals("NSUJ") && 
@@ -480,7 +479,7 @@ public class FacturaFactory extends EDocumentFactory {
 				description = description.substring(0, 998);
                 
 			jsonCuerpoDocumentoItem.put(Factura.NUMITEM, i);
-			jsonCuerpoDocumentoItem.put(Factura.TIPOITEM, Factura.TIPOITEM_ALL);
+			jsonCuerpoDocumentoItem.put(Factura.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));
 			//jsonCuerpoDocumentoItem.put(Factura.NUMERODOCUMENTO, getNumeroControl(invoice.get_ID(), orgInfo, "DTE-01-"));
 			jsonCuerpoDocumentoItem.put(Factura.CANTIDAD, invoiceLine.getQtyEntered());
 			jsonCuerpoDocumentoItem.put(Factura.CODIGO, codigo);

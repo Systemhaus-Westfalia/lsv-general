@@ -452,7 +452,7 @@ public class NotaDeDebitoFactory extends EDocumentFactory {
             			refInvoice.getDocumentNo();  
                 
 			jsonCuerpoDocumentoItem.put(NotaDeDebito.NUMITEM, invoiceLine.getLine()/10);
-			jsonCuerpoDocumentoItem.put(NotaDeDebito.TIPOITEM, 2);
+			jsonCuerpoDocumentoItem.put(NotaDeDebito.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));
 			jsonCuerpoDocumentoItem.put(NotaDeDebito.NUMERODOCUMENTO, numerodocumentno);
 			jsonCuerpoDocumentoItem.put(NotaDeDebito.CANTIDAD, invoiceLine.getQtyInvoiced());
 			jsonCuerpoDocumentoItem.put(NotaDeDebito.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());

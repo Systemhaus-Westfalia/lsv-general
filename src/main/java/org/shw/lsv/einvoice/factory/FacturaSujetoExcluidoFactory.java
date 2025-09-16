@@ -416,7 +416,6 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			String name = invoiceLine.getC_Charge_ID() >0? invoiceLine.getC_Charge().getName():invoiceLine.getM_Product().getName();
 			BigDecimal precioUnitario = invoiceLine.getPriceActual();
 			BigDecimal compra = invoiceLine.getLineTotalAmt();
-			MTax tax = null;
 			
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();

@@ -331,7 +331,6 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 				.setParameters(invoice.getC_Invoice_ID())
 				.list();
 		BigDecimal totalNoGravada = Env.ZERO;
-		BigDecimal totalNoSuj = Env.ZERO;
 		for (MInvoiceTax invoiceTax:invoiceTaxes) {
 			
 				//totalGravada = invoiceTax.getTaxBaseAmt();
@@ -389,14 +388,11 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		System.out.println("Start collecting JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo());
 		JSONObject jsonCuerpoDocumento = new JSONObject();
 		JSONArray jsonCuerpoDocumentoArray = new JSONArray();
-		int i=0;
 		for (MInvoiceLine invoiceLine:invoice.getLines()) { 
 			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() );
-			i++;
 			BigDecimal ventaGravada = Env.ZERO;
 			BigDecimal ventaNoGravada = Env.ZERO;
 			BigDecimal precioUnitario = Env.ZERO;
-			MTax tax = null;
 			boolean isVentanoGravada = (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_NSUJ) && 
 					invoiceLine.getC_Charge_ID() > 0 
 					&& invoiceLine.getC_Charge().getC_ChargeType().getValue().equals(CHARGETYPE_CTAJ))?true:false;
@@ -417,7 +413,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
                 
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.NUMITEM, i);
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.NUMITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.CANTIDAD, invoiceLine.getQtyEntered());
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
 			

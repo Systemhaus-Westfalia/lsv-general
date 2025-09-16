@@ -28,6 +28,7 @@ import org.adempiere.core.domains.models.X_E_DocType;
 import org.adempiere.core.domains.models.X_E_Duties;
 import org.adempiere.core.domains.models.X_E_Enviroment;
 import org.adempiere.core.domains.models.X_E_PlantType;
+import org.adempiere.core.domains.models.X_E_ProductType;
 import org.adempiere.core.domains.models.X_E_Recipient_Identification;
 import org.adempiere.core.domains.models.X_E_TimeSpan;
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +43,7 @@ import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPOS;
 import org.compiere.model.MPaymentTerm;
+import org.compiere.model.MProduct;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
@@ -79,6 +81,7 @@ public abstract class EDocumentFactory {
 	public static String CUERPODOCUMENTO_VENTAGRAVADA				= "ventagravada";
 	public static String CUERPODOCUMENTO_VENTANOGRAVADA				= "cuentaajena";
 	public static String CUERPODOCUMENTO_PRODUCTVALUE				= "productvalue";
+	public static String CUERPODOCUMENTO_PRODUCTID				    = "M_Product_ID";
 	public static String CUERPODOCUMENTO_PRODUCTNAME				= "name";
 	public static String CUERPODOCUMENTO_PRICEACTUAL				= "priceactual";
 	public static String CUERPODOCUMENTO_QTYINVOICED				= "qtyinvoiced";
@@ -404,6 +407,28 @@ public abstract class EDocumentFactory {
 		MInvoiceLine refInvoiceLine = new MInvoiceLine(Env.getCtx(), invoiceLine.get_ValueAsInt("Ref_InvoiceLine_ID"), null);
 		MInvoice invoice = (MInvoice)refInvoiceLine.getC_Invoice();
 		return invoice;
+	}
+	
+
+
+	public int invoiceLineProductType(int productID){
+		int itemtype = 1;
+		if (productID==0) {
+			itemtype = 2;	
+			return itemtype;
+		}
+		MProduct product = new MProduct(contextProperties, productID, trxName);
+
+		try {
+			X_E_ProductType productType = new X_E_ProductType(contextProperties, product.get_ValueAsInt("E_ProductType_ID"), trxName);
+			itemtype = Integer.parseInt(productType.getValue());
+		}
+		catch (NumberFormatException e) {
+			itemtype = 1;
+			return itemtype;
+		}
+		return itemtype;
+		
 	}
 
 	public String createNumeroControl(MInvoice invoice, MClient client) {

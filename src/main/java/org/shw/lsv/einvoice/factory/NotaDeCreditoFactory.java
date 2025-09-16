@@ -465,7 +465,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
             		invoice_ei_codigoGeneracion(refInvoice)
             			;  
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMITEM, i);
-			jsonCuerpoDocumentoItem.put(NotaDeCredito.TIPOITEM, NotaDeCredito.TIPOITEM_ALL);
+			jsonCuerpoDocumentoItem.put(NotaDeCredito.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));;
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMERODOCUMENTO, numerodocumentno);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CANTIDAD, invoiceLine.getQtyInvoiced());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
