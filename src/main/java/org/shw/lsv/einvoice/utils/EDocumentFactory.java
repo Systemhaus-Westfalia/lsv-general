@@ -75,7 +75,7 @@ public abstract class EDocumentFactory {
 	public static String sqlApendice 				= "SELECT (description) as invoiceinfo FROM shw_c_invoice_header_vt i"
 														+ " WHERE AD_LANGUAGE = 'es_SV' AND C_Invoice_ID=?";
 	
-	public static int	lineNo 										= 50;
+	public static int	lineNo 										= 100;
 	public static String CUERPODOCUMENTO_VENTANOSUJETO				= "ventanosuj";
 	public static String CUERPODOCUMENTO_VENTAEXENTA				= "ventaex";
 	public static String CUERPODOCUMENTO_VENTAGRAVADA				= "ventagravada";
