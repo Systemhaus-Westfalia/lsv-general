@@ -133,8 +133,8 @@ public class ContingenciaFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(Contingencia.TELEFONO, client.get_ValueAsString("phone"));
 		jsonObjectEmisor.put(Contingencia.CORREO, client_getEmail(client));
 
-		jsonObjectEmisor.put(Contingencia.NUMDOCRESPONSABLE, orgInfo.getTaxID().replace("-", ""));	
-		jsonObjectEmisor.put(Contingencia.NOMBRERESPONSABLE, "SCalderon");		
+		jsonObjectEmisor.put(Contingencia.NUMDOCRESPONSABLE, orgInfo.getSupervisor().getC_BPartner().getTaxID().replace("-", ""));
+		jsonObjectEmisor.put(Contingencia.NOMBRERESPONSABLE, orgInfo.getSupervisor().getC_BPartner().getName());		
 		jsonObjectEmisor.put(Contingencia.TIPDOCRESPONSABLE, "36");		// TODO: korrekte Daten einsetzen
 
 		System.out.println("Factura: end collecting JSON data for Emisor");
@@ -171,7 +171,7 @@ public class ContingenciaFactory extends EDocumentFactory {
 		MUser user = new MUser(contextProperties, invoice.getCreatedBy(), trxName);
 		
 		JSONObject jsonObjectMotivo = new JSONObject();
-		int contingenciatypeID = Env.getContextAsInt(Env.getCtx(), "@E_Contingency_ID@");
+		int contingenciatypeID = Env.getContextAsInt(Env.getCtx(), "param_E_Contingency_ID");
 		X_E_Contingency contingency = new X_E_Contingency(contextProperties, contingenciatypeID, null);
 		jsonObjectMotivo.put(Contingencia.TIPOCONTINGENCIA, contingency.getValue());		
 

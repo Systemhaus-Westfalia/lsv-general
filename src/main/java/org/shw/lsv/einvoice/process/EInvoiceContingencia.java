@@ -76,6 +76,8 @@ public class EInvoiceContingencia extends EInvoiceContingenciaAbstract
 		sv_minhacienda.setVoided(false);
 		sv_minhacienda.setADClientID(client.getAD_Client_ID());
 		sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID());
+
+		Env.setContext(getCtx(), "param_E_Contingency_ID", getContingencyId());
 		sv_minhacienda.publishDocument(invoice);
 		return "";
 	}

@@ -33,12 +33,17 @@ public abstract class EInvoiceContingenciaAbstract extends SvrProcess {
 	private static final int ID_FOR_PROCESS = 1000110;
 	/**	Parameter Name for Invoice	*/
 	public static final String C_INVOICE_ID = "C_Invoice_ID";
+	/**	Parameter Name for CAT-005 Tipo de Contingencia	*/
+	public static final String E_CONTINGENCY_ID = "E_Contingency_ID";
 	/**	Parameter Value for Invoice	*/
 	private int invoiceId;
+	/**	Parameter Value for CAT-005 Tipo de Contingencia	*/
+	private int contingencyId;
 
 	@Override
 	protected void prepare() {
 		invoiceId = getParameterAsInt(C_INVOICE_ID);
+		contingencyId = getParameterAsInt(E_CONTINGENCY_ID);
 	}
 
 	/**	 Getter Parameter Value for Invoice	*/
@@ -49,6 +54,16 @@ public abstract class EInvoiceContingenciaAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Invoice	*/
 	protected void setInvoiceId(int invoiceId) {
 		this.invoiceId = invoiceId;
+	}
+
+	/**	 Getter Parameter Value for CAT-005 Tipo de Contingencia	*/
+	protected int getContingencyId() {
+		return contingencyId;
+	}
+
+	/**	 Setter Parameter Value for CAT-005 Tipo de Contingencia	*/
+	protected void setContingencyId(int contingencyId) {
+		this.contingencyId = contingencyId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/
