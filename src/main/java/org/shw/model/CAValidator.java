@@ -31,6 +31,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
 
+import org.adempiere.core.domains.models.I_C_OrderLine;
 import org.adempiere.core.domains.models.X_C_Invoice;
 import org.compiere.model.MAllocationHdr;
 import org.compiere.model.MBankAccount;
@@ -67,6 +68,8 @@ import org.compiere.model.MProductionLine;
 import org.compiere.model.MProject;
 import org.compiere.model.MProjectIssue;
 import org.compiere.model.MProjectLine;
+import org.compiere.model.MRMA;
+import org.compiere.model.MRMALine;
 import org.compiere.model.MTax;
 import org.compiere.model.MTaxCategory;
 import org.compiere.model.MTimeExpense;
@@ -583,7 +586,7 @@ public class CAValidator implements ModelValidator
 				error = UpdateCreditMemo(po);
         	}   	
         	if (po instanceof MMovement) {
-        		error = movementBeforePrepare(po);        		
+        		//error = movementBeforePrepare(po);        		
         	}
         	if (po instanceof MInOut) {
         		error = inoutLineSetOrderLine(po);
@@ -1061,6 +1064,30 @@ public class CAValidator implements ModelValidator
 				matchInv.saveEx();
 
 			}
+			return "";
+		}
+		
+		private String RMA_setTotalamt (PO po) {
+			MRMALine mrmaLine = (MRMALine)po;
+	        BigDecimal totalAmt = Env.ZERO;
+	        BigDecimal taxAmt = Env.ZERO;
+	        
+	        if (Env.ZERO.compareTo(mrmaLine.getQty()) != 0 && Env.ZERO.compareTo(mrmaLine.getAmt()) != 0)
+	        {
+	        	BigDecimal qtyEntered = (BigDecimal)mrmaLine.get_Value("qtyEntered");
+	            totalAmt = qtyEntered.multiply(mrmaLine.getAmt());
+	            MRMA mrma = (MRMA)mrmaLine.getM_RMA();
+	            if (!mrma.isTaxIncluded())
+	            {
+	            	int taxId = mrmaLine.getM_InOutLine().getC_OrderLine().getC_Tax_ID();
+					MTax tax = MTax.get (mrmaLine.getCtx(), taxId);
+					I_C_OrderLine line = mrmaLine.getM_InOutLine().getC_OrderLine();
+	                taxAmt = tax.calculateTax(mrmaLine.getQty().multiply(line.getPriceEntered()), 
+	                		mrma.isTaxIncluded(), 2);
+	            }
+	        }	        
+	        totalAmt = totalAmt.add(taxAmt);
+	        mrmaLine.setAmt(totalAmt);
 			return "";
 		}
 		

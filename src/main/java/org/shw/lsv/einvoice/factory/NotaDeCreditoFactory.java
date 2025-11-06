@@ -467,14 +467,14 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMITEM, i);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));;
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMERODOCUMENTO, numerodocumentno);
-			jsonCuerpoDocumentoItem.put(NotaDeCredito.CANTIDAD, invoiceLine.getQtyInvoiced());
+			jsonCuerpoDocumentoItem.put(NotaDeCredito.CANTIDAD, invoiceLine.getQtyEntered());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CODTRIBUTO, "");  // String codTributo = "20";
 
 			X_C_UOM uom = (X_C_UOM)invoiceLine.getC_UOM();
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.UNIMEDIDA, uom_getValue(uom));
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.DESCRIPCION, invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName());
-			jsonCuerpoDocumentoItem.put(NotaDeCredito.PRECIOUNI, invoiceLine.getPriceActual());
+			jsonCuerpoDocumentoItem.put(NotaDeCredito.PRECIOUNI, invoiceLine.getPriceEntered());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.MONTODESCU, Env.ZERO);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.VENTANOSUJ, ventaNoSuj);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.VENTAEXENTA, ventaExenta);

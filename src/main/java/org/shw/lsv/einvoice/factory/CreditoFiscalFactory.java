@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+import org.adempiere.core.domains.models.X_C_UOM;
 import org.adempiere.core.domains.models.X_E_Activity;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
@@ -38,6 +39,7 @@ import org.shw.lsv.einvoice.feccfcreditofiscalv3.EmisorCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.IdentificacionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ReceptorCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ResumenCreditoFiscal;
+import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
@@ -503,7 +505,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			BigDecimal ventaGravada 			= Env.ZERO;
 			BigDecimal ventaNoGravada 			= Env.ZERO;
 			BigDecimal ivaItem 					= Env.ZERO;
-			BigDecimal precioUnitario 			= invoiceLine.getPriceActual();
+			BigDecimal precioUnitario 			= invoiceLine.getPriceEntered();
 			String codTributo 					= "";
 			MTax tax 							= (MTax)invoiceLine.getC_Tax();
 
@@ -542,10 +544,12 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 				description = description.substring(0, 998);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.NUMITEM, i);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));
-			jsonCuerpoDocumentoItem.put(CreditoFiscal.CANTIDAD, invoiceLine.getQtyInvoiced());
+			jsonCuerpoDocumentoItem.put(CreditoFiscal.CANTIDAD, invoiceLine.getQtyEntered());
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.CODIGO, invoiceLine.getM_Product_ID()>0? 
 					invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getC_ChargeType().getValue());
-			jsonCuerpoDocumentoItem.put(CreditoFiscal.UNIMEDIDA, 59);
+			//jsonCuerpoDocumentoItem.put(CreditoFiscal.UNIMEDIDA, 59);
+			X_C_UOM uom = (X_C_UOM)invoiceLine.getC_UOM();
+			jsonCuerpoDocumentoItem.put(Factura.UNIMEDIDA, uom_getValue(uom));
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.DESCRIPCION, description);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.PRECIOUNI, precioUnitario);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.MONTODESCU, Env.ZERO);

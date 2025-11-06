@@ -17,6 +17,8 @@
 
 package org.shw.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -25,12 +27,15 @@ import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MDocType;
+import org.compiere.model.MInOutLine;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceBatch;
 import org.compiere.model.MInvoiceBatchLine;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MPayment;
 import org.compiere.model.MProject;
+import org.compiere.model.MUOM;
+import org.compiere.model.MUOMConversion;
 import org.compiere.model.MWarehouse;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -200,6 +205,58 @@ public class Callout_SHW extends CalloutEngine
 
 	   return "";
 
+   }
+
+   public String RMAinoutLine_ID (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
+   {
+       //Integer C_DocType_ID = (Integer)value;
+       Integer inOutLineID = (Integer)value;
+    if (inOutLineID == null || inOutLineID.intValue() == 0)
+        return "";
+       MInOutLine inOutLine = new MInOutLine (ctx, inOutLineID, null);
+       mTab.setValue("C_UOM_ID", inOutLine.getC_UOM_ID());
+       mTab.setValue("qtyEntered", inOutLine.getQtyEntered());
+       mTab.setValue("qty", inOutLine.getMovementQty());
+
+	   Env.setContext(ctx, WindowNo, "inOutLineID", inOutLineID);
+	   Env.setContext(ctx, WindowNo, "C_UOM_ID", inOutLine.getC_UOM_ID());
+	   Env.setContext(ctx, WindowNo, "M_Product_ID", inOutLine.getM_Product_ID());
+           return "";
+   }
+   
+
+   public String RMAqtyEntered (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
+   {
+       //Integer C_DocType_ID = (Integer)value;int C_UOM_To_ID = Env.getContextAsInt(ctx, WindowNo, "C_UOM_ID");
+
+		if (isCalloutActive() || value == null)
+			return "";
+
+		int inoutLineID = (Integer)mTab.getValue("M_InOutLine_ID");
+		MInOutLine inOutLine = new MInOutLine(ctx, inoutLineID, null);
+		int C_UOM_To_ID = inOutLine.getC_UOM_ID();
+		int productID = inOutLine.getM_Product_ID();
+		BigDecimal QtyEntered = (BigDecimal)value;
+		BigDecimal QtyEntered1 = QtyEntered.setScale(MUOM.getPrecision(ctx, C_UOM_To_ID), RoundingMode.HALF_UP);
+		if (QtyEntered.compareTo(QtyEntered1) != 0)
+		{
+			log.fine("Corrected QtyEntered Scale UOM=" + C_UOM_To_ID 
+				+ "; QtyEntered=" + QtyEntered + "->" + QtyEntered1);  
+			QtyEntered = QtyEntered1;
+			mTab.setValue("QtyEntered", QtyEntered);
+		}
+		BigDecimal qtyOrdered = MUOMConversion.convertProductFrom (ctx, productID, 
+			C_UOM_To_ID, QtyEntered);
+		if (qtyOrdered == null)
+			qtyOrdered = QtyEntered;
+		boolean conversion = QtyEntered.compareTo(qtyOrdered) != 0;
+		log.fine("UOM=" + C_UOM_To_ID 
+			+ ", QtyEntered=" + QtyEntered
+			+ " -> " + conversion 
+			+ " QtyOrdered=" + qtyOrdered);
+		Env.setContext(ctx, WindowNo, "UOMConversion", conversion ? "Y" : "N");
+		mTab.setValue("Qty", qtyOrdered);
+		return "";
    }
 
    
