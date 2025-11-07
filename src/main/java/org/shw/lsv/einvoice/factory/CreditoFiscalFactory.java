@@ -216,26 +216,10 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 	}
 	
 	private JSONObject generateIdentificationInputData() {
-		System.out.println("CreditoFiscal: start collecting JSON data for Identificacion");
-		String prefix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getPrefix()).orElse("");
-		String documentno = invoice.getDocumentNo().replace(prefix,"");
-		String suffix = Optional.ofNullable(invoice.getC_DocType().getDefiniteSequence().getSuffix()).orElse("");	
-		documentno = documentno.replace(suffix,"");
-		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
-		String duns = orgInfo.getDUNS().replace("-", "");
-		
-		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
-				+ "-"+ StringUtils.leftPad(duns.trim(), 8,"0") + "-"+ idIdentification;
-		Integer invoiceID = invoice.get_ID();
-		//String numeroControl = getNumeroControl(invoiceID, orgInfo, "DTE-01-");
-		Integer clientID = (Integer)client.getAD_Client_ID();
-		String codigoGeneracion = StringUtils.leftPad(clientID.toString(), 8, "0") + "-0000-0000-0000-" + StringUtils.leftPad(invoiceID.toString(), 12,"0");
-		
+		String numeroControl = createNumeroControl(invoice, client);
+		String codigoGeneracion =  createCodigoGeneracion(invoice);
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		Boolean isContigencia = false;
-		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
-			isContigencia = true;
-		}
 		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String horEmi = timeFormat.format(cal.getTime());
