@@ -50,6 +50,7 @@ import org.compiere.model.MInventory;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
+import org.compiere.model.MLandedCostAllocation;
 import org.compiere.model.MMatchInv;
 import org.compiere.model.MMovement;
 import org.compiere.model.MMovementLine;
@@ -137,9 +138,8 @@ public class CAValidator implements ModelValidator
 		engine.addModelChange(MDocType.Table_Name, this);
 		engine.addModelChange(MAllocationHdr.Table_Name, this);
 		engine.addModelChange(MProductPO.Table_Name, this);
-		engine.addModelChange(MCostDetail.Table_Name, this);
 		engine.addModelChange(MPaySelectionLine.Table_Name, this);
-		engine.addModelChange(MProductionLine.Table_Name, this);
+		engine.addModelChange(MCostDetail.Table_Name, this);
 		
 
 		engine.addDocValidate(MPaySelection.Table_Name	, this);
@@ -230,6 +230,12 @@ public class CAValidator implements ModelValidator
 			}
 			if (po instanceof MPaySelectionLine)
 				error = paySelectionLineUpdatebpartnerName(po);
+			if (po instanceof MCostDetail) {
+				MCostDetail costDetail = (MCostDetail)po;
+				if (costDetail.getC_LandedCostAllocation_ID()>0){
+					costDetail.setDateAcct(costDetail.getC_LandedCostAllocation().getM_InOutLine().getM_InOut().getDateAcct());
+				}
+			}
 		}
 
 		if (type == ModelValidator.TYPE_BEFORE_CHANGE && po.get_TableName().equals(MProductionLine.Table_Name))
