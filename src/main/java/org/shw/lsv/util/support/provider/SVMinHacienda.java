@@ -18,6 +18,7 @@ package org.shw.lsv.util.support.provider;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -45,7 +46,9 @@ import org.shw.lsv.util.support.IDeclarationDocument;
 import org.shw.lsv.util.support.IDeclarationProvider;
 import org.spin.model.MADAppRegistration;
 
-import com.fasterxml.jackson.annotation.JsonInclude;  
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;  
 
 /**
  * 	A implementation class for findex.la provider using LSV
@@ -305,6 +308,17 @@ public class SVMinHacienda implements IDeclarationProvider {
         		System.out.println("Status Firmado: fecha " + fecha+ " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		invoice.set_ValueOfColumn("ei_dateReceived", fecha);
         		System.out.println("Invoice save" + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
+
+        		ObjectMapper mapper = new ObjectMapper();
+        		mapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false);
+
+        		LinkedHashMap<String, Object> map = mapper.readValue(documentAsJsonString, LinkedHashMap.class);
+
+        		map.put("firmaElectronica", signature);
+        		map.put("selloRecibido", sellorecibido);
+        		String finalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+               	electronicInvoiceModel.setjson(finalJson);
+               	electronicInvoiceModel.saveEx();
         		invoice.saveEx();
         		return null;
         	}
@@ -411,57 +425,41 @@ public class SVMinHacienda implements IDeclarationProvider {
 	 * @param args
 	 */
 	public static void main(String[] args) throws SQLException {
-		Adempiere.startupEnvironment(true);
-
-        int registrationId = Integer.parseInt(args[1]);
-		Findex findex = new Findex();
-		findex.setAppRegistrationId(registrationId);
-		//Trx dbTransaction = null;
-		String whereClause = "AD_CLIENT_ID = ?  "
-				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
-				+ " AND processed = 'Y' AND dateacct>=? AND processing = 'N' "
-				+ " AND ei_Processing = 'N' "
-				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
-		MClient client = new MClient(Env.getCtx(),1000001, null);
-		Timestamp startdate = (Timestamp)(client.get_Value("ei_Startdate"));
-		try {
-			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)
-						.setParameters(startdate)
-						.getIDs();
-			Arrays.stream(invoiceIds)
-			.filter(invoiceId -> invoiceId > 0)
-				.forEach(invoiceId -> {
-					try {
-						Integer id = (Integer)invoiceId;
-	                    Trx dbTransaction = Trx.get(id.toString(), true);   
-						MInvoice invoice = new MInvoice(Env.getCtx(), invoiceId, dbTransaction.getTrxName());
-						invoice.set_ValueOfColumn("ei_Processing", true);
-						invoice.saveEx();
-						dbTransaction.commit(true);
-						findex.publishDocument(invoice);
-						invoice.set_ValueOfColumn("ei_Processing", false);
-						invoice.saveEx();
-	                    if (dbTransaction != null) {
-	                        dbTransaction.commit(true);
-	                        dbTransaction.close();
-	                    }
-						// TODO: set EIProcessing == false
-					} catch (Exception e) {
-						String error = "Error al procesar documento #" + invoiceId + " " + e;
-						System.out.println(error);
-					}
-
-					System.out.println("Publish document successful"); 
-
-
-				});
-
-			
-		}
-		catch (Exception e) {
-			
-		}
 		
+        Trx dbTransaction = Trx.get("123456", true);   
+		MInvoice invoice = new MInvoice(Env.getCtx(), 1046096, dbTransaction.getTrxName());
+		try {
+
+			testJson(invoice);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	public static String testJson(PO document) throws Exception {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false);
+		SVMinHacienda hacienda = new SVMinHacienda();
+		IDeclarationDocument declarationDocument = hacienda.getDeclarationDocument(document);
+		MInvoice invoice = (MInvoice)document;
+		if(declarationDocument == null) {
+			return null;
+		}
+		X_E_InvoiceElectronic electronicInvoiceModel = declarationDocument.processElectronicInvoice();
+		if(electronicInvoiceModel==null) {
+			return null;
+		}
+		String documentAsJsonString = electronicInvoiceModel.getjson();
+		JSONObject jsonorg = new JSONObject(documentAsJsonString);
+		LinkedHashMap<String, Object> map = mapper.readValue(documentAsJsonString, LinkedHashMap.class);
+
+		map.put("firmaElectronica", "fdjoao[fjoijfdoi[fjoidajfoi[dajafoidsjfiodjfoidjoi[afjdiojfiodaj[oi");
+		map.put("selloRecibido", "bnbnbbnbnbnbnbnbnbnbnbnbnbnbnb");
+		String finalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
+       	electronicInvoiceModel.setjson(finalJson);
+       	electronicInvoiceModel.saveEx();
+		return "";
+				
 	}
 	
 }
