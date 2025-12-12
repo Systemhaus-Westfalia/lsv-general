@@ -314,7 +314,7 @@ public class SVMinHacienda implements IDeclarationProvider {
 
         		LinkedHashMap<String, Object> map = mapper.readValue(documentAsJsonString, LinkedHashMap.class);
 
-        		map.put("firmaElectronica", signature);
+        		map.put("firmaElectronica", token);
         		map.put("selloRecibido", sellorecibido);
         		String finalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
                	electronicInvoiceModel.setjson(finalJson);
@@ -452,9 +452,12 @@ public class SVMinHacienda implements IDeclarationProvider {
 		String documentAsJsonString = electronicInvoiceModel.getjson();
 		JSONObject jsonorg = new JSONObject(documentAsJsonString);
 		LinkedHashMap<String, Object> map = mapper.readValue(documentAsJsonString, LinkedHashMap.class);
-
-		map.put("firmaElectronica", "fdjoao[fjoijfdoi[fjoidajfoi[dajafoidsjfiodjfoidjoi[afjdiojfiodaj[oi");
-		map.put("selloRecibido", "bnbnbbnbnbnbnbnbnbnbnbnbnbnbnb");
+		String signature = hacienda.getSignature(jsonorg);
+		String sellorecibido = invoice.get_ValueAsString("ei_selloRecibido");
+		MClient client = new MClient(Env.getCtx(), invoice.getAD_Client_ID(), invoice.get_TrxName());
+		String token = client.get_ValueAsString("ei_jwt");
+		map.put("firmaElectronica", token);
+		map.put("selloRecibido", sellorecibido);
 		String finalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
        	electronicInvoiceModel.setjson(finalJson);
        	electronicInvoiceModel.saveEx();
