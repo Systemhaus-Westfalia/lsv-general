@@ -25,6 +25,7 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.shw.lsv.util.support.provider.SVMinHacienda;
+import org.shw.lsv.util.support.provider.SVMinHaciendaContingencia;
 import org.spin.model.MADAppRegistration;
 
 /** Generated Process for (EInvoiceContingencia)
@@ -71,8 +72,8 @@ public class EInvoiceContingencia extends EInvoiceContingenciaAbstract
 		}
 		MInvoice invoice = new MInvoice(getCtx(), getInvoiceId(), get_TrxName());
 		invoice.set_ValueOfColumn("isContingencia", true);
-		invoice.saveEx();
-		SVMinHacienda sv_minhacienda = new SVMinHacienda();
+		//invoice.saveEx();
+		SVMinHaciendaContingencia sv_minhacienda = new SVMinHaciendaContingencia();
 		sv_minhacienda.setVoided(false);
 		sv_minhacienda.setADClientID(client.getAD_Client_ID());
 		sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID());

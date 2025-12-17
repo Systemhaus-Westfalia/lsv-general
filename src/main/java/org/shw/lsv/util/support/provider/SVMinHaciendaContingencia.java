@@ -18,9 +18,7 @@ package org.shw.lsv.util.support.provider;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -47,15 +45,13 @@ import org.shw.lsv.util.support.IDeclarationDocument;
 import org.shw.lsv.util.support.IDeclarationProvider;
 import org.spin.model.MADAppRegistration;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;  
+import com.fasterxml.jackson.annotation.JsonInclude;  
 
 /**
  * 	A implementation class for findex.la provider using LSV
  * 	@author Yamel Senih, ysenih@erpya.com, ERPCyA http://www.erpya.com
  */
-public class SVMinHacienda implements IDeclarationProvider {
+public class SVMinHaciendaContingencia implements IDeclarationProvider {
 	public static final int HTTP_RESPONSE_200_OK = 200;
 	public static final int HTTP_RESPONSE_201_CREATED = 201;
 	private final String PROVIDER_HOST =  "providerhost"; 
@@ -65,6 +61,7 @@ public class SVMinHacienda implements IDeclarationProvider {
 	private final String PATH = "path";
 	private final String PATH_SIGNATURE = "path_signature";
 	private final String PATHVOIDED = "pathVoided";
+	private final String PATHCONTINGENCIA = "pathcontingencia";
 	
 	private final String VERSION = "version";
 	private final String AMBIENTE = "ambiente";
@@ -91,7 +88,7 @@ public class SVMinHacienda implements IDeclarationProvider {
 	private Boolean testlocal = true;
 	
 
-	public SVMinHacienda() {
+	public SVMinHaciendaContingencia() {
 	}
 	
 	/**
@@ -192,15 +189,9 @@ public class SVMinHacienda implements IDeclarationProvider {
 		
 		
 		String signature = getSignature(jsonorg);
-		if (!voided) {
-			tipoDte = identificacion.getString("tipoDte");
-			this.path = registration.getParameterValue(PATH); 
-		}
-		else
-		{
+		
 			tipoDte = documento.getString("tipoDte");
-			this.path = registration.getParameterValue(PATHVOIDED); 
-		}
+			this.path = registration.getParameterValue(PATHCONTINGENCIA); 
 		  this.providerHost = registration.getParameterValue(PROVIDER_HOST);
 		 
 		  		 	
@@ -309,17 +300,6 @@ public class SVMinHacienda implements IDeclarationProvider {
         		System.out.println("Status Firmado: fecha " + fecha+ " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		invoice.set_ValueOfColumn("ei_dateReceived", fecha);
         		System.out.println("Invoice save" + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-
-        		ObjectMapper mapper = new ObjectMapper();
-        		mapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false);
-
-        		LinkedHashMap<String, Object> map = mapper.readValue(documentAsJsonString, LinkedHashMap.class);
-
-        		map.put("firmaElectronica", token);
-        		map.put("selloRecibido", sellorecibido);
-        		String finalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
-               	electronicInvoiceModel.setjson(finalJson);
-               	electronicInvoiceModel.saveEx();
         		invoice.saveEx();
         		return null;
         	}
@@ -358,20 +338,6 @@ public class SVMinHacienda implements IDeclarationProvider {
 	 * Get client
 	 * @return
 	 */
-	/*
-	 * public Client getClient() { // 1. Erstelle einen Verifier, der den Namen
-	 * "MINISTERIO DE HACIENDA" // im Zertifikat auch dann akzeptiert, wenn du
-	 * localhost aufrufst. HostnameVerifier allHostsValid = (hostname, session) ->
-	 * true;
-	 * 
-	 * // 2. Integriere den Verifier in den ClientBuilder return
-	 * ClientBuilder.newBuilder() .withConfig(new ClientConfig())
-	 * .property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, true)
-	 * .hostnameVerifier(allHostsValid) // Das löst dein aktuelles Problem .build();
-	 * }
-	 */
-	
-
 	public Client getClient() {
 		return ClientBuilder.newClient(new ClientConfig())
 		.property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, true);
@@ -396,7 +362,7 @@ public class SVMinHacienda implements IDeclarationProvider {
 	
 	public String getSignature(JSONObject jsonorg) throws Exception{
 		String result = "";
-		System.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
+
 		
 		  this.providerHost = registration.getParameterValue(PROVIDER_HOST_SIGNATURE); 
 		  
@@ -440,43 +406,57 @@ public class SVMinHacienda implements IDeclarationProvider {
 	 * @param args
 	 */
 	public static void main(String[] args) throws SQLException {
-		
-        Trx dbTransaction = Trx.get("123456", true);   
-		MInvoice invoice = new MInvoice(Env.getCtx(), 1046096, dbTransaction.getTrxName());
-		try {
+		Adempiere.startupEnvironment(true);
 
-			//testJson(invoice);
-		} catch (Exception e) {
-			// TODO: handle exception
+        int registrationId = Integer.parseInt(args[1]);
+		Findex findex = new Findex();
+		findex.setAppRegistrationId(registrationId);
+		//Trx dbTransaction = null;
+		String whereClause = "AD_CLIENT_ID = ?  "
+				+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=c_Invoice.c_Doctype_ID AND E_DocType_ID is not null) "
+				+ " AND processed = 'Y' AND dateacct>=? AND processing = 'N' "
+				+ " AND ei_Processing = 'N' "
+				+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
+		MClient client = new MClient(Env.getCtx(),1000001, null);
+		Timestamp startdate = (Timestamp)(client.get_Value("ei_Startdate"));
+		try {
+			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)
+						.setParameters(startdate)
+						.getIDs();
+			Arrays.stream(invoiceIds)
+			.filter(invoiceId -> invoiceId > 0)
+				.forEach(invoiceId -> {
+					try {
+						Integer id = (Integer)invoiceId;
+	                    Trx dbTransaction = Trx.get(id.toString(), true);   
+						MInvoice invoice = new MInvoice(Env.getCtx(), invoiceId, dbTransaction.getTrxName());
+						invoice.set_ValueOfColumn("ei_Processing", true);
+						invoice.saveEx();
+						dbTransaction.commit(true);
+						findex.publishDocument(invoice);
+						invoice.set_ValueOfColumn("ei_Processing", false);
+						invoice.saveEx();
+	                    if (dbTransaction != null) {
+	                        dbTransaction.commit(true);
+	                        dbTransaction.close();
+	                    }
+						// TODO: set EIProcessing == false
+					} catch (Exception e) {
+						String error = "Error al procesar documento #" + invoiceId + " " + e;
+						System.out.println(error);
+					}
+
+					System.out.println("Publish document successful"); 
+
+
+				});
+
+			
 		}
-	}
-	
-	public String testJson(PO document) throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, false);
-		IDeclarationDocument declarationDocument = getDeclarationDocument(document);
-		MInvoice invoice = (MInvoice)document;
-		if(declarationDocument == null) {
-			return null;
+		catch (Exception e) {
+			
 		}
-		X_E_InvoiceElectronic electronicInvoiceModel = declarationDocument.processElectronicInvoice();
-		if(electronicInvoiceModel==null) {
-			return null;
-		}
-		String documentAsJsonString = electronicInvoiceModel.getjson();
-		JSONObject jsonorg = new JSONObject(documentAsJsonString);
-		LinkedHashMap<String, Object> map = mapper.readValue(documentAsJsonString, LinkedHashMap.class);
-		String signature = getSignature(jsonorg);
-		String sellorecibido = invoice.get_ValueAsString("ei_selloRecibido");
-		MClient client = new MClient(Env.getCtx(), invoice.getAD_Client_ID(), invoice.get_TrxName());
-		String token = client.get_ValueAsString("ei_jwt");
-		map.put("firmaElectronica", signature);
-		map.put("selloRecibido", sellorecibido);
-		String finalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
-       	electronicInvoiceModel.setjson(finalJson);
-       	electronicInvoiceModel.saveEx();
-		return "";
-				
+		
 	}
 	
 }

@@ -74,6 +74,8 @@ public class ElectronicInvoice implements IDeclarationDocument {
 
 		boolean isContingencia = false;
 		isContingencia = invoice.get_ValueAsBoolean("isContingencia");
+		if (isContingencia)
+			isreversal = false;
 		client = new MClient(invoice.getCtx(), invoice.getAD_Client_ID(), invoice.get_TrxName());
 		int orgID = invoice.getAD_Org_ID();		
 		orgInfo= MOrgInfo.get(invoice.getCtx(), orgID, invoice.get_TrxName());
