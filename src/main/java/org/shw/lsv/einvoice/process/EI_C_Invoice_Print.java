@@ -117,8 +117,8 @@ public class EI_C_Invoice_Print extends EI_C_Invoice_PrintAbstract
             notifier.addAttachment(getPDF(invoice));
             //	Add EMail
             notifier.addRecipient(eMail);
-            
-			File jsonfile = File.createTempFile("json", ".txt");
+            String filename = invoice.get_ValueAsString("ei_codigoGeneracion");
+			File jsonfile = File.createTempFile(filename, ".txt");
 			
 			String jsonwhereClause = "C_Invoice_ID=? AND json is not null AND ei_Validationstatus = '01'";
 			
