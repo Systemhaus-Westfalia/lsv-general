@@ -34,6 +34,7 @@ import org.shw.lsv.einvoice.feccfcreditofiscalv3.ApendiceItemCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.CuerpoDocumentoItemCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.EmisorCreditoFiscal;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.ExtensionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.IdentificacionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ReceptorCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ResumenCreditoFiscal;
@@ -136,7 +137,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		}
 		
 
-		System.out.println("Instantiate, fill and verify Receptor");
+		System.out.println("Instantiate, fill and verify ReceptorCreditoFiscal");
 		ReceptorCreditoFiscal receptor = creditoFiscal.getReceptor();
 		if(receptor!=null) {
 			creditoFiscal.fillReceptor(jsonInputToFactory);
@@ -146,15 +147,16 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			}
 		}
 		
-//		Extension extension = factura.getExtension();
-//		if(extension!=null) {
-//			factura.fillExtension(jsonInputToFactory);
-//			result = extension.validateValues();
-//			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
-//				errorMessages.append(result);
-//			}
-//		}
-//		
+		System.out.println("Instantiate, fill and verify ExtensionCreditoFiscal");
+		ExtensionCreditoFiscal extension = creditoFiscal.getExtension();
+		if(extension!=null) {
+			creditoFiscal.fillExtension(jsonInputToFactory);
+			result = extension.validateValues();
+			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
+				creditoFiscal.errorMessages.append(result);
+			}
+		}
+		
 		List<ApendiceItemCreditoFiscal> apendice = creditoFiscal.getApendice();
 		if(apendice!=null) {
 			creditoFiscal.fillApendice(jsonInputToFactory);

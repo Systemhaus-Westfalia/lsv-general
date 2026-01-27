@@ -30,7 +30,8 @@ public class Factura extends EDocument {
 	static final String ERROR_FACTURA_RECEPTOR                = "Documento: Factura, error en fillReceptor(): ";
 	static final String ERROR_FACTURA_CUERPO_DOCUMENTO        = "Documento: Factura, error en fillCuerpoDocumento(): ";
 	static final String ERROR_FACTURA_RESUMEN				  = "Documento: Factura, error en fillResumen(): ";
-	static final String ERROR_FACTURA_APENDICE            	  = "Documento: Credito Fiscal, error en fillApendice(): ";
+	static final String ERROR_FACTURA_APENDICE            	  = "Documento: Factural, error en fillApendice(): ";
+	static final String ERROR_FACTURA_EXTENSION               = "Documento: Factura, error en fillExtension(): ";
 	
 	IdentificacionFactura identificacion;
 	EmisorFactura emisor;
@@ -53,9 +54,9 @@ public class Factura extends EDocument {
 		this.receptor             	= new ReceptorFactura();
 	    this.cuerpoDocumento      	= new ArrayList<CuerpoDocumentoItemFactura>();
 		this.resumen              	= new ResumenFactura();
+		this.extension				= new ExtensionFactura();
 		
 		//leer
-		this.extension				= new ExtensionFactura();
 		this.apendice				= new ArrayList<ApendiceItemFactura>();
 		this.documentoRelacionado	= new ArrayList<DocumentoRelacionadoItemFactura>();
 		this.ventaTercero			= new VentaTerceroFactura();
@@ -350,6 +351,21 @@ public class Factura extends EDocument {
 
 	public void setExtension(ExtensionFactura extension) {
 		this.extension = extension;
+	}
+
+	public StringBuffer fillExtension(JSONObject factoryInput) {
+		System.out.println("Start Factura.fillExtension()"); 
+
+		JSONObject extensionJson = factoryInput.getJSONObject(EXTENSION);
+		try {extension.setNombEntrega(extensionJson.getString(NOMBENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
+		try {extension.setDocuEntrega(extensionJson.getString(DOCUENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
+		try {extension.setNombRecibe(extensionJson.getString(NOMBRECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
+		try {extension.setDocuRecibe(extensionJson.getString(DOCURECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
+		try {extension.setObservaciones(extensionJson.getString(OBSERVACIONES));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
+		try {extension.setPlacaVehiculo(extensionJson.getString(PLACAVEHICULO));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
+
+		System.out.println("End CreditoFiscal.fillExtension()"); 
+		return errorMessages;
 	}
 
 

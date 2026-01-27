@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ApendiceItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.CuerpoDocumentoItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.EmisorFactura;
+import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ExtensionFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.IdentificacionFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ReceptorFactura;
@@ -138,14 +139,15 @@ public class FacturaFactory extends EDocumentFactory {
 			}
 		}
 		
-//		Extension extension = factura.getExtension();
-//		if(extension!=null) {
-//			factura.fillExtension(jsonInputToFactory);
-//			result = extension.validateValues();
-//			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
-//				errorMessages.append(result);
-//			}
-//		}
+		System.out.println("Instantiate, fill and verify ExtensionFactura");
+		ExtensionFactura extension = factura.getExtension();
+		if(extension!=null) {
+			factura.fillExtension(jsonInputToFactory);
+			result = extension.validateValues();
+			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
+				factura.errorMessages.append(result);
+			}
+		}
 		
 		List<ApendiceItemFactura> apendice = factura.getApendice();
 		if(apendice!=null) {
