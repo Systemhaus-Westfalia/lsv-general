@@ -39,7 +39,6 @@ import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
-import org.compiere.model.MOrg;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPOS;
 import org.compiere.model.MPaymentTerm;
@@ -247,16 +246,16 @@ public abstract class EDocumentFactory {
 			//ProcessBuilder pb = new ProcessBuilder(commandList);  // creating the process
 			String param_0 = "java " +  " -jar ";
 			String springbootpackage = "\"C:\\Users\\SHW_User\\ElectronicPublishing\\springboot_package\\svfe-api-firmador-0.1.1.jar\"";
-			String mainclass = "sv.mh.fe.SHWElectronicSignature";
-			String param_nit = "\"06140904181038\"";
-			String param_privatekey = "\"Port465fer\"";
-			String param_Publickey = "\"DTEcofia\"";
-			String param_empresa = "\"COFIA, S.A. de C.V.\"";
-			String param_json = "\"eeeee\"";
-			String param_Context = "\"C:\\Users\\SHW_User\\ElectronicPublishing\"";
-			String param_Prefix = "\"06140904181038_20241205-132119\"";
-			String commandozeile = param_0 + " " + springbootpackage + " " + mainclass  + " " + param_nit + " " + param_privatekey 
-					+ " " + param_Publickey + " " + param_empresa + " " + param_json + " " + param_Context + " " + param_Prefix;
+			// String mainclass = "sv.mh.fe.SHWElectronicSignature";
+			// String param_nit = "\"06140904181038\"";
+			// String param_privatekey = "\"Port465fer\"";
+			// String param_Publickey = "\"DTEcofia\"";
+			// String param_empresa = "\"COFIA, S.A. de C.V.\"";
+			// String param_json = "\"eeeee\"";
+			// String param_Context = "\"C:\\Users\\SHW_User\\ElectronicPublishing\"";
+			// String param_Prefix = "\"06140904181038_20241205-132119\"";
+			// String commandozeile = param_0 + " " + springbootpackage + " " + mainclass  + " " + param_nit + " " + param_privatekey 
+			// 		+ " " + param_Publickey + " " + param_empresa + " " + param_json + " " + param_Context + " " + param_Prefix;
 			String command2 = param_0 + " " + springbootpackage ;
 			ProcessBuilder pb = new ProcessBuilder(command2 );
 			System.out.println("EDocumentFactory: start ProcessBuilder process");

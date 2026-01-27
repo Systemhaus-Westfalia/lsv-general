@@ -364,7 +364,7 @@ public class Factura extends EDocument {
 		try {extension.setObservaciones(extensionJson.getString(OBSERVACIONES));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
 		try {extension.setPlacaVehiculo(extensionJson.getString(PLACAVEHICULO));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
 
-		System.out.println("End CreditoFiscal.fillExtension()"); 
+		System.out.println("End Factura.fillExtension()");
 		return errorMessages;
 	}
 
