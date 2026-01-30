@@ -60,9 +60,15 @@ public class EDocument {
 	public static final String CODIGO 				= "codigo";
 	public static final String CODIGOTRIBUTO 		= "codigoTributo";
 	public static final String AMBIENTE 			= "ambiente";
-	public static final String TIPOGENERACION 		=  "tipoGeneracion";
+	public static final String TIPOGENERACION 		= "tipoGeneracion";
 	public static final String COMPRA				= "compra";
+
+	public static final String NOMBENTREGA 		    = "nombEntrega";
+	public static final String DOCUENTREGA 		    = "docuEntrega";
+	public static final String NOMBRECIBE 		    = "nombRecibe";
+	public static final String DOCURECIBE 		    = "docuRecibe";
 	public static final String OBSERVACIONES 		= "observaciones";
+	public static final String PLACAVEHICULO 		= "placaVehiculo";
 
 	public static final String UNIMEDIDA 			= "uniMedida";
 	public static final String DESCRIPCION 			= "descripcion";

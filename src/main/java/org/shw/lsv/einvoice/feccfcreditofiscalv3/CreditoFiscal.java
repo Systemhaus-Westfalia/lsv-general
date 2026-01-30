@@ -24,6 +24,7 @@ public class CreditoFiscal extends EDocument {
 	static final String ERROR_CREDITO_FISCAL_CUERPO_DOCUMENTO		= "Documento: Credito Fiscal, error en fillCuerpoDocumento(): ";
 	static final String ERROR_CREDITO_FISCAL_RESUMEN            	= "Documento: Credito Fiscal, error en fillResumen(): ";
 	static final String ERROR_CREDITO_FISCAL_APENDICE            	= "Documento: Credito Fiscal, error en fillApendice(): ";
+	static final String ERROR_CREDITO_FISCAL_EXTENSION            	= "Documento: Credito Fiscal, error en fillExtension(): ";
 	
 	IdentificacionCreditoFiscal identificacion;
 	List<DocumentoRelacionadoItemCreditoFiscal> documentoRelacionado = null;
@@ -381,6 +382,21 @@ public class CreditoFiscal extends EDocument {
 	 */
 	public void setExtension(ExtensionCreditoFiscal extension) {
 		this.extension = extension;
+	}
+
+	public StringBuffer fillExtension(JSONObject factoryInput) {
+		System.out.println("Start CreditoFiscal.fillExtension()"); 
+
+		JSONObject extensionJson = factoryInput.getJSONObject(EXTENSION);
+		try {extension.setNombEntrega(extensionJson.getString(NOMBENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		try {extension.setDocuEntrega(extensionJson.getString(DOCUENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		try {extension.setNombRecibe(extensionJson.getString(NOMBRECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		try {extension.setDocuRecibe(extensionJson.getString(DOCURECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		try {extension.setObservaciones(extensionJson.getString(OBSERVACIONES));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		try {extension.setPlacaVehiculo(extensionJson.getString(PLACAVEHICULO));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+
+		System.out.println("End CreditoFiscal.fillExtension()"); 
+		return errorMessages;
 	}
 
 

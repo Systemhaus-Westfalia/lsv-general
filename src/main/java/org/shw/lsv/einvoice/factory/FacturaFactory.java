@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ApendiceItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.CuerpoDocumentoItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.EmisorFactura;
+import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ExtensionFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.IdentificacionFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ReceptorFactura;
@@ -138,14 +139,15 @@ public class FacturaFactory extends EDocumentFactory {
 			}
 		}
 		
-//		Extension extension = factura.getExtension();
-//		if(extension!=null) {
-//			factura.fillExtension(jsonInputToFactory);
-//			result = extension.validateValues();
-//			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
-//				errorMessages.append(result);
-//			}
-//		}
+		System.out.println("Instantiate, fill and verify ExtensionFactura");
+		ExtensionFactura extension = factura.getExtension();
+		if(extension!=null) {
+			factura.fillExtension(jsonInputToFactory);
+			result = extension.validateValues();
+			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
+				factura.errorMessages.append(result);
+			}
+		}
 		
 		List<ApendiceItemFactura> apendice = factura.getApendice();
 		if(apendice!=null) {
@@ -198,6 +200,7 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonInputToFactory.put(Factura.RESUMEN, generateResumenInputData());
 		jsonInputToFactory.put(Factura.CUERPODOCUMENTO, generateCuerpoDocumentoInputData());
 		jsonInputToFactory.put(Factura.APENDICE, generateApendiceInputData(invoice.getC_Invoice_ID()));
+		jsonInputToFactory.put(Factura.EXTENSION, generateExtensionInputData());
 		
 		System.out.println("Generated JSON object from Invoice:");
 		System.out.println(jsonInputToFactory.toString());
@@ -511,6 +514,21 @@ public class FacturaFactory extends EDocumentFactory {
 		return jsonCuerpoDocumento;
 	}
 
+	private JSONObject generateExtensionInputData() {
+		System.out.println("Factura: start collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
+		JSONObject jsonExtension = new JSONObject();
+
+		jsonExtension.put(Factura.NOMBENTREGA, "DATEN AUS INVOICE HOLEN!!");
+		jsonExtension.put(Factura.DOCUENTREGA, "DATEN AUS INVOICE HOLEN!!");
+		jsonExtension.put(Factura.NOMBRECIBE, "DATEN AUS INVOICE HOLEN!!");
+		jsonExtension.put(Factura.DOCURECIBE, "DATEN AUS INVOICE HOLEN!!");
+		jsonExtension.put(Factura.OBSERVACIONES, "DATEN AUS INVOICE HOLEN!!");
+		jsonExtension.put(Factura.PLACAVEHICULO, "DATEN AUS INVOICE HOLEN!!");
+
+		System.out.println("Factura: end collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
+		return jsonExtension;
+	}
+
 	public String createJsonString() throws Exception {
 		System.out.println("Factura: start generating JSON object from Document");
     	ObjectMapper objectMapper = new ObjectMapper();
@@ -529,9 +547,12 @@ public class FacturaFactory extends EDocumentFactory {
         		replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
         		replace("\"direccion\":{\"complemento\":null,\"municipio\":null,\"departamento\":null},", "\"direccion\":null,").
         		replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
-        		replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null").
-        		replace("\"extension\":{\"docuEntrega\":null,\"placaVehiculo\":null,\"observaciones\":null,\"nombRecibe\":null,\"nombEntrega\":null,\"docuRecibe\":null},", 
-        				"\"extension\":null,");
+        		replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null")
+				;
+				//.
+				//ToDo: Element "extension" ersetzen nur, wenn alle Felder null sind, oder auch dann veroeffentlichen?
+				// replace("\"extension\":{\"docuEntrega\":null,\"placaVehiculo\":null,\"observaciones\":null,\"nombRecibe\":null,\"nombEntrega\":null,\"docuRecibe\":null},",
+        		// 		"\"extension\":null,");
 
 		System.out.println("Factura: generated JSON object from Document:");
 		System.out.println(facturaAsStringFinal);

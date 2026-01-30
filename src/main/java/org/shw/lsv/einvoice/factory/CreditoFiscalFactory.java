@@ -34,9 +34,11 @@ import org.shw.lsv.einvoice.feccfcreditofiscalv3.ApendiceItemCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.CuerpoDocumentoItemCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.EmisorCreditoFiscal;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.ExtensionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.IdentificacionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ReceptorCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ResumenCreditoFiscal;
+import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
@@ -136,7 +138,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		}
 		
 
-		System.out.println("Instantiate, fill and verify Receptor");
+		System.out.println("Instantiate, fill and verify ReceptorCreditoFiscal");
 		ReceptorCreditoFiscal receptor = creditoFiscal.getReceptor();
 		if(receptor!=null) {
 			creditoFiscal.fillReceptor(jsonInputToFactory);
@@ -146,15 +148,16 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			}
 		}
 		
-//		Extension extension = factura.getExtension();
-//		if(extension!=null) {
-//			factura.fillExtension(jsonInputToFactory);
-//			result = extension.validateValues();
-//			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
-//				errorMessages.append(result);
-//			}
-//		}
-//		
+		System.out.println("Instantiate, fill and verify ExtensionCreditoFiscal");
+		ExtensionCreditoFiscal extension = creditoFiscal.getExtension();
+		if(extension!=null) {
+			creditoFiscal.fillExtension(jsonInputToFactory);
+			result = extension.validateValues();
+			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
+				creditoFiscal.errorMessages.append(result);
+			}
+		}
+		
 		List<ApendiceItemCreditoFiscal> apendice = creditoFiscal.getApendice();
 		if(apendice!=null) {
 			creditoFiscal.fillApendice(jsonInputToFactory);
@@ -206,6 +209,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		jsonInputToFactory.put(CreditoFiscal.RESUMEN, generateResumenInputData());
 		jsonInputToFactory.put(CreditoFiscal.CUERPODOCUMENTO, generateCuerpoDocumentoInputData());
 		jsonInputToFactory.put(CreditoFiscal.APENDICE, generateApendiceInputData(invoice.getC_Invoice_ID()));
+		jsonInputToFactory.put(CreditoFiscal.EXTENSION, generateExtensionInputData());
 		
 		System.out.println("Generated JSON object from Invoice:");
 		System.out.println(jsonInputToFactory.toString());
@@ -436,6 +440,21 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		
 		return jsonCuerpoDocumento;
 	}
+
+	private JSONObject generateExtensionInputData() {
+		System.out.println("Credito Fiscal: start collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
+		JSONObject jsonExtension = new JSONObject();
+
+		jsonExtension.put(Factura.NOMBENTREGA, "DATEN AUS INVOICE HOLEN!!");
+		jsonExtension.put(Factura.DOCUENTREGA, "DATEN AUS INVOICE HOLEN!!");
+		jsonExtension.put(Factura.NOMBRECIBE, "DATEN AUS INVOICE HOLEN!!");
+		jsonExtension.put(Factura.DOCURECIBE, "DATEN AUS INVOICE HOLEN!!");
+		jsonExtension.put(Factura.OBSERVACIONES, "DATEN AUS INVOICE HOLEN!!");
+		jsonExtension.put(Factura.PLACAVEHICULO, "DATEN AUS INVOICE HOLEN!!");
+
+		System.out.println("Credito Fiscal: end collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
+		return jsonExtension;
+	}
 	
 	public String createJsonString() throws Exception {
 		System.out.println("CreditoFiscal: start generating JSON object from Document");
@@ -452,9 +471,12 @@ public class CreditoFiscalFactory extends EDocumentFactory {
         		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
         		replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
         		replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
-        		replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null").
-        		replace("\"extension\":{\"docuEntrega\":null,\"placaVehiculo\":null,\"observaciones\":null,\"nombRecibe\":null,\"nombEntrega\":null,\"docuRecibe\":null},", 
-        				"\"extension\":null,");
+        		replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null")
+				;
+				//.
+				//ToDo: Element "extension" ersetzen nur, wenn alle Felder null sind, oder auch dann veroeffentlichen?
+        		// replace("\"extension\":{\"docuEntrega\":null,\"placaVehiculo\":null,\"observaciones\":null,\"nombRecibe\":null,\"nombEntrega\":null,\"docuRecibe\":null},",
+        		// 		"\"extension\":null,");
 
 		System.out.println("Credito Fiscal: generated JSON object from Document:");
 		//System.out.println(creditoFiscalAsStringFinal);
