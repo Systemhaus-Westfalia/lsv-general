@@ -388,11 +388,19 @@ public class CreditoFiscal extends EDocument {
 		System.out.println("Start CreditoFiscal.fillExtension()"); 
 
 		JSONObject extensionJson = factoryInput.getJSONObject(EXTENSION);
-		try {extension.setNombEntrega(extensionJson.getString(NOMBENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
-		try {extension.setDocuEntrega(extensionJson.getString(DOCUENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
-		try {extension.setNombRecibe(extensionJson.getString(NOMBRECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
-		try {extension.setDocuRecibe(extensionJson.getString(DOCURECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
-		try {extension.setObservaciones(extensionJson.getString(OBSERVACIONES));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		if (!extensionJson.getString(NOMBENTREGA).equals("")) 
+			try {extension.setNombEntrega(extensionJson.getString(NOMBENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		
+		if (!extensionJson.getString(DOCUENTREGA).equals("")) 
+			try {extension.setDocuEntrega(extensionJson.getString(DOCUENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		
+		if (!extensionJson.getString(NOMBRECIBE).equals("")) 
+			try {extension.setNombRecibe(extensionJson.getString(NOMBRECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		if (!extensionJson.getString(DOCURECIBE).equals("")) 
+			try {extension.setDocuRecibe(extensionJson.getString(DOCURECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		if (!extensionJson.getString(OBSERVACIONES).equals("")) 
+			try {extension.setObservaciones(extensionJson.getString(OBSERVACIONES));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
+		if (!extensionJson.getString(PLACAVEHICULO).equals("")) 
 		try {extension.setPlacaVehiculo(extensionJson.getString(PLACAVEHICULO));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
 
 		System.out.println("End CreditoFiscal.fillExtension()"); 

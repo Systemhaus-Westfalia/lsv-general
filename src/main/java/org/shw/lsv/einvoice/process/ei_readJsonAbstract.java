@@ -20,7 +20,7 @@ package org.shw.lsv.einvoice.process;
 
 import org.compiere.process.SvrProcess;
 
-/** Generated Process for (ei_ReadJson)
+/** Generated Process for (ei_readJson)
  *  @author ADempiere (generated) 
  *  @version Release 3.9.4
  */
@@ -28,17 +28,32 @@ public abstract class ei_readJsonAbstract extends SvrProcess {
 	/** Process Value 	*/
 	private static final String VALUE_FOR_PROCESS = "ei_readJson";
 	/** Process Name 	*/
-	private static final String NAME_FOR_PROCESS = "ei_ReadJson";
+	private static final String NAME_FOR_PROCESS = "ei_readJson";
 	/** Process Id 	*/
-	private static final int ID_FOR_PROCESS = 1000094;
+	private static final int ID_FOR_PROCESS = 54940;
 	/**	Parameter Name for File Path or Name	*/
 	public static final String FILEPATHORNAME = "FilePathOrName";
+	/**	Parameter Name for Charge	*/
+	public static final String C_CHARGE_ID = "C_Charge_ID";
+	/**	Parameter Name for Order	*/
+	public static final String C_ORDER_ID = "C_Order_ID";
+	/**	Parameter Name for Business Partner 	*/
+	public static final String C_BPARTNER_ID = "C_BPartner_ID";
 	/**	Parameter Value for File Path or Name	*/
 	private String filePathOrName;
+	/**	Parameter Value for Charge	*/
+	private int chargeId;
+	/**	Parameter Value for Order	*/
+	private int orderId;
+	/**	Parameter Value for Business Partner 	*/
+	private int bPartnerId;
 
 	@Override
 	protected void prepare() {
 		filePathOrName = getParameterAsString(FILEPATHORNAME);
+		chargeId = getParameterAsInt(C_CHARGE_ID);
+		orderId = getParameterAsInt(C_ORDER_ID);
+		bPartnerId = getParameterAsInt(C_BPARTNER_ID);
 	}
 
 	/**	 Getter Parameter Value for File Path or Name	*/
@@ -49,6 +64,36 @@ public abstract class ei_readJsonAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for File Path or Name	*/
 	protected void setFilePathOrName(String filePathOrName) {
 		this.filePathOrName = filePathOrName;
+	}
+
+	/**	 Getter Parameter Value for Charge	*/
+	protected int getChargeId() {
+		return chargeId;
+	}
+
+	/**	 Setter Parameter Value for Charge	*/
+	protected void setChargeId(int chargeId) {
+		this.chargeId = chargeId;
+	}
+
+	/**	 Getter Parameter Value for Order	*/
+	protected int getOrderId() {
+		return orderId;
+	}
+
+	/**	 Setter Parameter Value for Order	*/
+	protected void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
+	/**	 Getter Parameter Value for Business Partner 	*/
+	protected int getBPartnerId() {
+		return bPartnerId;
+	}
+
+	/**	 Setter Parameter Value for Business Partner 	*/
+	protected void setBPartnerId(int bPartnerId) {
+		this.bPartnerId = bPartnerId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

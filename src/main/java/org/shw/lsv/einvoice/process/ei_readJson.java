@@ -72,7 +72,11 @@ public class ei_readJson extends ei_readJsonAbstract
 			File jsonfile = new File(getFilePathOrName());
 			// This maps the whole JSON to your Java objects
 			DteRoot dte = mapper.readValue(jsonfile, DteRoot.class);
-			MBPartner partner = getbyNIT(dte.getEmisor().getNit());
+			MBPartner partner = null;
+			if (getBPartnerId()> 0)
+			partner = new MBPartner(getCtx(), getBPartnerId(), get_TrxName());
+			if (partner == null)
+			partner = getbyNIT(dte.getEmisor().getNit());
 			if (partner==null) {
 				partner = getbyNRC(dte.getEmisor().getNrc());
 			}
@@ -228,6 +232,8 @@ public class ei_readJson extends ei_readJsonAbstract
 		invoiceLine.setQty(new BigDecimal(cuerpoDocumentoItem.getCantidad()));
 		invoiceLine.setDescription(cuerpoDocumentoItem.getDescripcion());
 		invoiceLine.setPrice(new BigDecimal(cuerpoDocumentoItem.getPrecioUni()));
+		if (getChargeId()>0)
+			invoiceLine.setC_Charge_ID(getChargeId());
 		List<String> tributos = cuerpoDocumentoItem.getTributos();
 		tributos.stream().forEach(tributo ->{
 			if (!tributo.equals("D1") && !tributo.equals("C8")) {

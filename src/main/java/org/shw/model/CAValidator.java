@@ -247,9 +247,9 @@ public class CAValidator implements ModelValidator
 			if (po instanceof MAllocationHdr)
 				error = allocationHdrBeforeDelete(po);
 		}
-
+		
 		if (type == ModelValidator.TYPE_BEFORE_CHANGE || type == ModelValidator.TYPE_BEFORE_NEW) {
-			if ((po.get_ColumnIndex("C_BPartner_ID") > 0 && po.is_ValueChanged("C_BPartner_ID")) 
+			/*if ((po.get_ColumnIndex("C_BPartner_ID") > 0 && po.is_ValueChanged("C_BPartner_ID")) 
 					&& po.get_ColumnIndex(X_C_Invoice.COLUMNNAME_User2_ID) > 0) {
 				int C_BPartner_ID = po.get_ValueAsInt("C_BPartner_ID");
 				ArrayList<Object> params = new ArrayList<>();
@@ -274,11 +274,11 @@ public class CAValidator implements ModelValidator
 				po.set_ValueOfColumn(X_C_Invoice.COLUMNNAME_User3_ID, User3_ID);
 			}
 
-
+		*/
 		}
 		return error;
 	}
-
+	
 	/**
 	 * 
 	 */private String productionLineUpdateMovementQtyFromQtyUsed(PO po){

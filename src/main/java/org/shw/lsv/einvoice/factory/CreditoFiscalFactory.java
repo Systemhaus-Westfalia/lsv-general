@@ -14,6 +14,7 @@ import java.util.Properties;
 import org.adempiere.core.domains.models.X_C_UOM;
 import org.adempiere.core.domains.models.X_E_Activity;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.xmlbeans.impl.jam.mutable.MPackage;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
@@ -22,12 +23,14 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPackageExp;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ApendiceItemCreditoFiscal;
@@ -224,6 +227,10 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String horEmi = timeFormat.format(cal.getTime());
+
+		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
+			isContigencia = true;
+		}
 		int tipoModelo = isContigencia?CreditoFiscal.TIPOMODELO_CONTIGENCIA:CreditoFiscal.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?CreditoFiscal.TIPOOPERACION_CONTIGENCIA:CreditoFiscal.TIPOOPERACION_NOCONTIGENCIA;
 		jsonObjectIdentificacion.put(CreditoFiscal.NUMEROCONTROL, numeroControl);
@@ -444,14 +451,14 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 	private JSONObject generateExtensionInputData() {
 		System.out.println("Credito Fiscal: start collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
 		JSONObject jsonExtension = new JSONObject();
-
-		jsonExtension.put(Factura.NOMBENTREGA, "DATEN AUS INVOICE HOLEN!!");
-		jsonExtension.put(Factura.DOCUENTREGA, "DATEN AUS INVOICE HOLEN!!");
-		jsonExtension.put(Factura.NOMBRECIBE, "DATEN AUS INVOICE HOLEN!!");
-		jsonExtension.put(Factura.DOCURECIBE, "DATEN AUS INVOICE HOLEN!!");
-		jsonExtension.put(Factura.OBSERVACIONES, "DATEN AUS INVOICE HOLEN!!");
-		jsonExtension.put(Factura.PLACAVEHICULO, "DATEN AUS INVOICE HOLEN!!");
-
+		String observaciones = invoice.get_ValueAsString(MPackageExp.COLUMNNAME_Instructions);
+		
+		jsonExtension.put(CreditoFiscal.NOMBENTREGA, "");
+		jsonExtension.put(CreditoFiscal.DOCUENTREGA, "");
+		jsonExtension.put(CreditoFiscal.NOMBRECIBE, "");
+		jsonExtension.put(CreditoFiscal.DOCURECIBE, "");
+		jsonExtension.put(CreditoFiscal.OBSERVACIONES, observaciones);
+		jsonExtension.put(CreditoFiscal.PLACAVEHICULO, "");
 		System.out.println("Credito Fiscal: end collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
 		return jsonExtension;
 	}

@@ -14,6 +14,7 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrgInfo;
+import org.compiere.model.MPackageExp;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
@@ -21,6 +22,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ApendiceItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.CuerpoDocumentoItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.EmisorFactura;
@@ -29,10 +31,12 @@ import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.IdentificacionFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ReceptorFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ResumenFactura;
+import org.shw.lsv.einvoice.utils.EDocument;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.jdbc.TimeUtil;
 
 public class FacturaFactory extends EDocumentFactory {
 	Factura factura;
@@ -214,9 +218,9 @@ public class FacturaFactory extends EDocumentFactory {
 		String codigoGeneracion =  createCodigoGeneracion(invoice);
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		Boolean isContigencia = false;
-		//if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
-		//	isContigencia = true;
-		//}
+		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
+			isContigencia = true;
+		}
 		String fecEmi = getfecEmi();
 		String horEmi = gethorEmi();
 		int tipoModelo = isContigencia?Factura.TIPOMODELO_CONTIGENCIA:Factura.TIPOMODELO_NOCONTIGENCIA;
@@ -515,17 +519,17 @@ public class FacturaFactory extends EDocumentFactory {
 	}
 
 	private JSONObject generateExtensionInputData() {
-		System.out.println("Factura: start collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
+		System.out.println("Credito Fiscal: start collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
 		JSONObject jsonExtension = new JSONObject();
-
-		jsonExtension.put(Factura.NOMBENTREGA, "DATEN AUS INVOICE HOLEN!!");
-		jsonExtension.put(Factura.DOCUENTREGA, "DATEN AUS INVOICE HOLEN!!");
-		jsonExtension.put(Factura.NOMBRECIBE, "DATEN AUS INVOICE HOLEN!!");
-		jsonExtension.put(Factura.DOCURECIBE, "DATEN AUS INVOICE HOLEN!!");
-		jsonExtension.put(Factura.OBSERVACIONES, "DATEN AUS INVOICE HOLEN!!");
-		jsonExtension.put(Factura.PLACAVEHICULO, "DATEN AUS INVOICE HOLEN!!");
-
-		System.out.println("Factura: end collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
+		String observaciones = invoice.get_ValueAsString(MPackageExp.COLUMNNAME_Instructions);
+		
+		jsonExtension.put(EDocument.NOMBENTREGA, "");
+		jsonExtension.put(EDocument.DOCUENTREGA, "");
+		jsonExtension.put(EDocument.NOMBRECIBE, "");
+		jsonExtension.put(EDocument.DOCURECIBE, "");
+		jsonExtension.put(EDocument.OBSERVACIONES, observaciones);
+		jsonExtension.put(EDocument.PLACAVEHICULO, "");
+		System.out.println("Credito Fiscal: end collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
 		return jsonExtension;
 	}
 
