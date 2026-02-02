@@ -14,7 +14,6 @@ import java.util.Properties;
 import org.adempiere.core.domains.models.X_C_UOM;
 import org.adempiere.core.domains.models.X_E_Activity;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.xmlbeans.impl.jam.mutable.MPackage;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
@@ -41,7 +40,6 @@ import org.shw.lsv.einvoice.feccfcreditofiscalv3.ExtensionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.IdentificacionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ReceptorCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ResumenCreditoFiscal;
-import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 

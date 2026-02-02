@@ -20,9 +20,9 @@ import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ApendiceItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.CuerpoDocumentoItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.EmisorFactura;
@@ -36,7 +36,6 @@ import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysql.jdbc.TimeUtil;
 
 public class FacturaFactory extends EDocumentFactory {
 	Factura factura;
