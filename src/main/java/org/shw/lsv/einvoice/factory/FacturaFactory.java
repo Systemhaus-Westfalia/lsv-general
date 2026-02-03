@@ -220,7 +220,7 @@ public class FacturaFactory extends EDocumentFactory {
 		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
 			isContigencia = true;
 		}
-		String fecEmi = getfecEmi();
+		String fecEmi = invoice.getDateAcct().toString().substring(0, 10);
 		String horEmi = gethorEmi();
 		int tipoModelo = isContigencia?Factura.TIPOMODELO_CONTIGENCIA:Factura.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?Factura.TIPOOPERACION_CONTIGENCIA:Factura.TIPOOPERACION_NOCONTIGENCIA;

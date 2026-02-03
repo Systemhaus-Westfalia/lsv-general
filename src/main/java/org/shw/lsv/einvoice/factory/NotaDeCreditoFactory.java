@@ -238,7 +238,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		
 		String codigoGeneracion = createCodigoGeneracion(invoice);
 		String horEmi = gethorEmi();
-		String fecEmi = getfecEmi();
+		String fecEmi = invoice.getDateAcct().toString().substring(0, 10);
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		jsonObjectIdentificacion.put(NotaDeCredito.MOTIVOCONTIN, motivoContin);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOCONTINGENCIA, tipoContingencia);

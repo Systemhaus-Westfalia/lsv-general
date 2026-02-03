@@ -229,7 +229,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.TIPOMODELO, tipoModelo);
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.TIPOOPERACION, tipoOperacion);
-		jsonObjectIdentificacion.put(FacturaSujetoExcluido.FECEMI, getfecEmi());
+		jsonObjectIdentificacion.put(FacturaSujetoExcluido.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.AMBIENTE, client_getE_Enviroment(client).getValue());

@@ -217,7 +217,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(FacturaExportacion.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMODELO, 1);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOOPERACION, 1);
-		jsonObjectIdentificacion.put(FacturaExportacion.FECEMI, getfecEmi());
+		jsonObjectIdentificacion.put(FacturaExportacion.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(FacturaExportacion.HOREMI,horEmi);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(FacturaExportacion.AMBIENTE,  client_getE_Enviroment(client).getValue());
