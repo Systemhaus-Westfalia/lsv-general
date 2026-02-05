@@ -1,6 +1,9 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -20,8 +23,10 @@ import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.ApendiceItemFacturaExportacion;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.CuerpoDocumentoItemFacturaExportacion;
@@ -212,10 +217,18 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		String horEmi = gethorEmi();
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		jsonObjectIdentificacion.put(FacturaExportacion.NUMEROCONTROL, numeroControl);
-		
+
+		Boolean isContigencia = false;
+		int daysContingencia = getContingenciaDays(invoice.getAD_Client_ID());
+		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>daysContingencia) {
+			isContigencia = true;
+		}
+
+		int tipoModelo = isContigencia?CreditoFiscal.TIPOMODELO_CONTIGENCIA:CreditoFiscal.TIPOMODELO_NOCONTIGENCIA;
+		int tipoOperacion = isContigencia?CreditoFiscal.TIPOOPERACION_CONTIGENCIA:CreditoFiscal.TIPOOPERACION_NOCONTIGENCIA;
 		jsonObjectIdentificacion.put(FacturaExportacion.CODIGOGENERACION, codigoGeneracion);
-		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMODELO, 1);
-		jsonObjectIdentificacion.put(FacturaExportacion.TIPOOPERACION, 1);
+		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMODELO, tipoModelo);
+		jsonObjectIdentificacion.put(FacturaExportacion.TIPOOPERACION, tipoOperacion);
 		jsonObjectIdentificacion.put(FacturaExportacion.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(FacturaExportacion.HOREMI,horEmi);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMONEDA, "USD");

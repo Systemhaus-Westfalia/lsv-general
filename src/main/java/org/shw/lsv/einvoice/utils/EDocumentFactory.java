@@ -43,6 +43,7 @@ import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPOS;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MProduct;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
@@ -475,6 +476,11 @@ public abstract class EDocumentFactory {
         String time = String.format("%02d", dateTime.getHour()) + ":" + String.format("%02d", dateTime.getMinute())  
         + ":" + String.format("%02d", dateTime.getSecond()) ;
 		return time;
+	}
+	
+	public int getContingenciaDays(int clientID) {
+		int days = MSysConfig.getIntValue("SHW_FE_CONTINGENCIA", 100, clientID);
+		return days;
 	}
 	
 	

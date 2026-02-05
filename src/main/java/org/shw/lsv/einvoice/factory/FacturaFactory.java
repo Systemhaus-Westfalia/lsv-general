@@ -217,7 +217,8 @@ public class FacturaFactory extends EDocumentFactory {
 		String codigoGeneracion =  createCodigoGeneracion(invoice);
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		Boolean isContigencia = false;
-		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>3) {
+		int daysContingencia = getContingenciaDays(invoice.getAD_Client_ID());
+		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>daysContingencia) {
 			isContigencia = true;
 		}
 		String fecEmi = invoice.getDateAcct().toString().substring(0, 10);

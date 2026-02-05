@@ -21,6 +21,7 @@ import org.compiere.model.MTax;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
+import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.shw.lsv.einvoice.fencnotadecreditov1.CuerpoDocumentoItemNotaDeCredito;
@@ -226,12 +227,13 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		Integer tipoContingencia = 0;
 		int tipoModelo           = 1;
 		int tipoOperacion        = 1;
-		//if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>=3) {
-		//	tipoModelo       = 2;
-		//	tipoOperacion    = 2;	
-		//	motivoContin     = "Contigencia por fecha de factura";	
-		//	tipoContingencia = 5;
-		//}
+		int daysContingencia = getContingenciaDays(invoice.getAD_Client_ID());
+		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>daysContingencia) {
+			tipoModelo       = 2;
+			tipoOperacion    = 2;	
+			motivoContin     = "Contigencia por fecha de factura";	
+			tipoContingencia = 5;
+		}
 
 		
 		String numeroControl = createNumeroControl(invoice, client);
@@ -251,6 +253,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(NotaDeCredito.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(NotaDeCredito.AMBIENTE, client_getE_Enviroment(client).getValue());
+		
 
 		System.out.println("Finish collecting JSON data for Identificacion");
 		return jsonObjectIdentificacion;

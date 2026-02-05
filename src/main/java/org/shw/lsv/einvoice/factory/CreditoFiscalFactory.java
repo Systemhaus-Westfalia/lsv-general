@@ -225,7 +225,8 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String horEmi = timeFormat.format(cal.getTime());
-		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>3) {
+		int daysContingencia = getContingenciaDays(invoice.getAD_Client_ID());
+		if (TimeUtil.getDaysBetween(invoice.getDateAcct(), TimeUtil.getDay(0))>daysContingencia) {
 			isContigencia = true;
 		}
 		int tipoModelo = isContigencia?CreditoFiscal.TIPOMODELO_CONTIGENCIA:CreditoFiscal.TIPOMODELO_NOCONTIGENCIA;
@@ -239,10 +240,11 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(CreditoFiscal.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(CreditoFiscal.AMBIENTE, client_getE_Enviroment(client).getValue());
 		
-		/*if (isContigencia) {
+		if (isContigencia) {
 			jsonObjectIdentificacion.put(CreditoFiscal.MOTIVOCONTIN, "Contigencia por fecha de factura");
 			jsonObjectIdentificacion.put(CreditoFiscal.TIPOCONTINGENCIA, 5);
-		}*/
+		}
+		else
 		{
 			
 			jsonObjectIdentificacion.put(CreditoFiscal.MOTIVOCONTIN, "");
