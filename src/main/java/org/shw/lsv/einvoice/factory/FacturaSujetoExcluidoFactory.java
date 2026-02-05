@@ -234,10 +234,10 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(FacturaSujetoExcluido.AMBIENTE, client_getE_Enviroment(client).getValue());
 		
-		if (isContigencia) {
+		/*if (isContigencia) {
 			jsonObjectIdentificacion.put(FacturaSujetoExcluido.MOTIVOCONTIN, "Contigencia por fecha de facturaNoSujeto");
 			jsonObjectIdentificacion.put(FacturaSujetoExcluido.TIPOCONTINGENCIA, 5);
-		}
+		}*/
 		
 		System.out.println("Factura: end collecting JSON data for Identificacion");
 		return jsonObjectIdentificacion;

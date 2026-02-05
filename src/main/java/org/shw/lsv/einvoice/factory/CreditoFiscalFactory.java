@@ -239,11 +239,11 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(CreditoFiscal.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(CreditoFiscal.AMBIENTE, client_getE_Enviroment(client).getValue());
 		
-		if (isContigencia) {
+		/*if (isContigencia) {
 			jsonObjectIdentificacion.put(CreditoFiscal.MOTIVOCONTIN, "Contigencia por fecha de factura");
 			jsonObjectIdentificacion.put(CreditoFiscal.TIPOCONTINGENCIA, 5);
-		}
-		else {
+		}*/
+		{
 			jsonObjectIdentificacion.put(CreditoFiscal.MOTIVOCONTIN, "");
 			jsonObjectIdentificacion.put(CreditoFiscal.TIPOCONTINGENCIA, "");
 		}

@@ -233,10 +233,10 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(Factura.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(Factura.AMBIENTE, client_getE_Enviroment(client).getValue());
 		
-		if (isContigencia) {
+		/*if (isContigencia) {
 			jsonObjectIdentificacion.put(Factura.MOTIVOCONTIN, "Contigencia por fecha de factura");
 			jsonObjectIdentificacion.put(Factura.TIPOCONTINGENCIA, 5);
-		}
+		}*/
 		
 		System.out.println("Factura: end collecting JSON data for Identificacion");
 		return jsonObjectIdentificacion;

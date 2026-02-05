@@ -22,6 +22,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.ApendiceItemFacturaExportacion;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.CuerpoDocumentoItemFacturaExportacion;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.EmisorFacturaExportacion;
@@ -388,8 +389,11 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		System.out.println("Start collecting JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo());
 		JSONObject jsonCuerpoDocumento = new JSONObject();
 		JSONArray jsonCuerpoDocumentoArray = new JSONArray();
+		int i=0;
 		for (MInvoiceLine invoiceLine:invoice.getLines()) { 
 			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() );
+
+			i++;
 			BigDecimal ventaGravada = Env.ZERO;
 			BigDecimal ventaNoGravada = Env.ZERO;
 			BigDecimal precioUnitario = Env.ZERO;
@@ -412,8 +416,9 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			precioUnitario = isVentanoGravada? Env.ZERO:invoiceLine.getPriceEntered();
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
-                
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.NUMITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));
+
+			jsonCuerpoDocumentoItem.put(Factura.NUMITEM, i);
+			jsonCuerpoDocumentoItem.put(Factura.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.CANTIDAD, invoiceLine.getQtyEntered());
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
 			
