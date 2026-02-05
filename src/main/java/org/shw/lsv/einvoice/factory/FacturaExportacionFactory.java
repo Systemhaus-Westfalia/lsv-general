@@ -206,8 +206,6 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 	
 	private JSONObject generateIdentificationInputData() {
 		System.out.println("Start collecting JSON data for Identificacion");
-
-
 		
 		String numeroControl = createNumeroControl(invoice, client);
 		String codigoGeneracion = createCodigoGeneracion(invoice);

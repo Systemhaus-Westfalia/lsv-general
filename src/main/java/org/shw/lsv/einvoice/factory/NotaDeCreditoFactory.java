@@ -242,6 +242,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		jsonObjectIdentificacion.put(NotaDeCredito.MOTIVOCONTIN, motivoContin);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOCONTINGENCIA, tipoContingencia);
+		
 		jsonObjectIdentificacion.put(NotaDeCredito.NUMEROCONTROL, numeroControl);
 		jsonObjectIdentificacion.put(NotaDeCredito.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOMODELO, tipoModelo);

@@ -244,6 +244,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			jsonObjectIdentificacion.put(CreditoFiscal.TIPOCONTINGENCIA, 5);
 		}*/
 		{
+			
 			jsonObjectIdentificacion.put(CreditoFiscal.MOTIVOCONTIN, "");
 			jsonObjectIdentificacion.put(CreditoFiscal.TIPOCONTINGENCIA, "");
 		}

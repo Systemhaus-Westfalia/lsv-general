@@ -237,7 +237,6 @@ public class FacturaFactory extends EDocumentFactory {
 			jsonObjectIdentificacion.put(Factura.MOTIVOCONTIN, "Contigencia por fecha de factura");
 			jsonObjectIdentificacion.put(Factura.TIPOCONTINGENCIA, 5);
 		}*/
-		
 		System.out.println("Factura: end collecting JSON data for Identificacion");
 		return jsonObjectIdentificacion;
 		
