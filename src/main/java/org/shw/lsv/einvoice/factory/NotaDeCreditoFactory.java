@@ -24,6 +24,7 @@ import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.fencnotadecreditov1.CuerpoDocumentoItemNotaDeCredito;
 import org.shw.lsv.einvoice.fencnotadecreditov1.DocumentoRelacionadoItemNotaDeCredito;
 import org.shw.lsv.einvoice.fencnotadecreditov1.EmisorNotaDeCredito;
@@ -472,12 +473,14 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));;
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NUMERODOCUMENTO, numerodocumentno);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CANTIDAD, invoiceLine.getQtyEntered());
-			jsonCuerpoDocumentoItem.put(NotaDeCredito.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
+			jsonCuerpoDocumentoItem.put(CreditoFiscal.CODIGO, invoiceLine.getM_Product_ID()>0? 
+					invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getC_ChargeType().getValue());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.CODTRIBUTO, "");  // String codTributo = "20";
 
 			X_C_UOM uom = (X_C_UOM)invoiceLine.getC_UOM();
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.UNIMEDIDA, uom_getValue(uom));
-			jsonCuerpoDocumentoItem.put(NotaDeCredito.DESCRIPCION, invoiceLine.getM_Product_ID()>0?invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName());
+			jsonCuerpoDocumentoItem.put(NotaDeCredito.DESCRIPCION, invoiceLine.getM_Product_ID()>0?
+					invoiceLine.getM_Product().getName():invoiceLine.getC_Charge().getName());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.PRECIOUNI, invoiceLine.getPriceEntered());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.MONTODESCU, Env.ZERO);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.VENTANOSUJ, ventaNoSuj);

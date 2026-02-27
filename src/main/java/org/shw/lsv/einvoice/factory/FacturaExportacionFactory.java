@@ -431,7 +431,8 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem.put(Factura.NUMITEM, i);
 			jsonCuerpoDocumentoItem.put(Factura.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.CANTIDAD, invoiceLine.getQtyEntered());
-			jsonCuerpoDocumentoItem.put(FacturaExportacion.CODIGO, invoiceLine.getM_Product_ID()>0? invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getName());
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.CODIGO, invoiceLine.getM_Product_ID()>0? 
+					invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getC_ChargeType().getValue());
 			
 			JSONArray jsonTributosArray = new JSONArray();
 
