@@ -43,9 +43,12 @@ import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MLocation;
 import org.compiere.model.MPriceList;
 import org.compiere.model.MRequest;
+import org.compiere.model.MTax;
 import org.compiere.model.Query;
+import org.compiere.model.Tax;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.compiere.util.Util;
 import org.shw.lsv.einvoice.utils.CuerpoDocumentoItem;
 import org.shw.lsv.einvoice.utils.DteRoot;
 import org.shw.lsv.einvoice.utils.TributosItem;
@@ -72,6 +75,12 @@ public class ei_readJson extends ei_readJsonAbstract
 			File jsonfile = new File(getFilePathOrName());
 			// This maps the whole JSON to your Java objects
 			DteRoot dte = mapper.readValue(jsonfile, DteRoot.class);
+			String codigoGeneracion = dte.getIdentificacion().getCodigoGeneracion();
+			String sql = "SELECT COUNT(*) FROM C_Invoice where ei_codigoGeneracion = ? AND AD_Client_ID= " + Env.getAD_Client_ID(getCtx());
+			int no = DB.getSQLValueEx(get_TrxName(), sql, codigoGeneracion);
+			if (no > 0 )
+				return "Una factura con este codigo de generacion ya existe";
+			
 			MBPartner partner = null;
 			if (getBPartnerId()> 0)
 			partner = new MBPartner(getCtx(), getBPartnerId(), get_TrxName());
@@ -92,7 +101,6 @@ public class ei_readJson extends ei_readJsonAbstract
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		openResult(MInvoice.Table_Name);
 		return "";
 
 	}
@@ -107,6 +115,7 @@ public class ei_readJson extends ei_readJsonAbstract
 		doctypeOptional.ifPresent(docType -> invoice.setC_DocTypeTarget_ID(docType.getC_DocType_ID()));
 		if (invoice.getC_DocTypeTarget_ID() <= 0)
 			throw new AdempiereException("@C_DocType_ID@ @FillMandatory@");
+		invoice.setIsSOTrx(false);
 		invoice.setC_BPartner_ID(partner.getC_BPartner_ID());
 
 		MBPartnerLocation bpl = null;
@@ -129,6 +138,9 @@ public class ei_readJson extends ei_readJsonAbstract
 			invoice.setM_PriceList_ID(priceList.get_ID());
 			invoice.setC_Currency_ID(priceList.getC_Currency_ID());
 		});
+		invoice.set_ValueOfColumn("ei_codigoGeneracion", dteRoot.getIdentificacion().getCodigoGeneracion());
+		invoice.set_ValueOfColumn("ei_numeroControl", dteRoot.getIdentificacion().getNumeroControl());
+		invoice.set_ValueOfColumn("ei_selloRecibido", dteRoot.getSelloRecibido());
 		invoice.saveEx();
 
 		return invoice;
@@ -170,6 +182,7 @@ public class ei_readJson extends ei_readJsonAbstract
 		partner.setDUNS(dteRoot.getEmisor().getNrc());
 		partner.setName(dteRoot.getEmisor().getNombre());
         partner.setC_BP_Group_ID(MBPGroup.getDefault(getCtx()).get_ID());
+        partner.setValue(dteRoot.getEmisor().getNit());
 		partner.saveEx();
 		MBPartnerLocation partnerLocation = new MBPartnerLocation(partner);
 		MLocation location = new MLocation(getCtx(), 0, get_TrxName());
@@ -224,7 +237,7 @@ public class ei_readJson extends ei_readJsonAbstract
 		cuerDocumentoItems.stream().forEach(cuerpoDocumentoItem -> {
 			createInvoiceLine(invoice, cuerpoDocumentoItem, dteRoot);
 		});
-		createINvoiceLineFovialCotrans(invoice, dteRoot );
+		createInvoiceLineFovialCotrans(invoice, dteRoot );
 		
 	}
 	private void createInvoiceLine(MInvoice invoice, CuerpoDocumentoItem cuerpoDocumentoItem,DteRoot dteRoot) {
@@ -240,37 +253,55 @@ public class ei_readJson extends ei_readJsonAbstract
 				invoiceLine.setC_Tax_ID(getTaxID(tributo));				
 			}
 		});
+		invoiceLine.saveEx();
 	}
 	
-	private void createINvoiceLineFovialCotrans(MInvoice invoice, DteRoot dteRoot ) {
-		
-		List<TributosItem> tributosItems =  dteRoot.getResumen().getTributos();
-		String sql = "SELECT C_Charge_ID from C_Charge where ad_Client_ID=? AND description = ?";
-		ArrayList<Object> params = new ArrayList<Object>();
-		params.add(invoice.getAD_Client_ID());
-		tributosItems.stream().forEach(tributoItem ->{
-			if (tributoItem.getCodigo().equals("C8")){
-				MInvoiceLine invoiceLine = new MInvoiceLine(invoice);
-				invoiceLine.setQty(Env.ONE);
-				invoiceLine.setPrice(tributoItem.getValor());
-				invoiceLine.setDescription(tributoItem.getDescripcion());
-				params.add(tributoItem.getCodigo());
-				int chargeID = DB.getSQLValueEx(get_TrxName(), sql , params);
-				invoiceLine.setC_Charge_ID(chargeID);
-				invoiceLine.saveEx();				
-			}
-			if (tributoItem.getCodigo().equals("D1")){
-				MInvoiceLine invoiceLine = new MInvoiceLine(invoice);
-				invoiceLine.setQty(Env.ONE);
-				invoiceLine.setPrice(tributoItem.getValor());
-				invoiceLine.setDescription(tributoItem.getDescripcion());
-				params.add(tributoItem.getCodigo());
-				int chargeID = DB.getSQLValueEx(get_TrxName(), sql , params);
-				invoiceLine.setC_Charge_ID(chargeID);
-				invoiceLine.saveEx();				
-			}
-		});
+	private String createInvoiceLineFovialCotrans(MInvoice invoice, DteRoot dteRoot) {
 
+	    List<TributosItem> tributosItems = dteRoot.getResumen().getTributos();
+
+	    // Get tax ID - now effectively final
+	    final int taxID = Arrays.asList(MTax.getAll(Env.getCtx()))
+	        .stream()
+	        .filter(tax -> tax != null && "NSUJ".equals(tax.getTaxIndicator()))
+	        .findFirst()
+	        .map(MTax::getC_Tax_ID)
+	        .orElse(0);
+	    if (taxID == 0)
+	    	return "Falta la definición para Impuestos No Sujetos";
+
+	    // SQL for charge lookup
+	    final String sql = "SELECT C_Charge_ID FROM C_Charge WHERE AD_Client_ID=? AND Description=?";
+
+	    // Process C8 and D1 items
+	    tributosItems.stream()
+	        .filter(item -> item.getCodigo().equals("C8") || item.getCodigo().equals("D1"))
+	        .forEach(tributoItem -> {
+	            MInvoiceLine invoiceLine = new MInvoiceLine(invoice);
+	            invoiceLine.setQty(Env.ONE);
+	            invoiceLine.setPrice(tributoItem.getValor());
+	            invoiceLine.setDescription(tributoItem.getDescripcion());
+	            invoiceLine.setC_Tax_ID(taxID);
+
+	            // Query for charge ID
+	            int chargeID = DB.getSQLValueEx(
+	                get_TrxName(),
+	                sql,
+	                invoice.getAD_Client_ID(),
+	                tributoItem.getCodigo()
+	            );
+
+	            // Validate charge ID exists
+	            if (chargeID <= 0) {
+	                throw new AdempiereException(
+	                    "No charge found for code: " + tributoItem.getCodigo()
+	                );
+	            }
+
+	            invoiceLine.setC_Charge_ID(chargeID);
+	            invoiceLine.saveEx();
+	        });
+	    return "";
 	}
 	
 	
