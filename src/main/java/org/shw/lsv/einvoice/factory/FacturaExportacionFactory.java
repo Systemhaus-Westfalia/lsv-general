@@ -448,7 +448,8 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 				description = name;
 			if (description.length()>999)
 				description = description.substring(0, 998);
-			jsonTributosArray.put("C3");
+			if (!isVentanoGravada)
+				jsonTributosArray.put("C3");
 			jsonCuerpoDocumentoItem. put( FacturaExportacion.TRIBUTOS, jsonTributosArray); //tributosItems.add("20");
 
 			X_C_UOM uom = (X_C_UOM)invoiceLine.getC_UOM();
