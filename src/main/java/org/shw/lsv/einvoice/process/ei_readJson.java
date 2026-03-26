@@ -489,7 +489,7 @@ public class ei_readJson extends ei_readJsonAbstract {
 		// Set DTE specific fields
 		invoice.set_ValueOfColumn("ei_codigoGeneracion", dteRoot.getIdentificacion().getCodigoGeneracion());
 		invoice.set_ValueOfColumn("ei_numeroControl", dteRoot.getIdentificacion().getNumeroControl());
-		//invoice.set_ValueOfColumn("ei_selloRecibido", dteRoot.getSelloRecibido());
+		invoice.set_ValueOfColumn("ei_selloRecibido", dteRoot.getSelloRecibido());
 
 		invoice.saveEx();
 
