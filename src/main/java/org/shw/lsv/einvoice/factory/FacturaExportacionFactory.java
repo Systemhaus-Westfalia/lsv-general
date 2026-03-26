@@ -373,7 +373,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonObjectResumen.put(FacturaExportacion.CONDICIONOPERACION, FacturaExportacion.CONDICIONOPERACION_A_CREDITO);
 		jsonObjectResumen.put(FacturaExportacion.TOTALDESCU, Env.ZERO);
 		jsonObjectResumen.put(FacturaExportacion.DESCUENTO, Env.ZERO);
-		jsonObjectResumen.put(FacturaExportacion.MONTOTOTALOPERACION, invoice.getGrandTotal());
+		jsonObjectResumen.put(FacturaExportacion.MONTOTOTALOPERACION, totalGravada);
 		jsonObjectResumen.put(FacturaExportacion.SEGURO, Env.ZERO);
 		jsonObjectResumen.put(FacturaExportacion.FLETE, Env.ZERO);
 		
