@@ -19,8 +19,20 @@ public class DteRoot {
 
     @JsonProperty("emisor")
     private Emisor emisor;
+    
 
-    public Emisor getEmisor() {
+    @JsonProperty("selloRecibido")
+    private String selloRecibido;
+
+    public String getSelloRecibido() {
+		return selloRecibido;
+	}
+
+	public void setSelloRecibido(String selloRecibido) {
+		this.selloRecibido = selloRecibido;
+	}
+
+	public Emisor getEmisor() {
 		return emisor;
 	}
 
