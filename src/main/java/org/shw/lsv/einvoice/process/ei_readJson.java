@@ -32,6 +32,8 @@ import java.util.Optional;
 
 import org.adempiere.core.domains.models.I_C_BPartner;
 import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.MAllocationHdr;
+import org.compiere.model.MAllocationLine;
 import org.compiere.model.MBPGroup;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -42,10 +44,12 @@ import org.compiere.model.MLocation;
 import org.compiere.model.MPriceList;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
+import org.compiere.process.DocAction;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.shw.lsv.einvoice.utils.CuerpoDocumentoItem;
 import org.shw.lsv.einvoice.utils.DteRoot;
+import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.TributosItem;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -121,6 +125,10 @@ public class ei_readJson extends ei_readJsonAbstract {
 
 	private static final String MSG_MISSING_CHARGE =
 		"No se encontró el cargo para el código: ";
+	
+
+	private static final String MSG_MISSING_Invoice =
+		"No se encontró un Crédito Fiscal para esta retención: ";
 
 	private static final String MSG_SUCCESS =
 		"Factura importada exitosamente. Código: ";
@@ -192,6 +200,11 @@ public class ei_readJson extends ei_readJsonAbstract {
 			// Create invoice lines
 			createInvoiceLines(invoice, dte);
 			log.info("Invoice lines created successfully");
+			
+			if (isWithholding()) {
+				invoice.processIt(DocAction.ACTION_Complete);
+				createAllocation(invoice);
+			}
 
 			// Log summary information
 			logInvoiceSummary(dte);
@@ -462,10 +475,16 @@ public class ei_readJson extends ei_readJsonAbstract {
 		MInvoice invoice = new MInvoice(getCtx(), 0, get_TrxName());
 
 		// Set document type
-		setInvoiceDocType(invoice);
+		if (getDocTypeId()>0)
+		invoice.setC_DocTypeTarget_ID(getDocTypeId());
+		else
+			setInvoiceDocType(invoice);
 
 		// Set vendor information
-		invoice.setIsSOTrx(false);
+		if (isWithholding())
+			invoice.setIsSOTrx(true);
+		else
+			invoice.setIsSOTrx(false);
 		invoice.setC_BPartner_ID(partner.getC_BPartner_ID());
 
 		// Set partner location
@@ -495,6 +514,39 @@ public class ei_readJson extends ei_readJsonAbstract {
 
 		return invoice;
 	}
+	
+
+	// ==================== Invoice Creation ====================
+
+	/**
+	 * Creates a vendor invoice from DTE data.
+	 *
+	 * @param dteRoot The DTE containing invoice information
+	 * @param partner The business partner (vendor)
+	 * @return The created invoice
+	 * @throws ParseException if date parsing fails
+	 */
+	private MAllocationHdr createAllocation(MInvoice invoice) throws ParseException {
+
+
+		//	Create Allocation
+		MAllocationHdr alloc = new MAllocationHdr (Env.getCtx(), true,	//	manual
+				invoice.getDateAcct(), invoice.getC_Currency_ID(), Env.getContext(Env.getCtx(), "#AD_User_Name"), get_TrxName());
+		alloc.setAD_Org_ID(invoice.getAD_Org_ID());
+		alloc.setDescription("Comprobante de Retencion "  + invoice.getDocumentNo());
+		alloc.saveEx();
+
+		BigDecimal chargeAmt = invoice.getGrandTotal();
+	
+		//	Allocation Line
+		MAllocationLine aLine = new MAllocationLine (alloc, chargeAmt.negate(), 
+			Env.ZERO, Env.ZERO, Env.ZERO);
+		aLine.set_CustomColumn("C_Charge_ID", getRefChargeId());
+		aLine.setC_BPartner_ID(invoice.getC_BPartner_ID());
+		aLine.saveEx();
+		return alloc;
+	}
+
 
 	/**
 	 * Sets the appropriate document type for the invoice.
@@ -558,7 +610,11 @@ public class ei_readJson extends ei_readJsonAbstract {
 		// Create regular invoice lines
 		List<CuerpoDocumentoItem> items = dteRoot.getCuerpoDocumento();
 		if (items != null && !items.isEmpty()) {
+			if (!isWithholding())
 			items.forEach(item -> createInvoiceLine(invoice, item));
+			else
+				items.forEach(item -> createInvoiceLineWithholding(invoice, item));
+				
 		}
 
 		// Create special tax lines (FOVIAL, COTRANS)
@@ -593,6 +649,48 @@ public class ei_readJson extends ei_readJsonAbstract {
 
 		invoiceLine.saveEx();
 	}
+	
+
+	/**
+	 * Creates a single invoice line from a DTE item.
+	 *
+	 * @param invoice The invoice to add the line to
+	 * @param item The DTE item containing line details
+	 */
+	private void createInvoiceLineWithholding(MInvoice invoice, CuerpoDocumentoItem item) {
+		MInvoiceLine invoiceLine = new MInvoiceLine(invoice);
+
+		// Set quantity and pricing
+		invoiceLine.setQty(Env.ONE);
+		invoiceLine.setPrice(BigDecimal.valueOf(item.getIvaRetenido()));
+
+		// Set description
+		if (item.getDescripcion() != null && !item.getDescripcion().isEmpty()) {
+			invoiceLine.setDescription(item.getDescripcion());
+		}
+
+		// Set charge if provided
+		if (getRefChargeId() > 0) {
+			invoiceLine.setC_Charge_ID(getRefChargeId());
+		}
+		int taxID = new Query(getCtx(), MTax.Table_Name, "taxindicator = ? ", get_TrxName())
+				.setParameters(EDocumentFactory.TAXINDICATOR_NSUJ)
+				.setClient_ID()
+				.firstId();
+		invoiceLine.setC_Tax_ID(taxID);
+
+		int invoiceID = new Query(getCtx(), MInvoice.Table_Name, "ei_codigoGeneracion = ?", get_TrxName())
+				.setParameters(item.getNumDocumento())
+				.setClient_ID()
+				.firstId();
+		if (invoiceID==0)
+				throw new AdempiereException(MSG_MISSING_Invoice + item.getNumDocumento());
+				
+		invoiceLine.saveEx();
+		invoiceLine.set_ValueOfColumn("Ref_Invoice_ID", invoiceID);
+		invoiceLine.saveEx();
+	}
+
 
 	/**
 	 * Sets the appropriate tax for an invoice line.
@@ -789,6 +887,7 @@ public class ei_readJson extends ei_readJsonAbstract {
 		if (dte.getCuerpoDocumento() != null && !dte.getCuerpoDocumento().isEmpty()) {
 			summary.append("Items: ").append(dte.getCuerpoDocumento().size()).append("\n");
 			summary.append("First Item: ").append(dte.getCuerpoDocumento().get(0).getDescripcion()).append("\n");
+			summary.append(dte.getCuerpoDocumento().get(0).getNumDocumento());
 		}
 
 		if (dte.getResumen() != null) {

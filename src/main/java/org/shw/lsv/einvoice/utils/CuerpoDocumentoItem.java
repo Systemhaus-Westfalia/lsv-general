@@ -20,9 +20,44 @@ public class CuerpoDocumentoItem {
     private double precioUni;
 
     @JsonProperty("ventaGravada")
-    private double ventaGravada;
+    private double ventaGravada; 
 
-    // This is an array of Strings in your JSON ["D1", "C8", "20"]
+
+    @JsonProperty("codigoRetencionMH")
+    private String codigoRetencionMH;
+    
+    @JsonProperty("numDocumento")
+    private String numDocumento;
+    
+
+    @JsonProperty("ivaRetenido")
+    private double ivaRetenido; 
+
+    public String getCodigoRetencionMH() {
+		return codigoRetencionMH;
+	}
+
+	public void setCodigoRetencionMH(String codigoRetencionMH) {
+		this.codigoRetencionMH = codigoRetencionMH;
+	}
+
+	public String getNumDocumento() {
+		return numDocumento;
+	}
+
+	public void setNumDocumento(String numDocumento) {
+		this.numDocumento = numDocumento;
+	}
+
+	public double getIvaRetenido() {
+		return ivaRetenido;
+	}
+
+	public void setIvaRetenido(double ivaRetenido) {
+		this.ivaRetenido = ivaRetenido;
+	}
+
+	// This is an array of Strings in your JSON ["D1", "C8", "20"]
     @JsonProperty("tributos")
     private List<String> tributos;
 

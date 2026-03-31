@@ -30,30 +30,45 @@ public abstract class ei_readJsonAbstract extends SvrProcess {
 	/** Process Name 	*/
 	private static final String NAME_FOR_PROCESS = "ei_readJson";
 	/** Process Id 	*/
-	private static final int ID_FOR_PROCESS = 54940;
+	private static final int ID_FOR_PROCESS = 54952;
 	/**	Parameter Name for File Path or Name	*/
 	public static final String FILEPATHORNAME = "FilePathOrName";
 	/**	Parameter Name for Charge	*/
 	public static final String C_CHARGE_ID = "C_Charge_ID";
-	/**	Parameter Name for Order	*/
-	public static final String C_ORDER_ID = "C_Order_ID";
 	/**	Parameter Name for Business Partner 	*/
 	public static final String C_BPARTNER_ID = "C_BPartner_ID";
+	/**	Parameter Name for Order	*/
+	public static final String C_ORDER_ID = "C_Order_ID";
+	/**	Parameter Name for IsWithholding	*/
+	public static final String ISWITHHOLDING = "IsWithholding";
+	/**	Parameter Name for Ref_Charge	*/
+	public static final String REF_CHARGE = "Ref_Charge";
+	/**	Parameter Name for Document Type	*/
+	public static final String C_DOCTYPE_ID = "C_DocType_ID";
 	/**	Parameter Value for File Path or Name	*/
 	private String filePathOrName;
 	/**	Parameter Value for Charge	*/
 	private int chargeId;
-	/**	Parameter Value for Order	*/
-	private int orderId;
 	/**	Parameter Value for Business Partner 	*/
 	private int bPartnerId;
+	/**	Parameter Value for Order	*/
+	private int orderId;
+	/**	Parameter Value for IsWithholding	*/
+	private boolean isWithholding;
+	/**	Parameter Value for Ref_Charge	*/
+	private int refChargeId;
+	/**	Parameter Value for Document Type	*/
+	private int docTypeId;
 
 	@Override
 	protected void prepare() {
 		filePathOrName = getParameterAsString(FILEPATHORNAME);
 		chargeId = getParameterAsInt(C_CHARGE_ID);
-		orderId = getParameterAsInt(C_ORDER_ID);
 		bPartnerId = getParameterAsInt(C_BPARTNER_ID);
+		orderId = getParameterAsInt(C_ORDER_ID);
+		isWithholding = getParameterAsBoolean(ISWITHHOLDING);
+		refChargeId = getParameterAsInt(REF_CHARGE);
+		docTypeId = getParameterAsInt(C_DOCTYPE_ID);
 	}
 
 	/**	 Getter Parameter Value for File Path or Name	*/
@@ -76,6 +91,16 @@ public abstract class ei_readJsonAbstract extends SvrProcess {
 		this.chargeId = chargeId;
 	}
 
+	/**	 Getter Parameter Value for Business Partner 	*/
+	protected int getBPartnerId() {
+		return bPartnerId;
+	}
+
+	/**	 Setter Parameter Value for Business Partner 	*/
+	protected void setBPartnerId(int bPartnerId) {
+		this.bPartnerId = bPartnerId;
+	}
+
 	/**	 Getter Parameter Value for Order	*/
 	protected int getOrderId() {
 		return orderId;
@@ -86,14 +111,34 @@ public abstract class ei_readJsonAbstract extends SvrProcess {
 		this.orderId = orderId;
 	}
 
-	/**	 Getter Parameter Value for Business Partner 	*/
-	protected int getBPartnerId() {
-		return bPartnerId;
+	/**	 Getter Parameter Value for IsWithholding	*/
+	protected boolean isWithholding() {
+		return isWithholding;
 	}
 
-	/**	 Setter Parameter Value for Business Partner 	*/
-	protected void setBPartnerId(int bPartnerId) {
-		this.bPartnerId = bPartnerId;
+	/**	 Setter Parameter Value for IsWithholding	*/
+	protected void setIsWithholding(boolean isWithholding) {
+		this.isWithholding = isWithholding;
+	}
+
+	/**	 Getter Parameter Value for Ref_Charge	*/
+	protected int getRefChargeId() {
+		return refChargeId;
+	}
+
+	/**	 Setter Parameter Value for Ref_Charge	*/
+	protected void setRefChargeId(int refChargeId) {
+		this.refChargeId = refChargeId;
+	}
+
+	/**	 Getter Parameter Value for Document Type	*/
+	protected int getDocTypeId() {
+		return docTypeId;
+	}
+
+	/**	 Setter Parameter Value for Document Type	*/
+	protected void setDocTypeId(int docTypeId) {
+		this.docTypeId = docTypeId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/
