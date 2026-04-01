@@ -33,21 +33,16 @@ public abstract class EI_C_Invoice_PrintAbstract extends SvrProcess {
 	private static final int ID_FOR_PROCESS = 1000084;
 	/**	Parameter Name for Mail Template	*/
 	public static final String R_MAILTEXT_ID = "R_MailText_ID";
-	/**	Parameter Name for Record ID	*/
-	public static final String RECORD_ID = "Record_ID";
 	/**	Parameter Name for Invoice	*/
 	public static final String C_INVOICE_ID = "C_Invoice_ID";
 	/**	Parameter Value for Mail Template	*/
 	private int mailTextId;
-	/**	Parameter Value for Record ID	*/
-	private int recordId;
 	/**	Parameter Value for Invoice	*/
 	private int invoiceId;
 
 	@Override
 	protected void prepare() {
 		mailTextId = getParameterAsInt(R_MAILTEXT_ID);
-		recordId = getParameterAsInt(RECORD_ID);
 		invoiceId = getParameterAsInt(C_INVOICE_ID);
 	}
 
@@ -59,16 +54,6 @@ public abstract class EI_C_Invoice_PrintAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Mail Template	*/
 	protected void setMailTextId(int mailTextId) {
 		this.mailTextId = mailTextId;
-	}
-
-	/**	 Getter Parameter Value for Record ID	*/
-	protected int getRecordId() {
-		return recordId;
-	}
-
-	/**	 Setter Parameter Value for Record ID	*/
-	protected void setRecordId(int recordId) {
-		this.recordId = recordId;
 	}
 
 	/**	 Getter Parameter Value for Invoice	*/

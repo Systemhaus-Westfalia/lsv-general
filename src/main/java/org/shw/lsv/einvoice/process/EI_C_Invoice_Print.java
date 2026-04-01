@@ -114,10 +114,13 @@ public class EI_C_Invoice_Print extends EI_C_Invoice_PrintAbstract
             //	Get from Bank Account
             
             //	Attachment
-            notifier.addAttachment(getPDF(invoice));
+            String filename = invoice.get_ValueAsString("ei_codigoGeneracion");
+            File pdfFiletmp = getPDF(invoice);
+			File pdffile = File.createTempFile(filename, ".pdf");
+            pdfFiletmp.renameTo(pdffile);
+            notifier.addAttachment(pdffile);
             //	Add EMail
             notifier.addRecipient(eMail);
-            String filename = invoice.get_ValueAsString("ei_codigoGeneracion");
 			File jsonfile = File.createTempFile(filename, ".json");
 			
 			String jsonwhereClause = "C_Invoice_ID=? AND json is not null AND ei_Validationstatus = '01'";
