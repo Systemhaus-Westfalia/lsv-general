@@ -85,6 +85,10 @@ public class ei_readJson extends ei_readJsonAbstract {
 
 	/** COTRANS tax code (Contribución al Transporte) */
 	private static final String TAX_CODE_COTRANS = "D1";
+	
+
+	/** PGTA */
+	private static final String chargeNamePGTA = "PGTA";
 
 	/** Tax indicator for non-taxable items */
 	private static final String TAX_INDICATOR_NOT_SUBJECT = "NSUJ";
@@ -203,7 +207,8 @@ public class ei_readJson extends ei_readJsonAbstract {
 			
 			if (isWithholding()) {
 				invoice.processIt(DocAction.ACTION_Complete);
-				createAllocation(invoice);
+				MAllocationHdr allocationHdr =    createAllocation(invoice);
+				allocationHdr.processIt(DocAction.ACTION_Complete);
 			}
 
 			// Log summary information
@@ -542,6 +547,7 @@ public class ei_readJson extends ei_readJsonAbstract {
 		MAllocationLine aLine = new MAllocationLine (alloc, chargeAmt.negate(), 
 			Env.ZERO, Env.ZERO, Env.ZERO);
 		aLine.set_CustomColumn("C_Charge_ID", getRefChargeId());
+		aLine.setC_Invoice_ID(invoice.getC_Invoice_ID());
 		aLine.setC_BPartner_ID(invoice.getC_BPartner_ID());
 		aLine.saveEx();
 		return alloc;
@@ -638,9 +644,24 @@ public class ei_readJson extends ei_readJsonAbstract {
 		if (item.getDescripcion() != null && !item.getDescripcion().isEmpty()) {
 			invoiceLine.setDescription(item.getDescripcion());
 		}
+		if (item.getCodigo().equals(chargeNamePGTA)) {
 
+			int chargeID = getChargeIDForTaxCode(invoice.getAD_Client_ID(), item.getCodigo());
+			if (chargeID <= 0) {
+				throw new AdempiereException(MSG_MISSING_CHARGE + item.getCodigo());
+			}
+			// Get the NSUJ (Not Subject) tax ID
+			final int nsujTaxID = getNonSubjectTaxID();
+			if (nsujTaxID <= 0) {
+				throw new AdempiereException(MSG_MISSING_NSUJ_TAX);
+			}
+			invoiceLine.setC_Charge_ID(chargeID);
+			invoiceLine.setC_Tax_ID(nsujTaxID);
+			invoiceLine.setPrice(BigDecimal.valueOf(item.getNoGravado()));
+				
+		}
 		// Set charge if provided
-		if (getChargeId() > 0) {
+		if (getChargeId() > 0 && !item.getCodigo().equals(chargeNamePGTA)) {
 			invoiceLine.setC_Charge_ID(getChargeId());
 		}
 

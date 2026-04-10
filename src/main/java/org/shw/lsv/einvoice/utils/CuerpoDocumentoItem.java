@@ -32,8 +32,20 @@ public class CuerpoDocumentoItem {
 
     @JsonProperty("ivaRetenido")
     private double ivaRetenido; 
+    
 
-    public String getCodigoRetencionMH() {
+    @JsonProperty("codigo")
+    private String codigo;
+
+    public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getCodigoRetencionMH() {
 		return codigoRetencionMH;
 	}
 
@@ -56,6 +68,19 @@ public class CuerpoDocumentoItem {
 	public void setIvaRetenido(double ivaRetenido) {
 		this.ivaRetenido = ivaRetenido;
 	}
+	
+
+    @JsonProperty("noGravado")
+    private double noGravado;
+
+	public double getNoGravado() {
+		return noGravado;
+	}
+
+	public void setNoGravado(double noGravado) {
+		this.noGravado = noGravado;
+	}
+
 
 	// This is an array of Strings in your JSON ["D1", "C8", "20"]
     @JsonProperty("tributos")
