@@ -12,7 +12,7 @@ ext {
     publishGroupId  = "com.shw"
 }
 
-sourceCompatibility = 1.11
+sourceCompatibility = 17
 
 repositories {
     mavenLocal()
