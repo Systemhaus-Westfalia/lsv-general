@@ -41,9 +41,12 @@ public class CuerpoDocumentoItem {
 		return codigo;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
+    public void setCodigo(String codigo) {
+    	if (codigo == null)
+    		this.setCodigo("");
+    	else
+    		this.codigo = codigo;
+    }
 
 	public String getCodigoRetencionMH() {
 		return codigoRetencionMH;

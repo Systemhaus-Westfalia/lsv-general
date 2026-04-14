@@ -489,7 +489,7 @@ public class ei_readJson extends ei_readJsonAbstract {
 		if (isWithholding())
 			invoice.setIsSOTrx(true);
 		else
-			invoice.setIsSOTrx(false);
+			invoice.setIsSOTrx(invoice.getC_DocTypeTarget().isSOTrx());
 		invoice.setC_BPartner_ID(partner.getC_BPartner_ID());
 
 		// Set partner location
@@ -644,7 +644,7 @@ public class ei_readJson extends ei_readJsonAbstract {
 		if (item.getDescripcion() != null && !item.getDescripcion().isEmpty()) {
 			invoiceLine.setDescription(item.getDescripcion());
 		}
-		if (item.getCodigo().equals(chargeNamePGTA)) {
+		if (item.getCodigo() != null && item.getCodigo().equals(chargeNamePGTA)) {
 
 			int chargeID = getChargeIDForTaxCode(invoice.getAD_Client_ID(), item.getCodigo());
 			if (chargeID <= 0) {
