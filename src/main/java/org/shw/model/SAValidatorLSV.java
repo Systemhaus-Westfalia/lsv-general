@@ -248,7 +248,7 @@ implements ModelValidator {
 			if (timing == TIMING_BEFORE_COMPLETE)
 				;
 			if (timing == TIMING_AFTER_COMPLETE) {
-			    error = ProjectInvoiceComplete(po);
+			   // error = ProjectInvoiceComplete(po);
 				error = OrderLineControlInvoiced(po);
 				error = InvoiceLineCreateOdV(po);
 				error = NdCUpdateControlAmt(po);
@@ -686,9 +686,8 @@ implements ModelValidator {
 			}
 		}
 		if(oneProjectInvoice)
-			invoice.setDescription("");
+			;
 		else{
-			invoice.setC_Order_ID(0);
 			invoice.setC_Project_ID(0);
 		}
 		invoice.saveEx();
