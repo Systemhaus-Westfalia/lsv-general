@@ -113,15 +113,19 @@ public class EI_C_Invoice_Print extends EI_C_Invoice_PrintAbstract
             String eMail = customer.get_ValueAsString("email");
             //	Get from Bank Account
             
-            //	Attachment
-            String filename = invoice.get_ValueAsString("ei_codigoGeneracion");
+            //	Attachment                                                                                                    
+            File tmpdir = new File(System.getProperty("java.io.tmpdir"));                                                                                                                   
+            
+            String filename = invoice.get_ValueAsString("ei_codigoGeneracion");                                                                                                             
             File pdfFiletmp = getPDF(invoice);
-			File pdffile = File.createTempFile(filename, ".pdf");
+            File pdffile = new File(tmpdir, filename + ".pdf");                                                                                                                             
             pdfFiletmp.renameTo(pdffile);
-            notifier.addAttachment(pdffile);
-            //	Add EMail
+            notifier.addAttachment(pdffile);                                                                                                                                                
+                            
+            notifier.addRecipient(eMail);                                                                                                                                                   
+            File jsonfile = new File(tmpdir, filename + ".json");
+
             notifier.addRecipient(eMail);
-			File jsonfile = File.createTempFile(filename, ".json");
 			
 			String jsonwhereClause = "C_Invoice_ID=? AND json is not null AND ei_Validationstatus = '01'";
 			
