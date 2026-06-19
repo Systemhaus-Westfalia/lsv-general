@@ -162,7 +162,7 @@ public class AnulacionFactory extends EDocumentFactory {
        // DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");        
         // Convert to desired format
         //String formattedDate = dateTime.format(outputFormatter);	   
-		String fecEmi = invoice.getDateAcct().toString().substring(0, 10);
+		String fecEmi = invoiceOriginal.getDateAcct().toString().substring(0, 10);
 		jsonObjectDocumento.put(Anulacion.FECEMI, fecEmi);
 		X_E_Recipient_Identification recipient_Identification =  bPartner_getE_Recipient_Identification((MBPartner)invoiceOriginal.getC_BPartner());
 		//jsonObjectDocumento.put(Anulacion.CODIGOGENERACIONR, codigoGeneracion);		
