@@ -1,72 +1,112 @@
 # ADempiere LSV
 
-A Location for El Salvador
+El Salvador localisation library for ADempiere.
+
+Provides electronic invoicing (DTE documents per Ministerio de Hacienda
+specifications), provider abstractions for plugging in different e-invoicing
+services, domain model interfaces, and ADempiere setup classes.
 
 ## Requirements
-- [JDK 11 or later](https://adoptium.net/)
+
+- [JDK 17 or later](https://adoptium.net/)
 - [Gradle 8.0.1 or later](https://gradle.org/install/)
 
+---
 
-### Packages Names
-All implementation has some default packages like `org.shw.lsv`
+## Package structure
 
-```Java
-org.shw.lsv.setup
-org.shw.lsv.util
-org.shw.lsv.util.support
-org.shw.lsv.util.support.findex
+| Package | Contents |
+|---|---|
+| `org.shw.lsv.einvoice` | Electronic invoicing — document types (Factura, Crédito Fiscal, Nota de Crédito/Débito, Retención, Anulación, Contingencia, …), factories, ADempiere process classes, utility classes |
+| `org.shw.lsv.util.support` | Provider abstraction interfaces: `IDeclarationProvider`, `IDeclarationDocument` |
+| `org.shw.lsv.util.support.provider` | Provider implementations: `SVMinHacienda`, `Findex`, `ElectronicInvoice`, and related helpers |
+| `org.shw.lsv.setup` | ADempiere setup/deploy classes |
+| `org.adempiere.core.domains.models` | Domain model interfaces (`I_E_*` series) generated from the El Salvador dictionary |
+
+---
+
+## How to add this library
+
+The artifact is published to GitHub Packages under the
+`Systemhaus-Westfalia/adempiere-shw` registry.
+A GitHub personal access token with `read:packages` scope is required.
+
+Add to `~/.gradle/gradle.properties`:
+
+```properties
+deployUsername=YOUR_GITHUB_USERNAME
+deployToken=YOUR_GITHUB_PAT_WITH_READ_PACKAGES_SCOPE
 ```
 
-### Model Deploy class
-The main deploy class `org.shw.lsv.setup.CreateFindex` used for deploy default provider [Findex](https://findex.la/)
+Add the repository and dependency to your `build.gradle`:
 
-### Functionality Definition
-All abstraction for this functionality is in `org.shw.lsv.util.support`, these files has two files:
+```groovy
+repositories {
+    maven {
+        url = "https://maven.pkg.github.com/Systemhaus-Westfalia/adempiere-shw"
+        credentials {
+            username = findProperty("deployUsername") ?: System.getenv("GITHUB_DEPLOY_USER")
+            password = findProperty("deployToken")    ?: System.getenv("GITHUB_DEPLOY_TOKEN")
+        }
+    }
+}
 
-- `IDeclarationProvider`: This interface must be implemented by provider, the main functionality for this is connect with provider, implement security and endpoints for publish documents
-- `IDeclarationDocument`: A representation of document to publish, the main method to implement is `getDocumentValues()`, this method allows return a map with all values to publish (assume that is a JSON body).
-
-
-### Functionality Implementation
-A first implementation for this is own package`org.shw.lsv.util.support.findex`, this package have some classes:
-
-- `Findex`: Main connector implementation
-- `Invoice`: A implementation for invoice document
-
-## Binary Project
-
-You can get all binaries from github [here](https://central.sonatype.com/artifact/io.github.adempiere/location-el-salvador/1.0.0).
-
-All contruction is from github actions
-
-
-## Some XML's:
-
-All dictionary changes are writing from XML and all XML's hare `xml/migration`
-
-
-## How to add this library?
-
-Is very easy.
-
-- Gradle
-
-```Java
-implementation 'io.github.adempiere:location-el-salvador:1.0.0'
+dependencies {
+    implementation 'com.shw:lsv-general:1.0.53'
+}
 ```
 
-- SBT
+---
+
+## Role in the SHW Customization Stack
+
+`lsv-general` is the bottom layer of the SHW customization stack. Releasing a
+new version triggers a chain of dependent releases that ends with updated Docker
+image references in `adempiere-ui-gateway`.
 
 ```
-libraryDependencies += "io.github.adempiere" % "location-el-salvador" % "1.0.0"
+lsv-general
+    └── adempiere-shw
+            ├── adempiere-shw-zk              ─┐
+            ├── adempiere-grpc-server          ├─► adempiere-ui-gateway
+            └── adempiere-processors-service  ─┘
 ```
 
-- Apache Maven
+### Automation scripts
 
+Three shell scripts in the `scripts/` directory automate the release chain.
+They require `gh`, `git`, `jq`, and `curl`, and an authenticated `gh` CLI
+(`gh auth login`).
+
+| Script | Purpose |
+|---|---|
+| `stack-update.sh` | Full chain: starting from a new `lsv-general` release, propagates versions through every dependent repository up to `adempiere-ui-gateway` |
+| `release-adempiere-grpc-server.sh` | Single step: creates a release for `adempiere-grpc-server` and updates its image tag in `adempiere-ui-gateway` |
+| `release-adempiere-vue.sh` | Single step: creates a release for `adempiere-vue` and updates its image tag in `adempiere-ui-gateway` |
+
+**Usage**
+
+```bash
+# Full chain — real run
+./scripts/stack-update.sh "Fix report formatting in SHW invoice layout"
+
+# Full chain — preview only, no changes made
+./scripts/stack-update.sh --dry-run "Fix report formatting in SHW invoice layout"
+
+# Full chain — dry-run with default placeholder notes
+./scripts/stack-update.sh -n
+
+# Single step — grpc-server only
+./scripts/release-adempiere-grpc-server.sh "Fix gRPC handler for invoice posting"
+
+# Single step — vue only
+./scripts/release-adempiere-vue.sh "Update invoice print layout"
 ```
-<dependency>
-    <groupId>io.github.adempiere</groupId>
-    <artifactId>location-el-salvador</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
+
+**Options**
+
+- `--dry-run` / `-n` — preview mode: prints every action that would be taken
+  but makes no changes (no commits, no pushes, no GitHub releases). Read-only
+  GitHub API calls still run so version transitions are shown accurately.
+- `POLL_INTERVAL` — shell variable at the top of each script (default: 30 s).
+  Controls how often CI/CD workflow status is checked.
