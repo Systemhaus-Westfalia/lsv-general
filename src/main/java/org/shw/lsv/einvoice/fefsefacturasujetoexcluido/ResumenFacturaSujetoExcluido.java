@@ -22,7 +22,6 @@ public class ResumenFacturaSujetoExcluido {
 	static final String VALIDATION_TOTALGRAVADA_CONDOP   = "Documento: Nota de Credito, clase: Resumen. Validacion fall??: valor de 'condicionOperacion' no debe ser diferente a 1";
 
 	BigDecimal 	totalDescu;
-	BigDecimal 	ivaRete1;
 	BigDecimal 	reteRenta;
 	BigDecimal 	totalCompra;
 	String 	   	totalLetras;
@@ -89,14 +88,6 @@ public class ResumenFacturaSujetoExcluido {
 		this.totalDescu = totalDescu;
 	}
 
-	public BigDecimal getIvaRete1() {
-		return ivaRete1;
-	}
-
-	public void setIvaRete1(BigDecimal ivaRete1) {
-		this.ivaRete1 = ivaRete1;
-	}
-
 	public BigDecimal getReteRenta() {
 		return reteRenta;
 	}
@@ -118,7 +109,13 @@ public class ResumenFacturaSujetoExcluido {
 	}
 
 	public void setTotalLetras(String totalLetras) {
-		this.totalLetras = totalLetras;
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 200;
+		int length = totalLetras==null?0:totalLetras.length();
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || (totalLetras==null) )
+			this.totalLetras = totalLetras;
+		else
+			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in FacturaSujetoExcluido.Resumen.setTotalLetras()" + "\n");
 	}
 
 	public BigDecimal getDescu() {
@@ -166,7 +163,13 @@ public class ResumenFacturaSujetoExcluido {
 	}
 
 	public void setObservaciones(String observaciones) {
-		this.observaciones = observaciones;
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 3000;
+		int length = observaciones==null?0:observaciones.length();
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || (observaciones==null) )
+			this.observaciones = observaciones;
+		else
+			throw new IllegalArgumentException("Wrong parameter 'observaciones' in FacturaSujetoExcluido.Resumen.setObservaciones()" + "\n");
 	}
 
 

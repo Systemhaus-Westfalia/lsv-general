@@ -19,12 +19,13 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.CuerpoDocumentoItemFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.EmisorFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.FacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.IdentificacionFacturaSujetoExcluido;
+import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.ReceptorFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.ResumenFacturaSujetoExcluido;
-import org.shw.lsv.einvoice.fefsefacturasujetoexcluido.SujetoExcluidoFacturaSujetoExcluido;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 import org.shw.model.MLCOInvoiceWithholding;
@@ -58,10 +59,10 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		
 
 		System.out.println("Instantiate, fill and verify Sujeto Excluido");
-		SujetoExcluidoFacturaSujetoExcluido sujetoExcluido = facturaSujetoExcluido.getSujetoExcluido();
-		if(sujetoExcluido!=null) {
-			facturaSujetoExcluido.errorMessages.append(facturaSujetoExcluido.fillSujetoExcluido(jsonInputToFactory));
-			result = sujetoExcluido.validateValues();
+		ReceptorFacturaSujetoExcluido receptor = facturaSujetoExcluido.getReceptor();
+		if(receptor!=null) {
+			facturaSujetoExcluido.errorMessages.append(facturaSujetoExcluido.fillReceptor(jsonInputToFactory));
+			result = receptor.validateValues();
 			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
 				facturaSujetoExcluido.errorMessages.append(result);
 			}
@@ -202,7 +203,8 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonInputToFactory = new JSONObject();
 
 		jsonInputToFactory.put(FacturaSujetoExcluido.IDENTIFICACION, generateIdentificationInputData());
-		jsonInputToFactory.put(FacturaSujetoExcluido.SUJETOEXCLUIDO, generateSujetoExcluidoInputData());
+		//jsonInputToFactory.put(FacturaSujetoExcluido.SUJETOEXCLUIDO, generateReceptorInputData());
+		jsonInputToFactory.put(FacturaSujetoExcluido.RECEPTOR, generateReceptorInputData());
 		jsonInputToFactory.put(FacturaSujetoExcluido.EMISOR, generateEmisorInputData());
 		jsonInputToFactory.put(FacturaSujetoExcluido.RESUMEN, generateResumenInputData());
 		jsonInputToFactory.put(FacturaSujetoExcluido.CUERPODOCUMENTO, generateCuerpoDocumentoInputData());
@@ -256,25 +258,22 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 
 		JSONObject jsonDireccion = new JSONObject();
 		jsonDireccion.put(FacturaSujetoExcluido.DEPARTAMENTO, city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
-		jsonDireccion.put(FacturaSujetoExcluido.MUNICIPIO, city_getValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.DISTRITO,     city_getValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.MUNICIPIO,     city_getMunicipioValue((MCity)orgInfo.getC_Location().getC_City()));
 		jsonDireccion.put(FacturaSujetoExcluido.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
 		jsonObjectEmisor.put(FacturaSujetoExcluido.DIRECCION, jsonDireccion);
 		
 		jsonObjectEmisor.put(FacturaSujetoExcluido.TELEFONO, client.get_ValueAsString("phone"));
 		jsonObjectEmisor.put(FacturaSujetoExcluido.CORREO, client_getEmail(client));
-		jsonObjectEmisor.put(FacturaSujetoExcluido.CODESTABLEMH, "");								
-		jsonObjectEmisor.put(FacturaSujetoExcluido.CODESTABLE,  client_getE_PlantType(client).getValue());								
-		jsonObjectEmisor.put(FacturaSujetoExcluido.CODPUNTOVENTAMH, "");							
-		jsonObjectEmisor.put(FacturaSujetoExcluido.CODPUNTOVENTA, "");							
-		jsonObjectEmisor.put(FacturaSujetoExcluido.TELEFONO, client.get_ValueAsString("phone"));
-		jsonObjectEmisor.put(FacturaSujetoExcluido.CORREO, client_getEmail(client));
+		jsonObjectEmisor.put(FacturaSujetoExcluido.CODESTABLE, getCodEstable(invoice));
+		jsonObjectEmisor.put(FacturaSujetoExcluido.CODPUNTOVENTA, JSONObject.NULL);
 
 
 		System.out.println("Factura: end collecting JSON data for Emisor");
 		return jsonObjectEmisor;
 		
 	}
-	private JSONObject generateSujetoExcluidoInputData() {
+	private JSONObject generateReceptorInputData() {
 		System.out.println("Factura: start collecting JSON data for Sujeto Excluido");
 
 		MBPartner partner = (MBPartner)invoice.getC_BPartner();
@@ -284,12 +283,12 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 			System.out.println(errorMessage);
 		}
 		
-		JSONObject jsonObjectSujetoExcluido = new JSONObject();
+		JSONObject jsonObjectReceptor = new JSONObject();
 		
-		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.TIPODOCUMENTO, bPartner_getE_Recipient_Identification(partner).getValue());
+		jsonObjectReceptor.put(FacturaSujetoExcluido.TIPODOCUMENTO, bPartner_getE_Recipient_Identification(partner).getValue());
 		if (partner.getTaxID() != null) {
-			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.NUMDOCUMENTO, partner.getTaxID().replace("-", ""));
-			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.NOMBRE, partner.getName());			
+			jsonObjectReceptor.put(FacturaSujetoExcluido.NUMDOCUMENTO, partner.getTaxID().replace("-", ""));
+			jsonObjectReceptor.put(FacturaSujetoExcluido.NOMBRE, partner.getName());			
 		}
 		else {
 			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta NIT"; 
@@ -298,24 +297,28 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		}
 		
 		if (bPartner_getE_Activity(partner).getE_Activity_ID()>0) {
-			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.CODACTIVIDAD, bPartner_getE_Activity(partner).getValue());
-			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
+			jsonObjectReceptor.put(FacturaSujetoExcluido.CODACTIVIDAD, bPartner_getE_Activity(partner).getValue());
+			jsonObjectReceptor.put(FacturaSujetoExcluido.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
 		} else  {
-			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.CODACTIVIDAD, "");
-			jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.DESCACTIVIDAD, "");
+			jsonObjectReceptor.put(FacturaSujetoExcluido.CODACTIVIDAD, "");
+			jsonObjectReceptor.put(FacturaSujetoExcluido.DESCACTIVIDAD, "");
 		}
 
 		JSONObject jsonDireccion = new JSONObject();
 		String departamento = "";
 		String municipio = "";
 		String complemento = "";
+		String distrito = "";
 		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)){
 			if (partnerLocation.isBillTo()) {
-				departamento =  city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
-				municipio =     city_getValue((MCity)partnerLocation.getC_Location().getC_City());
+				departamento =  city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());				
+				distrito =  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
+				municipio = city_getMunicipioValue((MCity)partnerLocation.getC_Location().getC_City());
+
 				complemento = (partnerLocation.getC_Location().getAddress1() + " " + partnerLocation.getC_Location().getAddress2());
 				jsonDireccion.put(FacturaSujetoExcluido.DEPARTAMENTO, departamento);
 				jsonDireccion.put(FacturaSujetoExcluido.MUNICIPIO, municipio);
+				jsonDireccion.put(FacturaSujetoExcluido.DISTRITO, distrito);
 				jsonDireccion.put(FacturaSujetoExcluido.COMPLEMENTO, complemento.replace("null", ""));
 				break;
 			}
@@ -325,22 +328,23 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		if (departamento == null) {
 			jsonDireccion.put(FacturaSujetoExcluido.DEPARTAMENTO, departamento);
 			jsonDireccion.put(FacturaSujetoExcluido.MUNICIPIO, municipio);
+			jsonDireccion.put(FacturaSujetoExcluido.DISTRITO, "");
 			jsonDireccion.put(FacturaSujetoExcluido.COMPLEMENTO, complemento);
 		}		
-		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.DIRECCION, jsonDireccion);
-		String phone = partner.get_ValueAsString("phone");
-		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.TELEFONO, phone.replace("-", ""));
-		jsonObjectSujetoExcluido.put(FacturaSujetoExcluido.CORREO, partner.get_ValueAsString("EMail"));		
+		jsonObjectReceptor.put(FacturaSujetoExcluido.DIRECCION, jsonDireccion);
+		String phone = partner.get_ValueAsString("phone").replace("-", "");
+		jsonObjectReceptor.put(FacturaSujetoExcluido.TELEFONO, phone.length()>=8 ? phone : JSONObject.NULL);
+		String correo = partner.get_ValueAsString("EMail");
+		jsonObjectReceptor.put(FacturaSujetoExcluido.CORREO, correo.length()>=6 ? correo : JSONObject.NULL);		
 
 		System.out.println("Factura: end collecting JSON data for Receptor");
-		return jsonObjectSujetoExcluido;
+		return jsonObjectReceptor;
 		
 	}
 	
 	private JSONObject generateResumenInputData() {
 		System.out.println("Factura Sujeto Excluido: start collecting JSON data for Resumen");
 		BigDecimal 			totalDescu 	= Env.ZERO;
-		BigDecimal 			ivaRete1	= Env.ZERO;
 		BigDecimal 			reteRenta 	= Env.ZERO;
 		BigDecimal 			totalCompra	= invoice.getGrandTotal();
 		BigDecimal			descu		= Env.ZERO;
@@ -366,7 +370,6 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonObjectResumen.put(FacturaSujetoExcluido.TRIBUTOS, jsonTributosArray);
 		
 		
-		jsonObjectResumen.put(FacturaSujetoExcluido.IVARETE1, ivaRete1);
 		jsonObjectResumen.put(FacturaSujetoExcluido.MONTOTOTALOPERACION, invoice.getGrandTotal());
 		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALPAGAR, invoice.getGrandTotal());
 		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALLETRAS, totalLetras);
@@ -379,8 +382,8 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonObjectResumen.put(FacturaSujetoExcluido.RETERENTA, reteRenta);
 		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALCOMPRA, subTotal);
 		jsonObjectResumen.put(FacturaSujetoExcluido.SUBTOTAL, subTotal);
-		String observaciones = invoice.getDescription()==null? "": invoice.getDescription();
-		jsonObjectResumen.put(FacturaSujetoExcluido.OBSERVACIONES, observaciones);
+		String observacionesRaw = invoice.getDescription();
+		jsonObjectResumen.put(FacturaSujetoExcluido.OBSERVACIONES, (observacionesRaw!=null && observacionesRaw.length()>0) ? observacionesRaw : JSONObject.NULL);
 
 		JSONArray jsonArrayPagos = new JSONArray();
 			JSONObject jsonPago = new JSONObject();

@@ -26,14 +26,16 @@ public class ResumenFactura {
 	BigDecimal descuGravada;
 	BigDecimal porcentajeDescuento;
 	BigDecimal totalDescu;
-	List<TributosItemFactura> tributos;  // Special getter()+setter(), different from interface Resumen
+	List<TributosItemFactura> tributos;  // Special getter()+setter(), different from interface Resumen	
 	BigDecimal subTotal;
-	BigDecimal ivaRete1;
-	BigDecimal reteRenta;
+	//BigDecimal ivaRete1;
+	BigDecimal ivaRete;
+	//BigDecimal reteRenta;
 	BigDecimal montoTotalOperacion;
 	BigDecimal totalNoGravado;
 	BigDecimal totalPagar;
     String totalLetras;
+    String observaciones;
 	BigDecimal totalIva;
     BigDecimal saldoFavor;
     int condicionOperacion;
@@ -58,8 +60,13 @@ public String validateValues() {
 		return VALIDATION_TOTALGRAVADA_IS_NULL;
 	}
 	
+	//if(getTotalGravada().compareTo(BigDecimal.ZERO)==0) {
+	//	if ( getIvaRete1().compareTo(BigDecimal.ZERO) == 1 )
+	//		return VALIDATION_TOTALGRAVADA_IVARETE1;
+	//} 
+
 	if(getTotalGravada().compareTo(BigDecimal.ZERO)==0) {
-		if ( getIvaRete1().compareTo(BigDecimal.ZERO) == 1 )
+		if ( getIvaRete().compareTo(BigDecimal.ZERO) == 1 )
 			return VALIDATION_TOTALGRAVADA_IVARETE1;
 	} 
 	
@@ -177,6 +184,14 @@ public String validateValues() {
 	}
 
 
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
+	}
+
 	/**
 	 * @return the porcentajeDescuento
 	 */
@@ -224,35 +239,7 @@ public String validateValues() {
 	}
 
 
-	/**
-	 * @return the ivaRete1
-	 */
-	public BigDecimal getIvaRete1() {
-		return ivaRete1;
-	}
 
-
-	/**
-	 * @param ivaRete1 the ivaRete1 to set
-	 */
-	public void setIvaRete1(BigDecimal ivaRete1) {
-		this.ivaRete1 = ivaRete1;
-	}
-
-
-	/**
-	 * @return the reteRenta
-	 */
-	public BigDecimal getReteRenta() {
-		return reteRenta;
-	}
-
-	/**
-	 * @param reteRenta the reteRenta to set
-	 */
-	public void setReteRenta(BigDecimal reteRenta) {
-		this.reteRenta = reteRenta;
-	}
 
 
 	/**
@@ -371,7 +358,7 @@ public String validateValues() {
 	 * "enum" : [1,2, 3]
 	 */
 	public void setCondicionOperacion(int condicionOperacion) {
-		if (condicionOperacion==1 || condicionOperacion==2 || condicionOperacion==2)
+		if (condicionOperacion==1 || condicionOperacion==2 || condicionOperacion==3)
 			this.condicionOperacion = condicionOperacion;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'condicionOperacion' in FacturaExportacion.Resumen.setCondicionOperacion()" + "\n");
@@ -432,6 +419,16 @@ public String validateValues() {
 	public void setTributos(List<TributosItemFactura> tributos) {
 		this.tributos = tributos;
 	}
+	
+
+	public BigDecimal getIvaRete() {
+		return ivaRete;
+	}
+
+	public void setIvaRete(BigDecimal ivaRete) {
+		this.ivaRete = ivaRete;
+	}
+
 
 	
 

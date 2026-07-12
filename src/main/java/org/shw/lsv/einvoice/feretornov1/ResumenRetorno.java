@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.shw.lsv.einvoice.fencnotadecreditov1;
+package org.shw.lsv.einvoice.feretornov1;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import org.shw.lsv.einvoice.utils.TributosItem;
 /**
  *
  */
-public class ResumenNotaDeCredito {
+public class ResumenRetorno {
 	static final String VALIDATION_TOTALGRAVADA_IS_NULL  = "Documento: Nota de Credito, clase: Resumen. Validacion fallo: valor de 'totalGravada' no debe ser = null";
 	static final String VALIDATION_TOTALGRAVADA_IVAPERCI = "Documento: Nota de Credito, clase: Resumen. Validacion fallo: valor de 'ivaPerci' no debe ser mayor que cero";
 	static final String VALIDATION_TOTALGRAVADA_IVARETE  = "Documento: Nota de Credito, clase: Resumen. Validacion fallo: valor de 'ivaRete' no debe ser mayor que cero";
@@ -36,7 +36,7 @@ public class ResumenNotaDeCredito {
 	String codigoRetencionMH = null;   // null allowed
 
 
-	public ResumenNotaDeCredito() {
+	public ResumenRetorno() {
 		this.tributos = new ArrayList<TributosItem>();
 	}
 

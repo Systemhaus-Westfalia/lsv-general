@@ -72,8 +72,8 @@ public class TributosItemFactura {
 	 * "minLength" : 2, "maxLength" : 150
 	 */
 	public void setDescripcion(String descripcion) {
-		final int MINLENGTH = 2;
-		final int MAXLENGTH = 150;
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 300;
 		int length = descripcion==null?0:descripcion.length();
 		
 		if(length>=MINLENGTH && length<=MAXLENGTH)

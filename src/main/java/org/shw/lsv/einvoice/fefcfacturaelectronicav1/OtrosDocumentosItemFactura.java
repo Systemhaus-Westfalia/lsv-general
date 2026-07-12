@@ -19,7 +19,7 @@ public class OtrosDocumentosItemFactura {
 	static final String VALIDATION_DESCDOCUMENTO_IS_NULL     = "Documento: Factura, clase: OtrosDocumentosItem. Validacion fall??: valor de 'descDocumento' no debe ser ='null'";
 	static final String VALIDATION_DETALLEDOCUMENTO_IS_NULL  = "Documento: Factura, clase: OtrosDocumentosItem. Validacion fall??: valor de 'detalleDocumento' no debe ser ='null'";
 
-	int codDocAsociado;
+	Integer codDocAsociado=null;  // null allowed
 	String descDocumento=null;  // null allowed
 	String detalleDocumento=null;  // null allowed
 	Medico medico=null;  // null allowed
@@ -36,7 +36,7 @@ public class OtrosDocumentosItemFactura {
 	 */
 
 	public String validateValues() {
-		if(getCodDocAsociado()==3) {
+		if(getCodDocAsociado()!=null && getCodDocAsociado()==3) {
 			if (Objects.isNull(getMedico()))
 				return VALIDATION_MEDICO_IS_NULL;
 			if (getDescDocumento()!=null)
@@ -59,7 +59,7 @@ public class OtrosDocumentosItemFactura {
 	 * @return the codDocAsociado
 	 */
 
-	public int getCodDocAsociado() {
+	public Integer getCodDocAsociado() {
 		return codDocAsociado;
 	}
 
@@ -67,14 +67,14 @@ public class OtrosDocumentosItemFactura {
 	/**
 	 * @param codDocAsociado the codDocAsociado to set<br>
 	 * The parameter is validated.<br>
-	 * "minimum" : 1, "maximum" : 4
+	 * "minimum" : 1, "maximum" : 4; null allowed
 	 */
 
-	public void setCodDocAsociado(int codDocAsociado) {
+	public void setCodDocAsociado(Integer codDocAsociado) {
 		final int MINIMUM = 1;
 		final int MAXIMUM = 4;
-		
-		if(codDocAsociado>=MINIMUM && codDocAsociado<=MAXIMUM)
+
+		if(codDocAsociado==null || (codDocAsociado>=MINIMUM && codDocAsociado<=MAXIMUM))
 			this.codDocAsociado = codDocAsociado;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'codDocAsociado' in Factura.OtrosDocumentosItem.setCodDocAsociado()" + "\n");

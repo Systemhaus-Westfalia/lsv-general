@@ -54,7 +54,7 @@ public class Factura extends EDocument {
 		this.receptor             	= new ReceptorFactura();
 	    this.cuerpoDocumento      	= new ArrayList<CuerpoDocumentoItemFactura>();
 		this.resumen              	= new ResumenFactura();
-		this.extension				= new ExtensionFactura();
+		//this.extension				= new ExtensionFactura();
 		
 		//leer
 		this.apendice				= new ArrayList<ApendiceItemFactura>();
@@ -154,15 +154,18 @@ public class Factura extends EDocument {
 		try {emisor.setCodActividad(emisorJson.getString(CODACTIVIDAD));} 					catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}
 		try {emisor.setDescActividad(emisorJson.getString(DESCACTIVIDAD));} 				catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}
 		try {emisor.setNombreComercial(emisorJson.getString(NOMBRECOMERCIAL));} 			catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}		
-		try {emisor.setTipoEstablecimiento(emisorJson.getString(TIPOESTABLECIMIENTO));}		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}	
 
 		JSONObject jsonDireccion = emisorJson.getJSONObject(DIRECCION);
 		try {emisor.getDireccion().setDepartamento(jsonDireccion.getString(DEPARTAMENTO));}	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}
+		try {emisor.getDireccion().setDistrito(jsonDireccion.getString(DISTRITO));}	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}
+
 		try {emisor.getDireccion().setMunicipio(jsonDireccion.getString(MUNICIPIO));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}
 		try {emisor.getDireccion().setComplemento(jsonDireccion.getString(COMPLEMENTO));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}
 
 		try {emisor.setTelefono(emisorJson.getString(TELEFONO));} 							catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}
 		try {emisor.setCorreo(emisorJson.getString(CORREO));} 								catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}
+		try {emisor.setCodEstable(emisorJson.isNull(CODESTABLE) ? null : emisorJson.getString(CODESTABLE));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}
+		try {emisor.setCodPuntoVenta(emisorJson.isNull(CODPUNTOVENTA) ? null : emisorJson.getString(CODPUNTOVENTA));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EMISOR + e);}
 
 		System.out.println("End Factura.fillEmisor()");
 		return errorMessages;
@@ -209,6 +212,11 @@ public class Factura extends EDocument {
 				if (jsonDireccion.getString(DEPARTAMENTO).length()>0)
 					receptor.getDireccion().setDepartamento(jsonDireccion.getString(DEPARTAMENTO));
 				}																				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
+			try {
+				if (jsonDireccion.getString(DISTRITO).length()>0)
+					receptor.getDireccion().setDistrito(jsonDireccion.getString(DISTRITO));
+				}																				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
+			
 			try {if (jsonDireccion.getString(MUNICIPIO).length()>0)
 				receptor.getDireccion().setMunicipio(jsonDireccion.getString(MUNICIPIO));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
 			try {receptor.getDireccion().setComplemento(jsonDireccion.getString(COMPLEMENTO));} catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
@@ -301,7 +309,8 @@ public class Factura extends EDocument {
 		try {resumen.setDescuGravada(resumenJson.getBigDecimal(DESCUGRAVADA));} 				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
 		try {resumen.setPorcentajeDescuento(resumenJson.getBigDecimal(PORCENTAJEDESCUENTO));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
 		try {resumen.setSubTotal(resumenJson.getBigDecimal(SUBTOTAL));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
-		try {resumen.setIvaRete1(resumenJson.getBigDecimal(IVARETE1));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+		//try {resumen.setIvaRete1(resumenJson.getBigDecimal(IVARETE1));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+		try {resumen.setIvaRete(resumenJson.getBigDecimal(IVARETE));} 							catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
 		try {resumen.setMontoTotalOperacion(resumenJson.getBigDecimal(MONTOTOTALOPERACION));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
 		try {resumen.setTotalNoGravado(resumenJson.getBigDecimal(TOTALNOGRAVADO));} 			catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
 		try {resumen.setTotalPagar(resumenJson.getBigDecimal(TOTALPAGAR));} 					catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
@@ -309,34 +318,41 @@ public class Factura extends EDocument {
 		try {resumen.setSaldoFavor(resumenJson.getBigDecimal(SALDOFAVOR));} 					catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
 		try {resumen.setCondicionOperacion(resumenJson.getInt(CONDICIONOPERACION));} 			catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
 		try {resumen.setTotalDescu(resumenJson.getBigDecimal(TOTALDESCU));} 					catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
-		try {resumen.setReteRenta(resumenJson.getBigDecimal(RETERENTA));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+		//try {resumen.setReteRenta(resumenJson.getBigDecimal(RETERENTA));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
 		try {resumen.setTotalIva(resumenJson.getBigDecimal(TOTALIVA));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+		try {resumen.setObservaciones(resumenJson.getString(OBSERVACIONES));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
 
-		JSONArray pagosItemsJson = resumenJson.getJSONArray(PAGOS);
-		JSONObject pagosItemJson = pagosItemsJson.getJSONObject(0);
-		
-
-		PagosItem newPagosItem = new PagosItem();
-		try {newPagosItem.setCodigo(pagosItemJson.getString(CODIGO));} 				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
-		try {newPagosItem.setMontoPago(pagosItemJson.getBigDecimal(MONTOPAGO));}	catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
-		try {newPagosItem.setReferencia(pagosItemJson.getString(REFERENCIA));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
-		try {newPagosItem.setPlazo(pagosItemJson.getString(PLAZO));} 				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
-		try {newPagosItem.setPeriodo(pagosItemJson.getInt(PERIODO));} 				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
-
-		resumen.getPagos().add(newPagosItem);
-
-		JSONArray tributosArrayJson = resumenJson.getJSONArray(TRIBUTOS);
-		if (tributosArrayJson.length() >0) {		
-			for (int i=0; i< tributosArrayJson.length(); i++) { 
-				JSONObject tributosItemJson = tributosArrayJson.getJSONObject(i);
-				TributosItemFactura tributosItemFactura = new TributosItemFactura();
-				try {tributosItemFactura.setCodigo(tributosItemJson.getString(CODIGO));} 			catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
-				try {tributosItemFactura.setDescripcion(tributosItemJson.getString(DESCRIPCION));}	catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
-				try {tributosItemFactura.setValor(tributosItemJson.getBigDecimal(VALOR));} 			catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
-
-				resumen.getTributos().add(tributosItemFactura);		
+		if (!resumenJson.isNull(TRIBUTOS)) {
+			JSONArray tributosArrayJson = resumenJson.getJSONArray(TRIBUTOS);
+			for (int i = 0; i < tributosArrayJson.length(); i++) {
+				JSONObject tributoItemJson = tributosArrayJson.getJSONObject(i);
+				TributosItemFactura tributosItem = new TributosItemFactura();
+				try {tributosItem.setCodigo(tributoItemJson.getString(CODIGO));}			catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+				try {tributosItem.setDescripcion(tributoItemJson.getString(DESCRIPCION));}	catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+				try {tributosItem.setValor(tributoItemJson.getBigDecimal(VALOR));}			catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+				resumen.getTributos().add(tributosItem);
 			}
 		}
+
+		try {resumen.setNumPagoElectronico(resumenJson.isNull(NUMPAGOELECTRONICO) ? null : resumenJson.getString(NUMPAGOELECTRONICO));} catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+
+		if (!resumenJson.isNull(PAGOS)) {
+			JSONArray pagosItemsJson = resumenJson.getJSONArray(PAGOS);
+			for (int i = 0; i < pagosItemsJson.length(); i++) {
+				JSONObject pagosItemJson = pagosItemsJson.getJSONObject(i);
+				PagosItem newPagosItem = new PagosItem();
+				try {newPagosItem.setCodigo(pagosItemJson.getString(CODIGO));}				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+				try {newPagosItem.setMontoPago(pagosItemJson.getBigDecimal(MONTOPAGO));}	catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+				try {newPagosItem.setReferencia(pagosItemJson.getString(REFERENCIA));}		catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+				try {newPagosItem.setPlazo(pagosItemJson.getString(PLAZO));}				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+				try {newPagosItem.setPeriodo(pagosItemJson.getInt(PERIODO));}				catch (Exception e) {errorMessages.append(ERROR_FACTURA_RESUMEN + e);}
+				resumen.getPagos().add(newPagosItem);
+			}
+		}
+
+
+
+		
 
 		System.out.println("End Factura.fillResumen()"); 
 		return errorMessages;
@@ -345,36 +361,6 @@ public class Factura extends EDocument {
 
 	
 	
-	public ExtensionFactura getExtension() {
-		return extension;
-	}
-
-	public void setExtension(ExtensionFactura extension) {
-		this.extension = extension;
-	}
-
-	public StringBuffer fillExtension(JSONObject factoryInput) {
-		System.out.println("Start Factura.fillExtension()"); 
-
-		JSONObject extensionJson = factoryInput.getJSONObject(EXTENSION);
-		if (!extensionJson.getString(NOMBENTREGA).equals("")) 
-			try {extension.setNombEntrega(extensionJson.getString(NOMBENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
-		
-		if (!extensionJson.getString(DOCUENTREGA).equals("")) 
-			try {extension.setDocuEntrega(extensionJson.getString(DOCUENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
-		
-		if (!extensionJson.getString(NOMBRECIBE).equals("")) 
-			try {extension.setNombRecibe(extensionJson.getString(NOMBRECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
-		if (!extensionJson.getString(DOCURECIBE).equals("")) 
-			try {extension.setDocuRecibe(extensionJson.getString(DOCURECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
-		if (!extensionJson.getString(OBSERVACIONES).equals("")) 
-			try {extension.setObservaciones(extensionJson.getString(OBSERVACIONES));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
-		if (!extensionJson.getString(PLACAVEHICULO).equals("")) 
-		try {extension.setPlacaVehiculo(extensionJson.getString(PLACAVEHICULO));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXTENSION + e);}
-
-		System.out.println("End CreditoFiscal.fillExtension()"); 
-		return errorMessages;
-	}
 
 
 

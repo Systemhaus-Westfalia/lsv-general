@@ -13,14 +13,12 @@ public class EmisorCreditoFiscal {
 	String codActividad;
 	String descActividad;
 	String nombreComercial=null;  // null possible
-	String tipoEstablecimiento;
+	//String tipoEstablecimiento;
     Direccion direccion;
     String telefono;
     String correo;
-    String codEstableMH;
-    String codEstable;
-    String codPuntoVentaMH;
-    String codPuntoVenta;
+    String codEstable=null;  // null possible
+    String codPuntoVenta=null;  // null possible
     
     
 	/**
@@ -77,9 +75,9 @@ public class EmisorCreditoFiscal {
 	 * "pattern" : "^[0-9]{1,8}$"
 	 */
 	public void setNrc(String nrc) {
-		final String PATTERN = "^[0-9]{1,8}$";
-		boolean patternOK = (nrc!=null) && Pattern.matches(PATTERN, nrc);  
-		
+		final String PATTERN = "^[0-9]{2,8}$";
+		boolean patternOK = (nrc!=null) && Pattern.matches(PATTERN, nrc);
+
 		if(patternOK)
 			this.nrc = nrc;
 		else
@@ -101,8 +99,8 @@ public class EmisorCreditoFiscal {
 	 * "minLength" : 3, "maxLength" : 200
 	 */
 	public void setNombre(String nombre) {
-		final int MINLENGTH = 3;
-		final int MAXLENGTH = 200;
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 250;
 		int length = nombre==null?0:nombre.length();
 		
 		if(length>=MINLENGTH && length<=MAXLENGTH)
@@ -126,9 +124,9 @@ public class EmisorCreditoFiscal {
 	 * "pattern" : "^[0-9]{2,6}$"
 	 */
 	public void setCodActividad(String codActividad) {
-		final String PATTERN = "^[0-9]{2,6}$";
-		boolean patternOK = (codActividad!=null) && Pattern.matches(PATTERN, codActividad);  
-		
+		final String PATTERN = "^[0-9]{5,6}$";
+		boolean patternOK = (codActividad!=null) && Pattern.matches(PATTERN, codActividad);
+
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
@@ -150,10 +148,10 @@ public class EmisorCreditoFiscal {
 	 * "minLength" : 1, "maxLength" : 150
 	 */
 	public void setDescActividad(String descActividad) {
-		final int MINLENGTH = 1;
+		final int MINLENGTH = 5;
 		final int MAXLENGTH = 150;
 		int length = descActividad==null?0:descActividad.length();
-		
+
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descActividad = descActividad;
 		else
@@ -186,25 +184,6 @@ public class EmisorCreditoFiscal {
 	}
 
 
-	/**
-	 * @return the tipoEstablecimiento
-	 */
-	public String getTipoEstablecimiento() {
-		return tipoEstablecimiento;
-	}
-
-
-	/**
-	 * @param tipoEstablecimiento the tipoEstablecimiento to set<br>
-	 * The parameter is validated.<br>
-	 * "enum" : ["01", "02", "04", "07", "20"]
-	 */
-	public void setTipoEstablecimiento(String tipoEstablecimiento) {
-		if (tipoEstablecimiento.compareTo("01")==0 || tipoEstablecimiento.compareTo("02")==0 || tipoEstablecimiento.compareTo("04")==0 || tipoEstablecimiento.compareTo("07")==0 || tipoEstablecimiento.compareTo("20")==0)
-			this.tipoEstablecimiento = tipoEstablecimiento;
-		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoEstablecimiento' in Credito Fiscal.Emisor.setTipoEstablecimiento()" + "\n");
-	}
 
 
 	/**
@@ -262,7 +241,7 @@ public class EmisorCreditoFiscal {
 	 * "minLength" : 3, "maxLength" : 100
 	 */
 	public void setCorreo(String correo) {
-		final int MINLENGTH = 3;
+		final int MINLENGTH = 6;
 		final int MAXLENGTH = 100;
 		int length = correo==null?0:correo.length();
 		
@@ -272,30 +251,6 @@ public class EmisorCreditoFiscal {
 	        throw new IllegalArgumentException("Wrong parameter 'correo' in Credito Fiscal.Emisor.setCorreo()" + "\n");
 	}
 
-
-	/**
-	 * @return the codEstableMH
-	 */
-	public String getCodEstableMH() {
-		return codEstableMH;
-	}
-
-
-	/**
-	 * @param codEstableMH the codEstableMH to set<br>
-	 * The parameter is validated.<br>
-	 * "minLength" : 4, "maxLength" : 4, null also possible
-	 */
-	public void setCodEstableMH(String codEstableMH) {
-		final int MINLENGTH = 4;
-		final int MAXLENGTH = 4;
-		int length = codEstableMH==null?0:codEstableMH.length();
-
-		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codEstableMH==null) )
-			this.codEstableMH = codEstableMH;
-		else
-	        throw new IllegalArgumentException("Wrong parameter 'codEstableMH' in Credito Fiscal.Emisor.setCodEstableMH()" + "\n");
-	}
 
 
 	/**
@@ -309,42 +264,17 @@ public class EmisorCreditoFiscal {
 	/**
 	 * @param codEstable the codEstable to set<br>
 	 * The parameter is validated.<br>
-	 * "minLength" : 1, "maxLength" : 10, null also possible
+	 * "minLength" : 4, "maxLength" : 4, null also possible
 	 */
 	public void setCodEstable(String codEstable) {
-		final int MINLENGTH = 1;
-		final int MAXLENGTH = 10;
+		final int MINLENGTH = 4;
+		final int MAXLENGTH = 4;
 		int length = codEstable==null?0:codEstable.length();
 
 		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codEstable==null) )
 			this.codEstable = codEstable;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'codEstable' in Credito Fiscal.Emisor.setCodEstable()" + "\n");
-	}
-
-
-	/**
-	 * @return the codPuntoVentaMH
-	 */
-	public String getCodPuntoVentaMH() {
-		return codPuntoVentaMH;
-	}
-
-
-	/**
-	 * @param codPuntoVentaMH the codPuntoVentaMH to set<br>
-	 * The parameter is validated.<br>
-	 * "minLength" : 4, "maxLength" : 4, null also possible
-	 */
-	public void setCodPuntoVentaMH(String codPuntoVentaMH) {
-		final int MINLENGTH = 4;
-		final int MAXLENGTH = 4;
-		int length = codPuntoVentaMH==null?0:codPuntoVentaMH.length();
-
-		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codPuntoVentaMH==null) )
-			this.codPuntoVentaMH = codPuntoVentaMH;
-		else
-	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVentaMH' in Credito Fiscal.Emisor.setCodPuntoVentaMH()" + "\n");
 	}
 
 

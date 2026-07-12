@@ -61,7 +61,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	@Override
 	protected String doIt() throws Exception
 	{
-		UpdateToken();
+//		UpdateToken();
 		StringBuffer result = new StringBuffer();
 		if (isDirectPrint()) {
 		Integer id = (Integer)getRecord_ID();

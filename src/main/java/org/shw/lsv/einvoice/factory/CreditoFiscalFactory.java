@@ -40,6 +40,7 @@ import org.shw.lsv.einvoice.feccfcreditofiscalv3.ExtensionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.IdentificacionCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ReceptorCreditoFiscal;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.ResumenCreditoFiscal;
+import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
@@ -149,15 +150,6 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 			}
 		}
 		
-		System.out.println("Instantiate, fill and verify ExtensionCreditoFiscal");
-		ExtensionCreditoFiscal extension = creditoFiscal.getExtension();
-		if(extension!=null) {
-			creditoFiscal.fillExtension(jsonInputToFactory);
-			result = extension.validateValues();
-			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
-				creditoFiscal.errorMessages.append(result);
-			}
-		}
 		
 		List<ApendiceItemCreditoFiscal> apendice = creditoFiscal.getApendice();
 		if(apendice!=null) {
@@ -268,13 +260,17 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(CreditoFiscal.CODACTIVIDAD, e_Activity.getValue());
 		jsonObjectEmisor.put(CreditoFiscal.DESCACTIVIDAD, e_Activity.getName());
 		jsonObjectEmisor.put(CreditoFiscal.NOMBRECOMERCIAL, client.getName());
-		jsonObjectEmisor.put(CreditoFiscal.TIPOESTABLECIMIENTO, client_getE_PlantType(client).getValue());
+		jsonObjectEmisor.put(CreditoFiscal.CODESTABLE, getCodEstable(invoice));
+		jsonObjectEmisor.put(CreditoFiscal.CODPUNTOVENTA, getCodPuntoVenta(invoice));
+		
+		//jsonObjectEmisor.put(CreditoFiscal.TIPOESTABLECIMIENTO, client_getE_PlantType(client).getValue());
 
 		JSONObject jsonDireccion = new JSONObject();
-		jsonDireccion.put(CreditoFiscal.DEPARTAMENTO, city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
-		jsonDireccion.put(CreditoFiscal.MUNICIPIO, city_getValue((MCity)orgInfo.getC_Location().getC_City()) );
-		jsonDireccion.put(CreditoFiscal.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
-		jsonObjectEmisor.put(CreditoFiscal.DIRECCION, jsonDireccion);
+		jsonDireccion.put(Factura.DEPARTAMENTO,  city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.DISTRITO,     city_getValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.MUNICIPIO,     city_getMunicipioValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
+		jsonObjectEmisor.put(Factura.DIRECCION, jsonDireccion);
 		
 		jsonObjectEmisor.put(CreditoFiscal.TELEFONO, client.get_ValueAsString("phone"));
 		jsonObjectEmisor.put(CreditoFiscal.CORREO, client_getEmail(client));
@@ -304,27 +300,30 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		String duns = Optional.ofNullable(partner.getDUNS()).orElse("");
 		jsonObjectReceptor.put(CreditoFiscal.NRC, duns.trim().replace("-", ""));
 		jsonObjectReceptor.put(CreditoFiscal.NOMBRE, partner.getName());
+		jsonObjectReceptor.put(CreditoFiscal.NOMBRECOMERCIAL, partner.getName());
 		jsonObjectReceptor.put(CreditoFiscal.CORREO, partner.get_ValueAsString("EMail"));
 		
 		if (bPartner_getE_Activity(partner).getE_Activity_ID()>0) {
 			jsonObjectReceptor.put(CreditoFiscal.CODACTIVIDAD, bPartner_getE_Activity(partner).getValue());
 			jsonObjectReceptor.put(CreditoFiscal.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
 		}
-
 		JSONObject jsonDireccion = new JSONObject();
 		String departamento = "";
 		String municipio = "";
+		String distrito = "";
 		String complemento = "";
 		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)){
-			if (partnerLocation.isBillTo()) {
-				departamento = city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
-				municipio =  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
-				String address = partnerLocation.getC_Location().getAddress2() == null?partnerLocation.getC_Location().getAddress1():
-					partnerLocation.getC_Location().getAddress1() + " " + partnerLocation.getC_Location().getAddress2();
-				complemento = (address);
-				jsonDireccion.put(CreditoFiscal.DEPARTAMENTO, departamento);
-				jsonDireccion.put(CreditoFiscal.MUNICIPIO, municipio);
-				jsonDireccion.put(CreditoFiscal.COMPLEMENTO, complemento);
+			if (partnerLocation.isBillTo() && partnerLocation.getC_Location().getC_Country_ID() == 173) {
+				departamento =  city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
+				distrito =  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
+				municipio = city_getMunicipioValue((MCity)partnerLocation.getC_Location().getC_City());
+				complemento = (partnerLocation.getC_Location().getAddress1() + " " 
+				+ partnerLocation.getC_Location().getAddress2());
+				jsonDireccion.put(Factura.DEPARTAMENTO, departamento);
+				jsonDireccion.put(Factura.MUNICIPIO, municipio);
+				jsonDireccion.put(Factura.DISTRITO, distrito);
+				jsonDireccion.put(Factura.COMPLEMENTO, complemento.replace("null", ""));
+				jsonObjectReceptor.put(Factura.DIRECCION, jsonDireccion);
 				break;
 			}
 		}		
@@ -350,7 +349,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		BigDecimal totalExenta 		= Env.ZERO;
 		BigDecimal totalGravada 	= Env.ZERO;	
 		BigDecimal totalNoGravada 	= Env.ZERO;		
-		BigDecimal ivaRete1 		= Env.ZERO;
+		BigDecimal ivaRete			= Env.ZERO;
 		BigDecimal montotributos	= Env.ZERO;
 
 		String totalLetras=Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
@@ -364,7 +363,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		JSONArray jsonTributosArray = new JSONArray();
 		for (MInvoiceTax invoiceTax:invoiceTaxes) {
 			if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_RET)) {
-				ivaRete1 = ivaRete1.add(invoiceTax.getTaxAmt().multiply(new BigDecimal(-1)));
+				ivaRete = ivaRete.add(invoiceTax.getTaxAmt().multiply(new BigDecimal(-1)));
 				continue;
 			}
 			JSONObject jsonTributoItem = new JSONObject();		
@@ -400,19 +399,22 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		jsonObjectResumen.put(CreditoFiscal.DESCUGRAVADA, Env.ZERO);
 		jsonObjectResumen.put(CreditoFiscal.PORCENTAJEDESCUENTO, Env.ZERO);
 		jsonObjectResumen.put(CreditoFiscal.SUBTOTAL, totalGravada.add(totalNoSuj).add(totalExenta));
-		jsonObjectResumen.put(CreditoFiscal.IVARETE1, ivaRete1);
+		jsonObjectResumen.put(CreditoFiscal.IVARETE, ivaRete);
 		jsonObjectResumen.put(CreditoFiscal.MONTOTOTALOPERACION, totalGravada.add(totalNoSuj).add(totalExenta).add(montotributos));
 		jsonObjectResumen.put(CreditoFiscal.TOTALNOGRAVADO, totalNoGravada);
 		jsonObjectResumen.put(CreditoFiscal.TOTALPAGAR, invoice.getGrandTotal());
 		jsonObjectResumen.put(CreditoFiscal.TOTALLETRAS, totalLetras);
 		jsonObjectResumen.put(CreditoFiscal.SALDOFAVOR, Env.ZERO);
+		jsonObjectResumen.put(CreditoFiscal.NUMPAGOELECTRONICO, JSONObject.NULL);
+		String observacionesRaw = invoice.get_ValueAsString("Instructions");
+		jsonObjectResumen.put(CreditoFiscal.OBSERVACIONES, observacionesRaw.length()>0? observacionesRaw : JSONObject.NULL);
+			
 		int condicionOperacion = 
 		invoice.getC_PaymentTerm().getNetDays() == 0? CreditoFiscal.CONDICIONOPERACION_AL_CONTADO:
 			CreditoFiscal.CONDICIONOPERACION_A_CREDITO;
 		jsonObjectResumen.put(CreditoFiscal.CONDICIONOPERACION, condicionOperacion);
 		jsonObjectResumen.put(CreditoFiscal.TOTALDESCU, Env.ZERO);
-		jsonObjectResumen.put(CreditoFiscal.RETERENTA, Env.ZERO);
-		jsonObjectResumen.put(CreditoFiscal.IVAPERCI1, Env.ZERO);
+		jsonObjectResumen.put(CreditoFiscal.IVAPERCI, Env.ZERO);
 
 		JSONArray jsonArrayPagos = new JSONArray();
 		JSONObject jsonPago = new JSONObject();
@@ -550,8 +552,9 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 				description = name + " " + invoiceLine.getDescription();
 			else 
 				description = name;
-			if (description.length()>999)
+			if (description.length()>1499)
 				description = description.substring(0, 998);
+			jsonCuerpoDocumentoItem.put(CreditoFiscal.NUMDOCUMENTO, JSONObject.NULL);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.NUMITEM, i);
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));
 			jsonCuerpoDocumentoItem.put(CreditoFiscal.CANTIDAD, invoiceLine.getQtyEntered());
@@ -610,6 +613,7 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 				BigDecimal qtyInvoiced 				= rs.getBigDecimal(CUERPODOCUMENTO_QTYINVOICED);
 				String codTributo 					= "";
 
+				jsonCuerpoDocumentoItem.put(CreditoFiscal.NUMDOCUMENTO, JSONObject.NULL);
 				jsonCuerpoDocumentoItem.put(CreditoFiscal.NUMITEM, i);
 				jsonCuerpoDocumentoItem.put(CreditoFiscal.TIPOITEM, invoiceLineProductType(productID));
 				jsonCuerpoDocumentoItem.put(CreditoFiscal.CANTIDAD, qtyInvoiced);

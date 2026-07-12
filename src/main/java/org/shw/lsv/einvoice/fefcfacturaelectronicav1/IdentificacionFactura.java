@@ -6,7 +6,7 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
 public class IdentificacionFactura {
 
-	static final int VERSION              = 1;
+	static final int VERSION              = 2;
 	static final String TIPO_DE_DOCUMENTO = "01";
 	static final String TIPOMONEDA        = "USD";
 
@@ -135,9 +135,9 @@ public class IdentificacionFactura {
 	 * "pattern" : "^DTE-01-[A-Z0-9]{8}-[0-9]{15}$"
 	 */
 	public void setNumeroControl(String numeroControl) {
-		final String PATTERN = "^DTE-01-[A-Z0-9]{8}-[0-9]{15}$";
-		boolean patternOK = (numeroControl!=null) && Pattern.matches(PATTERN, numeroControl);  
-		
+		final String PATTERN = "^DTE-01-(M|B|S|P)([0-9]{3})(P)([0-9]{3})-[0-9]{15}";
+		boolean patternOK = (numeroControl!=null) && Pattern.matches(PATTERN, numeroControl);
+
 		if(patternOK)
 			this.numeroControl = numeroControl;
 		else
@@ -206,8 +206,8 @@ public class IdentificacionFactura {
 	 * "minLength" : 5, "maxLength" : 150
 	 */
 	public void setMotivoContin(String motivoContin) {
-		final int MINLENGTH = 5;		
-		final int MAXLENGTH = 150;
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 500;
 		int length = motivoContin==null?0:motivoContin.length();
 		
 		if( (length>=MINLENGTH && length<=MAXLENGTH ) || (motivoContin==null) )

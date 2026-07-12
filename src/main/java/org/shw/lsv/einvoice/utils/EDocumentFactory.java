@@ -27,6 +27,7 @@ import org.adempiere.core.domains.models.X_E_BPType;
 import org.adempiere.core.domains.models.X_E_DocType;
 import org.adempiere.core.domains.models.X_E_Duties;
 import org.adempiere.core.domains.models.X_E_Enviroment;
+import org.adempiere.core.domains.models.X_E_Municipio;
 import org.adempiere.core.domains.models.X_E_PlantType;
 import org.adempiere.core.domains.models.X_E_ProductType;
 import org.adempiere.core.domains.models.X_E_Recipient_Identification;
@@ -364,6 +365,13 @@ public abstract class EDocumentFactory {
 		return value;
 	}
 	
+
+	public String  city_getMunicipioValue(MCity city) {
+		X_E_Municipio municipio = new X_E_Municipio(Env.getCtx()	, city.get_ValueAsInt(X_E_Municipio.COLUMNNAME_e_municipio_ID), null);
+		String value = municipio.get_ValueAsString("Value");
+		return value;
+	}
+	
 	public String  city_getValue(MCity city) {		
 		String value = city.get_ValueAsString("Value");
 		return value;
@@ -452,10 +460,35 @@ public abstract class EDocumentFactory {
 			pos = mpos.get_ValueAsString("ei_POS");
 		}
 		MOrgInfo orgInfo = MOrgInfo.get(invoice.getCtx(), invoice.getAD_Org_ID(), invoice.get_TrxName());
-		String idPosCompany = orgInfo.get_ValueAsString("ei_Sucursal") + pos;
+		String idPosCompany = getCodEstable(invoice) + getCodPuntoVenta(invoice);
 		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
 				+ "-"+ StringUtils.leftPad(idPosCompany, 8,"0") + "-"+ idIdentification;
 		return numeroControl;
+	}
+	
+	public String getCodPuntoVenta(MInvoice invoice) 
+	{
+		String pos = "";
+		if (invoice.getC_POS_ID()>0) {
+			MPOS mpos = (MPOS)invoice.getC_POS();
+			pos = mpos.get_ValueAsString("ei_POS");
+		}
+		else
+		{
+			MPOS mpos = new Query(invoice.getCtx(), MPOS.Table_Name, "AD_Org_ID=? ", trxName)
+					.setParameters(invoice.getAD_Org_ID())
+					.setOnlyActiveRecords(true)
+					.setOrderBy("C_POS_ID")
+					.first();
+			pos = mpos.get_ValueAsString("ei_POS");
+		}
+		return pos;
+	}
+	
+	public String getCodEstable(MInvoice invoice) {
+		MOrgInfo orgInfo = MOrgInfo.get(invoice.getCtx(), invoice.getAD_Org_ID(), invoice.get_TrxName());
+		String codEstable = orgInfo.get_ValueAsString("ei_Sucursal");
+		return codEstable;
 	}
 	
 	public String createCodigoGeneracion(MInvoice invoice) {

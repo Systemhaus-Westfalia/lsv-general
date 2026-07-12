@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.shw.lsv.einvoice.fencnotadecreditov1;
+package org.shw.lsv.einvoice.feretornov1;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
 /**
  *
  */
-public class CuerpoDocumentoItemNotaDeCredito {
+public class CuerpoDocumentoItemRetorno {
 	static final String VALIDATION_VENTAGRAVADA_IS_NULL     = "Documento: Nota de Credito, clase: CuerpoDocumentoItem. Validacion fallo: valor de 'ventaGravada' no debe ser = null";
 	static final String VALIDATION_TRIBUTOS_NOT_NULL        = "Documento: Nota de Credito, clase: CuerpoDocumentoItem. Validacion fallo: valor de 'tributos' debe ser ='null'";
 	static final String VALIDATION_TRIBUTOS_EMPTY           = "Documento: Nota de Credito, clase: CuerpoDocumentoItem. Validacion fallo: valor de 'tributos' no debe ser vacio";
@@ -42,11 +42,11 @@ public class CuerpoDocumentoItemNotaDeCredito {
 	BigDecimal ivaRete;
 
 
-	public CuerpoDocumentoItemNotaDeCredito() {
+	public CuerpoDocumentoItemRetorno() {
 		tributos = new ArrayList<String>();
 	}
 
-	public CuerpoDocumentoItemNotaDeCredito(int numItem, int tipoItem, String numeroDocumento, BigDecimal cantidad,
+	public CuerpoDocumentoItemRetorno(int numItem, int tipoItem, String numeroDocumento, BigDecimal cantidad,
 			String codigo, String codTributo, int uniMedida, String descripcion, BigDecimal precioUni,
 			BigDecimal montoDescu, BigDecimal ventaNoSuj, BigDecimal ventaExenta, BigDecimal ventaGravada,
 			ArrayList<String> tributos, BigDecimal noGravado, BigDecimal ivaPerci, BigDecimal totalIva,

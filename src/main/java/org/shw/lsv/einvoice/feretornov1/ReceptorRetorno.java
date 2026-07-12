@@ -1,22 +1,31 @@
-package org.shw.lsv.einvoice.fencnotadecreditov1;
+/**
+ *
+ */
+package org.shw.lsv.einvoice.feretornov1;
 
 import org.shw.lsv.einvoice.utils.Direccion;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
-public class EmisorNotaDeCredito {
+/**
+ *
+ */
+public class ReceptorRetorno {
 
-	String nit;
+	String tipoDocumento;
+	String numDocumento;
 	String nrc = null;             // null allowed
 	String nombre;
 	String codActividad;
 	String descActividad;
 	String nombreComercial = null; // null allowed
-    Direccion direccion;
-    String telefono;
-    String correo;
+	Direccion direccion;
+    String telefono = null;        // null allowed
+    String correo = null;          // null allowed
 
-
-	public EmisorNotaDeCredito() {
+	/**
+	 * No parameters
+	 */
+	public ReceptorRetorno() {
 		this.direccion = new Direccion();
 	}
 
@@ -24,18 +33,34 @@ public class EmisorNotaDeCredito {
 		return EDocumentUtils.VALIDATION_RESULT_OK;
 	}
 
-	public String getNit() {
-		return nit;
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(String tipoDocumento) {
+		if (tipoDocumento != null)
+			this.tipoDocumento = tipoDocumento;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'tipoDocumento' in NotaDeCredito.Receptor.setTipoDocumento()" + "\n");
+	}
+
+	public String getNumDocumento() {
+		return numDocumento;
 	}
 
 	/**
-	 * @param nit the nit to set — no pattern constraint in v4 schema
+	 * @param numDocumento the numDocumento to set<br>
+	 * "minLength" : 1, "maxLength" : 20
 	 */
-	public void setNit(String nit) {
-		if (nit != null)
-			this.nit = nit;
+	public void setNumDocumento(String numDocumento) {
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 20;
+		int length = numDocumento == null ? 0 : numDocumento.length();
+
+		if (length >= MINLENGTH && length <= MAXLENGTH)
+			this.numDocumento = numDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nit' in NotaDeCredito.Emisor.setNit()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' in NotaDeCredito.Receptor.setNumDocumento()" + "\n");
 	}
 
 	public String getNrc() {
@@ -54,7 +79,7 @@ public class EmisorNotaDeCredito {
 		if ((length >= MINLENGTH && length <= MAXLENGTH) || nrc == null)
 			this.nrc = nrc;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in NotaDeCredito.Emisor.setNrc()" + "\n");
+	        throw new IllegalArgumentException("Wrong expression 'nrc' in NotaDeCredito.Receptor.setNrc()" + "\n");
 	}
 
 	public String getNombre() {
@@ -73,7 +98,7 @@ public class EmisorNotaDeCredito {
 		if (length >= MINLENGTH && length <= MAXLENGTH)
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in NotaDeCredito.Emisor.setNombre()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' in NotaDeCredito.Receptor.setNombre()" + "\n");
 	}
 
 	public String getCodActividad() {
@@ -92,7 +117,7 @@ public class EmisorNotaDeCredito {
 		if (length >= MINLENGTH && length <= MAXLENGTH)
 			this.codActividad = codActividad;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codActividad' in NotaDeCredito.Emisor.setCodActividad()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'codActividad' in NotaDeCredito.Receptor.setCodActividad()" + "\n");
 	}
 
 	public String getDescActividad() {
@@ -111,7 +136,7 @@ public class EmisorNotaDeCredito {
 		if (length >= MINLENGTH && length <= MAXLENGTH)
 			this.descActividad = descActividad;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in NotaDeCredito.Emisor.setDescActividad()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in NotaDeCredito.Receptor.setDescActividad()" + "\n");
 	}
 
 	public String getNombreComercial() {
@@ -130,7 +155,7 @@ public class EmisorNotaDeCredito {
 		if ((length >= MINLENGTH && length <= MAXLENGTH) || nombreComercial == null)
 			this.nombreComercial = nombreComercial;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in NotaDeCredito.Emisor.setNombreComercial()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in NotaDeCredito.Receptor.setNombreComercial()" + "\n");
 	}
 
 	public Direccion getDireccion() {
@@ -147,17 +172,17 @@ public class EmisorNotaDeCredito {
 
 	/**
 	 * @param telefono the telefono to set<br>
-	 * "minLength" : 8, "maxLength" : 30
+	 * "minLength" : 8, "maxLength" : 30; null also allowed
 	 */
 	public void setTelefono(String telefono) {
 		final int MINLENGTH = 8;
 		final int MAXLENGTH = 30;
 		int length = telefono == null ? 0 : telefono.length();
 
-		if (length >= MINLENGTH && length <= MAXLENGTH)
+		if ((length >= MINLENGTH && length <= MAXLENGTH) || telefono == null)
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in NotaDeCredito.Emisor.setTelefono()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' in NotaDeCredito.Receptor.setTelefono()" + "\n");
 	}
 
 	public String getCorreo() {
@@ -166,17 +191,17 @@ public class EmisorNotaDeCredito {
 
 	/**
 	 * @param correo the correo to set<br>
-	 * "minLength" : 1, "maxLength" : 100
+	 * "minLength" : 1, "maxLength" : 100; null also allowed
 	 */
 	public void setCorreo(String correo) {
 		final int MINLENGTH = 1;
 		final int MAXLENGTH = 100;
 		int length = correo == null ? 0 : correo.length();
 
-		if (length >= MINLENGTH && length <= MAXLENGTH)
+		if ((length >= MINLENGTH && length <= MAXLENGTH) || correo == null)
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in NotaDeCredito.Emisor.setCorreo()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' in NotaDeCredito.Receptor.setCorreo()" + "\n");
 	}
 
 	public static void main(String[] args) {

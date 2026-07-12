@@ -8,24 +8,19 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
 public class EmisorFacturaSujetoExcluido {
 
 	String nit;
-	String nrc;
+	String nrc=null;  // null possible
 	String nombre;
 	String codActividad;
 	String descActividad;
     Direccion direccion;
     String telefono;
-
-    String codEstableMH;
-    String codEstable;
-    String codPuntoVentaMH;
-    String codPuntoVenta;
+    String codEstable=null;  // null possible
+    String codPuntoVenta=null;  // null possible
     String correo;
-    
-    
-    
-    
+
+
 	/**
-	 * 
+	 *
 	 */
 	public EmisorFacturaSujetoExcluido() {
 		this.direccion = new Direccion();
@@ -75,12 +70,12 @@ public class EmisorFacturaSujetoExcluido {
 	/**
 	 * @param nrc the nrc to set<br>
 	 * The parameter is validated.<br>
-	 * "pattern" : "^[0-9]{1,8}$"
+	 * "pattern" : "^[0-9]{2,8}$"; null also possible
 	 */
 	public void setNrc(String nrc) {
-		final String PATTERN = "^[0-9]{1,8}$";
-		boolean patternOK = (nrc!=null) && Pattern.matches(PATTERN, nrc);  
-		
+		final String PATTERN = "^[0-9]{2,8}$";
+		boolean patternOK = (nrc==null) || Pattern.matches(PATTERN, nrc);
+
 		if(patternOK)
 			this.nrc = nrc;
 		else
@@ -99,13 +94,13 @@ public class EmisorFacturaSujetoExcluido {
 	/**
 	 * @param nombre the nombre to set<br>
 	 * The parameter is validated.<br>
-	 * "minLength" : 3, "maxLength" : 200
+	 * "minLength" : 1, "maxLength" : 250
 	 */
 	public void setNombre(String nombre) {
-		final int MINLENGTH = 3;
-		final int MAXLENGTH = 200;
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 250;
 		int length = nombre==null?0:nombre.length();
-		
+
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.nombre = nombre;
 		else
@@ -124,12 +119,12 @@ public class EmisorFacturaSujetoExcluido {
 	/**
 	 * @param codActividad the codActividad to set<br>
 	 * The parameter is validated.<br>
-	 * "pattern" : "^[0-9]{2,6}$"
+	 * "pattern" : "^[0-9]{5,6}$"
 	 */
 	public void setCodActividad(String codActividad) {
-		final String PATTERN = "^[0-9]{2,6}$";
-		boolean patternOK = (codActividad!=null) && Pattern.matches(PATTERN, codActividad);  
-		
+		final String PATTERN = "^[0-9]{5,6}$";
+		boolean patternOK = (codActividad!=null) && Pattern.matches(PATTERN, codActividad);
+
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
@@ -148,13 +143,13 @@ public class EmisorFacturaSujetoExcluido {
 	/**
 	 * @param descActividad the descActividad to set<br>
 	 * The parameter is validated.<br>
-	 * "minLength" : 1, "maxLength" : 150
+	 * "minLength" : 5, "maxLength" : 150
 	 */
 	public void setDescActividad(String descActividad) {
-		final int MINLENGTH = 1;
+		final int MINLENGTH = 5;
 		final int MAXLENGTH = 150;
 		int length = descActividad==null?0:descActividad.length();
-		
+
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descActividad = descActividad;
 		else
@@ -195,11 +190,62 @@ public class EmisorFacturaSujetoExcluido {
 		final int MINLENGTH = 8;
 		final int MAXLENGTH = 30;
 		int length = telefono==null?0:telefono.length();
-		
+
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.telefono = telefono;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'telefono' (" + telefono +  ") in FacturaSujetoExcluido.Emisor.setTelefono()" + "\n");
+	}
+
+
+	/**
+	 * @return the codEstable
+	 */
+	public String getCodEstable() {
+		return codEstable;
+	}
+
+
+	/**
+	 * @param codEstable the codEstable to set<br>
+	 * The parameter is validated.<br>
+	 * "minLength" : 4, "maxLength" : 4; null also possible
+	 */
+	public void setCodEstable(String codEstable) {
+		final int MINLENGTH = 4;
+		final int MAXLENGTH = 4;
+		int length = codEstable==null?0:codEstable.length();
+
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codEstable==null) )
+			this.codEstable = codEstable;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'codEstable' (" + codEstable +  ") in FacturaSujetoExcluido.Emisor.setCodEstable()" + "\n");
+	}
+
+    
+
+	/**
+	 * @return the codPuntoVenta
+	 */
+	public String getCodPuntoVenta() {
+		return codPuntoVenta;
+	}
+
+
+	/**
+	 * @param codPuntoVenta the codPuntoVenta to set<br>
+	 * The parameter is validated.<br>
+	 * "minLength" : 1, "maxLength" : 15; null also possible
+	 */
+	public void setCodPuntoVenta(String codPuntoVenta) {
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 15;
+		int length = codPuntoVenta==null?0:codPuntoVenta.length();
+
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codPuntoVenta==null) )
+			this.codPuntoVenta = codPuntoVenta;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVenta' (" + codPuntoVenta +  ") in FacturaSujetoExcluido.Emisor.setCodPuntoVenta()" + "\n");
 	}
 
 
@@ -214,58 +260,17 @@ public class EmisorFacturaSujetoExcluido {
 	/**
 	 * @param correo the correo to set<br>
 	 * The parameter is validated.<br>
-	 * "minLength" : 3, "maxLength" : 100
+	 * "minLength" : 6, "maxLength" : 100
 	 */
 	public void setCorreo(String correo) {
-		final int MINLENGTH = 3;
+		final int MINLENGTH = 6;
 		final int MAXLENGTH = 100;
 		int length = correo==null?0:correo.length();
-		
+
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.correo = correo;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'correo' (" + correo +  ") in FacturaSujetoExcluido.Emisor.setCorreo()" + "\n");
-	}
-
-    
-
-	public String getCodEstableMH() {
-		return codEstableMH;
-	}
-
-
-	public void setCodEstableMH(String codEstableMH) {
-		this.codEstableMH = codEstableMH;
-	}
-
-
-	public String getCodEstable() {
-		return codEstable;
-	}
-
-
-	public void setCodEstable(String codEstable) {
-		this.codEstable = codEstable;
-	}
-
-
-	public String getCodPuntoVentaMH() {
-		return codPuntoVentaMH;
-	}
-
-
-	public void setCodPuntoVentaMH(String codPuntoVentaMH) {
-		this.codPuntoVentaMH = codPuntoVentaMH;
-	}
-
-
-	public String getCodPuntoVenta() {
-		return codPuntoVenta;
-	}
-
-
-	public void setCodPuntoVenta(String codPuntoVenta) {
-		this.codPuntoVenta = codPuntoVenta;
 	}
 
 

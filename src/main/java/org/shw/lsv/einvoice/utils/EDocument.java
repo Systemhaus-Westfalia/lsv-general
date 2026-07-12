@@ -47,6 +47,7 @@ public class EDocument {
 	public static final String TIPOPERSONA 			=  "tipoPersona";
 	public static final String DEPARTAMENTO 		=  "departamento";
 	public static final String MUNICIPIO 			=  "municipio";
+	public static final String DISTRITO 			=  "distrito";
 	public static final String COMPLEMENTO 			=  "complemento";
 	public static final String TELEFONO 			=  "telefono";
 	public static final String CORREO 				=  "correo";
@@ -91,6 +92,7 @@ public class EDocument {
 	public static final String PORCENTAJEDESCUENTO 	= "porcentajeDescuento";
 	public static final String SUBTOTAL 			= "subTotal";
 	public static final String IVARETE1 			= "ivaRete1";
+	public static final String IVARETE 			    = "ivaRete";
 	public static final String MONTOTOTALOPERACION 	= "montoTotalOperacion";
 	public static final String TOTALNOGRAVADO 		= "totalNoGravado";
 	public static final String TOTALPAGAR 			= "totalPagar";
@@ -110,6 +112,7 @@ public class EDocument {
 	public static final String PAGOS				= "pagos";
 	public static final String DIRECCION			= "direccion";
 	public static final String IVAPERCI1			= "ivaPerci1";
+	public static final String IVAPERCI				= "ivaPerci";
 	public static final String FLETE				= "flete";
 	public static final String SEGURO				= "seguro";
 

@@ -1,12 +1,13 @@
 /**
  *
  */
-package org.shw.lsv.einvoice.fencnotadecreditov1;
+package org.shw.lsv.einvoice.feretornov1;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.utils.CuerpoDocumentoItem;
 import org.shw.lsv.einvoice.utils.EDocument;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 import org.shw.lsv.einvoice.utils.TributosItem;
@@ -15,7 +16,7 @@ import org.shw.lsv.einvoice.utils.TributosItem;
 /**
  *
  */
-public class NotaDeCredito extends EDocument {
+public class Retorno extends EDocument {
 
 	static final String ERROR_NOTA_DE_CREDITO_IDENTIFICACION          = "Documento: Nota de Credito, error en fillIdentification(): ";
 	static final String ERROR_NOTA_DE_CREDITO_EMISOR                  = "Documento: Nota de Credito, error en fillEmisor(): ";
@@ -38,27 +39,27 @@ public class NotaDeCredito extends EDocument {
 	private static final String CODIGORETENCIONMH = "codigoRetencionMH";
 	private static final String FECHAEMISION      = "fechaEmision";
 
-	IdentificacionNotaDeCredito identificacion;
-	List<DocumentoRelacionadoItemNotaDeCredito> documentoRelacionado;
-	EmisorNotaDeCredito emisor;
-	ReceptorNotaDeCredito receptor;
-	VentaTerceroNotaDeCredito ventaTercero = null;
-	List<CuerpoDocumentoItemNotaDeCredito> cuerpoDocumento;
-	ResumenNotaDeCredito resumen;
-	List<ApendiceItemNotaDeCredito> apendice = null; // null allowed
+	IdentificacionRetorno identificacion;
+	List<DocumentoRelacionadoItemRetorno > documentoRelacionado;
+	EmisorRetorno  emisor;
+	ReceptorRetorno  receptor;
+	VentaTerceroRetorno  ventaTercero = null;
+	List<CuerpoDocumentoItemRetorno > cuerpoDocumento;
+	ResumenRetorno  resumen;
+	List<ApendiceItemRetorno > apendice = null; // null allowed
 
 	/**
 	 * No parameters
 	 */
-	public NotaDeCredito() {
-		this.identificacion       = new IdentificacionNotaDeCredito();
-		this.documentoRelacionado = new ArrayList<DocumentoRelacionadoItemNotaDeCredito>();
-		this.emisor               = new EmisorNotaDeCredito();
-		this.receptor             = new ReceptorNotaDeCredito();
-		this.ventaTercero         = new VentaTerceroNotaDeCredito();
-		this.cuerpoDocumento      = new ArrayList<CuerpoDocumentoItemNotaDeCredito>();
-		this.resumen              = new ResumenNotaDeCredito();
-		this.apendice             = new ArrayList<ApendiceItemNotaDeCredito>();
+	public Retorno() {
+		this.identificacion       = new IdentificacionRetorno();
+		this.documentoRelacionado = new ArrayList<DocumentoRelacionadoItemRetorno>();
+		this.emisor               = new EmisorRetorno();
+		this.receptor             = new ReceptorRetorno();
+		this.ventaTercero         = new VentaTerceroRetorno();
+		this.cuerpoDocumento      = new ArrayList<CuerpoDocumentoItemRetorno>();
+		this.resumen              = new ResumenRetorno();
+		this.apendice             = new ArrayList<ApendiceItemRetorno>();
 	}
 
 	/**
@@ -68,11 +69,11 @@ public class NotaDeCredito extends EDocument {
 		return EDocumentUtils.VALIDATION_RESULT_OK;
 	}
 
-	public IdentificacionNotaDeCredito getIdentificacion() {
+	public IdentificacionRetorno getIdentificacion() {
 		return identificacion;
 	}
 
-	public void setIdentificacion(IdentificacionNotaDeCredito identificacion) {
+	public void setIdentificacion(IdentificacionRetorno identificacion) {
 		this.identificacion = identificacion;
 	}
 
@@ -98,19 +99,19 @@ public class NotaDeCredito extends EDocument {
 		return errorMessages;
 	}
 
-	public List<DocumentoRelacionadoItemNotaDeCredito> getDocumentoRelacionado() {
+	public List<DocumentoRelacionadoItemRetorno> getDocumentoRelacionado() {
 		return documentoRelacionado;
 	}
 
-	public void setDocumentoRelacionado(List<DocumentoRelacionadoItemNotaDeCredito> documentoRelacionado) {
+	public void setDocumentoRelacionado(List<DocumentoRelacionadoItemRetorno> documentoRelacionado) {
 		this.documentoRelacionado = documentoRelacionado;
 	}
 
-	public EmisorNotaDeCredito getEmisor() {
+	public EmisorRetorno getEmisor() {
 		return emisor;
 	}
 
-	public void setEmisor(EmisorNotaDeCredito emisor) {
+	public void setEmisor(EmisorRetorno emisor) {
 		this.emisor = emisor;
 	}
 
@@ -138,11 +139,11 @@ public class NotaDeCredito extends EDocument {
 		return errorMessages;
 	}
 
-	public ReceptorNotaDeCredito getReceptor() {
+	public ReceptorRetorno getReceptor() {
 		return receptor;
 	}
 
-	public void setReceptor(ReceptorNotaDeCredito receptor) {
+	public void setReceptor(ReceptorRetorno receptor) {
 		this.receptor = receptor;
 	}
 
@@ -171,19 +172,19 @@ public class NotaDeCredito extends EDocument {
 		return errorMessages;
 	}
 
-	public VentaTerceroNotaDeCredito getVentaTercero() {
+	public VentaTerceroRetorno getVentaTercero() {
 		return ventaTercero;
 	}
 
-	public void setVentaTercero(VentaTerceroNotaDeCredito ventaTercero) {
+	public void setVentaTercero(VentaTerceroRetorno ventaTercero) {
 		this.ventaTercero = ventaTercero;
 	}
 
-	public List<CuerpoDocumentoItemNotaDeCredito> getCuerpoDocumento() {
+	public List<CuerpoDocumentoItemRetorno> getCuerpoDocumento() {
 		return cuerpoDocumento;
 	}
 
-	public void setCuerpoDocumento(List<CuerpoDocumentoItemNotaDeCredito> cuerpoDocumento) {
+	public void setCuerpoDocumento(List<CuerpoDocumentoItemRetorno> cuerpoDocumento) {
 		this.cuerpoDocumento = cuerpoDocumento;
 	}
 
@@ -195,7 +196,7 @@ public class NotaDeCredito extends EDocument {
 
 		for (int i = 0; i < cuerpoDocumentoArrayJson.length(); i++) {
 			JSONObject itemJson = cuerpoDocumentoArrayJson.getJSONObject(i);
-			CuerpoDocumentoItemNotaDeCredito item = new CuerpoDocumentoItemNotaDeCredito();
+			CuerpoDocumentoItemRetorno item = new CuerpoDocumentoItemRetorno();
 			try { item.setNumItem(itemJson.getInt(NUMITEM)); }                                    catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e); }
 			try { item.setTipoItem(itemJson.getInt(TIPOITEM)); }                                  catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e); }
 			try { item.setNumeroDocumento(itemJson.getString(NUMERODOCUMENTO)); }                 catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e); }
@@ -243,7 +244,7 @@ public class NotaDeCredito extends EDocument {
 
 		for (int i = 0; i < documentosRelacionadosArrayJson.length(); i++) {
 			JSONObject docRelacionadoItemJson = documentosRelacionadosArrayJson.getJSONObject(i);
-			DocumentoRelacionadoItemNotaDeCredito documentoRelacionadoItem = new DocumentoRelacionadoItemNotaDeCredito();
+			DocumentoRelacionadoItemRetorno documentoRelacionadoItem = new DocumentoRelacionadoItemRetorno();
 			try { documentoRelacionadoItem.setNumeroDocumento(docRelacionadoItemJson.getString(NUMERODOCUMENTO)); } catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_DOCUMENTOS_RELACIONADOS + e); }
 			try { documentoRelacionadoItem.setTipoDocumento(docRelacionadoItemJson.getString(TIPODOCUMENTO)); }     catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_DOCUMENTOS_RELACIONADOS + e); }
 			try { documentoRelacionadoItem.setTipoGeneracion(docRelacionadoItemJson.getInt(TIPOGENERACION)); }      catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_DOCUMENTOS_RELACIONADOS + e); }
@@ -256,11 +257,11 @@ public class NotaDeCredito extends EDocument {
 		return errorMessages;
 	}
 
-	public ResumenNotaDeCredito getResumen() {
+	public ResumenRetorno getResumen() {
 		return resumen;
 	}
 
-	public void setResumen(ResumenNotaDeCredito resumen) {
+	public void setResumen(ResumenRetorno resumen) {
 		this.resumen = resumen;
 	}
 
@@ -300,11 +301,11 @@ public class NotaDeCredito extends EDocument {
 		return errorMessages;
 	}
 
-	public List<ApendiceItemNotaDeCredito> getApendice() {
+	public List<ApendiceItemRetorno> getApendice() {
 		return apendice;
 	}
 
-	public void setApendice(List<ApendiceItemNotaDeCredito> apendice) {
+	public void setApendice(List<ApendiceItemRetorno> apendice) {
 		this.apendice = apendice;
 	}
 

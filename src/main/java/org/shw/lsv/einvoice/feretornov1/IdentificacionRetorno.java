@@ -1,10 +1,10 @@
-package org.shw.lsv.einvoice.fencnotadecreditov1;
+package org.shw.lsv.einvoice.feretornov1;
 import java.util.regex.Pattern;
 
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
 
-public class IdentificacionNotaDeCredito {
+public class IdentificacionRetorno {
 
 	static final int VERSION              = 4;
 	static final String TIPO_DE_DOCUMENTO = "05";
@@ -34,7 +34,7 @@ public class IdentificacionNotaDeCredito {
 	/**
 	 * No parameters
 	 */
-	public IdentificacionNotaDeCredito() {
+	public IdentificacionRetorno() {
 		this.version    = VERSION;
 		this.tipoDte    = TIPO_DE_DOCUMENTO;
 		this.tipoMoneda = TIPOMONEDA;

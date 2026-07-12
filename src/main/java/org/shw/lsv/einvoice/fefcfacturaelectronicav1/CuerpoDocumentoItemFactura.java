@@ -290,7 +290,7 @@ public class CuerpoDocumentoItemFactura {
 	 * "maxLength" : 1000
 	 */
 	public void setDescripcion(String descripcion) {
-		final int MAXLENGTH = 1000;
+		final int MAXLENGTH = 1500;
 		int length = descripcion==null?0:descripcion.length();
 		
 		if(length<=MAXLENGTH)

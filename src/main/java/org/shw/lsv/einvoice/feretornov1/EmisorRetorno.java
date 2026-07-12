@@ -1,9 +1,9 @@
-package org.shw.lsv.einvoice.fencnotadecreditov1;
+package org.shw.lsv.einvoice.feretornov1;
 
 import org.shw.lsv.einvoice.utils.Direccion;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
-public class EmisorNotaDeCredito {
+public class EmisorRetorno {
 
 	String nit;
 	String nrc = null;             // null allowed
@@ -16,7 +16,7 @@ public class EmisorNotaDeCredito {
     String correo;
 
 
-	public EmisorNotaDeCredito() {
+	public EmisorRetorno() {
 		this.direccion = new Direccion();
 	}
 

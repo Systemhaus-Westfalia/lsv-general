@@ -13,15 +13,19 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
  */
 public class ReceptorFacturaSujetoExcluido {
 
-	String nit;
-	String nrc;
-	String nombre;
+	static final String VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED  = "Documento: FacturaNoSujeto, clase: SujetoExcluido. Validacion fall??: valor de 'numDocumento' no corresponde a patr??n";
+	static final String VALIDATION_NRC_NOT_NULL                    = "Documento: FacturaNoSujeto, clase: SujetoExcluido. Validacion fall??: valor de 'nrc' debe ser ='null'";
+
+	String tipoDocumento=null; // null possible
+	String numDocumento=null; // null possible
+	String nombre=null; // null possible
 	String codActividad;
-	String descActividad;
-	String nombreComercial;
+	String descActividad=null; // null possible
 	Direccion direccion;
-    String telefono;
-    String correo;
+    String telefono=null; // null possible
+    String correo=null;  // null possible
+
+    
 	
 	/**
 	 * No parameters
@@ -34,60 +38,33 @@ public class ReceptorFacturaSujetoExcluido {
 	/**
 	 * Validate the Schema conditions
 	 */
-
 	public String validateValues() {
+		String pattern;
+		boolean patternOK;
+
+		// In schema: "pattern" : "^([0-9]{14}|[0-9]{9})$"
+		if(getTipoDocumento() !=null &&   getTipoDocumento().equals("36")) {
+			pattern = "^([0-9]{14}|[0-9]{9})$";
+			patternOK = (getNumDocumento()!=null) && Pattern.matches(pattern, getNumDocumento());
+			if(!patternOK)
+				return VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED;
+		} else {
+			
+				return VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED;
+		}
+
+		// In schema: "pattern" : "^[0-9]{8}-[0-9]{1}$"
+		if(getTipoDocumento() !=null && getTipoDocumento().equals("13")) {
+			pattern = "^[0-9]{8}-[0-9]{1}$";
+			patternOK = (getNumDocumento()!=null) && Pattern.matches(pattern, getNumDocumento());
+			if(!patternOK)
+				return VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED;
+		}
+		
 		return EDocumentUtils.VALIDATION_RESULT_OK;
 	}
 	
 	
-    /**
-	 * @return the nit
-	 */
-
-    public String getNit() {
-		return nit;
-	}
-
-	/**
-	 * @param nit the nit to set<br>
-	 * The parameter is validated.<br>
-	 * "pattern" : "^([0-9]{14}|[0-9]{9})$"
-	 */
-
-	public void setNit(String nit) {
-		final String PATTERN = "^([0-9]{14}|[0-9]{9})$";
-		boolean patternOK = (nit!=null) && Pattern.matches(PATTERN, nit);  
-		
-		if(patternOK)
-			this.nit = nit;
-		else
-	        throw new IllegalArgumentException("Wrong expression 'nit' (" + nit +  ") in FacturaSujetoExcluido.Receptor.setNit()" + "\n");
-	}
-	
-	/**
-	 * @return the nrc
-	 */
-
-	public String getNrc() {
-		return nrc;
-	}
-
-	/**
-	 * @param nrc the nrc to set<br>
-	 * The parameter is validated.<br>
-	 * "pattern" : "^[0-9]{1,8}$"
-	 */
-
-	public void setNrc(String nrc) {
-		final String PATTERN = "^[0-9]{1,8}$";
-		boolean patternOK = (nrc!=null) && Pattern.matches(PATTERN, nrc);  
-		
-		if(patternOK)
-			this.nrc = nrc;
-		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' (" + nrc +  ") in FacturaSujetoExcluido.Receptor.setNrc()" + "\n");
-	}
-    
 	/**
 	 * @return the nombre
 	 */
@@ -162,30 +139,6 @@ public class ReceptorFacturaSujetoExcluido {
 	        throw new IllegalArgumentException("Wrong parameter 'descActividad' (" + descActividad +  ") in FacturaSujetoExcluido.Receptor.setDescActividad()" + "\n");
 	}
 
-	/**
-	 * @return the nombreComercial
-	 */
-
-	public String getNombreComercial() {
-		return nombreComercial;
-	}
-
-	/**
-	 * @param nombreComercial the nombreComercial to set<br>
-	 * The parameter is validated.<br>
-	 * "minLength" : 1, "maxLength" : 150; null also possible
-	 */
-
-	public void setNombreComercial(String nombreComercial) {
-		final int MINLENGTH = 1;
-		final int MAXLENGTH = 150;
-		int length = nombreComercial==null?0:nombreComercial.length();
-		
-		if( (length>=MINLENGTH && length<=MAXLENGTH) || (nombreComercial==null) )
-			this.nombreComercial = nombreComercial;
-		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' (" + nombreComercial +  ") in FacturaSujetoExcluido.Receptor.setNombreComercial()" + "\n");
-	}
 
 	/**
 	 * @return the direccion
@@ -254,6 +207,26 @@ public class ReceptorFacturaSujetoExcluido {
 
 
 	
+	public String getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+
+	public void setTipoDocumento(String tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+
+	public String getNumDocumento() {
+		return numDocumento;
+	}
+
+
+	public void setNumDocumento(String numDocumento) {
+		this.numDocumento = numDocumento;
+	}
+
+
 	/**
 	 * @param args
 	 */
