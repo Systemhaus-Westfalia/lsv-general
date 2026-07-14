@@ -46,6 +46,7 @@ import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MProduct;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.MTax;
+import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -466,17 +467,18 @@ public abstract class EDocumentFactory {
 		return numeroControl;
 	}
 	
-	public String getCodPuntoVenta(MInvoice invoice) 
+	public String getCodPuntoVenta(PO document) 
 	{
 		String pos = "";
-		if (invoice.getC_POS_ID()>0) {
+		if (document instanceof MInvoice  && document.get_ValueAsInt(MInvoice.COLUMNNAME_C_POS_ID)>1) {
+			MInvoice invoice = (MInvoice)document;
 			MPOS mpos = (MPOS)invoice.getC_POS();
 			pos = mpos.get_ValueAsString("ei_POS");
 		}
 		else
 		{
-			MPOS mpos = new Query(invoice.getCtx(), MPOS.Table_Name, "AD_Org_ID=? ", trxName)
-					.setParameters(invoice.getAD_Org_ID())
+			MPOS mpos = new Query(document.getCtx(), MPOS.Table_Name, "AD_Org_ID=? ", trxName)
+					.setParameters(document.getAD_Org_ID())
 					.setOnlyActiveRecords(true)
 					.setOrderBy("C_POS_ID")
 					.first();
@@ -485,15 +487,15 @@ public abstract class EDocumentFactory {
 		return pos;
 	}
 	
-	public String getCodEstable(MInvoice invoice) {
-		MOrgInfo orgInfo = MOrgInfo.get(invoice.getCtx(), invoice.getAD_Org_ID(), invoice.get_TrxName());
+	public String getCodEstable(PO document) {
+		MOrgInfo orgInfo = MOrgInfo.get(document.getCtx(), document.getAD_Org_ID(), document.get_TrxName());
 		String codEstable = orgInfo.get_ValueAsString("ei_Sucursal");
 		return codEstable;
 	}
 	
-	public String createCodigoGeneracion(MInvoice invoice) {
+	public String createCodigoGeneracion(PO document) {
 		
-		String numControl = invoice.get_UUID().toUpperCase();
+		String numControl = document.get_UUID().toUpperCase();
 		return numControl;		
 	}
 	public String getfecEmi() {

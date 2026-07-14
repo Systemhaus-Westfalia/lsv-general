@@ -35,7 +35,7 @@ import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MMailText;
-import org.compiere.model.MProcess;
+import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.DB;
@@ -52,6 +52,16 @@ import org.spin.model.MADAppRegistration;
 public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract implements IGenerateAndPost
 {
 	//public static final String APPLICATION_TYPE = "LSV";
+	
+
+	MADAppRegistration registration = null;
+	Timestamp startdate = null;
+	String errorMessage= "";
+	MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
+	StringBuffer errorMessages = new StringBuffer();
+
+	String applicationType = "";
+
 	@Override
 	protected void prepare()
 	{
@@ -62,9 +72,24 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	protected String doIt() throws Exception
 	{
 //		UpdateToken();
+
+		applicationType = IGenerateAndPost.getApplicationType();
+		registration = new Query(getCtx(), MADAppRegistration.Table_Name, "EXISTS(SELECT 1 FROM AD_AppSupport s "
+				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
+				+ "AND s.ApplicationType = ? "
+				+ "AND s.IsActive = 'Y' "
+				+ "AND s.Classname = ?) ", get_TrxName())
+				.setParameters(applicationType, SVMinHacienda.class.getName())
+				.<MADAppRegistration>first();
+
+		if(registration==null) {
+			errorMessage = "Process EInvoiceGenerateAndPost : no registration for Application Type " + applicationType;
+			errorMessages.append(errorMessage);
+			System.out.println(errorMessage);
+			return errorMessage.toString();
+		}
 		StringBuffer result = new StringBuffer();
 		if (isDirectPrint()) {
-		Integer id = (Integer)getRecord_ID();
         
 			MInvoice invoice = new MInvoice(getCtx(), getRecord_ID(), get_TrxName());
 					processInvoiceDirect(invoice);
@@ -80,35 +105,10 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	protected String processVoided() throws Exception{
 
 
-		StringBuffer errorMessages = new StringBuffer();
 		int noCompletados = 0;
-		String applicationType = IGenerateAndPost.getApplicationType();
-		MADAppRegistration registration = null;
-		Timestamp startdate = null;
-		String errorMessage= "";
-		MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
-
-		startdate = (Timestamp)(client.get_Value("ei_Startdate"));
 		System.out.println("\n" + "******************************************************");
 		System.out.println("Process EInvoiceGenerateAndPost: started with Client '" + client.getName() + "', ID: " + getClientId());
-		registration = new Query(getCtx(), MADAppRegistration.Table_Name, "EXISTS(SELECT 1 FROM AD_AppSupport s "
-				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
-				+ "AND s.ApplicationType = ? "
-				+ "AND s.IsActive = 'Y' "
-				+ "AND s.Classname = ?) ", get_TrxName())
-				.setParameters(applicationType, SVMinHacienda.class.getName())
-				.<MADAppRegistration>first();
-
-		if(registration==null) {
-			errorMessage = "Process EInvoiceGenerateAndPost : no registration for Application Type " + applicationType;
-			errorMessages.append(errorMessage);
-			System.out.println(errorMessage);
-			return errorMessage.toString();
-		}
-		SVMinHacienda sv_minhacienda = new SVMinHacienda();
-		sv_minhacienda.setVoided(true);
-		sv_minhacienda.setADClientID(client.getAD_Client_ID());
-		sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
+		
 		
 
 		String whereClause = IGenerateAndPost.getWhereclause(true); 
@@ -129,6 +129,11 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 			}
 
 			System.out.println("Collecting invoices to be processed..."); 
+
+			SVMinHacienda sv_minhacienda = new SVMinHacienda();
+			sv_minhacienda.setVoided(true);
+			sv_minhacienda.setADClientID(client.getAD_Client_ID());
+			sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
 			Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
 			StringBuffer sqlUpdate = new StringBuffer("UPDATE C_Invoice set ei_Processing = 'Y' WHERE c_INvoice_ID in (");
 			String character = ",";
@@ -189,42 +194,8 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	
 
 	
-	protected String processInvoices() throws Exception{
-
-
-		StringBuffer errorMessages = new StringBuffer();
+	protected String processInvoices() throws Exception{		
 		int noCompletados = 0;
-		String applicationType = IGenerateAndPost.getApplicationType();
-		MADAppRegistration registration = null;
-		Timestamp startdate = null;
-		String errorMessage= "";
-		MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
-
-		startdate = (Timestamp)(client.get_Value("ei_Startdate"));
-		System.out.println("\n" + "******************************************************");
-		System.out.println("Process EInvoiceGenerateAndPost: started with Client '" + client.getName() + "', ID: " + getClientId());
-		registration = new Query(getCtx(), MADAppRegistration.Table_Name, " AD_Client_ID=? AND EXISTS(SELECT 1 FROM AD_AppSupport s "
-				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
-				+ "AND s.ApplicationType = ? "
-				+ "AND s.IsActive = 'Y' "
-				+ "AND s.Classname = ? )"
-				+ "AND AD_Client_ID=?", get_TrxName())
-				.setParameters(getClientId(),  applicationType, SVMinHacienda.class.getName(), getClientId())
-				.<MADAppRegistration>first();
-
-		if(registration==null) {
-			errorMessage = "Process EInvoiceGenerateAndPost : no registration for Application Type " + applicationType;
-			errorMessages.append(errorMessage);
-			System.out.println(errorMessage);
-			return errorMessage.toString();
-		}
-
-		SVMinHacienda sv_minhacienda = new SVMinHacienda();
-		sv_minhacienda.setVoided(false);
-		sv_minhacienda.setADClientID(client.getAD_Client_ID());
-		sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
-		
-
 		String whereClause = IGenerateAndPost.getWhereclause(false);
 		if (getInvoiceId()>0)
 				whereClause = whereClause + " AND C_Invoice_ID=" + getInvoiceId();
@@ -241,7 +212,10 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 				System.out.println("Process EInvoiceGenerateAndPost: finished" + "\n");
 				return "No hay documentos completados pendientes ";
 			}
-
+			SVMinHacienda sv_minhacienda = new SVMinHacienda();
+			sv_minhacienda.setVoided(false);
+			sv_minhacienda.setADClientID(client.getAD_Client_ID());
+			sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
 			System.out.println("Collecting invoices to be processed..."); 
 			Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
 			StringBuffer sqlUpdate = new StringBuffer("UPDATE C_Invoice set ei_Processing = 'Y' WHERE c_INvoice_ID in (");
@@ -264,35 +238,9 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 			Arrays.stream(invoiceIds)
 			.filter(invoiceId -> invoiceId > 0)
 				.forEach(invoiceId -> {
-					 Trx dbTransaction = null;
-					try {
-						counter.getAndIncrement();
-						System.out.println("Start invoice No. " + counter + " of " + length); 
-						Integer id = (Integer)invoiceId;
-	                    dbTransaction = Trx.get(id.toString(), true);   
-						MInvoice invoice = new MInvoice(Env.getCtx(), invoiceId, dbTransaction.getTrxName());
-						sv_minhacienda.publishDocument(invoice);
-						invoice.set_ValueOfColumn("ei_Processing", false);
-						invoice.saveEx();
-	                    if (dbTransaction != null) {
-	                        dbTransaction.commit(true);
-	                        dbTransaction.close();
-	                    }
-	                    if (invoice.get_ValueAsString("ei_selloRecibido") != null) {
-	                    	//printAndSendInvoices(invoice);
-	                    	//sendIndividualMail(null, invoice);
-	                    System.out.println("End invoice No. " + counter + " of " + length+ "\n"+ "\n");
-	                    	
-	                    }
-					} catch (Exception e) {
-						String error = "Error al procesar documento #" + invoiceId + " " + e;
-						System.out.println(error);
-					}
-					finally {
-						if (dbTransaction != null) {							
-	                        dbTransaction.close();
-	                    }
-					}
+					counter.getAndIncrement();
+					 MInvoice invoice = new MInvoice(getCtx(), invoiceId, get_TrxName());
+					 publishDoocument(invoice, sv_minhacienda, counter.intValue(), length);
 					System.out.println("Publish document successful"); 
 				});
 		}
@@ -346,30 +294,11 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 			}
 				return "";			
 		}
-		StringBuffer errorMessages = new StringBuffer();
 		int noCompletados = 0;
-		String applicationType = IGenerateAndPost.getApplicationType();
-		MADAppRegistration registration = null;
-		String errorMessage= "";
 		MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
 
 		System.out.println("\n" + "******************************************************");
 		System.out.println("Process EInvoiceGenerateAndPost: started with Client '" + client.getName() + "', ID: " + getClientId());
-		registration = new Query(getCtx(), MADAppRegistration.Table_Name, " AD_Client_ID=? AND EXISTS(SELECT 1 FROM AD_AppSupport s "
-				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
-				+ "AND s.ApplicationType = ? "
-				+ "AND s.IsActive = 'Y' "
-				+ "AND s.Classname = ? )"
-				+ "AND AD_Client_ID=?", get_TrxName())
-				.setParameters(getClientId(),  applicationType, SVMinHacienda.class.getName(), getClientId())
-				.<MADAppRegistration>first();
-
-		if(registration==null) {
-			errorMessage = "Process EInvoiceGenerateAndPost : no registration for Application Type " + applicationType;
-			errorMessages.append(errorMessage);
-			System.out.println(errorMessage);
-			return errorMessage.toString();
-		}
 
 		SVMinHacienda sv_minhacienda = new SVMinHacienda();
 		sv_minhacienda.setVoided(isvoided);
@@ -430,7 +359,6 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 						.setParameters(getClientId())
 						.getIDs();
 			final int length = invoiceIds.length;
-			int noCompletados = length;
 			if(length==0) {
 				System.out.println("****************** Process EInvoiceGenerateAndPost: There is no invoice to process!!!");
 				System.out.println("Process EInvoiceGenerateAndPost: finished" + "\n");
@@ -445,7 +373,6 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 				try {
 					counter.getAndIncrement();
 					System.out.println("Start invoice No. " + counter + " of " + length); 
-					Integer id = (Integer)invoiceId;
 					MInvoice invoice = new MInvoice(Env.getCtx(), invoiceId, get_TrxName());
 					printAndSendInvoice(invoice);
 				} catch (Exception e) {
@@ -497,6 +424,39 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
         }
 
 		return "";
+	}
+	
+	private void publishDoocument(PO document, SVMinHacienda svMinHacienda, int counter, int length){
+
+		Trx dbTransaction = null;
+		try {
+			Integer id = document.get_ID();
+			dbTransaction = Trx.get(id.toString(), true);   
+			svMinHacienda.publishDocument(document);
+			document.set_ValueOfColumn("ei_Processing", false);
+			document.saveEx();
+			if (dbTransaction != null) {
+				dbTransaction.commit(true);
+				dbTransaction.close();
+			}
+			if (document.get_ValueAsString("ei_selloRecibido") != null) {
+				//printAndSendInvoices(invoice);
+				//sendIndividualMail(null, invoice);
+				System.out.println("End invoice No. " + counter + " of " + length+ "\n"+ "\n");
+
+			}
+		} catch (Exception e) {
+			String error = "Error al procesar documento #" + document.get_ID() + " " + e;
+			System.out.println(error);
+		}
+		finally {
+			if (dbTransaction != null) {							
+				dbTransaction.close();
+			}
+		}
+		System.out.println("Publish document successful"); 
+
+
 	}
 	
 	

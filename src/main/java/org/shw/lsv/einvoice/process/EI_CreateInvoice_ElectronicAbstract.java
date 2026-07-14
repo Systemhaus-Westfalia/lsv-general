@@ -30,20 +30,20 @@ public abstract class EI_CreateInvoice_ElectronicAbstract extends SvrProcess {
 	/** Process Name 	*/
 	private static final String NAME_FOR_PROCESS = "EI_CreateInvoice_Electronic";
 	/** Process Id 	*/
-	private static final int ID_FOR_PROCESS = 3000422;
+	private static final int ID_FOR_PROCESS = 54637;
 	/**	Parameter Name for Invoice	*/
 	public static final String C_INVOICE_ID = "C_Invoice_ID";
-	/**	Parameter Name for Save In Historic	*/
-	public static final String ISSAVEINHISTORIC = "IsSaveInHistoric";
+	/**	Parameter Name for Shipment/Receipt	*/
+	public static final String M_INOUT_ID = "M_InOut_ID";
 	/**	Parameter Value for Invoice	*/
 	private int invoiceId;
-	/**	Parameter Value for Save In Historic	*/
-	private boolean isSaveInHistoric;
+	/**	Parameter Value for Shipment/Receipt	*/
+	private int inOutId;
 
 	@Override
 	protected void prepare() {
 		invoiceId = getParameterAsInt(C_INVOICE_ID);
-		isSaveInHistoric = getParameterAsBoolean(ISSAVEINHISTORIC);
+		inOutId = getParameterAsInt(M_INOUT_ID);
 	}
 
 	/**	 Getter Parameter Value for Invoice	*/
@@ -56,14 +56,14 @@ public abstract class EI_CreateInvoice_ElectronicAbstract extends SvrProcess {
 		this.invoiceId = invoiceId;
 	}
 
-	/**	 Getter Parameter Value for Save In Historic	*/
-	protected boolean isSaveInHistoric() {
-		return isSaveInHistoric;
+	/**	 Getter Parameter Value for Shipment/Receipt	*/
+	protected int getInOutId() {
+		return inOutId;
 	}
 
-	/**	 Setter Parameter Value for Save In Historic	*/
-	protected void setIsSaveInHistoric(boolean isSaveInHistoric) {
-		this.isSaveInHistoric = isSaveInHistoric;
+	/**	 Setter Parameter Value for Shipment/Receipt	*/
+	protected void setInOutId(int inOutId) {
+		this.inOutId = inOutId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

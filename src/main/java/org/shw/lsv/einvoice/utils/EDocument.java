@@ -115,6 +115,7 @@ public class EDocument {
 	public static final String IVAPERCI				= "ivaPerci";
 	public static final String FLETE				= "flete";
 	public static final String SEGURO				= "seguro";
+	public static final String BIENTITULO			= "bienTitulo";
 
 	public static final String VERSION				= "version";	
 	

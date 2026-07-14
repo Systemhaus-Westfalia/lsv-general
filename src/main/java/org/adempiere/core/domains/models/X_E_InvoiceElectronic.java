@@ -21,7 +21,6 @@ package org.adempiere.core.domains.models;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
-
 import org.compiere.model.I_Persistent;
 import org.compiere.model.MTable;
 import org.compiere.model.PO;
@@ -37,7 +36,7 @@ public class X_E_InvoiceElectronic extends PO implements I_E_InvoiceElectronic, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20230924L;
+	private static final long serialVersionUID = 20260714L;
 
     /** Standard Constructor */
     public X_E_InvoiceElectronic (Properties ctx, int E_InvoiceElectronic_ID, String trxName)
@@ -45,15 +44,11 @@ public class X_E_InvoiceElectronic extends PO implements I_E_InvoiceElectronic, 
       super (ctx, E_InvoiceElectronic_ID, trxName);
       /** if (E_InvoiceElectronic_ID == 0)
         {
-			setC_DocType_ID (0);
 			setDateDoc (new Timestamp( System.currentTimeMillis() ));
 // @#Date@
-			setDocAction (null);
-// CO
 			setDocStatus (null);
 // DR
 			setDocumentNo (null);
-			setE_InvoiceElectronic_ID (0);
 			setIsApproved (false);
 // N
 			setProcessed (false);
@@ -91,37 +86,9 @@ public class X_E_InvoiceElectronic extends PO implements I_E_InvoiceElectronic, 
       return sb.toString();
     }
 
-	public I_C_DocType getC_DocType() throws RuntimeException
+	public org.adempiere.core.domains.models.I_C_Invoice getC_Invoice() throws RuntimeException
     {
-		return (I_C_DocType)MTable.get(getCtx(), I_C_DocType.Table_Name)
-			.getPO(getC_DocType_ID(), get_TrxName());	}
-
-	/** Set Document Type.
-		@param C_DocType_ID 
-		Document type or rules
-	  */
-	public void setC_DocType_ID (int C_DocType_ID)
-	{
-		if (C_DocType_ID < 0) 
-			set_Value (COLUMNNAME_C_DocType_ID, null);
-		else 
-			set_Value (COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
-	}
-
-	/** Get Document Type.
-		@return Document type or rules
-	  */
-	public int getC_DocType_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public I_C_Invoice getC_Invoice() throws RuntimeException
-    {
-		return (I_C_Invoice)MTable.get(getCtx(), I_C_Invoice.Table_Name)
+		return (org.adempiere.core.domains.models.I_C_Invoice)MTable.get(getCtx(), org.adempiere.core.domains.models.I_C_Invoice.Table_Name)
 			.getPO(getC_Invoice_ID(), get_TrxName());	}
 
 	/** Set Invoice.
@@ -145,20 +112,6 @@ public class X_E_InvoiceElectronic extends PO implements I_E_InvoiceElectronic, 
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set CodigoGeneracion.
-		@param CodigoGeneracion CodigoGeneracion	  */
-	public void setCodigoGeneracion (String CodigoGeneracion)
-	{
-		set_Value (COLUMNNAME_CodigoGeneracion, CodigoGeneracion);
-	}
-
-	/** Get CodigoGeneracion.
-		@return CodigoGeneracion	  */
-	public String getCodigoGeneracion () 
-	{
-		return (String)get_Value(COLUMNNAME_CodigoGeneracion);
 	}
 
 	/** Set Document Date.
@@ -193,54 +146,6 @@ public class X_E_InvoiceElectronic extends PO implements I_E_InvoiceElectronic, 
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
-	}
-
-	/** DocAction AD_Reference_ID=135 */
-	public static final int DOCACTION_AD_Reference_ID=135;
-	/** Complete = CO */
-	public static final String DOCACTION_Complete = "CO";
-	/** Approve = AP */
-	public static final String DOCACTION_Approve = "AP";
-	/** Reject = RJ */
-	public static final String DOCACTION_Reject = "RJ";
-	/** Post = PO */
-	public static final String DOCACTION_Post = "PO";
-	/** Void = VO */
-	public static final String DOCACTION_Void = "VO";
-	/** Close = CL */
-	public static final String DOCACTION_Close = "CL";
-	/** Reverse - Correct = RC */
-	public static final String DOCACTION_Reverse_Correct = "RC";
-	/** Reverse - Accrual = RA */
-	public static final String DOCACTION_Reverse_Accrual = "RA";
-	/** Invalidate = IN */
-	public static final String DOCACTION_Invalidate = "IN";
-	/** Re-activate = RE */
-	public static final String DOCACTION_Re_Activate = "RE";
-	/** <None> = -- */
-	public static final String DOCACTION_None = "--";
-	/** Prepare = PR */
-	public static final String DOCACTION_Prepare = "PR";
-	/** Unlock = XL */
-	public static final String DOCACTION_Unlock = "XL";
-	/** Wait Complete = WC */
-	public static final String DOCACTION_WaitComplete = "WC";
-	/** Set Document Action.
-		@param DocAction 
-		The targeted status of the document
-	  */
-	public void setDocAction (String DocAction)
-	{
-
-		set_Value (COLUMNNAME_DocAction, DocAction);
-	}
-
-	/** Get Document Action.
-		@return The targeted status of the document
-	  */
-	public String getDocAction () 
-	{
-		return (String)get_Value(COLUMNNAME_DocAction);
 	}
 
 	/** DocStatus AD_Reference_ID=131 */
@@ -312,26 +217,6 @@ public class X_E_InvoiceElectronic extends PO implements I_E_InvoiceElectronic, 
         return new KeyNamePair(get_ID(), getDocumentNo());
     }
 
-	/** Set Electronic Invoice.
-		@param E_InvoiceElectronic_ID Electronic Invoice	  */
-	public void setE_InvoiceElectronic_ID (int E_InvoiceElectronic_ID)
-	{
-		if (E_InvoiceElectronic_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_E_InvoiceElectronic_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_E_InvoiceElectronic_ID, Integer.valueOf(E_InvoiceElectronic_ID));
-	}
-
-	/** Get Electronic Invoice.
-		@return Electronic Invoice	  */
-	public int getE_InvoiceElectronic_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_E_InvoiceElectronic_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
 	/** Set numeroControl.
 		@param ei_numeroControl numeroControl	  */
 	public void setei_numeroControl (String ei_numeroControl)
@@ -346,8 +231,42 @@ public class X_E_InvoiceElectronic extends PO implements I_E_InvoiceElectronic, 
 		return (String)get_Value(COLUMNNAME_ei_numeroControl);
 	}
 
-	/** ei_ValidationStatus AD_Reference_ID=3000276 */
-	public static final int EI_VALIDATIONSTATUS_AD_Reference_ID=3000276;
+	/** Set E_InvoiceElectronic_ID.
+		@param E_InvoiceElectronic_ID E_InvoiceElectronic_ID	  */
+	public void setE_InvoiceElectronic_ID (int E_InvoiceElectronic_ID)
+	{
+		if (E_InvoiceElectronic_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_E_InvoiceElectronic_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_E_InvoiceElectronic_ID, Integer.valueOf(E_InvoiceElectronic_ID));
+	}
+
+	/** Get E_InvoiceElectronic_ID.
+		@return E_InvoiceElectronic_ID	  */
+	public int getE_InvoiceElectronic_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_E_InvoiceElectronic_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set selloRecibido.
+		@param ei_selloRecibido selloRecibido	  */
+	public void setei_selloRecibido (String ei_selloRecibido)
+	{
+		set_Value (COLUMNNAME_ei_selloRecibido, ei_selloRecibido);
+	}
+
+	/** Get selloRecibido.
+		@return selloRecibido	  */
+	public String getei_selloRecibido () 
+	{
+		return (String)get_Value(COLUMNNAME_ei_selloRecibido);
+	}
+
+	/** ei_ValidationStatus AD_Reference_ID=1000011 */
+	public static final int EI_VALIDATIONSTATUS_AD_Reference_ID=1000011;
 	/** Valid = 01 */
 	public static final String EI_VALIDATIONSTATUS_Valid = "01";
 	/** Not Valid = 02 */
@@ -422,6 +341,34 @@ public class X_E_InvoiceElectronic extends PO implements I_E_InvoiceElectronic, 
 		return (String)get_Value(COLUMNNAME_json);
 	}
 
+	public org.adempiere.core.domains.models.I_M_InOut getM_InOut() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_InOut)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_InOut.Table_Name)
+			.getPO(getM_InOut_ID(), get_TrxName());	}
+
+	/** Set Shipment/Receipt.
+		@param M_InOut_ID 
+		Material Shipment Document
+	  */
+	public void setM_InOut_ID (int M_InOut_ID)
+	{
+		if (M_InOut_ID < 1) 
+			set_Value (COLUMNNAME_M_InOut_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_InOut_ID, Integer.valueOf(M_InOut_ID));
+	}
+
+	/** Get Shipment/Receipt.
+		@return Material Shipment Document
+	  */
+	public int getM_InOut_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_InOut_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Processed.
 		@param Processed 
 		The document has been processed
@@ -465,20 +412,6 @@ public class X_E_InvoiceElectronic extends PO implements I_E_InvoiceElectronic, 
 			return "Y".equals(oo);
 		}
 		return false;
-	}
-
-	/** Set selloRecibido.
-		@param selloRecibido selloRecibido	  */
-	public void setselloRecibido (String selloRecibido)
-	{
-		set_Value (COLUMNNAME_selloRecibido, selloRecibido);
-	}
-
-	/** Get selloRecibido.
-		@return selloRecibido	  */
-	public String getselloRecibido () 
-	{
-		return (String)get_Value(COLUMNNAME_selloRecibido);
 	}
 
 	/** Set Immutable Universally Unique Identifier.

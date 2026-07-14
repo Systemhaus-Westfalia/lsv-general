@@ -22,24 +22,24 @@ import java.sql.Timestamp;
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for E_InvoiceElectronic
+/** Generated Interface for E_InOutElectronic
  *  @author Adempiere (generated) 
  *  @version Release 3.9.4
  */
-public interface I_E_InvoiceElectronic 
+public interface I_E_InOutElectronic 
 {
 
-    /** TableName=E_InvoiceElectronic */
-    public static final String Table_Name = "E_InvoiceElectronic";
+    /** TableName=E_InOutElectronic */
+    public static final String Table_Name = "E_InOutElectronic";
 
-    /** AD_Table_ID=1000044 */
+    /** AD_Table_ID=55183 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
 
-    /** AccessLevel = 3 - Client - Org 
+    /** AccessLevel = 4 - System 
      */
-    BigDecimal accessLevel = BigDecimal.valueOf(3);
+    BigDecimal accessLevel = BigDecimal.valueOf(4);
 
     /** Load Meta Data */
 
@@ -64,21 +64,6 @@ public interface I_E_InvoiceElectronic
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name C_Invoice_ID */
-    public static final String COLUMNNAME_C_Invoice_ID = "C_Invoice_ID";
-
-	/** Set Invoice.
-	  * Invoice Identifier
-	  */
-	public void setC_Invoice_ID (int C_Invoice_ID);
-
-	/** Get Invoice.
-	  * Invoice Identifier
-	  */
-	public int getC_Invoice_ID();
-
-	public org.adempiere.core.domains.models.I_C_Invoice getC_Invoice() throws RuntimeException;
-
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -95,84 +80,14 @@ public interface I_E_InvoiceElectronic
 	  */
 	public int getCreatedBy();
 
-    /** Column name DateDoc */
-    public static final String COLUMNNAME_DateDoc = "DateDoc";
+    /** Column name E_InOutElectronic_ID */
+    public static final String COLUMNNAME_E_InOutElectronic_ID = "E_InOutElectronic_ID";
 
-	/** Set Document Date.
-	  * Date of the Document
-	  */
-	public void setDateDoc (Timestamp DateDoc);
+	/** Set E_InOutElectronic	  */
+	public void setE_InOutElectronic_ID (int E_InOutElectronic_ID);
 
-	/** Get Document Date.
-	  * Date of the Document
-	  */
-	public Timestamp getDateDoc();
-
-    /** Column name Description */
-    public static final String COLUMNNAME_Description = "Description";
-
-	/** Set Description.
-	  * Optional short description of the record
-	  */
-	public void setDescription (String Description);
-
-	/** Get Description.
-	  * Optional short description of the record
-	  */
-	public String getDescription();
-
-    /** Column name DocStatus */
-    public static final String COLUMNNAME_DocStatus = "DocStatus";
-
-	/** Set Document Status.
-	  * The current status of the document
-	  */
-	public void setDocStatus (String DocStatus);
-
-	/** Get Document Status.
-	  * The current status of the document
-	  */
-	public String getDocStatus();
-
-    /** Column name DocumentNo */
-    public static final String COLUMNNAME_DocumentNo = "DocumentNo";
-
-	/** Set Document No.
-	  * Document sequence number of the document
-	  */
-	public void setDocumentNo (String DocumentNo);
-
-	/** Get Document No.
-	  * Document sequence number of the document
-	  */
-	public String getDocumentNo();
-
-    /** Column name ei_numeroControl */
-    public static final String COLUMNNAME_ei_numeroControl = "ei_numeroControl";
-
-	/** Set numeroControl	  */
-	public void setei_numeroControl (String ei_numeroControl);
-
-	/** Get numeroControl	  */
-	public String getei_numeroControl();
-
-    /** Column name E_InvoiceElectronic_ID */
-    public static final String COLUMNNAME_E_InvoiceElectronic_ID = "E_InvoiceElectronic_ID";
-
-	/** Set E_InvoiceElectronic_ID	  */
-	public void setE_InvoiceElectronic_ID (int E_InvoiceElectronic_ID);
-
-	/** Get E_InvoiceElectronic_ID	  */
-	public int getE_InvoiceElectronic_ID();
-
-    /** Column name ei_selloRecibido */
-    public static final String COLUMNNAME_ei_selloRecibido = "ei_selloRecibido";
-
-	/** Set selloRecibido	  */
-	public void setei_selloRecibido (String ei_selloRecibido);
-
-	/** Get selloRecibido	  */
-	public String getei_selloRecibido();
+	/** Get E_InOutElectronic	  */
+	public int getE_InOutElectronic_ID();
 
     /** Column name ei_ValidationStatus */
     public static final String COLUMNNAME_ei_ValidationStatus = "ei_ValidationStatus";
@@ -208,19 +123,6 @@ public interface I_E_InvoiceElectronic
 	  * The record is active in the system
 	  */
 	public boolean isActive();
-
-    /** Column name IsApproved */
-    public static final String COLUMNNAME_IsApproved = "IsApproved";
-
-	/** Set Approved.
-	  * Indicates if this document requires approval
-	  */
-	public void setIsApproved (boolean IsApproved);
-
-	/** Get Approved.
-	  * Indicates if this document requires approval
-	  */
-	public boolean isApproved();
 
     /** Column name json */
     public static final String COLUMNNAME_json = "json";

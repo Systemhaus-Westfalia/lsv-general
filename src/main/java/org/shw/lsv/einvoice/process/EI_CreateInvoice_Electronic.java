@@ -21,11 +21,14 @@ package org.shw.lsv.einvoice.process;
 import javax.ws.rs.client.Entity;
 
 import org.adempiere.core.domains.models.I_C_Invoice;
+import org.adempiere.core.domains.models.X_E_InOutElectronic;
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
+import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.PO;
 import org.shw.lsv.util.support.IDeclarationDocument;
 import org.shw.lsv.util.support.provider.ElectronicInvoice;
+import org.shw.lsv.util.support.provider.ElectronicNotaRemision;
 
 /** Generated Process for (EI_CreateInvoice_Electronic)
  *  @author ADempiere (generated) 
@@ -43,22 +46,44 @@ public class EI_CreateInvoice_Electronic extends EI_CreateInvoice_ElectronicAbst
 	protected String doIt() throws Exception
 	{	
 		System.out.println("Process EI_CreateInvoice_Electronic: started");
+		
+		if(getInvoiceId()>0) {
+			MInvoice invoice = new MInvoice(getCtx(), getInvoiceId(), get_TrxName());
+			IDeclarationDocument declarationDocument = getDeclarationDocument(invoice);
+			if(declarationDocument == null) {
+				return null;
+			}
+			X_E_InvoiceElectronic electronicInvoiceModel = declarationDocument.processElectronicInvoice();
+			if(electronicInvoiceModel==null) {
+				return null;
+			}
 
-		MInvoice invoice = new MInvoice(getCtx(), getInvoiceId(), get_TrxName());
-		IDeclarationDocument declarationDocument = getDeclarationDocument(invoice);
-		if(declarationDocument == null) {
-			return null;
+			String documentAsJsonString = electronicInvoiceModel.getjson();
+			Entity<String> entity = Entity.json(documentAsJsonString);
+			{
+				invoice.saveEx();
+			}			
 		}
-		X_E_InvoiceElectronic electronicInvoiceModel = declarationDocument.processElectronicInvoice();
-		if(electronicInvoiceModel==null) {
-			return null;
+		if (getInOutId()>0) {
+			MInOut inOut = new MInOut(getCtx(), getInOutId(), get_TrxName());
+			IDeclarationDocument declarationDocument = getDeclarationDocument(inOut);
+			if(declarationDocument == null) {
+				return null;
+			}
+			X_E_InvoiceElectronic electronicInvoiceModel = declarationDocument.processElectronicInvoice();
+			if(electronicInvoiceModel==null) {
+				return null;
+			}
+
+			String documentAsJsonString = electronicInvoiceModel.getjson();
+			Entity<String> entity = Entity.json(documentAsJsonString);
+			{
+				inOut.saveEx();
+			}			
+		
 		}
 
-		String documentAsJsonString = electronicInvoiceModel.getjson();
-		Entity<String> entity = Entity.json(documentAsJsonString);
-		{
-			invoice.saveEx();
-		}
+		
 		return "OK";
 	}
 	
@@ -67,9 +92,9 @@ public class EI_CreateInvoice_Electronic extends EI_CreateInvoice_ElectronicAbst
     		if(entity == null) {
     			return null;
     		}
-    		if(entity.get_TableName().equals(I_C_Invoice.Table_Name)) {
-    			return new ElectronicInvoice((MInvoice) entity);
-    		}
+    		if(entity instanceof MInvoice || entity instanceof MInOut)
+    			return new ElectronicInvoice( entity);
+    		
     		return null;
     	}
 
