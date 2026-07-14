@@ -34,6 +34,7 @@ import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.Adempiere;
 import org.compiere.model.MClient;
+import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
@@ -382,8 +383,9 @@ public class SVMinHacienda implements IDeclarationProvider {
 		if(entity == null) {
 			return null;
 		}
-		if(entity.get_TableName().equals(I_C_Invoice.Table_Name)) {
-			return new ElectronicInvoice((MInvoice) entity);
+		if(entity  instanceof MInvoice || entity instanceof MInOut){
+			
+			return new ElectronicInvoice(entity);
 		}
 		return null;
 	}

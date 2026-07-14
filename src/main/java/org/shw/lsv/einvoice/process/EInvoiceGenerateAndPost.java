@@ -33,6 +33,7 @@ import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.MChangeLog;
 import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
+import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MMailText;
 import org.compiere.model.PO;
@@ -57,7 +58,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	MADAppRegistration registration = null;
 	Timestamp startdate = null;
 	String errorMessage= "";
-	MClient client = new MClient(getCtx(),getClientId(), get_TrxName());
+	MClient client = null;
 	StringBuffer errorMessages = new StringBuffer();
 
 	String applicationType = "";
@@ -73,6 +74,8 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	{
 //		UpdateToken();
 
+		client = new MClient(getCtx(),getClientId(), get_TrxName());
+		startdate = (Timestamp)(client.get_Value("ei_Startdate"));
 		applicationType = IGenerateAndPost.getApplicationType();
 		registration = new Query(getCtx(), MADAppRegistration.Table_Name, "EXISTS(SELECT 1 FROM AD_AppSupport s "
 				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
@@ -97,6 +100,7 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 		else {
 			result.append(processInvoices());
 			result.append(processVoided());
+			result.append(processInOuts());
 			result.append(printInvoices());
 		}
 		return result.toString();
@@ -194,7 +198,9 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	
 
 	
-	protected String processInvoices() throws Exception{		
+	protected String processInvoices() throws Exception{
+		if (getInOutId()>0)
+			return "";
 		int noCompletados = 0;
 		String whereClause = IGenerateAndPost.getWhereclause(false);
 		if (getInvoiceId()>0)
@@ -253,7 +259,127 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	
 		
 	}
+	protected String processInOuts() throws Exception{		
+		if (getInvoiceId()>0)
+			return "";
+		int noCompletados = 0;
+		String whereClause = IGenerateAndPost.getWhereclauseInOut(false);
+				whereClause = whereClause + " AND M_InOut_ID=" + getInOutId();
+				
 	
+		try {
+			int[] docIds = new Query(Env.getCtx(), MInOut.Table_Name, whereClause, null)
+						.setParameters(getClientId(), startdate)
+						.getIDs();
+			final int length = docIds.length;
+			noCompletados = length;
+			if(length==0) {
+				System.out.println("****************** Process EInvoiceGenerateAndPost: There is no inout to process!!!");
+				System.out.println("Process EInvoiceGenerateAndPost: finished" + "\n");
+				return "No hay documentos completados pendientes ";
+			}
+			SVMinHacienda sv_minhacienda = new SVMinHacienda();
+			sv_minhacienda.setVoided(false);
+			sv_minhacienda.setADClientID(client.getAD_Client_ID());
+			sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
+			System.out.println("Collecting invoices to be processed..."); 
+			Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
+			StringBuffer sqlUpdate = new StringBuffer("UPDATE C_Invoice set ei_Processing = 'Y' WHERE c_INvoice_ID in (");
+			String character = ",";
+			for ( int i = 0; i < length; i++) {
+				character = i<length-1? ",": ")";
+				int docID = docIds[i];
+				sqlUpdate.append(docID + character);
+				System.out.println("InvoiceID to be processed: " + docID); 
+			}
+			System.out.println("Set 'processing' flag so invoices cannot be processed by other processes..."+ "\n"); 
+			DB.executeUpdateEx(sqlUpdate.toString(), updateTransaction.getTrxName());
+			if (updateTransaction != null) {
+				updateTransaction.commit(true);
+				updateTransaction.close();
+			}
+			
+			AtomicInteger counter = new AtomicInteger(0);
+
+			Arrays.stream(docIds)
+			.filter(docId -> docId > 0)
+				.forEach(docId -> {
+					counter.getAndIncrement();
+					 MInOut inOut = new MInOut(getCtx(), docId, get_TrxName());
+					 publishDoocument(inOut, sv_minhacienda, counter.intValue(), length);
+					System.out.println("Publish document successful"); 
+				});
+		}
+		catch (Exception e) {
+			System.out.println("Process EInvoiceGenerateAndPost: error " + e);
+		}
+		System.out.println("Process EInvoiceGenerateAndPost: finished");
+		System.out.println("******************************************************" + "\n");		
+		return "Documentos completados: " + noCompletados ;
+	
+		
+	}
+	
+	
+	protected String process() throws Exception{		
+		int noCompletados = 0;
+		String whereClause = IGenerateAndPost.getWhereclause(false);
+		if (getInvoiceId()>0)
+				whereClause = whereClause + " AND C_Invoice_ID=" + getInvoiceId();
+				
+	
+		try {
+			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)
+						.setParameters(getClientId(), startdate)
+						.getIDs();
+			final int length = invoiceIds.length;
+			noCompletados = length;
+			if(length==0) {
+				System.out.println("****************** Process EInvoiceGenerateAndPost: There is no invoice to process!!!");
+				System.out.println("Process EInvoiceGenerateAndPost: finished" + "\n");
+				return "No hay documentos completados pendientes ";
+			}
+			SVMinHacienda sv_minhacienda = new SVMinHacienda();
+			sv_minhacienda.setVoided(false);
+			sv_minhacienda.setADClientID(client.getAD_Client_ID());
+			sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
+			System.out.println("Collecting invoices to be processed..."); 
+			Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
+			StringBuffer sqlUpdate = new StringBuffer("UPDATE C_Invoice set ei_Processing = 'Y' WHERE c_INvoice_ID in (");
+			String character = ",";
+			for ( int i = 0; i < length; i++) {
+				character = i<length-1? ",": ")";
+				int invoiceID = invoiceIds[i];
+				sqlUpdate.append(invoiceID + character);
+				System.out.println("InvoiceID to be processed: " + invoiceID); 
+			}
+			System.out.println("Set 'processing' flag so invoices cannot be processed by other processes..."+ "\n"); 
+			DB.executeUpdateEx(sqlUpdate.toString(), updateTransaction.getTrxName());
+			if (updateTransaction != null) {
+				updateTransaction.commit(true);
+				updateTransaction.close();
+			}
+			
+			AtomicInteger counter = new AtomicInteger(0);
+
+			Arrays.stream(invoiceIds)
+			.filter(invoiceId -> invoiceId > 0)
+				.forEach(invoiceId -> {
+					counter.getAndIncrement();
+					 MInvoice invoice = new MInvoice(getCtx(), invoiceId, get_TrxName());
+					 publishDoocument(invoice, sv_minhacienda, counter.intValue(), length);
+					System.out.println("Publish document successful"); 
+				});
+		}
+		catch (Exception e) {
+			System.out.println("Process EInvoiceGenerateAndPost: error " + e);
+		}
+		System.out.println("Process EInvoiceGenerateAndPost: finished");
+		System.out.println("******************************************************" + "\n");		
+		return "Documentos completados: " + noCompletados ;
+	
+		
+	}
 	protected String printAndSendInvoice(MInvoice invoice) throws Exception{
 		MDocType docType = (MDocType)invoice.getC_DocType();
 		

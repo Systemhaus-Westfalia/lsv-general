@@ -32,6 +32,7 @@ import org.adempiere.core.domains.models.X_E_PlantType;
 import org.adempiere.core.domains.models.X_E_ProductType;
 import org.adempiere.core.domains.models.X_E_Recipient_Identification;
 import org.adempiere.core.domains.models.X_E_TimeSpan;
+import org.adempiere.core.domains.models.X_e_BienTitulo;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MCity;
@@ -40,6 +41,7 @@ import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MOrder;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPOS;
 import org.compiere.model.MPaymentTerm;
@@ -401,6 +403,11 @@ public abstract class EDocumentFactory {
 			valueint = 59;
 		}
 		return valueint;
+	}
+	
+	public X_e_BienTitulo  order_getTitle(MOrder order) {
+		X_e_BienTitulo bienTitulo = new X_e_BienTitulo(Env.getCtx()	, order.get_ValueAsInt(X_e_BienTitulo.COLUMNNAME_e_BienTitulo_ID), null);
+		return bienTitulo;
 	}
 	public String getSignature() {
 		return signature;

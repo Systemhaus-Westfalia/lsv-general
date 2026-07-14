@@ -35,30 +35,25 @@ public abstract class EInvoiceGenerateAndPostAbstract extends SvrProcess {
 	public static final String AD_CLIENT_ID = "AD_Client_ID";
 	/**	Parameter Name for Invoice	*/
 	public static final String C_INVOICE_ID = "C_Invoice_ID";
-	/**	Parameter Name for Mail Template	*/
-	public static final String R_MAILTEXT_ID = "R_MailText_ID";
 	/**	Parameter Name for Direct print	*/
 	public static final String ISDIRECTPRINT = "IsDirectPrint";
-	/**	Parameter Name for Record ID	*/
-	public static final String RECORD_ID = "Record_ID";
+	/**	Parameter Name for Shipment/Receipt	*/
+	public static final String M_INOUT_ID = "M_InOut_ID";
 	/**	Parameter Value for Client	*/
 	private int clientId;
 	/**	Parameter Value for Invoice	*/
 	private int invoiceId;
-	/**	Parameter Value for Mail Template	*/
-	private int mailTextId;
 	/**	Parameter Value for Direct print	*/
 	private boolean isDirectPrint;
-	/**	Parameter Value for Record ID	*/
-	private Object record;
+	/**	Parameter Value for Shipment/Receipt	*/
+	private int inOutId;
 
 	@Override
 	protected void prepare() {
 		clientId = getParameterAsInt(AD_CLIENT_ID);
 		invoiceId = getParameterAsInt(C_INVOICE_ID);
-		mailTextId = getParameterAsInt(R_MAILTEXT_ID);
 		isDirectPrint = getParameterAsBoolean(ISDIRECTPRINT);
-		record = getParameter(RECORD_ID);
+		inOutId = getParameterAsInt(M_INOUT_ID);
 	}
 
 	/**	 Getter Parameter Value for Client	*/
@@ -81,16 +76,6 @@ public abstract class EInvoiceGenerateAndPostAbstract extends SvrProcess {
 		this.invoiceId = invoiceId;
 	}
 
-	/**	 Getter Parameter Value for Mail Template	*/
-	protected int getMailTextId() {
-		return mailTextId;
-	}
-
-	/**	 Setter Parameter Value for Mail Template	*/
-	protected void setMailTextId(int mailTextId) {
-		this.mailTextId = mailTextId;
-	}
-
 	/**	 Getter Parameter Value for Direct print	*/
 	protected boolean isDirectPrint() {
 		return isDirectPrint;
@@ -101,14 +86,14 @@ public abstract class EInvoiceGenerateAndPostAbstract extends SvrProcess {
 		this.isDirectPrint = isDirectPrint;
 	}
 
-	/**	 Getter Parameter Value for Record ID	*/
-	protected Object getRecord() {
-		return record;
+	/**	 Getter Parameter Value for Shipment/Receipt	*/
+	protected int getInOutId() {
+		return inOutId;
 	}
 
-	/**	 Setter Parameter Value for Record ID	*/
-	protected void setRecord(Object record) {
-		this.record = record;
+	/**	 Setter Parameter Value for Shipment/Receipt	*/
+	protected void setInOutId(int inOutId) {
+		this.inOutId = inOutId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/
