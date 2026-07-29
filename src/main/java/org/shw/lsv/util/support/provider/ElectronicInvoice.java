@@ -111,8 +111,10 @@ public class ElectronicInvoice implements IDeclarationDocument {
     	electronicInvoiceModel = new X_E_InvoiceElectronic(originDocument.getCtx(), 0, originDocument.get_TrxName());
     	if (originDocument instanceof MInvoice)
     	electronicInvoiceModel.setC_Invoice_ID(originDocument.get_ID());
-    	else if (originDocument instanceof MInOut)
-    		electronicInvoiceModel.setM_InOut_ID(originDocument.get_ID());;
+    	else if (originDocument instanceof MInOut) {
+    		electronicInvoiceModel.setM_InOut_ID(originDocument.get_ID());
+    		electronicInvoiceModel.setAD_Org_ID(originDocument.getAD_Org_ID());
+    	}
     	electronicInvoiceModel.setei_ValidationStatus("01");
     	if (documentFactory.getEDocumentErrorMessages().length() > 0) {
 			errorMsg = documentFactory.getEDocumentErrorMessages().toString();

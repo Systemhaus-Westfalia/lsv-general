@@ -186,12 +186,11 @@ public class SVMinHacienda implements IDeclarationProvider {
 			documento = jsonorg.getJSONObject("documento");
 		ambiente = identificacion.getString("ambiente");
 		version = identificacion.getInt("version");
+		if (electronicInvoiceModel.getC_Invoice_ID()>0)
 		idEnvio = electronicInvoiceModel.getC_Invoice_ID();
-		
-			
-		codigoGeneracion = identificacion.getString("codigoGeneracion");
-		
-		
+		else if (electronicInvoiceModel.getM_InOut_ID()>0)
+			idEnvio = electronicInvoiceModel.getM_InOut_ID();			
+		codigoGeneracion = identificacion.getString("codigoGeneracion");		
 		String signature = getSignature(jsonorg);
 		if (!voided) {
 			tipoDte = identificacion.getString("tipoDte");
