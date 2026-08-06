@@ -41,6 +41,13 @@ public class ElectronicNotaRemision implements IDeclarationDocument {
 	private String errorMsg = null;
 	private X_E_DocType e_DocType = null;
 	
+
+
+	@Override
+	public X_E_InvoiceElectronic processElectronicInvoice() throws Exception {
+		return null;
+	}
+	
 	public ElectronicNotaRemision(MInOut document) {
 		this.inOut= document;
 		MDocType docType = (MDocType)inOut.getC_DocType();
@@ -165,11 +172,6 @@ public class ElectronicNotaRemision implements IDeclarationDocument {
 		return errorMsg;
 	}
 	
-
-	@Override
-	public X_E_InvoiceElectronic processElectronicInvoice() throws Exception {
-		return null;
-	}
 	
 	
 }

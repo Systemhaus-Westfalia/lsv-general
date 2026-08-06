@@ -13,11 +13,13 @@ import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_C_UOM;
 import org.adempiere.core.domains.models.X_E_Activity;
+import org.adempiere.core.domains.models.X_E_DocType;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
@@ -223,6 +225,10 @@ public class CreditoFiscalFactory extends EDocumentFactory {
 		}
 		int tipoModelo = isContigencia?CreditoFiscal.TIPOMODELO_CONTIGENCIA:CreditoFiscal.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?CreditoFiscal.TIPOOPERACION_CONTIGENCIA:CreditoFiscal.TIPOOPERACION_NOCONTIGENCIA;
+		X_E_DocType e_DocType =   docType_getE_DocType((MDocType)invoice.getC_DocType()) ;
+		String version = e_DocType.get_ValueAsString("E_Version");
+		jsonObjectIdentificacion.put(CreditoFiscal.VERSION, Integer.parseInt(version));
+		jsonObjectIdentificacion.put(CreditoFiscal.TIPODTE,docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue());
 		jsonObjectIdentificacion.put(CreditoFiscal.NUMEROCONTROL, numeroControl);
 		jsonObjectIdentificacion.put(CreditoFiscal.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(CreditoFiscal.TIPOMODELO, tipoModelo);

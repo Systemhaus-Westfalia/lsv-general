@@ -84,6 +84,8 @@ public class CreditoFiscal extends EDocument {
 		System.out.println("Start Credito Fiscal.fillIdentificacion()"); 
 
 		JSONObject identificationJson = factoryInput.getJSONObject(IDENTIFICACION);
+		try {identificacion.setVersion(identificationJson.getInt(VERSION));} 						catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_IDENTIFICACION + e);}
+		try {identificacion.setTipoDte(identificationJson.getString(TIPODTE));} 					catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_IDENTIFICACION + e);}
 		try {identificacion.setNumeroControl(identificationJson.getString(NUMEROCONTROL));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_IDENTIFICACION + e);}
 		try {identificacion.setCodigoGeneracion(identificationJson.getString(CODIGOGENERACION));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_IDENTIFICACION + e);}
 		try {identificacion.setTipoModelo(identificationJson.getInt(TIPOMODELO));} 					catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_IDENTIFICACION + e);}

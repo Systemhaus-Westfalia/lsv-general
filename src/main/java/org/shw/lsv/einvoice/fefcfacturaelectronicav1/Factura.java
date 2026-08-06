@@ -112,6 +112,8 @@ public class Factura extends EDocument {
 
 		JSONObject identificationJson = factoryInput.getJSONObject(IDENTIFICACION);
 		try {identificacion.setNumeroControl(identificationJson.getString(NUMEROCONTROL));} 		catch (Exception e) {errorMessages.append(ERROR_FACTURA_IDENTIFICACION + e);}
+		try {identificacion.setTipoDte(identificationJson.getString(TIPODTE));} 					catch (Exception e) {errorMessages.append(ERROR_FACTURA_IDENTIFICACION + e);}
+		try {identificacion.setVersion(identificationJson.getInt(VERSION));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_IDENTIFICACION + e);}
 		try {identificacion.setCodigoGeneracion(identificationJson.getString(CODIGOGENERACION));} 	catch (Exception e) {errorMessages.append(ERROR_FACTURA_IDENTIFICACION + e);}
 		try {identificacion.setTipoModelo(identificationJson.getInt(TIPOMODELO));} 					catch (Exception e) {errorMessages.append(ERROR_FACTURA_IDENTIFICACION + e);}
 		try {identificacion.setTipoOperacion(identificationJson.getInt(TIPOOPERACION));} 			catch (Exception e) {errorMessages.append(ERROR_FACTURA_IDENTIFICACION + e);}

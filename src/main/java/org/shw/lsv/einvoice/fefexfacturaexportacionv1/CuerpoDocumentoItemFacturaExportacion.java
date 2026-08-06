@@ -26,6 +26,9 @@ public class CuerpoDocumentoItemFacturaExportacion {
 	BigDecimal ventaGravada;
 	ArrayList<String> tributos=null;  // null allowed
 	BigDecimal noGravado;
+	int tipoItem;
+	String numeroDocumento;
+	String codTributo;
     
     
     /**
@@ -268,6 +271,30 @@ public class CuerpoDocumentoItemFacturaExportacion {
 			this.tributos = tributos;
 		else
 	        throw new IllegalArgumentException("Wrong expression 'tributos' in FacturaExportacion.CuerpoDocumentoItem.setTributos()" + "\n");
+	}
+
+	public int getTipoItem() {
+		return tipoItem;
+	}
+
+	public void setTipoItem(int tipoItem) {
+		this.tipoItem = tipoItem;
+	}
+
+	public String getNumeroDocumento() {
+		return numeroDocumento;
+	}
+
+	public void setNumeroDocumento(String numeroDocumento) {
+		this.numeroDocumento = numeroDocumento;
+	}
+
+	public String getCodTributo() {
+		return codTributo;
+	}
+
+	public void setCodTributo(String codTributo) {
+		this.codTributo = codTributo;
 	}
 
 	/**

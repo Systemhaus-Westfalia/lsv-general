@@ -3,8 +3,6 @@
  */
 package org.shw.lsv.einvoice.fefsefacturasujetoexcluido;
 
-import java.util.regex.Pattern;
-
 import org.shw.lsv.einvoice.utils.Direccion;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
@@ -13,13 +11,10 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
  */
 public class ReceptorFacturaSujetoExcluido {
 
-	static final String VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED  = "Documento: FacturaNoSujeto, clase: SujetoExcluido. Validacion fall??: valor de 'numDocumento' no corresponde a patr??n";
-	static final String VALIDATION_NRC_NOT_NULL                    = "Documento: FacturaNoSujeto, clase: SujetoExcluido. Validacion fall??: valor de 'nrc' debe ser ='null'";
-
 	String tipoDocumento=null; // null possible
 	String numDocumento=null; // null possible
 	String nombre=null; // null possible
-	String codActividad;
+	String codActividad=null; // null possible
 	String descActividad=null; // null possible
 	Direccion direccion;
     String telefono=null; // null possible
@@ -39,28 +34,6 @@ public class ReceptorFacturaSujetoExcluido {
 	 * Validate the Schema conditions
 	 */
 	public String validateValues() {
-		String pattern;
-		boolean patternOK;
-
-		// In schema: "pattern" : "^([0-9]{14}|[0-9]{9})$"
-		if(getTipoDocumento() !=null &&   getTipoDocumento().equals("36")) {
-			pattern = "^([0-9]{14}|[0-9]{9})$";
-			patternOK = (getNumDocumento()!=null) && Pattern.matches(pattern, getNumDocumento());
-			if(!patternOK)
-				return VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED;
-		} else {
-			
-				return VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED;
-		}
-
-		// In schema: "pattern" : "^[0-9]{8}-[0-9]{1}$"
-		if(getTipoDocumento() !=null && getTipoDocumento().equals("13")) {
-			pattern = "^[0-9]{8}-[0-9]{1}$";
-			patternOK = (getNumDocumento()!=null) && Pattern.matches(pattern, getNumDocumento());
-			if(!patternOK)
-				return VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED;
-		}
-		
 		return EDocumentUtils.VALIDATION_RESULT_OK;
 	}
 	
@@ -100,18 +73,11 @@ public class ReceptorFacturaSujetoExcluido {
 
 	/**
 	 * @param codActividad the codActividad to set<br>
-	 * The parameter is validated.<br>
-	 * "pattern" : "^[0-9]{2,6}$"
+	 * "type" : ["string", "null"]
 	 */
 
 	public void setCodActividad(String codActividad) {
-		final String PATTERN = "^[0-9]{2,6}$";
-		boolean patternOK = (codActividad!=null) && Pattern.matches(PATTERN, codActividad);  
-		
-		if(patternOK)
-			this.codActividad = codActividad;
-		else
-	        throw new IllegalArgumentException("Wrong expression 'codActividad' (" + codActividad +  ") in FacturaSujetoExcluido.Receptor.setCodActividad()" + "\n");
+		this.codActividad = codActividad;
 	}
 
 	/**
@@ -125,15 +91,15 @@ public class ReceptorFacturaSujetoExcluido {
 	/**
 	 * @param descActividad the descActividad to set<br>
 	 * The parameter is validated.<br>
-	 * "minLength" : 1, "maxLength" : 150
+	 * "minLength" : 5, "maxLength" : 150
 	 */
 
 	public void setDescActividad(String descActividad) {
-		final int MINLENGTH = 1;
+		final int MINLENGTH = 5;
 		final int MAXLENGTH = 150;
 		int length = descActividad==null?0:descActividad.length();
-		
-		if(length>=MINLENGTH && length<=MAXLENGTH)
+
+		if(descActividad==null || (length>=MINLENGTH && length<=MAXLENGTH))
 			this.descActividad = descActividad;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'descActividad' (" + descActividad +  ") in FacturaSujetoExcluido.Receptor.setDescActividad()" + "\n");
@@ -192,14 +158,15 @@ public class ReceptorFacturaSujetoExcluido {
 	/**
 	 * @param correo the correo to set<br>
 	 * The parameter is validated.<br>
-	 * "maxLength" : 100
+	 * "minLength" : 6, "maxLength" : 100
 	 */
 
 	public void setCorreo(String correo) {
+		final int MINLENGTH = 6;
 		final int MAXLENGTH = 100;
 		int length = correo==null?0:correo.length();
-		
-		if(length<=MAXLENGTH)
+
+		if(correo==null || (length>=MINLENGTH && length<=MAXLENGTH))
 			this.correo = correo;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'correo' (" + correo +  ") in FacturaSujetoExcluido.Receptor.setCorreo()" + "\n");
@@ -221,9 +188,20 @@ public class ReceptorFacturaSujetoExcluido {
 		return numDocumento;
 	}
 
-
+	/**
+	 * @param numDocumento the numDocumento to set<br>
+	 * The parameter is validated.<br>
+	 * "minLength" : 1, "maxLength" : 20
+	 */
 	public void setNumDocumento(String numDocumento) {
-		this.numDocumento = numDocumento;
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 20;
+		int length = numDocumento==null?0:numDocumento.length();
+
+		if(length>=MINLENGTH && length<=MAXLENGTH)
+			this.numDocumento = numDocumento;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' (" + numDocumento +  ") in FacturaSujetoExcluido.Receptor.setNumDocumento()" + "\n");
 	}
 
 

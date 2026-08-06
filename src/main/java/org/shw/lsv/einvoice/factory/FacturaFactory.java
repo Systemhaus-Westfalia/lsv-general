@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_C_UOM;
+import org.adempiere.core.domains.models.X_E_DocType;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
@@ -227,6 +229,9 @@ public class FacturaFactory extends EDocumentFactory {
 		String horEmi = gethorEmi();
 		int tipoModelo = isContigencia?Factura.TIPOMODELO_CONTIGENCIA:Factura.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?Factura.TIPOOPERACION_CONTIGENCIA:Factura.TIPOOPERACION_NOCONTIGENCIA;
+		X_E_DocType e_DocType =   docType_getE_DocType((MDocType)invoice.getC_DocType()) ;
+		jsonObjectIdentificacion.put(CreditoFiscal.VERSION, e_DocType.get_Value("E_Version"));
+		jsonObjectIdentificacion.put(CreditoFiscal.TIPODTE,docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue());
 		jsonObjectIdentificacion.put(Factura.NUMEROCONTROL, numeroControl);
 		jsonObjectIdentificacion.put(Factura.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(Factura.TIPOMODELO, tipoModelo);

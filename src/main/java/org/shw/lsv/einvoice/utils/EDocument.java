@@ -116,6 +116,7 @@ public class EDocument {
 	public static final String FLETE				= "flete";
 	public static final String SEGURO				= "seguro";
 	public static final String BIENTITULO			= "bienTitulo";
+	public static final String TOTALNOONEROSAS		= "totalNoOnerosas";
 
 	public static final String VERSION				= "version";	
 	
@@ -167,6 +168,9 @@ public class EDocument {
 	public static final String MONTOSUJETOGRAV        = "montoSujetoGrav";
 	public static final String CODIGORETENCIONMH      = "codigoRetencionMH";
 	public static final String IVARETENIDO 			  = "ivaRetenido";
+	public static final String TIPOREGIMEN 			  = "tipoRegimen";
+
+	
 	
 	
 	public static final int		TIPOMODELO_NOCONTIGENCIA			=1;
