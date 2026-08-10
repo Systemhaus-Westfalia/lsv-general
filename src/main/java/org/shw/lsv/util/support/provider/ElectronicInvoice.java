@@ -36,6 +36,7 @@ import org.shw.lsv.einvoice.factory.NotaDeDebitoFactory;
 import org.shw.lsv.einvoice.factory.NotaRemisionFactory;
 import org.shw.lsv.einvoice.factory.NotaRemisionMovementFactory;
 import org.shw.lsv.einvoice.factory.RetencionFactory;
+import org.shw.lsv.einvoice.factory.RetornoFactory;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 //import org.shw.lsv.einvoice.utils.SignatureGenerationAPI;
 import org.shw.lsv.util.support.IDeclarationDocument;
@@ -211,6 +212,9 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		}else if (e_DocType.getValue().equals("06")) {		// Factura Sujeto Excluido
 			documentFactory = new NotaDeDebitoFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Sujeto Excluido'");
+		}else if (e_DocType.getValue().equals("18")) {		// Evento Retorno
+			documentFactory = new RetornoFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
+			System.out.println("Se procesa el tipo de documento 'Evento de Retorno'");
 		} else if (e_DocType.getValue().equals("04")) {		// Nota de Remision
 			if (inOut != null) {
 				documentFactory = new NotaRemisionFactory(inOut.get_TrxName(), inOut.getCtx(), client, orgInfo, inOut);

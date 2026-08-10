@@ -169,6 +169,8 @@ public class EDocument {
 	public static final String CODIGORETENCIONMH      = "codigoRetencionMH";
 	public static final String IVARETENIDO 			  = "ivaRetenido";
 	public static final String TIPOREGIMEN 			  = "tipoRegimen";
+	
+	
 
 	
 	

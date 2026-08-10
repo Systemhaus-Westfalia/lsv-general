@@ -1,32 +1,26 @@
-/**
- *
- */
 package org.shw.lsv.einvoice.feretornov1;
 
-import org.shw.lsv.einvoice.utils.Direccion;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
 /**
- *
+ * Maps to the "documento" section of the Evento de Retorno schema.
+ * Describes the recipient/document identification (receptor).
  */
 public class ReceptorRetorno {
 
-	String tipoDocumento;
-	String numDocumento;
-	String nrc = null;             // null allowed
-	String nombre;
-	String codActividad;
-	String descActividad;
-	String nombreComercial = null; // null allowed
-	Direccion direccion;
-    String telefono = null;        // null allowed
-    String correo = null;          // null allowed
+	String tipoDocumento = null; // null allowed
+	String numDocumento = null;  // null allowed
+	String nombre = null;        // null allowed
+	String codPais = null;       // null allowed
+	String nombrePais = null;    // null allowed
+	String telefono = null;      // null allowed
+	String correo = null;        // null allowed
+
 
 	/**
 	 * No parameters
 	 */
 	public ReceptorRetorno() {
-		this.direccion = new Direccion();
 	}
 
 	public String validateValues() {
@@ -37,11 +31,11 @@ public class ReceptorRetorno {
 		return tipoDocumento;
 	}
 
+	/**
+	 * @param tipoDocumento the tipoDocumento to set; null also allowed
+	 */
 	public void setTipoDocumento(String tipoDocumento) {
-		if (tipoDocumento != null)
-			this.tipoDocumento = tipoDocumento;
-		else
-	        throw new IllegalArgumentException("Wrong parameter 'tipoDocumento' in NotaDeCredito.Receptor.setTipoDocumento()" + "\n");
+		this.tipoDocumento = tipoDocumento;
 	}
 
 	public String getNumDocumento() {
@@ -50,36 +44,17 @@ public class ReceptorRetorno {
 
 	/**
 	 * @param numDocumento the numDocumento to set<br>
-	 * "minLength" : 1, "maxLength" : 20
+	 * "minLength" : 1, "maxLength" : 20; null also allowed
 	 */
 	public void setNumDocumento(String numDocumento) {
 		final int MINLENGTH = 1;
 		final int MAXLENGTH = 20;
 		int length = numDocumento == null ? 0 : numDocumento.length();
 
-		if (length >= MINLENGTH && length <= MAXLENGTH)
+		if (numDocumento == null || (length >= MINLENGTH && length <= MAXLENGTH))
 			this.numDocumento = numDocumento;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' in NotaDeCredito.Receptor.setNumDocumento()" + "\n");
-	}
-
-	public String getNrc() {
-		return nrc;
-	}
-
-	/**
-	 * @param nrc the nrc to set<br>
-	 * "minLength" : 2, "maxLength" : 8; null also allowed
-	 */
-	public void setNrc(String nrc) {
-		final int MINLENGTH = 2;
-		final int MAXLENGTH = 8;
-		int length = nrc == null ? 0 : nrc.length();
-
-		if ((length >= MINLENGTH && length <= MAXLENGTH) || nrc == null)
-			this.nrc = nrc;
-		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in NotaDeCredito.Receptor.setNrc()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' in EventoDeRetorno.Documento.setNumDocumento()" + "\n");
 	}
 
 	public String getNombre() {
@@ -88,82 +63,47 @@ public class ReceptorRetorno {
 
 	/**
 	 * @param nombre the nombre to set<br>
-	 * "minLength" : 1, "maxLength" : 250
+	 * "minLength" : 1, "maxLength" : 250; null also allowed
 	 */
 	public void setNombre(String nombre) {
 		final int MINLENGTH = 1;
 		final int MAXLENGTH = 250;
 		int length = nombre == null ? 0 : nombre.length();
 
-		if (length >= MINLENGTH && length <= MAXLENGTH)
+		if (nombre == null || (length >= MINLENGTH && length <= MAXLENGTH))
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in NotaDeCredito.Receptor.setNombre()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' in EventoDeRetorno.Documento.setNombre()" + "\n");
 	}
 
-	public String getCodActividad() {
-		return codActividad;
-	}
-
-	/**
-	 * @param codActividad the codActividad to set<br>
-	 * "minLength" : 5, "maxLength" : 6
-	 */
-	public void setCodActividad(String codActividad) {
-		final int MINLENGTH = 5;
-		final int MAXLENGTH = 6;
-		int length = codActividad == null ? 0 : codActividad.length();
-
-		if (length >= MINLENGTH && length <= MAXLENGTH)
-			this.codActividad = codActividad;
-		else
-	        throw new IllegalArgumentException("Wrong parameter 'codActividad' in NotaDeCredito.Receptor.setCodActividad()" + "\n");
-	}
-
-	public String getDescActividad() {
-		return descActividad;
+	public String getCodPais() {
+		return codPais;
 	}
 
 	/**
-	 * @param descActividad the descActividad to set<br>
-	 * "minLength" : 5, "maxLength" : 150
+	 * @param codPais the codPais to set; null also allowed
 	 */
-	public void setDescActividad(String descActividad) {
-		final int MINLENGTH = 5;
-		final int MAXLENGTH = 150;
-		int length = descActividad == null ? 0 : descActividad.length();
-
-		if (length >= MINLENGTH && length <= MAXLENGTH)
-			this.descActividad = descActividad;
-		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in NotaDeCredito.Receptor.setDescActividad()" + "\n");
+	public void setCodPais(String codPais) {
+		this.codPais = codPais;
 	}
 
-	public String getNombreComercial() {
-		return nombreComercial;
+	public String getNombrePais() {
+		return nombrePais;
 	}
 
 	/**
-	 * @param nombreComercial the nombreComercial to set<br>
-	 * "minLength" : 1, "maxLength" : 150; null also possible
+	 * @param nombrePais the nombrePais to set<br>
+	 * "minLength" : 3, "maxLength" : 50; null also allowed
 	 */
-	public void setNombreComercial(String nombreComercial) {
-		final int MINLENGTH = 1;
-		final int MAXLENGTH = 150;
-		int length = nombreComercial == null ? 0 : nombreComercial.length();
+	public void setNombrePais(String nombrePais) {
+		final int MINLENGTH = 3;
+		final int MAXLENGTH = 50;
+		int length = nombrePais == null ? 0 : nombrePais.length();
 
-		if ((length >= MINLENGTH && length <= MAXLENGTH) || nombreComercial == null)
-			this.nombreComercial = nombreComercial;
+		if (nombrePais == null || (length >= MINLENGTH && length <= MAXLENGTH))
+			this.nombrePais = nombrePais;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in NotaDeCredito.Receptor.setNombreComercial()" + "\n");
-	}
-
-	public Direccion getDireccion() {
-		return direccion;
-	}
-
-	public void setDireccion(Direccion direccion) {
-		this.direccion = direccion;
+	        throw new IllegalArgumentException("Wrong parameter 'nombrePais' in EventoDeRetorno.Documento.setNombrePais()" + "\n");
 	}
 
 	public String getTelefono() {
@@ -179,10 +119,10 @@ public class ReceptorRetorno {
 		final int MAXLENGTH = 30;
 		int length = telefono == null ? 0 : telefono.length();
 
-		if ((length >= MINLENGTH && length <= MAXLENGTH) || telefono == null)
+		if (telefono == null || (length >= MINLENGTH && length <= MAXLENGTH))
 			this.telefono = telefono;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in NotaDeCredito.Receptor.setTelefono()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'telefono' in EventoDeRetorno.Documento.setTelefono()" + "\n");
 	}
 
 	public String getCorreo() {
@@ -198,10 +138,10 @@ public class ReceptorRetorno {
 		final int MAXLENGTH = 100;
 		int length = correo == null ? 0 : correo.length();
 
-		if ((length >= MINLENGTH && length <= MAXLENGTH) || correo == null)
+		if (correo == null || (length >= MINLENGTH && length <= MAXLENGTH))
 			this.correo = correo;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in NotaDeCredito.Receptor.setCorreo()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'correo' in EventoDeRetorno.Documento.setCorreo()" + "\n");
 	}
 
 	public static void main(String[] args) {

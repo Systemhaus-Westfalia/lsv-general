@@ -124,6 +124,10 @@ public abstract class EDocumentFactory {
 
         JSONObject eDocumentAsJson  = new JSONObject(eDocumentAsJsonString);
         JSONObject identification = (JSONObject)eDocumentAsJson.get(EDocument.IDENTIFICACION);
+        if (!identification.has(EDocument.NUMEROCONTROL)) {
+            return "";
+        }
+
         String codigoGeneracion = identification.getString(EDocument.NUMEROCONTROL);
 		return codigoGeneracion;
 	}

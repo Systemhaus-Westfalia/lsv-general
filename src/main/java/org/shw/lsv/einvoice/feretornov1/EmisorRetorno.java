@@ -1,23 +1,22 @@
 package org.shw.lsv.einvoice.feretornov1;
 
-import org.shw.lsv.einvoice.utils.Direccion;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
 public class EmisorRetorno {
 
 	String nit;
-	String nrc = null;             // null allowed
 	String nombre;
-	String codActividad;
-	String descActividad;
-	String nombreComercial = null; // null allowed
-    Direccion direccion;
-    String telefono;
-    String correo;
+	String codEstableMH;
+	String codEstable = null;     // null allowed
+	String codPuntoVentaMH;
+	String codPuntoVenta = null;  // null allowed
+	String recintoFiscal = null;  // null allowed
+	String tipoRegimen = null;    // null allowed
+	String regimen = null;        // null allowed
+	Integer tipoItemExpor = null; // null allowed
 
 
 	public EmisorRetorno() {
-		this.direccion = new Direccion();
 	}
 
 	public String validateValues() {
@@ -29,32 +28,17 @@ public class EmisorRetorno {
 	}
 
 	/**
-	 * @param nit the nit to set — no pattern constraint in v4 schema
+	 * @param nit the nit to set<br>
+	 * "maxLength" : 14
 	 */
 	public void setNit(String nit) {
-		if (nit != null)
+		final int MAXLENGTH = 14;
+		int length = nit == null ? 0 : nit.length();
+
+		if (nit != null && length <= MAXLENGTH)
 			this.nit = nit;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nit' in NotaDeCredito.Emisor.setNit()" + "\n");
-	}
-
-	public String getNrc() {
-		return nrc;
-	}
-
-	/**
-	 * @param nrc the nrc to set<br>
-	 * "minLength" : 2, "maxLength" : 8; null also allowed
-	 */
-	public void setNrc(String nrc) {
-		final int MINLENGTH = 2;
-		final int MAXLENGTH = 8;
-		int length = nrc == null ? 0 : nrc.length();
-
-		if ((length >= MINLENGTH && length <= MAXLENGTH) || nrc == null)
-			this.nrc = nrc;
-		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in NotaDeCredito.Emisor.setNrc()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'nit' in EventoDeRetorno.Emisor.setNit()" + "\n");
 	}
 
 	public String getNombre() {
@@ -73,110 +57,148 @@ public class EmisorRetorno {
 		if (length >= MINLENGTH && length <= MAXLENGTH)
 			this.nombre = nombre;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombre' in NotaDeCredito.Emisor.setNombre()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'nombre' in EventoDeRetorno.Emisor.setNombre()" + "\n");
 	}
 
-	public String getCodActividad() {
-		return codActividad;
+	public String getCodEstableMH() {
+		return codEstableMH;
 	}
 
 	/**
-	 * @param codActividad the codActividad to set<br>
-	 * "minLength" : 5, "maxLength" : 6
+	 * @param codEstableMH the codEstableMH to set<br>
+	 * "minLength" : 4, "maxLength" : 4
 	 */
-	public void setCodActividad(String codActividad) {
-		final int MINLENGTH = 5;
-		final int MAXLENGTH = 6;
-		int length = codActividad == null ? 0 : codActividad.length();
+	public void setCodEstableMH(String codEstableMH) {
+		final int EXACTLENGTH = 4;
+		int length = codEstableMH == null ? 0 : codEstableMH.length();
 
-		if (length >= MINLENGTH && length <= MAXLENGTH)
-			this.codActividad = codActividad;
+		if (length == EXACTLENGTH)
+			this.codEstableMH = codEstableMH;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'codActividad' in NotaDeCredito.Emisor.setCodActividad()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'codEstableMH' in EventoDeRetorno.Emisor.setCodEstableMH()" + "\n");
 	}
 
-	public String getDescActividad() {
-		return descActividad;
-	}
-
-	/**
-	 * @param descActividad the descActividad to set<br>
-	 * "minLength" : 5, "maxLength" : 150
-	 */
-	public void setDescActividad(String descActividad) {
-		final int MINLENGTH = 5;
-		final int MAXLENGTH = 150;
-		int length = descActividad == null ? 0 : descActividad.length();
-
-		if (length >= MINLENGTH && length <= MAXLENGTH)
-			this.descActividad = descActividad;
-		else
-	        throw new IllegalArgumentException("Wrong parameter 'descActividad' in NotaDeCredito.Emisor.setDescActividad()" + "\n");
-	}
-
-	public String getNombreComercial() {
-		return nombreComercial;
+	public String getCodEstable() {
+		return codEstable;
 	}
 
 	/**
-	 * @param nombreComercial the nombreComercial to set<br>
-	 * "minLength" : 1, "maxLength" : 150; null also possible
+	 * @param codEstable the codEstable to set<br>
+	 * "minLength" : 1, "maxLength" : 10; null also allowed
 	 */
-	public void setNombreComercial(String nombreComercial) {
+	public void setCodEstable(String codEstable) {
 		final int MINLENGTH = 1;
-		final int MAXLENGTH = 150;
-		int length = nombreComercial == null ? 0 : nombreComercial.length();
+		final int MAXLENGTH = 10;
+		int length = codEstable == null ? 0 : codEstable.length();
 
-		if ((length >= MINLENGTH && length <= MAXLENGTH) || nombreComercial == null)
-			this.nombreComercial = nombreComercial;
+		if (codEstable == null || (length >= MINLENGTH && length <= MAXLENGTH))
+			this.codEstable = codEstable;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'nombreComercial' in NotaDeCredito.Emisor.setNombreComercial()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'codEstable' in EventoDeRetorno.Emisor.setCodEstable()" + "\n");
 	}
 
-	public Direccion getDireccion() {
-		return direccion;
-	}
-
-	public void setDireccion(Direccion direccion) {
-		this.direccion = direccion;
-	}
-
-	public String getTelefono() {
-		return telefono;
+	public String getCodPuntoVentaMH() {
+		return codPuntoVentaMH;
 	}
 
 	/**
-	 * @param telefono the telefono to set<br>
-	 * "minLength" : 8, "maxLength" : 30
+	 * @param codPuntoVentaMH the codPuntoVentaMH to set<br>
+	 * "minLength" : 4, "maxLength" : 4
 	 */
-	public void setTelefono(String telefono) {
-		final int MINLENGTH = 8;
-		final int MAXLENGTH = 30;
-		int length = telefono == null ? 0 : telefono.length();
+	public void setCodPuntoVentaMH(String codPuntoVentaMH) {
+		final int EXACTLENGTH = 4;
+		int length = codPuntoVentaMH == null ? 0 : codPuntoVentaMH.length();
 
-		if (length >= MINLENGTH && length <= MAXLENGTH)
-			this.telefono = telefono;
+		if (length == EXACTLENGTH)
+			this.codPuntoVentaMH = codPuntoVentaMH;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'telefono' in NotaDeCredito.Emisor.setTelefono()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVentaMH' in EventoDeRetorno.Emisor.setCodPuntoVentaMH()" + "\n");
 	}
 
-	public String getCorreo() {
-		return correo;
+	public String getCodPuntoVenta() {
+		return codPuntoVenta;
 	}
 
 	/**
-	 * @param correo the correo to set<br>
-	 * "minLength" : 1, "maxLength" : 100
+	 * @param codPuntoVenta the codPuntoVenta to set<br>
+	 * "minLength" : 1, "maxLength" : 15; null also allowed
 	 */
-	public void setCorreo(String correo) {
+	public void setCodPuntoVenta(String codPuntoVenta) {
 		final int MINLENGTH = 1;
-		final int MAXLENGTH = 100;
-		int length = correo == null ? 0 : correo.length();
+		final int MAXLENGTH = 15;
+		int length = codPuntoVenta == null ? 0 : codPuntoVenta.length();
 
-		if (length >= MINLENGTH && length <= MAXLENGTH)
-			this.correo = correo;
+		if (codPuntoVenta == null || (length >= MINLENGTH && length <= MAXLENGTH))
+			this.codPuntoVenta = codPuntoVenta;
 		else
-	        throw new IllegalArgumentException("Wrong parameter 'correo' in NotaDeCredito.Emisor.setCorreo()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'codPuntoVenta' in EventoDeRetorno.Emisor.setCodPuntoVenta()" + "\n");
+	}
+
+	public String getRecintoFiscal() {
+		return recintoFiscal;
+	}
+
+	/**
+	 * @param recintoFiscal the recintoFiscal to set<br>
+	 * "minLength" : 2, "maxLength" : 2; null also allowed
+	 */
+	public void setRecintoFiscal(String recintoFiscal) {
+		final int EXACTLENGTH = 2;
+		int length = recintoFiscal == null ? 0 : recintoFiscal.length();
+
+		if (recintoFiscal == null || length == EXACTLENGTH)
+			this.recintoFiscal = recintoFiscal;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'recintoFiscal' in EventoDeRetorno.Emisor.setRecintoFiscal()" + "\n");
+	}
+
+	public String getTipoRegimen() {
+		return tipoRegimen;
+	}
+
+	/**
+	 * @param tipoRegimen the tipoRegimen to set<br>
+	 * "minLength" : 1, "maxLength" : 4; null also allowed
+	 */
+	public void setTipoRegimen(String tipoRegimen) {
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 4;
+		int length = tipoRegimen == null ? 0 : tipoRegimen.length();
+
+		if (tipoRegimen == null || (length >= MINLENGTH && length <= MAXLENGTH))
+			this.tipoRegimen = tipoRegimen;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'tipoRegimen' in EventoDeRetorno.Emisor.setTipoRegimen()" + "\n");
+	}
+
+	public String getRegimen() {
+		return regimen;
+	}
+
+	/**
+	 * @param regimen the regimen to set<br>
+	 * "minLength" : 1, "maxLength" : 13; null also allowed
+	 */
+	public void setRegimen(String regimen) {
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 13;
+		int length = regimen == null ? 0 : regimen.length();
+
+		if (regimen == null || (length >= MINLENGTH && length <= MAXLENGTH))
+			this.regimen = regimen;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'regimen' in EventoDeRetorno.Emisor.setRegimen()" + "\n");
+	}
+
+	public Integer getTipoItemExpor() {
+		return tipoItemExpor;
+	}
+
+	/**
+	 * @param tipoItemExpor the tipoItemExpor to set; null also allowed
+	 */
+	public void setTipoItemExpor(Integer tipoItemExpor) {
+		this.tipoItemExpor = tipoItemExpor;
 	}
 
 	public static void main(String[] args) {

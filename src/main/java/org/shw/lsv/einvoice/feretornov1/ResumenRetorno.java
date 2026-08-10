@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.shw.lsv.einvoice.feretornov1;
 
 import java.math.BigDecimal;
@@ -10,30 +7,25 @@ import java.util.List;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 import org.shw.lsv.einvoice.utils.TributosItem;
 
-/**
- *
- */
 public class ResumenRetorno {
-	static final String VALIDATION_TOTALGRAVADA_IS_NULL  = "Documento: Nota de Credito, clase: Resumen. Validacion fallo: valor de 'totalGravada' no debe ser = null";
-	static final String VALIDATION_TOTALGRAVADA_IVAPERCI = "Documento: Nota de Credito, clase: Resumen. Validacion fallo: valor de 'ivaPerci' no debe ser mayor que cero";
-	static final String VALIDATION_TOTALGRAVADA_IVARETE  = "Documento: Nota de Credito, clase: Resumen. Validacion fallo: valor de 'ivaRete' no debe ser mayor que cero";
 
 	BigDecimal totalNoSuj;
 	BigDecimal totalExenta;
 	BigDecimal totalGravada;
+	BigDecimal totalCompraExcluidos;
 	BigDecimal subTotalVentas;
-	BigDecimal totalDescu;
-	List<TributosItem> tributos;
+	List<TributosItem> tributos;      // null allowed
+	BigDecimal totalSeguro = null;    // null allowed
+	BigDecimal totalFlete = null;     // null allowed
 	BigDecimal montoTotalOperacion;
-	BigDecimal ivaPerci;
-	BigDecimal totalIva;
 	BigDecimal ivaRete;
+	BigDecimal reteRenta = null;      // null allowed
 	BigDecimal totalNoGravado;
 	BigDecimal totalPagar;
-	String totalLetras = null;         // null allowed
-	int condicionOperacion;
-	String observaciones = null;       // null allowed
-	String codigoRetencionMH = null;   // null allowed
+	String totalLetras = null;        // null allowed
+	BigDecimal totalNoOnerosas;
+	BigDecimal totalIva;
+	BigDecimal saldoFavor;            // maximum: 0
 
 
 	public ResumenRetorno() {
@@ -41,16 +33,6 @@ public class ResumenRetorno {
 	}
 
 	public String validateValues() {
-		if (getTotalGravada() == null)
-			return VALIDATION_TOTALGRAVADA_IS_NULL;
-
-		if (getTotalGravada().compareTo(BigDecimal.ZERO) == 0) {
-			if ((getIvaPerci() == null) || (getIvaPerci().compareTo(BigDecimal.ZERO) == 1))
-				return VALIDATION_TOTALGRAVADA_IVAPERCI;
-			if ((getIvaRete() == null) || (getIvaRete().compareTo(BigDecimal.ZERO) == 1))
-				return VALIDATION_TOTALGRAVADA_IVARETE;
-		}
-
 		return EDocumentUtils.VALIDATION_RESULT_OK;
 	}
 
@@ -78,20 +60,20 @@ public class ResumenRetorno {
 		this.totalGravada = totalGravada;
 	}
 
+	public BigDecimal getTotalCompraExcluidos() {
+		return totalCompraExcluidos;
+	}
+
+	public void setTotalCompraExcluidos(BigDecimal totalCompraExcluidos) {
+		this.totalCompraExcluidos = totalCompraExcluidos;
+	}
+
 	public BigDecimal getSubTotalVentas() {
 		return subTotalVentas;
 	}
 
 	public void setSubTotalVentas(BigDecimal subTotalVentas) {
 		this.subTotalVentas = subTotalVentas;
-	}
-
-	public BigDecimal getTotalDescu() {
-		return totalDescu;
-	}
-
-	public void setTotalDescu(BigDecimal totalDescu) {
-		this.totalDescu = totalDescu;
 	}
 
 	public List<TributosItem> getTributos() {
@@ -102,6 +84,22 @@ public class ResumenRetorno {
 		this.tributos = tributos;
 	}
 
+	public BigDecimal getTotalSeguro() {
+		return totalSeguro;
+	}
+
+	public void setTotalSeguro(BigDecimal totalSeguro) {
+		this.totalSeguro = totalSeguro;
+	}
+
+	public BigDecimal getTotalFlete() {
+		return totalFlete;
+	}
+
+	public void setTotalFlete(BigDecimal totalFlete) {
+		this.totalFlete = totalFlete;
+	}
+
 	public BigDecimal getMontoTotalOperacion() {
 		return montoTotalOperacion;
 	}
@@ -110,28 +108,20 @@ public class ResumenRetorno {
 		this.montoTotalOperacion = montoTotalOperacion;
 	}
 
-	public BigDecimal getIvaPerci() {
-		return ivaPerci;
-	}
-
-	public void setIvaPerci(BigDecimal ivaPerci) {
-		this.ivaPerci = ivaPerci;
-	}
-
-	public BigDecimal getTotalIva() {
-		return totalIva;
-	}
-
-	public void setTotalIva(BigDecimal totalIva) {
-		this.totalIva = totalIva;
-	}
-
 	public BigDecimal getIvaRete() {
 		return ivaRete;
 	}
 
 	public void setIvaRete(BigDecimal ivaRete) {
 		this.ivaRete = ivaRete;
+	}
+
+	public BigDecimal getReteRenta() {
+		return reteRenta;
+	}
+
+	public void setReteRenta(BigDecimal reteRenta) {
+		this.reteRenta = reteRenta;
 	}
 
 	public BigDecimal getTotalNoGravado() {
@@ -163,54 +153,41 @@ public class ResumenRetorno {
 		final int MAXLENGTH = 200;
 		int length = totalLetras == null ? 0 : totalLetras.length();
 
-		if ((length >= MINLENGTH && length <= MAXLENGTH) || totalLetras == null)
+		if (totalLetras == null || (length >= MINLENGTH && length <= MAXLENGTH))
 			this.totalLetras = totalLetras;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in NotaDeCredito.Resumen.setTotalLetras()" + "\n");
+			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in EventoDeRetorno.Resumen.setTotalLetras()" + "\n");
 	}
 
-	public int getCondicionOperacion() {
-		return condicionOperacion;
+	public BigDecimal getTotalNoOnerosas() {
+		return totalNoOnerosas;
 	}
 
-	public void setCondicionOperacion(int condicionOperacion) {
-		this.condicionOperacion = condicionOperacion;
+	public void setTotalNoOnerosas(BigDecimal totalNoOnerosas) {
+		this.totalNoOnerosas = totalNoOnerosas;
 	}
 
-	public String getObservaciones() {
-		return observaciones;
+	public BigDecimal getTotalIva() {
+		return totalIva;
 	}
 
-	/**
-	 * @param observaciones the observaciones to set<br>
-	 * "maxLength" : 3000; null also allowed
-	 */
-	public void setObservaciones(String observaciones) {
-		final int MAXLENGTH = 3000;
-		int length = observaciones == null ? 0 : observaciones.length();
-
-		if (length <= MAXLENGTH)
-			this.observaciones = observaciones;
-		else
-			throw new IllegalArgumentException("Wrong parameter 'observaciones' in NotaDeCredito.Resumen.setObservaciones()" + "\n");
+	public void setTotalIva(BigDecimal totalIva) {
+		this.totalIva = totalIva;
 	}
 
-	public String getCodigoRetencionMH() {
-		return codigoRetencionMH;
+	public BigDecimal getSaldoFavor() {
+		return saldoFavor;
 	}
 
 	/**
-	 * @param codigoRetencionMH the codigoRetencionMH to set<br>
-	 * "maxLength" : 2; null also allowed
+	 * @param saldoFavor the saldoFavor to set<br>
+	 * "maximum" : 0 (non-positive value)
 	 */
-	public void setCodigoRetencionMH(String codigoRetencionMH) {
-		final int MAXLENGTH = 2;
-		int length = codigoRetencionMH == null ? 0 : codigoRetencionMH.length();
-
-		if (length <= MAXLENGTH)
-			this.codigoRetencionMH = codigoRetencionMH;
+	public void setSaldoFavor(BigDecimal saldoFavor) {
+		if (saldoFavor == null || saldoFavor.compareTo(BigDecimal.ZERO) <= 0)
+			this.saldoFavor = saldoFavor;
 		else
-			throw new IllegalArgumentException("Wrong parameter 'codigoRetencionMH' in NotaDeCredito.Resumen.setCodigoRetencionMH()" + "\n");
+			throw new IllegalArgumentException("Wrong parameter 'saldoFavor' in EventoDeRetorno.Resumen.setSaldoFavor() — must be <= 0" + "\n");
 	}
 
 	public static void main(String[] args) {
