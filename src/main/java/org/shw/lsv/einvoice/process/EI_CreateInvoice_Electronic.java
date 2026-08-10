@@ -25,6 +25,7 @@ import org.adempiere.core.domains.models.X_E_InOutElectronic;
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MMovement;
 import org.compiere.model.PO;
 import org.shw.lsv.util.support.IDeclarationDocument;
 import org.shw.lsv.util.support.provider.ElectronicInvoice;
@@ -79,22 +80,38 @@ public class EI_CreateInvoice_Electronic extends EI_CreateInvoice_ElectronicAbst
 			Entity<String> entity = Entity.json(documentAsJsonString);
 			{
 				inOut.saveEx();
-			}			
-		
+			}
 		}
 
-		
+		if (getMovementId()>0) {
+			MMovement movement = new MMovement(getCtx(), getMovementId(), get_TrxName());
+			IDeclarationDocument declarationDocument = getDeclarationDocument(movement);
+			if(declarationDocument == null) {
+				return null;
+			}
+			X_E_InvoiceElectronic electronicInvoiceModel = declarationDocument.processElectronicInvoice();
+			if(electronicInvoiceModel==null) {
+				return null;
+			}
+
+			String documentAsJsonString = electronicInvoiceModel.getjson();
+			Entity<String> entity = Entity.json(documentAsJsonString);
+			{
+				movement.saveEx();
+			}
+		}
+
 		return "OK";
 	}
-	
-        
+
+
         public IDeclarationDocument getDeclarationDocument(PO entity) {
     		if(entity == null) {
     			return null;
     		}
-    		if(entity instanceof MInvoice || entity instanceof MInOut)
-    			return new ElectronicInvoice( entity);
-    		
+    		if(entity instanceof MInvoice || entity instanceof MInOut || entity instanceof MMovement)
+    			return new ElectronicInvoice(entity);
+
     		return null;
     	}
 

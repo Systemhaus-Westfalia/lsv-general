@@ -21,6 +21,7 @@ import org.compiere.model.MClient;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MMovement;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.PO;
 import org.compiere.util.Env;
@@ -33,6 +34,7 @@ import org.shw.lsv.einvoice.factory.FacturaSujetoExcluidoFactory;
 import org.shw.lsv.einvoice.factory.NotaDeCreditoFactory;
 import org.shw.lsv.einvoice.factory.NotaDeDebitoFactory;
 import org.shw.lsv.einvoice.factory.NotaRemisionFactory;
+import org.shw.lsv.einvoice.factory.NotaRemisionMovementFactory;
 import org.shw.lsv.einvoice.factory.RetencionFactory;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 //import org.shw.lsv.einvoice.utils.SignatureGenerationAPI;
@@ -110,9 +112,12 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		
     	electronicInvoiceModel = new X_E_InvoiceElectronic(originDocument.getCtx(), 0, originDocument.get_TrxName());
     	if (originDocument instanceof MInvoice)
-    	electronicInvoiceModel.setC_Invoice_ID(originDocument.get_ID());
+    		electronicInvoiceModel.setC_Invoice_ID(originDocument.get_ID());
     	else if (originDocument instanceof MInOut) {
     		electronicInvoiceModel.setM_InOut_ID(originDocument.get_ID());
+    		electronicInvoiceModel.setAD_Org_ID(originDocument.getAD_Org_ID());
+    	} else if (originDocument instanceof MMovement) {
+    		electronicInvoiceModel.set_ValueOfColumn("M_Movement_ID", originDocument.get_ID());
     		electronicInvoiceModel.setAD_Org_ID(originDocument.getAD_Org_ID());
     	}
     	electronicInvoiceModel.setei_ValidationStatus("01");
@@ -172,10 +177,13 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		EDocumentFactory documentFactory = null;
 		MInvoice invoice = null;
 		MInOut inOut = null;
+		MMovement movement = null;
 		if (document instanceof MInvoice)
 			invoice = (MInvoice)document;
 		if (document instanceof MInOut)
 			inOut = (MInOut)document;
+		if (document instanceof MMovement)
+			movement = (MMovement)document;
 		if (isreversal) {
 			documentFactory = new AnulacionFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Anulacion'");
@@ -203,9 +211,15 @@ public class ElectronicInvoice implements IDeclarationDocument {
 		}else if (e_DocType.getValue().equals("06")) {		// Factura Sujeto Excluido
 			documentFactory = new NotaDeDebitoFactory(invoice.get_TrxName(), invoice.getCtx(), client, orgInfo, invoice);
 			System.out.println("Se procesa el tipo de documento 'Sujeto Excluido'");
-		}else if (e_DocType.getValue().equals("04")) {		// Factura Sujeto Excluido
-			documentFactory = new NotaRemisionFactory(inOut.get_TrxName(), inOut.getCtx(), client, orgInfo, inOut);
-			System.out.println("Se procesa el tipo de documento 'Sujeto Excluido'");}
+		} else if (e_DocType.getValue().equals("04")) {		// Nota de Remision
+			if (inOut != null) {
+				documentFactory = new NotaRemisionFactory(inOut.get_TrxName(), inOut.getCtx(), client, orgInfo, inOut);
+				System.out.println("Se procesa el tipo de documento 'Nota de Remision' (MInOut)");
+			} else if (movement != null) {
+				documentFactory = new NotaRemisionMovementFactory(movement.get_TrxName(), movement.getCtx(), client, orgInfo, movement);
+				System.out.println("Se procesa el tipo de documento 'Nota de Remision' (MMovement)");
+			}
+		}
 		return documentFactory;
 	}
 

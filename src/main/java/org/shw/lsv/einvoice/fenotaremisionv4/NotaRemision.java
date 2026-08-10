@@ -359,24 +359,24 @@ public class NotaRemision extends EDocument {
 		this.apendice = apendice;
 	}
 	
-	/*
-	 * public StringBuffer fillApendice(JSONObject factoryInput) { JSONObject
-	 * apendiceJson = factoryInput.getJSONObject(APENDICE); JSONArray
-	 * apendiceArrayJson = apendiceJson.getJSONArray(APENDICE);
-	 * 
-	 * for (int i=0; i< apendiceArrayJson.length(); i++) { JSONObject
-	 * apendiceItemJson = apendiceArrayJson.getJSONObject(i);
-	 * ApendiceItemNotaRemision apendiceItem = new ApendiceItemNotaRemision(); try
-	 * {apendiceItem.setCampo(apendiceItemJson.getString(CAMPO)) ;} catch (Exception
-	 * e) {errorMessages.append(ERROR_NOTA_REMISION_APENDICE + e);} try
-	 * {apendiceItem.setEtiqueta(apendiceItemJson.getString(ETIQUETA));} catch
-	 * (Exception e) {errorMessages.append(ERROR_NOTA_REMISION_APENDICE + e);} try
-	 * {apendiceItem.setValor(apendiceItemJson.getString(VALOR)) ;} catch (Exception
-	 * e) {errorMessages.append(ERROR_NOTA_REMISION_APENDICE + e);}
-	 * apendice.add(apendiceItem); }
-	 * System.out.println("End CreditoFiscal.fillApendice()"); return errorMessages;
-	 * }
-	 */
+	
+	  public StringBuffer fillApendice(JSONObject factoryInput) { JSONObject
+	  apendiceJson = factoryInput.getJSONObject(APENDICE); JSONArray
+	  apendiceArrayJson = apendiceJson.getJSONArray(APENDICE);
+	  
+	  for (int i=0; i< apendiceArrayJson.length(); i++) { JSONObject
+	  apendiceItemJson = apendiceArrayJson.getJSONObject(i);
+	  ApendiceItemNotaRemision apendiceItem = new ApendiceItemNotaRemision(); try
+	  {apendiceItem.setCampo(apendiceItemJson.getString(CAMPO)) ;} catch (Exception
+	  e) {errorMessages.append(ERROR_NOTA_REMISION_APENDICE + e);} try
+	  {apendiceItem.setEtiqueta(apendiceItemJson.getString(ETIQUETA));} catch
+	  (Exception e) {errorMessages.append(ERROR_NOTA_REMISION_APENDICE + e);} try
+	  {apendiceItem.setValor(apendiceItemJson.getString(VALOR)) ;} catch (Exception
+	  e) {errorMessages.append(ERROR_NOTA_REMISION_APENDICE + e);}
+	  apendice.add(apendiceItem); }
+	  System.out.println("End CreditoFiscal.fillApendice()"); return errorMessages;
+	  }
+	 
 
 
 	/**

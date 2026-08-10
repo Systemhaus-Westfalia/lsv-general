@@ -3,6 +3,7 @@ package org.shw.lsv.einvoice.factory;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -26,11 +27,13 @@ import org.compiere.model.MPackageExp;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fenotaremisionv4.ApendiceItemNotaRemision;
 import org.shw.lsv.einvoice.fenotaremisionv4.CuerpoDocumentoItemNotaRemision;
@@ -39,6 +42,7 @@ import org.shw.lsv.einvoice.fenotaremisionv4.IdentificacionNotaRemision;
 import org.shw.lsv.einvoice.fenotaremisionv4.NotaRemision;
 import org.shw.lsv.einvoice.fenotaremisionv4.ReceptorNotaRemision;
 import org.shw.lsv.einvoice.fenotaremisionv4.ResumenNotaRemision;
+import org.shw.lsv.einvoice.utils.EDocument;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
@@ -151,18 +155,18 @@ public class NotaRemisionFactory extends EDocumentFactory {
 		}
 		
 		
-		//List<ApendiceItemNotaRemision> apendice = notaRemision.getApendice();
-		//if(apendice!=null) {
-		//	notaRemision.fillApendice(jsonInputToFactory);
+		List<ApendiceItemNotaRemision> apendice = notaRemision.getApendice();
+		if(apendice!=null) {
+			notaRemision.fillApendice(jsonInputToFactory);
 			
-		//	apendice.stream().forEach( apendiceItem -> { 
-		//		String resultLambda = apendiceItem.validateValues();
-		//			if(! resultLambda.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
-		//				notaRemision.errorMessages.append(resultLambda);
-		//			}
-		//		} 
-		//	);
-		//}
+			apendice.stream().forEach( apendiceItem -> { 
+				String resultLambda = apendiceItem.validateValues();
+					if(! resultLambda.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
+						notaRemision.errorMessages.append(resultLambda);
+					}
+				} 
+			);
+		}
 		
 //		Documento documento = eDocument.getDocumento();
 //		if(documento!=null) {
@@ -201,8 +205,8 @@ public class NotaRemisionFactory extends EDocumentFactory {
 		jsonInputToFactory.put(NotaRemision.EMISOR, generateEmisorInputData());
 		jsonInputToFactory.put(NotaRemision.RESUMEN, generateResumenInputData());
 		jsonInputToFactory.put(NotaRemision.CUERPODOCUMENTO, generateCuerpoDocumentoInputData());
-		//jsonInputToFactory.put(NotaRemision.APENDICE, generateApendiceInputData(inOut.getDateAcct()));
-		jsonInputToFactory.put(NotaRemision.EXTENSION, generateExtensionInputData());
+
+		jsonInputToFactory.put(CreditoFiscal.APENDICE, generateApendiceInputData());
 		
 		System.out.println("Generated JSON object from Invoice:");
 		System.out.println(jsonInputToFactory.toString());
@@ -435,20 +439,21 @@ public class NotaRemisionFactory extends EDocumentFactory {
 		return jsonCuerpoDocumento;
 	}
 
-	private JSONObject generateExtensionInputData() {
-		System.out.println("Credito Fiscal: start collecting JSON data for Extension. Document: " + order.getDocumentNo());
-		JSONObject jsonExtension = new JSONObject();
-		String observaciones = order.get_ValueAsString(MPackageExp.COLUMNNAME_Instructions);
-		
-		jsonExtension.put(NotaRemision.NOMBENTREGA, "");
-		jsonExtension.put(NotaRemision.DOCUENTREGA, "");
-		jsonExtension.put(NotaRemision.NOMBRECIBE, "");
-		jsonExtension.put(NotaRemision.DOCURECIBE, "");
-		jsonExtension.put(NotaRemision.OBSERVACIONES, observaciones);
-		jsonExtension.put(NotaRemision.PLACAVEHICULO, "");
-		System.out.println("Credito Fiscal: end collecting JSON data for Extension. Document: " + order.getDocumentNo());
-		return jsonExtension;
-	}
+	/*
+	 * private JSONObject generateExtensionInputData() { System.out.
+	 * println("Credito Fiscal: start collecting JSON data for Extension. Document: "
+	 * + order.getDocumentNo()); JSONObject jsonExtension = new JSONObject(); String
+	 * observaciones = order.get_ValueAsString(MPackageExp.COLUMNNAME_Instructions);
+	 * 
+	 * jsonExtension.put(NotaRemision.NOMBENTREGA, "");
+	 * jsonExtension.put(NotaRemision.DOCUENTREGA, "");
+	 * jsonExtension.put(NotaRemision.NOMBRECIBE, "");
+	 * jsonExtension.put(NotaRemision.DOCURECIBE, "");
+	 * jsonExtension.put(NotaRemision.OBSERVACIONES, observaciones);
+	 * jsonExtension.put(NotaRemision.PLACAVEHICULO, ""); System.out.
+	 * println("Credito Fiscal: end collecting JSON data for Extension. Document: "
+	 * + order.getDocumentNo()); return jsonExtension; }
+	 */
 	
 	public String createJsonString() throws Exception {
 		System.out.println("CreditoFiscal: start generating JSON object from Document");
@@ -590,6 +595,39 @@ public class NotaRemisionFactory extends EDocumentFactory {
 		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)inOut.getC_DocType()).getValue()
 				+ "-"+ StringUtils.leftPad(idPosCompany, 8,"0") + "-"+ idIdentification;
 		return numeroControl;
+	}
+	
+	public JSONObject generateApendiceInputData() {
+		String description  = order.getDescription() ==null?" ":order.getDescription();
+		
+//				+ " WHERE AD_LANGUAGE = 'es_SV' AND C_Invoice_ID=?";
+		
+		ArrayList<String> info = new ArrayList<String>();
+		int part = 150;
+		if (description.length()<= 150) {
+			info.add(description);
+		}
+		while(description.length() > 150) {
+			part = description.length()>=150?150:description.length();
+			String infopart = description.substring(0,part);
+			info.add(infopart);
+			description = description.substring(part, description.length());
+			if (info.size() == 10)
+				break;
+		}
+		JSONObject jsonApendice = new JSONObject();
+		JSONArray jsonTributosArray = new JSONArray();
+		for(int i = 0; i < info.size(); i++) {
+
+			JSONObject jsonApendiceItem = new JSONObject();
+			jsonApendiceItem.put(EDocument.CAMPO, "Info");
+			jsonApendiceItem.put(EDocument.ETIQUETA, "Descripcion");
+			jsonApendiceItem.put(EDocument.VALOR, info.get(i));
+			jsonTributosArray.put(jsonApendiceItem);
+		}
+		
+		jsonApendice.put(CreditoFiscal.APENDICE, jsonTributosArray);
+		return jsonApendice;
 	}
 	
 	
