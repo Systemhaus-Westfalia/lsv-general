@@ -19,12 +19,6 @@ repositories {
     mavenCentral()
 }
 
-configurations.all {
-    resolutionStrategy {
-        force 'org.mozilla:rhino:1.7.14'
-    }
-}
-
 allprojects {
     tasks.withType(Javadoc) {
     	options.addStringOption('Xdoclint:none', '-quiet')
