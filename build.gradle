@@ -19,6 +19,12 @@ repositories {
     mavenCentral()
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'org.mozilla:rhino:1.7.14'
+    }
+}
+
 allprojects {
     tasks.withType(Javadoc) {
     	options.addStringOption('Xdoclint:none', '-quiet')
@@ -67,6 +73,9 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/com.itextpdf/itextpdf
         api 'com.itextpdf:itextpdf:5.5.2'
+
+	// Rhino JavaScript engine — required by JasperReports 6.17+
+	api 'org.mozilla:rhino:1.7.14'
 
 	//email
 	implementation 'com.sun.mail:javax.mail:1.6.2'
