@@ -118,6 +118,8 @@ public class EDocument {
 	public static final String BIENTITULO			= "bienTitulo";
 	public static final String TOTALNOONEROSAS		= "totalNoOnerosas";
 
+	public static final String FUSION           	= "fusion";
+
 	public static final String VERSION				= "version";	
 	
 	public static final String CODESTABLE			  = "codEstable";
@@ -169,8 +171,10 @@ public class EDocument {
 	public static final String CODIGORETENCIONMH      = "codigoRetencionMH";
 	public static final String IVARETENIDO 			  = "ivaRetenido";
 	public static final String TIPOREGIMEN 			  = "tipoRegimen";
-	
-	
+	public static final String RECINTOFISCAL		  = "recintoFiscal";
+	public static final String REGIMEN				  = "regimen";
+
+
 
 	
 	

@@ -9,9 +9,14 @@ import java.util.Properties;
 
 import org.adempiere.core.domains.models.I_C_InvoiceLine;
 import org.adempiere.core.domains.models.X_C_UOM;
+import org.adempiere.core.domains.models.X_E_FiscalUnit;
+import org.adempiere.core.domains.models.X_E_Rule;
+import org.adempiere.core.domains.models.X_E_TipoRegimen;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
+import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
@@ -128,6 +133,7 @@ public class RetornoFactory extends EDocumentFactory {
 	Retorno retorno;
 	MInvoice invoice;
 	MInvoice refInvoice;
+	private String refDteType;
 
 	public RetornoFactory(String trxName, Properties contextProperties, MClient client, MOrgInfo orgInfo, MInvoice invoice) {
 		super(trxName, contextProperties, client, orgInfo);
@@ -136,6 +142,7 @@ public class RetornoFactory extends EDocumentFactory {
 		MInOut inOut = (MInOut)mrma.getInOut();
 		List<MInvoice>  invoices = MInvoice.getOfOrder(invoice.getCtx(), inOut.getC_Order_ID(), invoice.get_TrxName());
 		refInvoice = invoices.get(0);
+		refDteType = docType_getE_DocType((MDocType) refInvoice.getC_DocType()).getValue();
 		retorno = new Retorno();
 	}
 
@@ -304,7 +311,8 @@ public class RetornoFactory extends EDocumentFactory {
 		
 		if (refInvoice != null) {
 			JSONObject itemJson = new JSONObject();
-			itemJson.put(TIPODOCUMENTO,    refInvoice.get_ValueAsString("ei_tipoDte"));
+			String dteType = docType_getE_DocType((MDocType)refInvoice.getC_DocType()).getValue();
+			itemJson.put(TIPODOCUMENTO,    dteType);
 			itemJson.put(CODIGOGENERACION, refInvoice.get_ValueAsString("ei_codigoGeneracion"));
 			itemJson.put(FECHAEMISION,     refInvoice.getDateAcct().toString().substring(0, 10));
 			jsonArray.put(itemJson);
@@ -319,16 +327,47 @@ public class RetornoFactory extends EDocumentFactory {
 		System.out.println("Retorno: start collecting JSON data for Emisor");
 
 		JSONObject jsonEmisor = new JSONObject();
-		jsonEmisor.put(NIT,           client.get_ValueAsString("ei_nit"));
-		jsonEmisor.put(NOMBRE,        client.getDescription());
-		jsonEmisor.put(CODESTABLEMH,  StringUtils.leftPad(client.get_ValueAsString("ei_codEstableMH").trim(), 4, "0"));
-		jsonEmisor.put(CODESTABLE,    JSONObject.NULL);
-		jsonEmisor.put(CODPUNTOVENTAMH, StringUtils.leftPad(client.get_ValueAsString("ei_codPuntoVentaMH").trim(), 4, "0"));
-		jsonEmisor.put(CODPUNTOVENTA, JSONObject.NULL);
-		jsonEmisor.put(RECINTOFISCAL, JSONObject.NULL);
-		jsonEmisor.put(TIPOREGIMEN,   JSONObject.NULL);
-		jsonEmisor.put(REGIMEN,       JSONObject.NULL);
-		jsonEmisor.put(TIPOITEMEXPOR, JSONObject.NULL);
+		jsonEmisor.put(NIT,           	client.get_ValueAsString("ei_nit"));
+		jsonEmisor.put(NOMBRE,        	client.getDescription());
+		jsonEmisor.put(CODESTABLEMH,  	getCodEstable(invoice));
+		jsonEmisor.put(CODESTABLE,    	JSONObject.NULL);
+		jsonEmisor.put(CODPUNTOVENTAMH, getCodPuntoVenta(invoice));
+		jsonEmisor.put(CODPUNTOVENTA, 	JSONObject.NULL);
+
+		if ("11".equals(refDteType)) {
+			// FEXE: derive tipoItemExpor from refInvoice lines; populate fiscal fields from orgInfo
+			boolean hasBienes = false, hasServicios = false;
+			for (MInvoiceLine line : refInvoice.getLines()) {
+				int ptype = invoiceLineProductType(line.getM_Product_ID());
+				if (ptype == 1) hasBienes = true; else hasServicios = true;
+			}
+			int tipoItemExpor = (hasBienes && hasServicios) ? 3 : hasBienes ? 1 : 2;
+			jsonEmisor.put(TIPOITEMEXPOR, tipoItemExpor);
+			if (tipoItemExpor != 2) {
+				int fiscalUnitId = orgInfo.get_ValueAsInt("E_FiscalUnit_ID");
+				jsonEmisor.put(RECINTOFISCAL, fiscalUnitId > 0
+						? new X_E_FiscalUnit(contextProperties, fiscalUnitId, trxName).getValue()
+						: JSONObject.NULL);
+				int tipoRegimenId = orgInfo.get_ValueAsInt("E_TipoRegimen_ID");
+				jsonEmisor.put(TIPOREGIMEN, tipoRegimenId > 0
+						? new X_E_TipoRegimen(contextProperties, tipoRegimenId, trxName).getValue()
+						: JSONObject.NULL);
+				int ruleId = orgInfo.get_ValueAsInt("E_Rule_ID");
+				jsonEmisor.put(REGIMEN, ruleId > 0
+						? new X_E_Rule(contextProperties, ruleId, trxName).getValue()
+						: JSONObject.NULL);
+			} else {
+				jsonEmisor.put(RECINTOFISCAL, JSONObject.NULL);
+				jsonEmisor.put(TIPOREGIMEN,   JSONObject.NULL);
+				jsonEmisor.put(REGIMEN,       JSONObject.NULL);
+			}
+		} else {
+			// FE or FSEE: export fields are null
+			jsonEmisor.put(RECINTOFISCAL, JSONObject.NULL);
+			jsonEmisor.put(TIPOREGIMEN,   JSONObject.NULL);
+			jsonEmisor.put(REGIMEN,       JSONObject.NULL);
+			jsonEmisor.put(TIPOITEMEXPOR, JSONObject.NULL);
+		}
 
 		System.out.println("Retorno: end collecting JSON data for Emisor");
 		return jsonEmisor;
@@ -347,8 +386,18 @@ public class RetornoFactory extends EDocumentFactory {
 		jsonDocumento.put(TIPODOCUMENTO, bPartner_getE_Recipient_Identification(partner).getValue());
 		jsonDocumento.put(NUMDOCUMENTO,  partner.getTaxID().replace("-", ""));
 		jsonDocumento.put(NOMBRE,        partner.getName());
-		jsonDocumento.put(CODPAIS,       "SV");
-		jsonDocumento.put(NOMBREPAIS,    "El Salvador");
+		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)){
+			
+			if (partnerLocation.isBillTo() && partnerLocation.getC_Location().getC_Country_ID() == 173 && !"11".equals(refDteType)) {
+				jsonDocumento.put(CODPAIS,       "");
+				jsonDocumento.put(NOMBREPAIS,    "");}
+			else {
+				jsonDocumento.put(CODPAIS, partnerLocation.getLocation(false).getCountry().getCountryCode());
+				jsonDocumento.put(NOMBREPAIS, partnerLocation.getLocation(false).getCountry().getName());
+			}
+		}
+		//jsonDocumento.put(CODPAIS,       "SV");
+		//jsonDocumento.put(NOMBREPAIS,    "El Salvador");
 		jsonDocumento.put(TELEFONO,      partner.get_ValueAsString("phone"));
 		jsonDocumento.put(CORREO,        partner.get_ValueAsString("EMail"));
 
@@ -368,6 +417,13 @@ public class RetornoFactory extends EDocumentFactory {
 			codigoGeneracionOrig = refInvoice.get_ValueAsString("ei_codigoGeneracion");
 		}
 
+		// ANEXO V rule 85: ivaRete per line only applies when a TAXINDICATOR_RET entry exists
+		boolean hasIvaRete = new Query(contextProperties, MInvoiceTax.Table_Name, "C_Invoice_ID=?", trxName)
+				.setParameters(invoice.getC_Invoice_ID())
+				.<MInvoiceTax>list()
+				.stream()
+				.anyMatch(t -> t.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_RET));
+
 		int i = 0;
 		for (MInvoiceLine invoiceLine : invoice.getLines()) {
 			i++;
@@ -376,20 +432,31 @@ public class RetornoFactory extends EDocumentFactory {
 			BigDecimal ventaNoSuj   = Env.ZERO;
 			BigDecimal ventaExenta  = Env.ZERO;
 			BigDecimal ventaGravada = Env.ZERO;
+			BigDecimal compra       = Env.ZERO;
 			BigDecimal noGravado    = Env.ZERO;
 			BigDecimal ivaItem      = Env.ZERO;
 			BigDecimal precioUnitario = invoiceLine.getPriceEntered();
 			String codTributo = "";
 			MTax tax = (MTax) invoiceLine.getC_Tax();
 
-			if (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_NSUJ)) {
-				ventaNoSuj = invoiceLine.getLineNetAmt();
-			} else if (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_EXT)) {
-				ventaExenta = invoiceLine.getLineNetAmt();
-			} else if (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_IVA)) {
+			if ("11".equals(refDteType)) {
+				// FEXE: all amounts to ventaGravada (0% IVA); codTributo=null per original FEXE pattern
 				ventaGravada = invoiceLine.getLineNetAmt();
-				if (invoiceLine.getTaxAmt().compareTo(Env.ZERO) == 0)
-					ivaItem = tax.calculateTax(invoiceLine.getLineNetAmt(), invoice.getM_PriceList().isTaxIncluded(), 2);
+			} else if ("14".equals(refDteType)) {
+				// FSEE: all amounts to compra; no IVA
+				compra = invoiceLine.getLineNetAmt();
+			} else {
+				// FE ("01")
+				if (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_NSUJ)) {
+					ventaNoSuj = invoiceLine.getLineNetAmt();
+				} else if (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_EXT)) {
+					ventaExenta = invoiceLine.getLineNetAmt();
+				} else if (invoiceLine.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_IVA)) {
+					ventaGravada = invoiceLine.getLineNetAmt();
+					if (invoiceLine.getTaxAmt().compareTo(Env.ZERO) == 0)
+						ivaItem = tax.calculateTax(invoiceLine.getLineNetAmt(), invoice.getM_PriceList().isTaxIncluded(), 2);
+					else ivaItem = invoiceLine.getTaxAmt();
+				}
 			}
 
 			String name = "";
@@ -423,21 +490,24 @@ public class RetornoFactory extends EDocumentFactory {
 			itemJson.put(VENTANOSUJ,       ventaNoSuj);
 			itemJson.put(VENTAEXENTA,      ventaExenta);
 			itemJson.put(VENTAGRAVADA,     ventaGravada);
-			itemJson.put(COMPRA,           invoiceLine.getLineNetAmt());
+			itemJson.put(COMPRA,           compra);
 			itemJson.put(PSV,              Env.ZERO);
 			itemJson.put(IVAITEM,          ivaItem);
 			itemJson.put(NOGRAVADO,        noGravado);
 			itemJson.put(SEGURO,           Env.ZERO);
 			itemJson.put(FLETE,            Env.ZERO);
-			itemJson.put(IVARETE,          Env.ZERO);
+			// ANEXO V rule 85.1: ivaRete = (ventaGravada / 1.13) × 1% = ventaGravada / 113
+			BigDecimal lineIvaRete = (hasIvaRete && ventaGravada.compareTo(Env.ZERO) > 0)
+					? ventaGravada.divide(new BigDecimal("113"), 2, BigDecimal.ROUND_HALF_UP)
+					: Env.ZERO;
+			itemJson.put(IVARETE,          lineIvaRete);
 			itemJson.put(RETERRENTA,       Env.ZERO);
 
-			JSONArray jsonTributosArray = new JSONArray();
-			if (ventaGravada.compareTo(Env.ZERO) != 0) {
-				jsonTributosArray.put(tax_getE_Duties(tax).getValue());
-			}
-
-			itemJson.put( CreditoFiscal.TRIBUTOS, jsonTributosArray);
+			// FEXE body: tributos = ["C3"] per ANEXO V rule 76.5; FE/FSEE: empty → null
+			JSONArray itemTributos = new JSONArray();
+			if ("11".equals(refDteType))
+				itemTributos.put("C3");
+			itemJson.put(CreditoFiscal.TRIBUTOS, itemTributos);
 
 			jsonArray.put(itemJson);
 			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() + " Finished");
@@ -451,15 +521,13 @@ public class RetornoFactory extends EDocumentFactory {
 	private JSONObject generateResumenInputData() {
 		System.out.println("Retorno: start collecting JSON data for Resumen");
 
-		BigDecimal totalNoSuj    = Env.ZERO;
-		BigDecimal totalExenta   = Env.ZERO;
-		BigDecimal totalGravada  = Env.ZERO;
-		BigDecimal totalNoGravado = Env.ZERO;
-		BigDecimal ivaRete       = Env.ZERO;
-		BigDecimal montoTributos = Env.ZERO;
-		BigDecimal totalIva      = Env.ZERO;
-
-		String totalLetras = Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
+		BigDecimal totalNoSuj           = Env.ZERO;
+		BigDecimal totalExenta          = Env.ZERO;
+		BigDecimal totalGravada         = Env.ZERO;
+		BigDecimal totalCompraExcluidos = Env.ZERO;
+		BigDecimal totalNoGravado       = Env.ZERO;
+		BigDecimal ivaRete              = Env.ZERO;
+		BigDecimal totalIva             = Env.ZERO;
 
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties, MInvoiceTax.Table_Name, "C_Invoice_ID=?", trxName)
 				.setParameters(invoice.getC_Invoice_ID())
@@ -473,35 +541,60 @@ public class RetornoFactory extends EDocumentFactory {
 				ivaRete = ivaRete.add(invoiceTax.getTaxAmt().multiply(new BigDecimal(-1)));
 				continue;
 			}
+			if ("14".equals(refDteType)) {
+				// FSEE: all non-retention amounts go to totalCompraExcluidos
+				totalCompraExcluidos = totalCompraExcluidos.add(invoiceTax.getTaxBaseAmt());
+				continue;
+			}
+			if ("11".equals(refDteType)) {
+				// FEXE: all amounts go to totalGravada (0% IVA for exports)
+				totalGravada = totalGravada.add(invoiceTax.getTaxBaseAmt());
+				if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_IVA)) {
+					totalIva = totalIva.add(invoiceTax.getTaxAmt());
+					// FEXE resumen.tributos: C3 informative entry per ANEXO V rule 101.4
+					JSONObject jsonTributoItem = new JSONObject();
+					jsonTributoItem.put(CODIGO,      tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getValue());
+					jsonTributoItem.put(DESCRIPCION, tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getName());
+					jsonTributoItem.put(VALOR,       invoiceTax.getTaxAmt());
+					jsonTributosArray.put(jsonTributoItem);
+				}
+				continue;
+			}
+			// FE ("01")
 			if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_NSUJ)) {
 				totalNoSuj = invoiceTax.getTaxBaseAmt();
 			} else if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_EXT)) {
 				totalExenta = invoiceTax.getTaxBaseAmt();
 			} else if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_IVA)) {
-				totalGravada = invoiceTax.getTaxBaseAmt();
+				totalGravada = invoiceTax.getTaxBaseAmt().add(invoiceTax.getTaxAmt());
 				totalIva     = totalIva.add(invoiceTax.getTaxAmt());
-				montoTributos = montoTributos.add(invoiceTax.getTaxAmt());
-				JSONObject jsonTributoItem = new JSONObject();
-				jsonTributoItem.put(CODIGO,     tax_getE_Duties((MTax) invoiceTax.getC_Tax()).getValue());
-				jsonTributoItem.put(DESCRIPCION, tax_getE_Duties((MTax) invoiceTax.getC_Tax()).getName());
-				jsonTributoItem.put(VALOR,       invoiceTax.getTaxAmt());
-				jsonTributosArray.put(jsonTributoItem);
+				// FE: IVA not in resumen.tributos (codTributo = null, ANEXO V rule 101.3)
 			}
 		}
+
+		// ANEXO V rule 98: montoTotalOperacion = sumaOperaciones + tributosValor(0) + seguro(0) + flete(0)
+		// totalCompraExcluidos = 0 for FE/FEXE; totalGravada/NoSuj/Exenta = 0 for FSEE
+		BigDecimal montoTotalOperacion = totalGravada.add(totalNoSuj).add(totalExenta).add(totalCompraExcluidos);
+
+		// ANEXO V rule 105: totalPagar = montoTotalOperacion − ivaRete − reteRenta ± cargosAbonos
+		BigDecimal totalPagar = montoTotalOperacion.subtract(ivaRete);
+		if (totalPagar.compareTo(Env.ZERO) < 0) totalPagar = Env.ZERO;
+
+		String totalLetras = Msg.getAmtInWords(client.getLanguage(), totalPagar.setScale(2).toString());
 
 		jsonResumen.put(TRIBUTOS,             jsonTributosArray);
 		jsonResumen.put(TOTALNOSUJ,           totalNoSuj);
 		jsonResumen.put(TOTALEXENTA,          totalExenta);
 		jsonResumen.put(TOTALGRAVADA,         totalGravada);
-		jsonResumen.put(TOTALCOMPRAEXCLUIDOS, Env.ZERO);
-		jsonResumen.put(SUBTOTALVENTAS,       totalGravada.add(totalNoSuj).add(totalExenta));
+		jsonResumen.put(TOTALCOMPRAEXCLUIDOS, totalCompraExcluidos);
+		jsonResumen.put(SUBTOTALVENTAS,       montoTotalOperacion);
 		jsonResumen.put(TOTALSEGURO,          JSONObject.NULL);
 		jsonResumen.put(TOTALFLETE,           JSONObject.NULL);
-		jsonResumen.put(MONTOTOTALOPERACION,  totalGravada.add(totalNoSuj).add(totalExenta).add(montoTributos));
+		jsonResumen.put(MONTOTOTALOPERACION,  montoTotalOperacion);
 		jsonResumen.put(IVARETE,              ivaRete);
-		jsonResumen.put(RETERRENTA,           JSONObject.NULL);
+		jsonResumen.put(RETERRENTA,           Env.ZERO);
 		jsonResumen.put(TOTALNOGRAVADO,       totalNoGravado);
-		jsonResumen.put(TOTALPAGAR,           invoice.getGrandTotal());
+		jsonResumen.put(TOTALPAGAR,           totalPagar);
 		jsonResumen.put(TOTALLETRAS,          totalLetras);
 		jsonResumen.put(TOTALNOONEROSAS,      Env.ZERO);
 		jsonResumen.put(TOTALIVA,             totalIva);
@@ -523,11 +616,17 @@ public class RetornoFactory extends EDocumentFactory {
 				.replace(":[],",          ":null,")
 				.replace("\"telefono\":\"\"", "\"telefono\":null")
 				.replace("\"codTributo\":\"\"", "\"codTributo\":null")
+				.replace("\"codPais\":\"\"", "\"codPais\":null")
+				.replace("\"nombrePais\":\"\"", "\"nombrePais\":null")
+				.replace("\"motivoContin\":\"\"", "\"motivoContin\":null")
+				.replace("\"tipoContingencia\":\"\"", "\"tipoContingencia\":null")
 				.replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null,\"codDomiciliado\":null},", "\"ventaTercero\":null,")
 				.replace("\"compraTercero\":{\"numDocumento\":null,\"nombre\":null},", "\"compraTercero\":null,")
 				.replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null")
 				;
 
+		System.out.println("Retorno: final JSON string:");
+		System.out.println(retornoAsStringFinal);
 		System.out.println("Retorno: end generating JSON string from Document");
 		return retornoAsStringFinal;
 	}

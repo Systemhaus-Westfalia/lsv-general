@@ -25,18 +25,6 @@ public class NotaDeCredito extends EDocument {
 	static final String ERROR_NOTA_DE_CREDITO_DOCUMENTOS_RELACIONADOS = "Documento: Nota de Credito, error en fillDocumentosRelacionados(): ";
 
 	// v4 field name constants not present in EDocument base class
-	private static final String FUSION            = "fusion";
-	private static final String DISTRITO          = "distrito";
-	private static final String NUMDOCUMENTO      = "numDocumento";
-	private static final String NOGRAVADO         = "noGravado";
-	private static final String IVAPERCI          = "ivaPerci";
-	private static final String TOTALIVA          = "totalIva";
-	private static final String IVARETE           = "ivaRete";
-	private static final String TOTALNOGRAVADO    = "totalNoGravado";
-	private static final String TOTALPAGAR        = "totalPagar";
-	private static final String OBSERVACIONES     = "observaciones";
-	private static final String CODIGORETENCIONMH = "codigoRetencionMH";
-	private static final String FECHAEMISION      = "fechaEmision";
 
 	IdentificacionNotaDeCredito identificacion;
 	List<DocumentoRelacionadoItemNotaDeCredito> documentoRelacionado;
@@ -222,6 +210,7 @@ public class NotaDeCredito extends EDocument {
 					try { item.getTributos().add(tributosItemJson); } catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e); }
 				}
 			}
+			try { item.setDescripcion(itemJson.getString(DESCRIPCION)); }                            catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e); }
 
 			try { item.setNoGravado(itemJson.getBigDecimal(NOGRAVADO)); }                        catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e); }
 			try { item.setIvaPerci(itemJson.getBigDecimal(IVAPERCI)); }                          catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_CUERPO_DOCUMENTO + e); }

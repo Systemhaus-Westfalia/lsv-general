@@ -6,7 +6,6 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
 public class IdentificacionNotaDeCredito {
 
-	static final int VERSION              = 4;
 	static final String TIPO_DE_DOCUMENTO = "05";
 	static final String TIPOMONEDA        = "USD";
 
@@ -35,7 +34,6 @@ public class IdentificacionNotaDeCredito {
 	 * No parameters
 	 */
 	public IdentificacionNotaDeCredito() {
-		this.version    = VERSION;
 		this.tipoDte    = TIPO_DE_DOCUMENTO;
 		this.tipoMoneda = TIPOMONEDA;
 	}

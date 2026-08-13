@@ -344,34 +344,33 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 	
 	private JSONObject generateResumenInputData() {
 		System.out.println("Factura Sujeto Excluido: start collecting JSON data for Resumen");
-		BigDecimal 			totalDescu 	= Env.ZERO;
-		BigDecimal 			reteRenta 	= Env.ZERO;
-		BigDecimal 			totalCompra	= invoice.getGrandTotal();
-		BigDecimal			descu		= Env.ZERO;
-		BigDecimal			subTotal	= invoice.getGrandTotal();
+		BigDecimal totalDescu = Env.ZERO;
+		BigDecimal reteRenta  = Env.ZERO;
+		BigDecimal descu      = Env.ZERO;
 
-		String totalLetras=Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
+		// subTotal = sum of line net amounts (no IVA on FSEE)
+		BigDecimal subTotal = Env.ZERO;
+		for (MInvoiceLine line : invoice.getLines())
+			subTotal = subTotal.add(line.getLineNetAmt());
 
-		
-				
-		JSONObject jsonObjectResumen = new JSONObject();
-		
+		BigDecimal totalCompra = subTotal.subtract(totalDescu);
 
 		JSONArray jsonTributosArray = new JSONArray();
-		List<MLCOInvoiceWithholding> invoiceWithholdings = new Query(contextProperties, MLCOInvoiceWithholding.Table_Name, 
+		List<MLCOInvoiceWithholding> invoiceWithholdings = new Query(contextProperties, MLCOInvoiceWithholding.Table_Name,
 				"C_Invoice_ID=?", trxName)
 				.setParameters(invoice.getC_Invoice_ID())
 				.list();
-		for (MLCOInvoiceWithholding invoiceWithholding:invoiceWithholdings) {
+		for (MLCOInvoiceWithholding invoiceWithholding : invoiceWithholdings)
 			reteRenta = reteRenta.add(invoiceWithholding.getTaxAmt());
-			subTotal = totalCompra.add(invoiceWithholding.getTaxAmt());
-		}
-		// (!jsonTributosArray.isEmpty())
+
+		BigDecimal totalPagar = totalCompra.subtract(reteRenta);
+		String totalLetras = Msg.getAmtInWords(client.getLanguage(), totalPagar.setScale(2).toString());
+
+		JSONObject jsonObjectResumen = new JSONObject();
 		jsonObjectResumen.put(FacturaSujetoExcluido.TRIBUTOS, jsonTributosArray);
-		
-		
-		jsonObjectResumen.put(FacturaSujetoExcluido.MONTOTOTALOPERACION, invoice.getGrandTotal());
-		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALPAGAR, invoice.getGrandTotal());
+
+		jsonObjectResumen.put(FacturaSujetoExcluido.MONTOTOTALOPERACION, totalCompra);
+		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALPAGAR, totalPagar);
 		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALLETRAS, totalLetras);
 		int condicionOperacion = 
 		invoice.getC_PaymentTerm().getNetDays() == 0? FacturaSujetoExcluido.CONDICIONOPERACION_AL_CONTADO:
@@ -380,7 +379,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALDESCU, totalDescu);
 		jsonObjectResumen.put(FacturaSujetoExcluido.DESCU, descu);
 		jsonObjectResumen.put(FacturaSujetoExcluido.RETERENTA, reteRenta);
-		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALCOMPRA, subTotal);
+		jsonObjectResumen.put(FacturaSujetoExcluido.TOTALCOMPRA, totalCompra);
 		jsonObjectResumen.put(FacturaSujetoExcluido.SUBTOTAL, subTotal);
 		String observacionesRaw = invoice.getDescription();
 		jsonObjectResumen.put(FacturaSujetoExcluido.OBSERVACIONES, (observacionesRaw!=null && observacionesRaw.length()>0) ? observacionesRaw : JSONObject.NULL);
@@ -418,7 +417,7 @@ public class FacturaSujetoExcluidoFactory extends EDocumentFactory {
 					invoiceLine.getC_Charge().getC_ChargeType().getValue():invoiceLine.getM_Product().getValue();
 			String name = invoiceLine.getC_Charge_ID() >0? invoiceLine.getC_Charge().getName():invoiceLine.getM_Product().getName();
 			BigDecimal precioUnitario = invoiceLine.getPriceActual();
-			BigDecimal compra = invoiceLine.getLineTotalAmt();
+			BigDecimal compra = invoiceLine.getLineNetAmt();
 			
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();

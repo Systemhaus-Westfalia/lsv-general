@@ -192,14 +192,16 @@ public class SVMinHacienda implements IDeclarationProvider {
 			idEnvio = electronicInvoiceModel.getM_InOut_ID();			
 		codigoGeneracion = identificacion.getString("codigoGeneracion");		
 		String signature = getSignature(jsonorg);
+		document.set_ValueOfColumn("ei_Signature", signature);
+		document.saveEx();
 		if (!voided) {
-			tipoDte = identificacion.getString("tipoDte");
-			this.path = registration.getParameterValue(PATH); 
+			tipoDte = identificacion.has("tipoDte") ? identificacion.getString("tipoDte") : identificacion.getString("tipoEvento");
+			this.path = registration.getParameterValue(PATH);
 		}
 		else
 		{
-			tipoDte = documento.getString("tipoDte");
-			this.path = registration.getParameterValue(PATHVOIDED); 
+			tipoDte = documento.has("tipoDte") ? documento.getString("tipoDte") : documento.getString("tipoEvento");
+			this.path = registration.getParameterValue(PATHVOIDED);
 		}
 		  this.providerHost = registration.getParameterValue(PROVIDER_HOST);
 		 

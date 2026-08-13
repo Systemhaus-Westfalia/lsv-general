@@ -100,7 +100,7 @@ public class ReceptorRetorno {
 		final int MAXLENGTH = 50;
 		int length = nombrePais == null ? 0 : nombrePais.length();
 
-		if (nombrePais == null || (length >= MINLENGTH && length <= MAXLENGTH))
+		if (length == 0 || (length >= MINLENGTH && length <= MAXLENGTH))
 			this.nombrePais = nombrePais;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'nombrePais' in EventoDeRetorno.Documento.setNombrePais()" + "\n");

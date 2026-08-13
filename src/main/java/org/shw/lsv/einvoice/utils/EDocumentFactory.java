@@ -384,9 +384,8 @@ public abstract class EDocumentFactory {
 		return value;
 	}
 	
-	public String  country_getValue(MCountry country) {		
-		String value = country.get_ValueAsString("Value");
-		return value;
+	public String  country_getValue(MCountry country) {
+		return country.getCountryCode();
 	}
 	
 	public X_E_Duties  tax_getE_Duties(MTax tax) {

@@ -16,7 +16,6 @@ import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrgInfo;
-import org.compiere.model.MPackageExp;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
@@ -25,7 +24,6 @@ import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.ApendiceItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.CuerpoDocumentoItemFactura;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.EmisorFactura;
@@ -230,8 +228,8 @@ public class FacturaFactory extends EDocumentFactory {
 		int tipoModelo = isContigencia?Factura.TIPOMODELO_CONTIGENCIA:Factura.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?Factura.TIPOOPERACION_CONTIGENCIA:Factura.TIPOOPERACION_NOCONTIGENCIA;
 		X_E_DocType e_DocType =   docType_getE_DocType((MDocType)invoice.getC_DocType()) ;
-		jsonObjectIdentificacion.put(CreditoFiscal.VERSION, e_DocType.get_Value("E_Version"));
-		jsonObjectIdentificacion.put(CreditoFiscal.TIPODTE,docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue());
+		jsonObjectIdentificacion.put(Factura.VERSION, e_DocType.get_Value("E_Version"));
+		jsonObjectIdentificacion.put(Factura.TIPODTE,docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue());
 		jsonObjectIdentificacion.put(Factura.NUMEROCONTROL, numeroControl);
 		jsonObjectIdentificacion.put(Factura.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(Factura.TIPOMODELO, tipoModelo);
@@ -424,7 +422,7 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonObjectResumen.put(Factura.TOTALNOGRAVADO, totalNoGravada);
 		jsonObjectResumen.put(Factura.TOTALPAGAR, invoice.getGrandTotal());
 		jsonObjectResumen.put(Factura.TOTALLETRAS, totalLetras);
-		jsonObjectResumen.put(Factura.OBSERVACIONES, observacionesRaw.length()>0? observacionesRaw : JSONObject.NULL);
+		jsonObjectResumen.put(Factura.OBSERVACIONES, observacionesRaw);
 		
 		jsonObjectResumen.put(Factura.SALDOFAVOR, Env.ZERO);
 		int condicionOperacion = 
@@ -553,6 +551,7 @@ public class FacturaFactory extends EDocumentFactory {
         		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
         		replace("\"descActividad\":\"\"", "\"descActividad\":null").
         		replace("\"codActividad\":\"\"", "\"codActividad\":null").
+        		replace("\"observaciones\":\"\"", "\"observaciones\":null").
         		replace("\"telefono\":\"\"", "\"telefono\":null").
         		replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
         		replace("\"direccion\":{\"complemento\":null,\"municipio\":null,\"departamento\":null},", "\"direccion\":null,").

@@ -167,6 +167,10 @@ public class FacturaExportacion extends EDocument {
 		try {emisor.setCorreo(emisorJson.getString(CORREO));} 								catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXPORTACION_EMISOR + e);}
 		try {emisor.setTipoItemExpor(emisorJson.getInt(TIPOITEMEXPOR));} 					catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXPORTACION_EMISOR + e);}
 		try {emisor.setTipoRegimen(emisorJson.getString(TIPOREGIMEN));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXPORTACION_EMISOR + e);}
+		if (!emisorJson.isNull(RECINTOFISCAL))
+			try {emisor.setRecintoFiscal(emisorJson.getString(RECINTOFISCAL));} 			catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXPORTACION_EMISOR + e);}
+		if (!emisorJson.isNull(REGIMEN))
+			try {emisor.setRegimen(emisorJson.getString(REGIMEN));} 						catch (Exception e) {errorMessages.append(ERROR_FACTURA_EXPORTACION_EMISOR + e);}
 
 		System.out.println("End FacturaExportacion.fillEmisor()");
 		return errorMessages;

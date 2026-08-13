@@ -6,6 +6,9 @@ import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_C_UOM;
 import org.adempiere.core.domains.models.X_E_DocType;
+import org.adempiere.core.domains.models.X_E_FiscalUnit;
+import org.adempiere.core.domains.models.X_E_Rule;
+import org.adempiere.core.domains.models.X_E_TipoRegimen;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -274,8 +277,35 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(Factura.DIRECCION, jsonDireccion);
 		jsonObjectEmisor.put(FacturaExportacion.TELEFONO, client.get_ValueAsString("phone"));
 		jsonObjectEmisor.put(FacturaExportacion.CORREO,   client_getEmail(client));
-		jsonObjectEmisor.put(FacturaExportacion.TIPOITEMEXPOR, 2);
-		jsonObjectEmisor.put(FacturaExportacion.TIPOREGIMEN, "");
+
+		boolean hasBienes = false, hasServicios = false;
+		for (MInvoiceLine line : invoice.getLines()) {
+			int ptype = invoiceLineProductType(line.getM_Product_ID());
+			if (ptype == 1) hasBienes = true; else hasServicios = true;
+		}
+		int tipoItemExpor = (hasBienes && hasServicios) ? 3 : hasBienes ? 1 : 2;
+		jsonObjectEmisor.put(FacturaExportacion.TIPOITEMEXPOR, tipoItemExpor);
+
+		if (tipoItemExpor != 2) {
+			// Bienes or Ambos: recintoFiscal, tipoRegimen, regimen required from orgInfo
+			int fiscalUnitId = orgInfo.get_ValueAsInt("E_FiscalUnit_ID");
+			jsonObjectEmisor.put(FacturaExportacion.RECINTOFISCAL, fiscalUnitId > 0
+					? new X_E_FiscalUnit(contextProperties, fiscalUnitId, trxName).getValue()
+					: JSONObject.NULL);
+			int tipoRegimenId = orgInfo.get_ValueAsInt("E_TipoRegimen_ID");
+			jsonObjectEmisor.put(FacturaExportacion.TIPOREGIMEN, tipoRegimenId > 0
+					? new X_E_TipoRegimen(contextProperties, tipoRegimenId, trxName).getValue()
+					: "");
+			int ruleId = orgInfo.get_ValueAsInt("E_Rule_ID");
+			jsonObjectEmisor.put(FacturaExportacion.REGIMEN, ruleId > 0
+					? new X_E_Rule(contextProperties, ruleId, trxName).getValue()
+					: JSONObject.NULL);
+		} else {
+			// Servicios: recintoFiscal, tipoRegimen and regimen must all be null
+			jsonObjectEmisor.put(FacturaExportacion.RECINTOFISCAL, JSONObject.NULL);
+			jsonObjectEmisor.put(FacturaExportacion.TIPOREGIMEN, "");
+			jsonObjectEmisor.put(FacturaExportacion.REGIMEN, JSONObject.NULL);
+		}
 
 		System.out.println("Finish collecting JSON data for Emisor");
 		return jsonObjectEmisor;
@@ -525,6 +555,7 @@ public class FacturaExportacionFactory extends EDocumentFactory {
         		replace("\"tipoRegimen\":\"\"", "\"tipoRegimen\":null").
         		replace("\"codTributo\":\"\"", "\"codTributo\":null").
         		replace("\"codActividad\":\"\"", "\"codActividad\":null").
+        		replace("\"numeroDocumento\":\"\"", "\"numeroDocumento\":null").
 				replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
 				replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
 				replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null").

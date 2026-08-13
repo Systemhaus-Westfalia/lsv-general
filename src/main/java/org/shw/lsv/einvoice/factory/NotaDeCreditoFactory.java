@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_C_UOM;
+import org.adempiere.core.domains.models.X_E_DocType;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
@@ -25,6 +26,7 @@ import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
+import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fencnotadecreditov1.CuerpoDocumentoItemNotaDeCredito;
 import org.shw.lsv.einvoice.fencnotadecreditov1.DocumentoRelacionadoItemNotaDeCredito;
 import org.shw.lsv.einvoice.fencnotadecreditov1.EmisorNotaDeCredito;
@@ -164,7 +166,8 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		String codigoGeneracion = createCodigoGeneracion(invoice);
 		String horEmi           = gethorEmi();
 		String fecEmi           = invoice.getDateAcct().toString().substring(0, 10);
-
+		X_E_DocType e_DocType =   docType_getE_DocType((MDocType)invoice.getC_DocType()) ;
+		String version = e_DocType.get_ValueAsString("E_Version");
 		JSONObject jsonObjectIdentificacion = new JSONObject();
 		jsonObjectIdentificacion.put(NotaDeCredito.MOTIVOCONTIN, motivoContin);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOCONTINGENCIA, tipoContingencia);
@@ -194,12 +197,12 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(NotaDeCredito.NOMBRECOMERCIAL, client.getName());
 
 		JSONObject jsonDireccion = new JSONObject();
-		jsonDireccion.put(NotaDeCredito.DEPARTAMENTO, city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
-		jsonDireccion.put(NotaDeCredito.MUNICIPIO, city_getValue((MCity)orgInfo.getC_Location().getC_City()));
-		jsonDireccion.put("distrito", city_getValue((MCity)orgInfo.getC_Location().getC_City())); // TODO: map to actual distrito code
-		jsonDireccion.put(NotaDeCredito.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
-		jsonObjectEmisor.put(NotaDeCredito.DIRECCION, jsonDireccion);
-
+		jsonDireccion.put(Factura.DEPARTAMENTO,  city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.DISTRITO,     city_getValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.MUNICIPIO,     city_getMunicipioValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
+		jsonObjectEmisor.put(Factura.DIRECCION, jsonDireccion);
+		
 		jsonObjectEmisor.put(NotaDeCredito.TELEFONO, client.get_ValueAsString("phone"));
 		jsonObjectEmisor.put(NotaDeCredito.CORREO, client_getEmail(client));
 
@@ -235,17 +238,21 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 
 		JSONObject jsonDireccion = new JSONObject();
 		String departamento = "";
-		String municipio    = "";
-		String complemento  = "";
+		String municipio = "";
+		String distrito = "";
+		String complemento = "";
 		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)) {
-			if (partnerLocation.isBillTo()) {
-				departamento = city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
-				municipio    = city_getValue((MCity)partnerLocation.getC_Location().getC_City());
-				complemento  = (partnerLocation.getC_Location().getAddress1() + " " + partnerLocation.getC_Location().getAddress2());
-				jsonDireccion.put(NotaDeCredito.DEPARTAMENTO, departamento);
-				jsonDireccion.put(NotaDeCredito.MUNICIPIO, municipio);
-				jsonDireccion.put("distrito", municipio); // TODO: map to actual distrito code
-				jsonDireccion.put(NotaDeCredito.COMPLEMENTO, complemento);
+			if (partnerLocation.isBillTo() && partnerLocation.getC_Location().getC_Country_ID() == 173) {
+				departamento =  city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
+				distrito =  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
+				municipio = city_getMunicipioValue((MCity)partnerLocation.getC_Location().getC_City());
+				complemento = (partnerLocation.getC_Location().getAddress1() + " " 
+				+ partnerLocation.getC_Location().getAddress2());
+				jsonDireccion.put(Factura.DEPARTAMENTO, departamento);
+				jsonDireccion.put(Factura.MUNICIPIO, municipio);
+				jsonDireccion.put(Factura.DISTRITO, distrito);
+				jsonDireccion.put(Factura.COMPLEMENTO, complemento.replace("null", ""));
+				jsonObjectReceptor.put(Factura.DIRECCION, jsonDireccion);
 				break;
 			}
 		}
@@ -276,7 +283,16 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		BigDecimal totalIva     = Env.ZERO;
 		BigDecimal ivaPerci     = Env.ZERO;
 
-		String totalLetras = Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
+		// Compute totalIva from lines first — mirrors body computation to guarantee sum consistency with MH
+		for (MInvoiceLine line : invoice.getLines()) {
+			if (line.getC_Tax().getTaxIndicator().equals("IVA")) {
+				MTax lineTax = (MTax) line.getC_Tax();
+				BigDecimal ivaItem = line.getTaxAmt().compareTo(Env.ZERO) != 0
+						? line.getTaxAmt()
+						: lineTax.calculateTax(line.getLineNetAmt(), invoice.getM_PriceList().isTaxIncluded(), 2);
+				totalIva = totalIva.add(ivaItem);
+			}
+		}
 
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties, MInvoiceTax.Table_Name, "C_Invoice_ID=?", trxName)
 				.setParameters(invoice.getC_Invoice_ID())
@@ -303,10 +319,12 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 				jsonTributoItem.put(NotaDeCredito.VALOR,       invoiceTax.getTaxAmt());
 			} else if (invoiceTax.getC_Tax().getTaxIndicator().equals("IVA")) {
 				totalGravada = invoiceTax.getTaxBaseAmt();
-				totalIva     = totalIva.add(invoiceTax.getTaxAmt());
+				// NCE v4: IVA stays in resumen.tributos; montoTotalOperacion includes it
+				// resumen.totalIva is an additional informative field (MH validates: totalIva = montoTotalOperacion - subTotalVentas)
+				// Use pre-computed line-level totalIva as valor to avoid rounding mismatch with MH
 				jsonTributoItem.put(NotaDeCredito.CODIGO,      tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getValue());
-				jsonTributoItem.put(NotaDeCredito.DESCRIPCION, tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getName());
-				jsonTributoItem.put(NotaDeCredito.VALOR,       invoiceTax.getTaxAmt());
+				jsonTributoItem.put(NotaDeCredito.DESCRIPCION, invoiceTax.getC_Tax().getName());
+				jsonTributoItem.put(NotaDeCredito.VALOR,       totalIva);
 				jsonTributosArray.put(jsonTributoItem);
 			}
 		}
@@ -315,14 +333,20 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		jsonObjectResumen.put(NotaDeCredito.TOTALNOSUJ,          totalNoSuj);
 		jsonObjectResumen.put(NotaDeCredito.TOTALEXENTA,         totalExenta);
 		jsonObjectResumen.put(NotaDeCredito.TOTALGRAVADA,        totalGravada);
-		jsonObjectResumen.put(NotaDeCredito.SUBTOTALVENTAS,      totalGravada.add(totalNoSuj).add(totalExenta));
+		BigDecimal subTotalVentas = totalGravada.add(totalNoSuj).add(totalExenta);
+		jsonObjectResumen.put(NotaDeCredito.SUBTOTALVENTAS,      subTotalVentas);
 		jsonObjectResumen.put(NotaDeCredito.TOTALDESCU,          Env.ZERO);
-		jsonObjectResumen.put(NotaDeCredito.MONTOTOTALOPERACION, invoice.getGrandTotal());
+		// montoTotalOperacion includes IVA (via tributos.valor); MH validates: totalIva = montoTotalOperacion - subTotalVentas
+		BigDecimal montoTotalOperacion = subTotalVentas.add(totalIva).add(totalNoGravada);
+		BigDecimal totalPagar = montoTotalOperacion.add(ivaPerci).subtract(ivaRete);
+		String totalLetras = Msg.getAmtInWords(client.getLanguage(), totalPagar.setScale(2).toString());
+
+		jsonObjectResumen.put(NotaDeCredito.MONTOTOTALOPERACION, montoTotalOperacion);
 		jsonObjectResumen.put("ivaPerci",                        ivaPerci);
 		jsonObjectResumen.put("totalIva",                        totalIva);
 		jsonObjectResumen.put("ivaRete",                         ivaRete);
-		//jsonObjectResumen.put(NotaDeCredito.TOTALNOGRAVADO,      totalNoGravada);
-		//jsonObjectResumen.put(NotaDeCredito.TOTALPAGAR,          invoice.getGrandTotal());
+		jsonObjectResumen.put(NotaDeCredito.TOTALNOGRAVADO,      totalNoGravada);
+		jsonObjectResumen.put(NotaDeCredito.TOTALPAGAR,          totalPagar);
 		jsonObjectResumen.put(NotaDeCredito.TOTALLETRAS,         totalLetras);
 		jsonObjectResumen.put(NotaDeCredito.CONDICIONOPERACION,  NotaDeCredito.CONDICIONOPERACION_A_CREDITO);
 		jsonObjectResumen.put("observaciones",                   JSONObject.NULL);
@@ -393,7 +417,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 				jsonTributosArray.put(tax_getE_Duties(tax).getValue());
 			}
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.TRIBUTOS,      jsonTributosArray);
-			//jsonCuerpoDocumentoItem.put(NotaDeCredito.NOGRAVADO,     ventaNoGravada);
+			jsonCuerpoDocumentoItem.put(NotaDeCredito.NOGRAVADO,      ventaNoGravada);
 			jsonCuerpoDocumentoItem.put("ivaPerci",                  Env.ZERO);
 			jsonCuerpoDocumentoItem.put("totalIva",                  ivaItem);
 			jsonCuerpoDocumentoItem.put("ivaRete",                   Env.ZERO);
@@ -448,7 +472,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 				.replace("\"motivoContin\":\"\"",   "\"motivoContin\":null")
 				.replace("\"tipoContingencia\":0",  "\"tipoContingencia\":null")
 				.replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null")
-				.replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null,\"codDomiciliado\":null},", "\"ventaTercero\":null,")
+				.replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,")
 				.replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null");
 
 		System.out.println("Nota de Credito: generated JSON object from Document:");
