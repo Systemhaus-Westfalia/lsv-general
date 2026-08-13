@@ -178,6 +178,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		jsonObjectIdentificacion.put(NotaDeCredito.FECEMI, fecEmi);
 		jsonObjectIdentificacion.put(NotaDeCredito.HOREMI, horEmi);
 		jsonObjectIdentificacion.put(NotaDeCredito.TIPOMONEDA, "USD");
+		jsonObjectIdentificacion.put(NotaDeCredito.VERSION, version);
 		jsonObjectIdentificacion.put(NotaDeCredito.AMBIENTE, client_getE_Enviroment(client).getValue());
 		jsonObjectIdentificacion.put("fusion", JSONObject.NULL);
 

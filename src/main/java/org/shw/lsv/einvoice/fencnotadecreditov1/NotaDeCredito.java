@@ -81,6 +81,7 @@ public class NotaDeCredito extends EDocument {
 		try { identificacion.setTipoMoneda(identificationJson.getString(TIPOMONEDA)); }          catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e); }
 		try { identificacion.setAmbiente(identificationJson.getString(AMBIENTE)); }              catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e); }
 		try { identificacion.setFusion(identificationJson.isNull(FUSION) ? null : identificationJson.getString(FUSION)); } catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e); }
+		try { identificacion.setVersion(identificationJson.getInt(VERSION)); } catch (Exception e) { errorMessages.append(ERROR_NOTA_DE_CREDITO_IDENTIFICACION + e); }
 
 		System.out.println("End NotaDeCredito.fillIdentificacion()");
 		return errorMessages;
