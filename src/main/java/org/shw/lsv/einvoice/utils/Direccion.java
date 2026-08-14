@@ -9,17 +9,6 @@ public class Direccion {
 	String departamento;
 	String municipio;
 	String complemento;
-	String distrito;
-
-	public String getDistrito() {
-		return distrito;
-	}
-
-
-	public void setDistrito(String distrito) {
-		this.distrito = distrito;
-	}
-
 
 	/**
 	 * @param departamento
