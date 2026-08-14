@@ -14,7 +14,7 @@ public class EmisorNotaDeCredito {
 	String descActividad;
 	String nombreComercial=null;  // null possible
 	String tipoEstablecimiento;
-    Direccion direccion;
+    DireccionNotaDeCredito direccion;
     String telefono;
     String correo;
     
@@ -23,7 +23,7 @@ public class EmisorNotaDeCredito {
 	 * 
 	 */
 	public EmisorNotaDeCredito() {
-		this.direccion = new Direccion();
+		this.direccion = new DireccionNotaDeCredito();
 	}
 
 
@@ -206,7 +206,7 @@ public class EmisorNotaDeCredito {
 	/**
 	 * @return the direccion
 	 */
-	public Direccion getDireccion() {
+	public DireccionNotaDeCredito getDireccion() {
 		return direccion;
 	}
 
@@ -214,7 +214,7 @@ public class EmisorNotaDeCredito {
 	/**
 	 * @param direccion the direccion to set
 	 */
-	public void setDireccion(Direccion direccion) {
+	public void setDireccion(DireccionNotaDeCredito direccion) {
 		this.direccion = direccion;
 	}
 

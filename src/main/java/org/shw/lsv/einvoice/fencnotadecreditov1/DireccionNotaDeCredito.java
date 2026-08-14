@@ -1,24 +1,14 @@
-package org.shw.lsv.einvoice.utils;
+package org.shw.lsv.einvoice.fencnotadecreditov1;
 
 import java.util.regex.Pattern;
 
-public class Direccion {
+public class DireccionNotaDeCredito {
 	static final String VALIDATION_RESULT_OK = "OK";
 	static final String VALIDATION_MUNICIPIO_PATTERN_FAILED = "Documento: POJO, clase: Direccion. Validacion fall??: valor de 'municipio' no corresponde a patr??n";
 
 	String departamento;
 	String municipio;
 	String complemento;
-	String distrito;
-
-	public String getDistrito() {
-		return distrito;
-	}
-
-
-	public void setDistrito(String distrito) {
-		this.distrito = distrito;
-	}
 
 
 	/**
@@ -26,14 +16,14 @@ public class Direccion {
 	 * @param municipio
 	 * @param complemento
 	 */
-	public Direccion(String departamento, String municipio, String complemento) {
+	public DireccionNotaDeCredito(String departamento, String municipio, String complemento) {
 		this.departamento = departamento;
 		this.municipio = municipio;
 		this.complemento = complemento;
 	}
 	
 
-	public Direccion() {
+	public DireccionNotaDeCredito() {
 	}
 	
 	/**

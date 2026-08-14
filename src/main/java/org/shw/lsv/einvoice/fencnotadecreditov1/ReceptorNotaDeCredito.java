@@ -19,7 +19,7 @@ public class ReceptorNotaDeCredito {
 	String codActividad;
 	String descActividad;
 	String nombreComercial;
-	Direccion direccion;
+	DireccionNotaDeCredito direccion;
     String telefono;
     String correo;
 	
@@ -27,7 +27,7 @@ public class ReceptorNotaDeCredito {
 	 * No parameters
 	 */
 	public ReceptorNotaDeCredito() {
-		this.direccion = new Direccion();
+		this.direccion = new DireccionNotaDeCredito();
 	}
 
 
@@ -191,7 +191,7 @@ public class ReceptorNotaDeCredito {
 	 * @return the direccion
 	 */
 
-	public Direccion getDireccion() {
+	public DireccionNotaDeCredito getDireccion() {
 		return direccion;
 	}
 
@@ -199,7 +199,7 @@ public class ReceptorNotaDeCredito {
 	 * @param direccion the direccion to set
 	 */
 
-	public void setDireccion(Direccion direccion) {
+	public void setDireccion(DireccionNotaDeCredito direccion) {
 		this.direccion = direccion;
 	}
 
