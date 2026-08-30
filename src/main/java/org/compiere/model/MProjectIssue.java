@@ -53,6 +53,30 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocumentLine, Do
 	/**	Just Prepared Flag			*/
 	private boolean justPrepared = false;
 
+	@Override
+	public void setDocStatus(String newStatus) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getDocStatus() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDocumentNo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDocAction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * 	Standard Constructor
 	 *	@param ctx context
