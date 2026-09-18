@@ -146,7 +146,7 @@ public class Direccion {
 	 * "pattern" : "^0[1-9]|1[0-4]$"
 	 */
 	public void setDepartamento(String departamento) {
-		String pattern = "^0[1-9]|1[0-4]$";
+		String pattern = "^(0[0-9]|1[0-4])$";
 		boolean patternOK = (departamento!=null) && Pattern.matches(pattern, departamento);  
 
 		if(patternOK)

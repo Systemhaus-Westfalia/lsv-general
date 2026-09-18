@@ -309,21 +309,34 @@ public class FacturaFactory extends EDocumentFactory {
 		String municipio = "";
 		String distrito = "";
 		String complemento = "";
+		Boolean islocal = false;
 		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)){
-			if (partnerLocation.isBillTo() && partnerLocation.getC_Location().getC_Country_ID() == 173) {
-				departamento =  city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
-				distrito =  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
-				municipio = city_getMunicipioValue((MCity)partnerLocation.getC_Location().getC_City());
-				complemento = (partnerLocation.getC_Location().getAddress1() + " " 
-				+ partnerLocation.getC_Location().getAddress2());
+			 {
+				 if (partnerLocation.getC_Location().getC_Country_ID() != 173) {
+					 departamento 	= "00";
+					 municipio 		= "00";
+					 complemento 	= (partnerLocation.getC_Location().getAddress1() + " " 
+									+ partnerLocation.getC_Location().getAddress2());
+					 distrito 		= partnerLocation.getC_Location().getC_City_ID() >0? partnerLocation.getC_Location().getC_City().getName():
+						 			partnerLocation.getC_Location().getCity();
+					 
+				 }
+				 else {
+					 departamento 	=  city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());						
+					 distrito 		=  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
+					 municipio 		= city_getMunicipioValue((MCity)partnerLocation.getC_Location().getC_City());
+					 complemento 	= (partnerLocation.getC_Location().getAddress1() + " " 
+							 		+ partnerLocation.getC_Location().getAddress2());
+				 }
+				
 				jsonDireccion.put(Factura.DEPARTAMENTO, departamento);
 				jsonDireccion.put(Factura.MUNICIPIO, municipio);
 				jsonDireccion.put(Factura.DISTRITO, distrito);
 				jsonDireccion.put(Factura.COMPLEMENTO, complemento.replace("null", ""));
 				jsonObjectReceptor.put(Factura.DIRECCION, jsonDireccion);
+				islocal = true;
 				break;
-			}
-		}		
+			}		}		
 		
 		// In case there is no address
 		if (departamento == null) {

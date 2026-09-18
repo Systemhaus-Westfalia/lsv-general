@@ -457,19 +457,6 @@ public abstract class EDocumentFactory {
 		documentno = documentno.replace(suffix,"");
 		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
 		String pos = "";
-		if (invoice.getC_POS_ID()>0) {
-			MPOS mpos = (MPOS)invoice.getC_POS();
-			pos = mpos.get_ValueAsString("ei_POS");
-		}
-		else
-		{
-			MPOS mpos = new Query(invoice.getCtx(), MPOS.Table_Name, "AD_Org_ID=? ", trxName)
-					.setParameters(invoice.getAD_Org_ID())
-					.setOnlyActiveRecords(true)
-					.setOrderBy("C_POS_ID")
-					.first();
-			pos = mpos.get_ValueAsString("ei_POS");
-		}
 		MOrgInfo orgInfo = MOrgInfo.get(invoice.getCtx(), invoice.getAD_Org_ID(), invoice.get_TrxName());
 		String idPosCompany = getCodEstable(invoice) + getCodPuntoVenta(invoice);
 		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
@@ -492,7 +479,10 @@ public abstract class EDocumentFactory {
 					.setOnlyActiveRecords(true)
 					.setOrderBy("C_POS_ID")
 					.first();
-			pos = mpos.get_ValueAsString("ei_POS");
+			if (mpos != null)
+				pos = mpos.get_ValueAsString("ei_POS");
+			else
+				pos = "P001";
 		}
 		return pos;
 	}
