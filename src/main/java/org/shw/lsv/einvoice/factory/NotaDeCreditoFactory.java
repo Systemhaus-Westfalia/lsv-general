@@ -1,6 +1,7 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -42,6 +43,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class NotaDeCreditoFactory extends EDocumentFactory {
 	NotaDeCredito notaDeCredito;
 	MInvoice invoice;
+	private BigDecimal ivaReteBodySum = Env.ZERO;
 
 	public NotaDeCreditoFactory(String trxName, Properties contextProperties, MClient client, MOrgInfo orgInfo, MInvoice invoice) {
 		super(trxName, contextProperties, client, orgInfo);
@@ -138,8 +140,9 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		jsonInputToFactory.put(NotaDeCredito.IDENTIFICACION, generateIdentificationInputData());
 		jsonInputToFactory.put(NotaDeCredito.RECEPTOR, generateReceptorInputData());
 		jsonInputToFactory.put(NotaDeCredito.EMISOR, generateEmisorInputData());
-		jsonInputToFactory.put(NotaDeCredito.RESUMEN, generateResumenInputData());
+		// Body must be generated before Resumen so ivaReteBodySum is populated
 		jsonInputToFactory.put(NotaDeCredito.CUERPODOCUMENTO, generateCuerpoDocumentoInputData());
+		jsonInputToFactory.put(NotaDeCredito.RESUMEN, generateResumenInputData());
 		jsonInputToFactory.put(NotaDeCredito.DOCUMENTORELACIONADO, generateDocumentoRelacionadoInputData());
 
 		System.out.println("Generated JSON object from Invoice:");
@@ -280,7 +283,6 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		BigDecimal totalExenta  = Env.ZERO;
 		BigDecimal totalGravada = Env.ZERO;
 		BigDecimal totalNoGravada = Env.ZERO;
-		BigDecimal ivaRete      = Env.ZERO;
 		BigDecimal totalIva     = Env.ZERO;
 		BigDecimal ivaPerci     = Env.ZERO;
 
@@ -300,12 +302,13 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 				.list();
 		JSONObject jsonObjectResumen = new JSONObject();
 
+		// ivaRete is the rounded sum of per-line values — consistent with body by construction
+		BigDecimal ivaRete = ivaReteBodySum.setScale(2, RoundingMode.HALF_UP);
+
 		JSONArray jsonTributosArray = new JSONArray();
 		for (MInvoiceTax invoiceTax : invoiceTaxes) {
-			if (invoiceTax.getC_Tax().getTaxIndicator().equals("RET")) {
-				ivaRete = ivaRete.add(invoiceTax.getTaxAmt().multiply(new BigDecimal(-1)));
+			if (invoiceTax.getC_Tax().getTaxIndicator().equals("RET"))
 				continue;
-			}
 			JSONObject jsonTributoItem = new JSONObject();
 			if (invoiceTax.getC_Tax().getTaxIndicator().equals("NSUJ")) {
 				if (invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode() != null &&
@@ -363,6 +366,13 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		JSONArray jsonCuerpoDocumentoArray = new JSONArray();
 		int i = 0;
 
+		// NCE normativa rule 101-1: ivaRete per item = ventaGravada * 1% (only when document has RET tax)
+		List<MInvoiceTax> invoiceTaxesForRet = new Query(contextProperties, MInvoiceTax.Table_Name, "C_Invoice_ID=?", trxName)
+				.setParameters(invoice.getC_Invoice_ID())
+				.list();
+		boolean hasIvaRete = invoiceTaxesForRet.stream()
+				.anyMatch(t -> t.getC_Tax().getTaxIndicator().equals("RET"));
+
 		for (MInvoiceLine invoiceLine : invoice.getLines()) {
 			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine());
 			i++;
@@ -419,9 +429,14 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			}
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.TRIBUTOS,      jsonTributosArray);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.NOGRAVADO,      ventaNoGravada);
+			// NCE rule 101-1: ivaRete per item = ventaGravada * 1%, unrounded — only round the sum in resumen
+			BigDecimal ivaReteItem = (hasIvaRete && ventaGravada.compareTo(Env.ZERO) != 0)
+					? ventaGravada.multiply(new BigDecimal("0.01"))
+					: Env.ZERO;
+			ivaReteBodySum = ivaReteBodySum.add(ivaReteItem);
 			jsonCuerpoDocumentoItem.put("ivaPerci",                  Env.ZERO);
 			jsonCuerpoDocumentoItem.put("totalIva",                  Env.ZERO);
-			jsonCuerpoDocumentoItem.put("ivaRete",                   Env.ZERO);
+			jsonCuerpoDocumentoItem.put("ivaRete",                   ivaReteItem);
 
 			jsonCuerpoDocumentoArray.put(jsonCuerpoDocumentoItem);
 			System.out.println("Collect JSON data for Cuerpo Documento. Document: " + invoice.getDocumentNo() + ", Line: " + invoiceLine.getLine() + " Finished");
