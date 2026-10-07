@@ -276,6 +276,7 @@ public class SVMinHacienda implements IDeclarationProvider {
     		if (descriptionMsg.contains("YA EXISTE UN REGISTRO CON ESE VALOR"))
     		{
     			document.set_ValueOfColumn("ei_Status_Extern", "Firmado");
+    			document.set_ValueOfColumn("ei_output", output);
             	System.out.println("reponse: Status " +  status + " error " + error + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
             	document.saveEx();
             	return null;
