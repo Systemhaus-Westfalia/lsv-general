@@ -340,14 +340,15 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 		BigDecimal subTotalVentas = totalGravada.add(totalNoSuj).add(totalExenta);
 		jsonObjectResumen.put(NotaDeCredito.SUBTOTALVENTAS,      subTotalVentas);
 		jsonObjectResumen.put(NotaDeCredito.TOTALDESCU,          Env.ZERO);
-		// montoTotalOperacion includes IVA (via tributos.valor); MH validates: totalIva = montoTotalOperacion - subTotalVentas
-		BigDecimal montoTotalOperacion = subTotalVentas.add(totalIva).add(totalNoGravada);
-		BigDecimal totalPagar = montoTotalOperacion.add(ivaPerci).subtract(ivaRete);
+		// NCE normativa field 150: montoTotalOperacion = subTotalVentas + tributos.valor (excludes totalNoGravado)
+		// NCE normativa field 153: totalPagar = montoTotalOperacion + totalNoGravado + ivaPerci - ivaRete
+		BigDecimal montoTotalOperacion = subTotalVentas.add(totalIva);
+		BigDecimal totalPagar = montoTotalOperacion.add(totalNoGravada).add(ivaPerci).subtract(ivaRete);
 		String totalLetras = Msg.getAmtInWords(client.getLanguage(), totalPagar.setScale(2).toString());
 
 		jsonObjectResumen.put(NotaDeCredito.MONTOTOTALOPERACION, montoTotalOperacion);
 		jsonObjectResumen.put("ivaPerci",                        ivaPerci);
-		jsonObjectResumen.put("totalIva",                        Env.ZERO);
+		jsonObjectResumen.put("totalIva",                        totalIva);
 		jsonObjectResumen.put("ivaRete",                         ivaRete);
 		jsonObjectResumen.put(NotaDeCredito.TOTALNOGRAVADO,      totalNoGravada);
 		jsonObjectResumen.put(NotaDeCredito.TOTALPAGAR,          totalPagar);
@@ -435,7 +436,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 					: Env.ZERO;
 			ivaReteBodySum = ivaReteBodySum.add(ivaReteItem);
 			jsonCuerpoDocumentoItem.put("ivaPerci",                  Env.ZERO);
-			jsonCuerpoDocumentoItem.put("totalIva",                  Env.ZERO);
+			jsonCuerpoDocumentoItem.put("totalIva",                  ivaItem);
 			jsonCuerpoDocumentoItem.put("ivaRete",                   ivaReteItem);
 
 			jsonCuerpoDocumentoArray.put(jsonCuerpoDocumentoItem);

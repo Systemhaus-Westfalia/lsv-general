@@ -16,11 +16,8 @@
 package org.shw.lsv.util.support.provider;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -29,16 +26,13 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.adempiere.core.domains.models.I_C_Invoice;
 import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.adempiere.exceptions.AdempiereException;
-import org.compiere.Adempiere;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MMovement;
 import org.compiere.model.PO;
-import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Trx;
 import org.glassfish.jersey.client.ClientConfig;
