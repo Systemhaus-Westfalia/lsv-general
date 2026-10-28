@@ -19,6 +19,7 @@ package org.shw.lsv.einvoice.process;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
@@ -47,6 +48,7 @@ import org.compiere.model.Query;
 import org.compiere.process.DocAction;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
+import org.shw.lsv.einvoice.utils.Direccion;
 import org.shw.lsv.einvoice.utils.CuerpoDocumentoItem;
 import org.shw.lsv.einvoice.utils.DteRoot;
 import org.shw.lsv.einvoice.utils.EDocumentFactory;
@@ -245,10 +247,10 @@ public class ei_readJson extends ei_readJsonAbstract {
 	private DteRoot parseDteFile(File jsonFile) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 
-		// Try UTF-8 first (modern standard)
-		try (InputStreamReader reader = new InputStreamReader(
-				new FileInputStream(jsonFile),
-				StandardCharsets.UTF_8)) {
+		// Try UTF-8 first (modern standard), stripping BOM if present
+		try (InputStream raw = new FileInputStream(jsonFile);
+			 InputStream bomStripped = stripBom(raw);
+			 InputStreamReader reader = new InputStreamReader(bomStripped, StandardCharsets.UTF_8)) {
 			return mapper.readValue(reader, DteRoot.class);
 		} catch (JsonParseException e) {
 			// Fallback to ISO-8859-1 for Spanish/Latin American documents
@@ -262,6 +264,18 @@ public class ei_readJson extends ei_readJsonAbstract {
 			}
 			throw e;
 		}
+	}
+
+	/** Strips UTF-8 BOM (EF BB BF) from the stream if present. */
+	private InputStream stripBom(InputStream in) throws Exception {
+		byte[] bom = new byte[3];
+		in.mark(3);
+		int read = in.read(bom);
+		if (read == 3 && bom[0] == (byte)0xEF && bom[1] == (byte)0xBB && bom[2] == (byte)0xBF) {
+			return in; // BOM consumed, rest of stream is clean
+		}
+		in.reset();
+		return in;
 	}
 
 	// ==================== Validation ====================
@@ -796,14 +810,18 @@ public class ei_readJson extends ei_readJsonAbstract {
 	 * @return The region ID, or -1 if not found
 	 */
 	private int getRegionID(DteRoot dteRoot) {
-		if (dteRoot.getEmisor() == null ||
-		    dteRoot.getEmisor().getDireccion() == null ||
-		    dteRoot.getEmisor().getDireccion().getDepartamento() == null) {
+		if (dteRoot.getEmisor() == null || dteRoot.getEmisor().getDireccion() == null) {
 			return -1;
 		}
 
-		String departamento = dteRoot.getEmisor().getDireccion().getDepartamento();
-		return DB.getSQLValueEx(get_TrxName(), SQL_GET_REGION_ID, departamento);
+		Direccion dir = dteRoot.getEmisor().getDireccion();
+		// New format uses 'region', old format uses 'departamento'
+		String regionValue = dir.getDepartamento() != null ? dir.getDepartamento() : dir.getDepartamento();
+		if (regionValue == null) {
+			return -1;
+		}
+
+		return DB.getSQLValueEx(get_TrxName(), SQL_GET_REGION_ID, regionValue);
 	}
 
 	/**

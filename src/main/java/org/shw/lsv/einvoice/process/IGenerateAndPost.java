@@ -32,6 +32,22 @@ public interface  IGenerateAndPost {
 			+ " AND (select ei_Status_Extern from c_Invoice i where c_Invoice.reversal_ID=i.c_Invoice_ID) = 'Firmado' "
 			+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern not in ('Anulado', 'Firmado'))";
 	
+	public final static String whereClauseMovement = "AD_CLIENT_ID = ?  "
+			+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=m_Movement.c_Doctype_ID AND E_DocType_ID is not null) "
+			+ " AND processed = 'Y' AND MovementDate>=?  AND processing = 'N' "
+			+ " AND ei_Processing = 'N' "
+			+ " AND (docstatus IN ('CO','CL') OR coalesce(reversal_ID,0) > M_Movement_ID)"
+			+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern <> 'Firmado')";
+	
+	public final static String whereClauseMovementVoided = "AD_CLIENT_ID = ?  "
+			+ " AND Exists (select 1 from c_Doctype dt where dt.c_Doctype_ID=m_Movement.c_Doctype_ID AND E_DocType_ID is not null) "
+			+ " AND processed = 'Y' AND MovementDate>=?  AND processing = 'N' "
+			+ " AND ei_Processing = 'N' "
+			+ " AND (docstatus IN ('RE','VO') AND reversal_ID is not null and reversal_ID<M_Movement_ID)"
+			+ " AND (select ei_Status_Extern from M_Movement i where M_Movement.reversal_ID=i.M_Movement_ID) = 'Firmado' "
+			+ " AND (ei_Status_Extern is NULL OR ei_Status_Extern not in ('Anulado', 'Firmado'))";
+	
+	
 	
 	public final static String APPLICATIONTYPEINVOICE 	= "LSV";	
 	
@@ -45,6 +61,13 @@ public interface  IGenerateAndPost {
 
 	public static String getWhereclauseInOut(Boolean isVoided) {
 		String result = isVoided? whereClauseInOutVoided:whereClauseInOut;
+		return result;
+	}
+	
+
+
+	public static String getWhereclauseMovement(Boolean isVoided) {
+		String result = isVoided? whereClauseMovementVoided:whereClauseMovement;
 		return result;
 	}
 	

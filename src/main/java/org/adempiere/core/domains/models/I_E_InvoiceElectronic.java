@@ -245,6 +245,23 @@ public interface I_E_InvoiceElectronic
 	public int getM_InOut_ID();
 
 	public org.adempiere.core.domains.models.I_M_InOut getM_InOut() throws RuntimeException;
+	
+
+    /** Column name M_Movement_ID*/
+    public static final String COLUMNNAME_M_Movement_ID = "M_Movement_ID";
+
+	/** Set Movement
+	  * Material Shipment Document
+	  */
+	public void setM_Movement_ID (int M_Movement_ID);
+
+	/** Get Movement
+	  * Material Shipment Document
+	  */
+	public int getM_Movement_ID();
+
+	public org.adempiere.core.domains.models.I_M_Movement getM_Movement() throws RuntimeException;
+
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";

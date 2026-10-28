@@ -227,7 +227,10 @@ public class Factura extends EDocument {
 			receptor.setTelefono(null);
 		else
 			receptor.setTelefono(receptorJson.getString(TELEFONO));} 							catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
-		try {receptor.setCorreo(receptorJson.getString(CORREO));} 								catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
+		try {{if (receptorJson.getString(CORREO).equals(""))
+			receptor.setCorreo(null);
+		else
+			receptor.setCorreo(receptorJson.getString(CORREO));} 	} 								catch (Exception e) {errorMessages.append(ERROR_FACTURA_RECEPTOR + e);}
 
 		System.out.println("End Factura.fillReceptor()"); 
 		return errorMessages;

@@ -195,7 +195,7 @@ public class NotaRemision extends EDocument {
 		JSONObject receptorJson = factoryInput.getJSONObject(RECEPTOR);
 		try {receptor.setTipoDocumento(receptorJson.getString(TIPODOCUMENTO));} 				catch (Exception e) {errorMessages.append(ERROR_NOTA_REMISION_RECEPTOR + e);}
 		try {receptor.setNumDocumento(receptorJson.getString(NUMDOCUMENTO));} 					catch (Exception e) {errorMessages.append(ERROR_NOTA_REMISION_RECEPTOR + e);}
-		//try {receptor.setNrc(receptorJson.getString(NRC));} 									catch (Exception e) {errorMessages.append(ERROR_NOTA_REMISION_RECEPTOR + e);}
+		try {receptor.setNrc(receptorJson.getString(NRC));} 									catch (Exception e) {errorMessages.append(ERROR_NOTA_REMISION_RECEPTOR + e);}
 		try {receptor.setNombre(receptorJson.getString(NOMBRE));} 								catch (Exception e) {errorMessages.append(ERROR_NOTA_REMISION_RECEPTOR + e);}
 		try {receptor.setCodActividad(receptorJson.getString(CODACTIVIDAD));} 					catch (Exception e) {errorMessages.append(ERROR_NOTA_REMISION_RECEPTOR + e);}
 		try {receptor.setDescActividad(receptorJson.getString(DESCACTIVIDAD));} 				catch (Exception e) {errorMessages.append(ERROR_NOTA_REMISION_RECEPTOR + e);}

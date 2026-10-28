@@ -6,7 +6,7 @@ public class Direccion {
 	static final String VALIDATION_RESULT_OK = "OK";
 	static final String VALIDATION_MUNICIPIO_PATTERN_FAILED = "Documento: POJO, clase: Direccion. Validacion fall??: valor de 'municipio' no corresponde a patr??n";
 
-	String departamento;
+	String departamento; // old format
 	String municipio;
 	String complemento;
 	String distrito;
@@ -14,7 +14,6 @@ public class Direccion {
 	public String getDistrito() {
 		return distrito;
 	}
-
 
 	public void setDistrito(String distrito) {
 		this.distrito = distrito;

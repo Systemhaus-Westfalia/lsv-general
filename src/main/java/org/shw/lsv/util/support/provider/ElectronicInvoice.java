@@ -117,8 +117,9 @@ public class ElectronicInvoice implements IDeclarationDocument {
     	else if (originDocument instanceof MInOut) {
     		electronicInvoiceModel.setM_InOut_ID(originDocument.get_ID());
     		electronicInvoiceModel.setAD_Org_ID(originDocument.getAD_Org_ID());
-    	} else if (originDocument instanceof MMovement) {
-    		electronicInvoiceModel.set_ValueOfColumn("M_Movement_ID", originDocument.get_ID());
+    	} 
+    	else if (originDocument instanceof MMovement) {
+    		electronicInvoiceModel.setM_Movement_ID(originDocument.get_ID());
     		electronicInvoiceModel.setAD_Org_ID(originDocument.getAD_Org_ID());
     	}
     	electronicInvoiceModel.setei_ValidationStatus("01");

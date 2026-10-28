@@ -7,9 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.logging.Level;
 
-import org.adempiere.core.domains.models.I_M_CostDetail;
 import org.adempiere.core.domains.models.X_C_UOM;
 import org.adempiere.core.domains.models.X_E_Activity;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +17,6 @@ import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
 import org.compiere.model.MClient;
 import org.compiere.model.MCost;
-import org.compiere.model.MCostDetail;
 import org.compiere.model.MCostElement;
 import org.compiere.model.MDocType;
 import org.compiere.model.MMovement;
@@ -27,15 +24,11 @@ import org.compiere.model.MMovementLine;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPOS;
 import org.compiere.model.MProduct;
-import org.compiere.model.MTransaction;
-import org.compiere.model.ProductCost;
-import org.compiere.model.Query;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.shw.lsv.einvoice.fenotaremisionv4.ApendiceItemNotaRemision;
 import org.shw.lsv.einvoice.fenotaremisionv4.CuerpoDocumentoItemNotaRemision;
 import org.shw.lsv.einvoice.fenotaremisionv4.EmisorNotaRemision;
 import org.shw.lsv.einvoice.fenotaremisionv4.IdentificacionNotaRemision;
@@ -206,6 +199,9 @@ public class NotaRemisionMovementFactory extends EDocumentFactory {
 		// TODO: Configure how the receptor is determined for MMovement.
 		// Option 1: Read a C_BPartner_ID custom column on MMovement.
 		// Option 2: Use the destination warehouse org info.
+
+
+
 		int bPartnerID = movement.get_ValueAsInt("C_BPartner_ID");
 		if (bPartnerID > 0) {
 			MBPartner partner = new MBPartner(contextProperties, bPartnerID, trxName);
@@ -216,6 +212,8 @@ public class NotaRemisionMovementFactory extends EDocumentFactory {
 			json.put(NotaRemision.TELEFONO,       partner.get_ValueAsString("phone"));
 			json.put(NotaRemision.CORREO,         partner.get_ValueAsString("EMail"));
 
+			String duns = Optional.ofNullable(partner.getDUNS()).orElse("");
+			json.put(NotaRemision.NRC, duns.trim().replace("-", ""));
 			if (bPartner_getE_Activity(partner).getE_Activity_ID() > 0) {
 				json.put(NotaRemision.CODACTIVIDAD,  bPartner_getE_Activity(partner).getValue());
 				json.put(NotaRemision.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
@@ -233,24 +231,36 @@ public class NotaRemisionMovementFactory extends EDocumentFactory {
 				}
 			}
 			json.put(NotaRemision.DIRECCION, jsonDireccion);
-		} else {
-			// Fallback: use org info as receptor (internal transfer)
-			json.put(NotaRemision.TIPODOCUMENTO,  "36");
-			json.put(NotaRemision.NUMDOCUMENTO,   client.get_ValueAsString("ei_nit"));
-			json.put(NotaRemision.NOMBRE,         client.getDescription());
-			json.put(NotaRemision.NOMBRECOMERCIAL, client.getName());
-			json.put(NotaRemision.CODACTIVIDAD,   "");
-			json.put(NotaRemision.DESCACTIVIDAD,  "Traslado interno");
-			json.put(NotaRemision.TELEFONO,       JSONObject.NULL);
-			json.put(NotaRemision.CORREO,         JSONObject.NULL);
-			json.put(NotaRemision.DIRECCION,      JSONObject.NULL);
+		} else {int activityID = client.get_ValueAsInt(Columnname_E_Activity_ID);
+		X_E_Activity e_Activity = new X_E_Activity(org.compiere.util.Env.getCtx(), activityID, trxName);
+		json.put(NotaRemision.NUMDOCUMENTO, client.get_ValueAsString("ei_nit"));
+		json.put(NotaRemision.TIPODOCUMENTO,"36");
+		json.put(NotaRemision.NRC,           StringUtils.leftPad(orgInfo.getDUNS().trim().replace("-", ""), 7));
+		json.put(NotaRemision.NOMBRE,        client.getDescription());
+		json.put(NotaRemision.CODACTIVIDAD,  e_Activity.getValue());
+		json.put(NotaRemision.DESCACTIVIDAD, e_Activity.getName());
+		json.put(NotaRemision.NOMBRECOMERCIAL, client.getName());
+		//json.put(NotaRemision.CODESTABLE,    getCodEstable(movement));
+		//json.put(NotaRemision.CODPUNTOVENTA, getCodPuntoVenta(movement));
+
+		JSONObject jsonDireccion = new JSONObject();
+		jsonDireccion.put(NotaRemision.DEPARTAMENTO, city_getRegionValue((MCity) orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(NotaRemision.DISTRITO,     city_getValue((MCity) orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(NotaRemision.MUNICIPIO,    city_getMunicipioValue((MCity) orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(NotaRemision.COMPLEMENTO,  orgInfo.getC_Location().getAddress1());
+		json.put(NotaRemision.DIRECCION, jsonDireccion);
+
+		json.put(NotaRemision.TELEFONO, client.get_ValueAsString("phone"));
+		json.put(NotaRemision.CORREO,   client_getEmail(client));
+
 		}
 
 		// TODO: Set BIENTITULO according to business rules.
 		// "01" = Venta, "02" = Consignación, etc.
-		json.put(NotaRemision.BIENTITULO, movement.get_ValueAsString("ei_BienTitulo").isEmpty()
-				? "01"
-				: movement.get_ValueAsString("ei_BienTitulo"));
+		int bienTituloID= movement.get_ValueAsInt("e_BienTitulo_ID");
+		json.put(NotaRemision.BIENTITULO, bienTituloID<=0
+				? "04"
+						: bien_getTitle(bienTituloID));
 
 		System.out.println("NotaRemisionMovement: end collecting JSON data for Receptor");
 		return json;
@@ -268,14 +278,16 @@ public class NotaRemisionMovementFactory extends EDocumentFactory {
 		for (MMovementLine line : movement.getLines(true)) {
 			// TODO: Replace Env.ZERO with the appropriate cost or price per line.
 			BigDecimal lineAmount = getProductCost(line.getProduct()).multiply(line.getMovementQty());
-			totalGravada = totalGravada.add(lineAmount);
+			totalNoSuj = totalNoSuj.add(lineAmount);
 		}
 
 		BigDecimal subTotal = totalNoSuj.add(totalExenta).add(totalGravada);
 		String totalLetras = Msg.getAmtInWords(client.getLanguage(), subTotal.setScale(2).toString());
 
 		JSONObject json = new JSONObject();
-		json.put(NotaRemision.TRIBUTOS,             JSONObject.NULL);
+
+		JSONArray jsonTributosArray = new JSONArray();
+		json.put(NotaRemision.TRIBUTOS,             jsonTributosArray);
 		json.put(NotaRemision.TOTALNOSUJ,           totalNoSuj);
 		json.put(NotaRemision.TOTALEXENTA,          totalExenta);
 		json.put(NotaRemision.TOTALGRAVADA,         totalGravada);
@@ -298,9 +310,10 @@ public class NotaRemisionMovementFactory extends EDocumentFactory {
 		return json;
 	}
 
-	private JSONArray generateCuerpoDocumentoInputData() {
+	private JSONObject generateCuerpoDocumentoInputData() {
 		System.out.println("NotaRemisionMovement: start collecting JSON data for Cuerpo Documento");
-		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonCuerpoDocumento = new JSONObject();
+		JSONArray jsonCuerpoDocumentoArray = new JSONArray();
 		int i = 0;
 
 		for (MMovementLine line : movement.getLines(true)) {
@@ -308,9 +321,9 @@ public class NotaRemisionMovementFactory extends EDocumentFactory {
 			System.out.println("Collect JSON data for line: " + line.getLine());
 
 			// TODO: Replace Env.ZERO with cost/price lookup for this product.
-			BigDecimal ventaNoSuj   = Env.ZERO;
+			BigDecimal ventaNoSuj   = getProductCost((MProduct)line.getProduct()).multiply(line.getMovementQty());
 			BigDecimal ventaExenta  = Env.ZERO;
-			BigDecimal ventaGravada = getProductCost((MProduct)line.getProduct()).multiply(line.getMovementQty());
+			BigDecimal ventaGravada = Env.ZERO;
 
 			String description = "";
 			if (line.getM_Product_ID() > 0) {
@@ -333,22 +346,23 @@ public class NotaRemisionMovementFactory extends EDocumentFactory {
 			jsonItem.put(NotaRemision.CODIGO,        line.getM_Product_ID() > 0
 					? line.getProduct().getValue()
 					: JSONObject.NULL);
-			jsonItem.put(NotaRemision.CODTRIBUTO,    JSONObject.NULL);
+			jsonItem.put(NotaRemision.CODTRIBUTO,    "");
 			jsonItem.put(NotaRemision.DESCRIPCION,   description);
 			jsonItem.put(NotaRemision.CANTIDAD,      line.getMovementQty());
 			jsonItem.put(NotaRemision.UNIMEDIDA,     uom_getValue(uom));
-			jsonItem.put(NotaRemision.PRECIOUNI,     Env.ZERO);  // TODO: set cost/price
+			jsonItem.put(NotaRemision.PRECIOUNI,     getProductCost((MProduct)line.getProduct()));  // TODO: set cost/price
 			jsonItem.put(NotaRemision.MONTODESCU,    Env.ZERO);
 			jsonItem.put(NotaRemision.VENTANOSUJ,    ventaNoSuj);
 			jsonItem.put(NotaRemision.VENTAEXENTA,   ventaExenta);
 			jsonItem.put(NotaRemision.VENTAGRAVADA,  ventaGravada);
 			jsonItem.put(NotaRemision.TRIBUTOS,      new JSONArray());
 
-			jsonArray.put(jsonItem);
+			jsonCuerpoDocumentoArray.put(jsonItem);
 		}
+		jsonCuerpoDocumento.put(NotaRemision.CUERPODOCUMENTO, jsonCuerpoDocumentoArray);
 
 		System.out.println("NotaRemisionMovement: end collecting JSON data for Cuerpo Documento");
-		return jsonArray;
+		return jsonCuerpoDocumento;
 	}
 
 	@Override

@@ -13,14 +13,14 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
  * 
  */
 public class CuerpoDocumentoItemNotaRemision {
-	static final String VALIDATION_VENTAGRAVADA_IS_NULL     = "Documento: Credito Fiscal, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'ventaGravada' no debe ser ='null'";
-	static final String VALIDATION_TRIBUTOS_NOT_NULL        = "Documento: Credito Fiscal, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' debe ser ='null'";
-	static final String VALIDATION_TRIBUTOS_EMPTY           = "Documento: Credito Fiscal, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' no debe ser vac??o";
-	static final String VALIDATION_UDM_NOT_99               = "Documento: Credito Fiscal, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'uniMedida' debe ser =99";
-	static final String VALIDATION_TRIBUTOS_IS_NULL         = "Documento: Credito Fiscal, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' no debe ser ='null'";
-	static final String VALIDATION_TRIBUTOS_NOT_20          = "Documento: Credito Fiscal, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' debe ser ='20'";
-	static final String VALIDATION_CODTRIBUTO_NOT_NULL      = "Documento: Credito Fiscal, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'codTributo' debe ser ='null'";
-	static final String VALIDATION_TRIBUTOS_PATTERN_FAILED  = "Documento: Credito Fiscal, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' no corresponde a patr??n";
+	static final String VALIDATION_VENTAGRAVADA_IS_NULL     = "Documento: Nota de Remision, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'ventaGravada' no debe ser ='null'";
+	static final String VALIDATION_TRIBUTOS_NOT_NULL        = "Documento: Nota de Remision, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' debe ser ='null'";
+	static final String VALIDATION_TRIBUTOS_EMPTY           = "Documento: Nota de Remision, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' no debe ser vac??o";
+	static final String VALIDATION_UDM_NOT_99               = "Documento: Nota de Remision, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'uniMedida' debe ser =99";
+	static final String VALIDATION_TRIBUTOS_IS_NULL         = "Documento: Nota de Remision, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' no debe ser ='null'";
+	static final String VALIDATION_TRIBUTOS_NOT_20          = "Documento: Nota de Remision, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' debe ser ='20'";
+	static final String VALIDATION_CODTRIBUTO_NOT_NULL      = "Documento: Nota de Remision, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'codTributo' debe ser ='null'";
+	static final String VALIDATION_TRIBUTOS_PATTERN_FAILED  = "Documento: Nota de Remision, clase: CuerpoDocumentoItem. Validacion fall??: valor de 'tributos' no corresponde a patr??n";
 	
 	int numItem;
 	int tipoItem;

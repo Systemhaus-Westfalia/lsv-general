@@ -18,13 +18,13 @@ public class ReceptorFactura {
 
 	String tipoDocumento=null; // null possible
 	String numDocumento=null; // null possible
-	String nrc;
+	String nrc; // null possible
 	String nombre=null; // null possible
-	String codActividad;
+	String codActividad; // null possible
 	String descActividad=null; // null possible
-	Direccion direccion;
+	Direccion direccion; // null possible
     String telefono=null; // null possible
-    String correo;
+    String correo; // null possible
 	
 	/**
 	 * No parameters
@@ -48,10 +48,7 @@ public class ReceptorFactura {
 			patternOK = (getNumDocumento()!=null) && Pattern.matches(pattern, getNumDocumento());
 			if(!patternOK)
 				return VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED;
-		} else {
-			if(getNrc()!=null)
-				return VALIDATION_NRC_NOT_NULL;
-		}
+		} 
 
 		// In schema: "pattern" : "^[0-9]{8}-[0-9]{1}$"
 		if(getTipoDocumento() !=null && getTipoDocumento().equals("13")) {

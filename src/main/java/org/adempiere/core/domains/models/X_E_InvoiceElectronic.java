@@ -368,6 +368,36 @@ public class X_E_InvoiceElectronic extends PO implements I_E_InvoiceElectronic, 
 			 return 0;
 		return ii.intValue();
 	}
+	
+
+public org.adempiere.core.domains.models.I_M_Movement getM_Movement() throws RuntimeException
+    {
+		return (org.adempiere.core.domains.models.I_M_Movement)MTable.get(getCtx(), org.adempiere.core.domains.models.I_M_Movement.Table_Name)
+			.getPO(getM_Movement_ID(), get_TrxName());	}
+
+	/** Set Movement
+		@param M_Movement_ID 
+		Material Shipment Document
+	  */
+	public void setM_Movement_ID (int M_Movement_ID)
+	{
+		if (M_Movement_ID < 1) 
+			set_Value (COLUMNNAME_M_Movement_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_Movement_ID, Integer.valueOf(M_Movement_ID));
+	}
+
+	/** Get Movement
+		@return Material Shipment Document
+	  */
+	public int getM_Movement_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_Movement_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 
 	/** Set Processed.
 		@param Processed 

@@ -36,6 +36,7 @@ import org.compiere.Adempiere;
 import org.compiere.model.MClient;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MMovement;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
@@ -189,7 +190,9 @@ public class SVMinHacienda implements IDeclarationProvider {
 		if (electronicInvoiceModel.getC_Invoice_ID()>0)
 		idEnvio = electronicInvoiceModel.getC_Invoice_ID();
 		else if (electronicInvoiceModel.getM_InOut_ID()>0)
-			idEnvio = electronicInvoiceModel.getM_InOut_ID();			
+			idEnvio = electronicInvoiceModel.getM_InOut_ID();	
+		if (electronicInvoiceModel.getM_Movement_ID()>0)
+			idEnvio = electronicInvoiceModel.getM_Movement_ID();	
 		codigoGeneracion = identificacion.getString("codigoGeneracion");		
 		String signature = getSignature(jsonorg);
 		document.set_ValueOfColumn("ei_Signature", signature);
@@ -311,6 +314,8 @@ public class SVMinHacienda implements IDeclarationProvider {
         		String fecha = jsonOutput.getString("fhProcesamiento");
         		System.out.println("Status Firmado: fecha " + fecha+ " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
         		document.set_ValueOfColumn("ei_dateReceived", fecha);
+
+    			document.set_ValueOfColumn("ei_output", output);
         		System.out.println("Invoice save" + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
 
         		ObjectMapper mapper = new ObjectMapper();
@@ -385,7 +390,7 @@ public class SVMinHacienda implements IDeclarationProvider {
 		if(entity == null) {
 			return null;
 		}
-		if(entity  instanceof MInvoice || entity instanceof MInOut){
+		if(entity  instanceof MInvoice || entity instanceof MInOut || entity instanceof MMovement){
 			
 			return new ElectronicInvoice(entity);
 		}

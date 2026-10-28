@@ -306,7 +306,8 @@ public class NotaRemisionFactory extends EDocumentFactory {
 			jsonObjectReceptor.put(NotaRemision.NOMBRE, partner.getName());			
 		}
 		//jsonObjectReceptor.put(NotaRemision.NRC, duns.trim().replace("-", ""));
-		jsonObjectReceptor.put(NotaRemision.BIENTITULO, order_getTitle(order).getValue() );
+		int bientituloID = order.get_ValueAsInt("e_BienTitulo_ID");
+		jsonObjectReceptor.put(NotaRemision.BIENTITULO, bien_getTitle(bientituloID ));
 		jsonObjectReceptor.put(NotaRemision.NOMBRE, partner.getName());
 		jsonObjectReceptor.put(NotaRemision.NOMBRECOMERCIAL, partner.getName());
 		jsonObjectReceptor.put(NotaRemision.CORREO, partner.get_ValueAsString("EMail"));

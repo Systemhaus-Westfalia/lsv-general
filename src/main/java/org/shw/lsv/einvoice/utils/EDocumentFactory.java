@@ -408,9 +408,9 @@ public abstract class EDocumentFactory {
 		return valueint;
 	}
 	
-	public X_e_BienTitulo  order_getTitle(MOrder order) {
-		X_e_BienTitulo bienTitulo = new X_e_BienTitulo(Env.getCtx()	, order.get_ValueAsInt(X_e_BienTitulo.COLUMNNAME_e_BienTitulo_ID), null);
-		return bienTitulo;
+	public String  bien_getTitle(int bienTituloID) {
+		X_e_BienTitulo bienTitulo = new X_e_BienTitulo(Env.getCtx()	, bienTituloID, null);
+		return bienTitulo.getValue();
 	}
 	public String getSignature() {
 		return signature;

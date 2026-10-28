@@ -2,6 +2,7 @@ package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_C_UOM;
@@ -278,32 +279,15 @@ public class FacturaFactory extends EDocumentFactory {
 		System.out.println("Factura: start collecting JSON data for Receptor");
 
 		MBPartner partner = (MBPartner)invoice.getC_BPartner();
-//		if (partner.getE_Activity_ID()<=0 || partner.getE_Recipient_Identification_ID() <= 0) {
-//			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta configuracion para Facturacion Electronica"; 
-//			factura.errorMessages.append(errorMessage);
-//			System.out.println(errorMessage);
-//		}
-		
 		JSONObject jsonObjectReceptor = new JSONObject();
-		
-		jsonObjectReceptor.put(Factura.TIPODOCUMENTO,  bPartner_getE_Recipient_Identification(partner).getValue());
-		if (partner.getTaxID() != null) {
-			jsonObjectReceptor.put(Factura.NUMDOCUMENTO, partner.getTaxID().replace("-", ""));
-			jsonObjectReceptor.put(Factura.NOMBRE, partner.getName());			
-		}
-		else {
-			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta NIT"; 
-			factura.errorMessages.append(errorMessage);
-			System.out.println(errorMessage);
-		}
-		
-		if (bPartner_getE_Activity(partner).getE_Activity_ID()>0) {
-			jsonObjectReceptor.put(Factura.CODACTIVIDAD, bPartner_getE_Activity(partner).getValue());
-			jsonObjectReceptor.put(Factura.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
-		} else  {
-			jsonObjectReceptor.put(Factura.CODACTIVIDAD, "");
-			jsonObjectReceptor.put(Factura.DESCACTIVIDAD, "");
-		}
+		jsonObjectReceptor.put(Factura.NOMBRE, partner.getName());		
+		jsonObjectReceptor.put(Factura.TIPODOCUMENTO,  
+				Optional.ofNullable(bPartner_getE_Recipient_Identification(partner).getValue()).orElse(""));
+		String taxID = Optional.ofNullable(partner.getTaxID()).orElse("");
+		jsonObjectReceptor.put(Factura.NUMDOCUMENTO, taxID.replace("-", ""));				
+		jsonObjectReceptor.put(Factura.CODACTIVIDAD, Optional.ofNullable(bPartner_getE_Activity(partner).getValue()).orElse(""));
+		jsonObjectReceptor.put(Factura.DESCACTIVIDAD, Optional.ofNullable(bPartner_getE_Activity(partner).getName()).orElse(""));
+	
 		JSONObject jsonDireccion = new JSONObject();
 		String departamento = "";
 		String municipio = "";
@@ -562,6 +546,8 @@ public class FacturaFactory extends EDocumentFactory {
         String facturaAsStringFinal = facturaAsJson.toString().
         		replace(":[],", ":null,").
         		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
+        		replace("\"tipoDocumento\":\"\"", "\"tipoDocumento\":null").
+        		replace("\"numDocumento\":\"\"", "\"numDocumento\":null").
         		replace("\"descActividad\":\"\"", "\"descActividad\":null").
         		replace("\"codActividad\":\"\"", "\"codActividad\":null").
         		replace("\"observaciones\":\"\"", "\"observaciones\":null").

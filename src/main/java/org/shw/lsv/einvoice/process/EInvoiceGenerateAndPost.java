@@ -36,6 +36,7 @@ import org.compiere.model.MDocType;
 import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MMailText;
+import org.compiere.model.MMovement;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.process.ProcessInfo;
@@ -77,6 +78,10 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 		client = new MClient(getCtx(),getClientId(), get_TrxName());
 		startdate = (Timestamp)(client.get_Value("ei_Startdate"));
 		applicationType = IGenerateAndPost.getApplicationType();
+		Boolean onlyinvoice = getInvoiceId()>0 && getMovementId() <= 0 && getInOutId()<=0;
+		Boolean onlyInout = getInOutId()>0 && getInvoiceId()<=0 && getMovementId()<=0;
+		Boolean onlyMovement = getMovementId()>0 && getInvoiceId()<=0 && getInOutId()<=0;
+		Boolean all = getMovementId()<=0 && getInvoiceId()<=0 && getInOutId()<=0;
 		registration = new Query(getCtx(), MADAppRegistration.Table_Name, "EXISTS(SELECT 1 FROM AD_AppSupport s "
 				+ "WHERE s.AD_AppSupport_ID = AD_AppRegistration.AD_AppSupport_ID "
 				+ "AND s.ApplicationType = ? "
@@ -94,13 +99,17 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 		StringBuffer result = new StringBuffer();
 		if (isDirectPrint()) {
         
-			MInvoice invoice = new MInvoice(getCtx(), getRecord_ID(), get_TrxName());
-					processInvoiceDirect(invoice);
+			//MInvoice invoice = new MInvoice(getCtx(), getRecord_ID(), get_TrxName());
+			//		processInvoiceDirect(invoice);
 		}
 		else {
-			result.append(processInvoices());
+			if (onlyinvoice|| all)
+				result.append(processInvoices());
+			if (onlyInout || all)
+				result.append(processInOuts());
+			if (onlyMovement||all)
+				result.append(processMovements());
 			result.append(processVoided());
-			result.append(processInOuts());
 			result.append(printInvoices());
 		}
 		return result.toString();
@@ -259,6 +268,68 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 	
 		
 	}
+	protected String processMovements() throws Exception{		
+		if (getInvoiceId()>0)
+			return "";
+		int noCompletados = 0;
+		String whereClause = IGenerateAndPost.getWhereclauseMovement(false);
+		if (getMovementId()>0)
+				whereClause = whereClause + " AND M_Movement_ID=" + getMovementId();
+				
+	
+		try {
+			int[] docIds = new Query(Env.getCtx(), MMovement.Table_Name, whereClause, null)
+						.setParameters(getClientId(), startdate)
+						.getIDs();
+			final int length = docIds.length;
+			noCompletados = length;
+			if(length==0) {
+				System.out.println("****************** Process EInvoiceGenerateAndPost: There is no inout to process!!!");
+				System.out.println("Process EInvoiceGenerateAndPost: finished" + "\n");
+				return "No hay documentos completados pendientes ";
+			}
+			SVMinHacienda sv_minhacienda = new SVMinHacienda();
+			sv_minhacienda.setVoided(false);
+			sv_minhacienda.setADClientID(client.getAD_Client_ID());
+			sv_minhacienda.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
+			System.out.println("Collecting invoices to be processed..."); 
+			Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
+			StringBuffer sqlUpdate = new StringBuffer("UPDATE M_Movement set ei_Processing = 'Y' WHERE M_Movement_ID in (");
+			String character = ",";
+			for ( int i = 0; i < length; i++) {
+				character = i<length-1? ",": ")";
+				int docID = docIds[i];
+				sqlUpdate.append(docID + character);
+				System.out.println("InvoiceID to be processed: " + docID); 
+			}
+			System.out.println("Set 'processing' flag so invoices cannot be processed by other processes..."+ "\n"); 
+			DB.executeUpdateEx(sqlUpdate.toString(), updateTransaction.getTrxName());
+			if (updateTransaction != null) {
+				updateTransaction.commit(true);
+				updateTransaction.close();
+			}
+			
+			AtomicInteger counter = new AtomicInteger(0);
+
+			Arrays.stream(docIds)
+			.filter(docId -> docId > 0)
+				.forEach(docId -> {
+					counter.getAndIncrement();
+					 MMovement movement = new MMovement(getCtx(), docId, get_TrxName());
+					 publishDoocument(movement, sv_minhacienda, counter.intValue(), length);
+					System.out.println("Publish document successful"); 
+				});
+		}
+		catch (Exception e) {
+			System.out.println("Process EInvoiceGenerateAndPost: error " + e);
+		}
+		System.out.println("Process EInvoiceGenerateAndPost: finished");
+		System.out.println("******************************************************" + "\n");		
+		return "Documentos completados: " + noCompletados ;
+	
+		
+	}
+	
 	protected String processInOuts() throws Exception{		
 		if (getInvoiceId()>0)
 			return "";

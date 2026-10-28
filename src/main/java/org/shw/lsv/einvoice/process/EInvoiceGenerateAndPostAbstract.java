@@ -37,6 +37,8 @@ public abstract class EInvoiceGenerateAndPostAbstract extends SvrProcess {
 	public static final String C_INVOICE_ID = "C_Invoice_ID";
 	/**	Parameter Name for Direct print	*/
 	public static final String ISDIRECTPRINT = "IsDirectPrint";
+	/**	Parameter Name for Inventory Move	*/
+	public static final String M_MOVEMENT_ID = "M_Movement_ID";
 	/**	Parameter Name for Shipment/Receipt	*/
 	public static final String M_INOUT_ID = "M_InOut_ID";
 	/**	Parameter Value for Client	*/
@@ -45,6 +47,8 @@ public abstract class EInvoiceGenerateAndPostAbstract extends SvrProcess {
 	private int invoiceId;
 	/**	Parameter Value for Direct print	*/
 	private boolean isDirectPrint;
+	/**	Parameter Value for Inventory Move	*/
+	private int movementId;
 	/**	Parameter Value for Shipment/Receipt	*/
 	private int inOutId;
 
@@ -53,6 +57,7 @@ public abstract class EInvoiceGenerateAndPostAbstract extends SvrProcess {
 		clientId = getParameterAsInt(AD_CLIENT_ID);
 		invoiceId = getParameterAsInt(C_INVOICE_ID);
 		isDirectPrint = getParameterAsBoolean(ISDIRECTPRINT);
+		movementId = getParameterAsInt(M_MOVEMENT_ID);
 		inOutId = getParameterAsInt(M_INOUT_ID);
 	}
 
@@ -84,6 +89,16 @@ public abstract class EInvoiceGenerateAndPostAbstract extends SvrProcess {
 	/**	 Setter Parameter Value for Direct print	*/
 	protected void setIsDirectPrint(boolean isDirectPrint) {
 		this.isDirectPrint = isDirectPrint;
+	}
+
+	/**	 Getter Parameter Value for Inventory Move	*/
+	protected int getMovementId() {
+		return movementId;
+	}
+
+	/**	 Setter Parameter Value for Inventory Move	*/
+	protected void setMovementId(int movementId) {
+		this.movementId = movementId;
 	}
 
 	/**	 Getter Parameter Value for Shipment/Receipt	*/
