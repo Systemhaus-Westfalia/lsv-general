@@ -27,10 +27,12 @@ import org.adempiere.core.domains.models.X_E_BPType;
 import org.adempiere.core.domains.models.X_E_DocType;
 import org.adempiere.core.domains.models.X_E_Duties;
 import org.adempiere.core.domains.models.X_E_Enviroment;
+import org.adempiere.core.domains.models.X_E_Municipio;
 import org.adempiere.core.domains.models.X_E_PlantType;
 import org.adempiere.core.domains.models.X_E_ProductType;
 import org.adempiere.core.domains.models.X_E_Recipient_Identification;
 import org.adempiere.core.domains.models.X_E_TimeSpan;
+import org.adempiere.core.domains.models.X_e_BienTitulo;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MCity;
@@ -39,12 +41,14 @@ import org.compiere.model.MCountry;
 import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
+import org.compiere.model.MOrder;
 import org.compiere.model.MOrgInfo;
 import org.compiere.model.MPOS;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MProduct;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.MTax;
+import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
@@ -120,6 +124,10 @@ public abstract class EDocumentFactory {
 
         JSONObject eDocumentAsJson  = new JSONObject(eDocumentAsJsonString);
         JSONObject identification = (JSONObject)eDocumentAsJson.get(EDocument.IDENTIFICACION);
+        if (!identification.has(EDocument.NUMEROCONTROL)) {
+            return "";
+        }
+
         String codigoGeneracion = identification.getString(EDocument.NUMEROCONTROL);
 		return codigoGeneracion;
 	}
@@ -364,14 +372,20 @@ public abstract class EDocumentFactory {
 		return value;
 	}
 	
+
+	public String  city_getMunicipioValue(MCity city) {
+		X_E_Municipio municipio = new X_E_Municipio(Env.getCtx()	, city.get_ValueAsInt(X_E_Municipio.COLUMNNAME_e_municipio_ID), null);
+		String value = municipio.get_ValueAsString("Value");
+		return value;
+	}
+	
 	public String  city_getValue(MCity city) {		
 		String value = city.get_ValueAsString("Value");
 		return value;
 	}
 	
-	public String  country_getValue(MCountry country) {		
-		String value = country.get_ValueAsString("Value");
-		return value;
+	public String  country_getValue(MCountry country) {
+		return country.getCountryCode();
 	}
 	
 	public X_E_Duties  tax_getE_Duties(MTax tax) {
@@ -392,6 +406,11 @@ public abstract class EDocumentFactory {
 			valueint = 59;
 		}
 		return valueint;
+	}
+	
+	public String  bien_getTitle(int bienTituloID) {
+		X_e_BienTitulo bienTitulo = new X_e_BienTitulo(Env.getCtx()	, bienTituloID, null);
+		return bienTitulo.getValue();
 	}
 	public String getSignature() {
 		return signature;
@@ -438,29 +457,45 @@ public abstract class EDocumentFactory {
 		documentno = documentno.replace(suffix,"");
 		String idIdentification  = StringUtils.leftPad(documentno, 15,"0");
 		String pos = "";
-		if (invoice.getC_POS_ID()>0) {
-			MPOS mpos = (MPOS)invoice.getC_POS();
-			pos = mpos.get_ValueAsString("ei_POS");
-		}
-		else
-		{
-			MPOS mpos = new Query(invoice.getCtx(), MPOS.Table_Name, "AD_Org_ID=? ", trxName)
-					.setParameters(invoice.getAD_Org_ID())
-					.setOnlyActiveRecords(true)
-					.setOrderBy("C_POS_ID")
-					.first();
-			pos = mpos.get_ValueAsString("ei_POS");
-		}
 		MOrgInfo orgInfo = MOrgInfo.get(invoice.getCtx(), invoice.getAD_Org_ID(), invoice.get_TrxName());
-		String idPosCompany = orgInfo.get_ValueAsString("ei_Sucursal") + pos;
+		String idPosCompany = getCodEstable(invoice) + getCodPuntoVenta(invoice);
 		String numeroControl = "DTE-" + docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue()
 				+ "-"+ StringUtils.leftPad(idPosCompany, 8,"0") + "-"+ idIdentification;
 		return numeroControl;
 	}
 	
-	public String createCodigoGeneracion(MInvoice invoice) {
+	public String getCodPuntoVenta(PO document) 
+	{
+		String pos = "";
+		if (document instanceof MInvoice  && document.get_ValueAsInt(MInvoice.COLUMNNAME_C_POS_ID)>1) {
+			MInvoice invoice = (MInvoice)document;
+			MPOS mpos = (MPOS)invoice.getC_POS();
+			pos = mpos.get_ValueAsString("ei_POS");
+		}
+		else
+		{
+			MPOS mpos = new Query(document.getCtx(), MPOS.Table_Name, "AD_Org_ID=? ", trxName)
+					.setParameters(document.getAD_Org_ID())
+					.setOnlyActiveRecords(true)
+					.setOrderBy("C_POS_ID")
+					.first();
+			if (mpos != null)
+				pos = mpos.get_ValueAsString("ei_POS");
+			else
+				pos = "P001";
+		}
+		return pos;
+	}
+	
+	public String getCodEstable(PO document) {
+		MOrgInfo orgInfo = MOrgInfo.get(document.getCtx(), document.getAD_Org_ID(), document.get_TrxName());
+		String codEstable = orgInfo.get_ValueAsString("ei_Sucursal");
+		return codEstable;
+	}
+	
+	public String createCodigoGeneracion(PO document) {
 		
-		String numControl = invoice.get_UUID().toUpperCase();
+		String numControl = document.get_UUID().toUpperCase();
 		return numControl;		
 	}
 	public String getfecEmi() {

@@ -18,8 +18,8 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 	String descActividad=null; // null possible
 	Direccion direccion;
     String telefono=null; // null possible
-    String correo;
-	
+    String correo=null;  // null possible
+
 	/**
 	 * No parameters
 	 */
@@ -77,7 +77,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 	}
 
 	public void setNumDocumento(String numDocumento) {
-		final int MINLENGTH = 3;
+		final int MINLENGTH = 1;
 		final int MAXLENGTH = 20;
 		int length = numDocumento==null?0:numDocumento.length();
 		
@@ -107,13 +107,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 	}
 
 	public void setCodActividad(String codActividad) {
-		final String PATTERN = "^[0-9]{2,6}$";
-		boolean patternOK = codActividad.length()==0 ||  ((codActividad!=null) && Pattern.matches(PATTERN, codActividad));  
-		
-		if(patternOK)
-			this.codActividad = codActividad;
-		else
-	        throw new IllegalArgumentException("Wrong expression 'codActividad' (" + codActividad +  ") in FacturaSujetoExcluido.SujetoExcluido.setCodActividad()"+ "\n");
+		this.codActividad = codActividad;
 	}
 
 	public String getDescActividad() {
@@ -148,7 +142,7 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 		final int MAXLENGTH = 30;
 		int length = telefono==null?0:telefono.length();
 		
-		if((telefono == null || length==0) || (length>=MINLENGTH && length<=MAXLENGTH))
+		if(telefono == null || (length>=MINLENGTH && length<=MAXLENGTH))
 			this.telefono = telefono;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'telefono' (" + telefono +  ") in FacturaSujetoExcluido.SujetoExcluido.setTelefono()" + "\n");
@@ -161,8 +155,8 @@ public class SujetoExcluidoFacturaSujetoExcluido {
 	public void setCorreo(String correo) {
 		final int MAXLENGTH = 100;
 		int length = correo==null?0:correo.length();
-		
-		if(length<=MAXLENGTH)
+
+		if(correo==null || (length<=MAXLENGTH))
 			this.correo = correo;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'correo' (" + correo +  ") in FacturaSujetoExcluido.SujetoExcluido.setCorreo()"+ "\n");

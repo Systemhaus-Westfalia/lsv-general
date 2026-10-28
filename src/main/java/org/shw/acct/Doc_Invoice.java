@@ -323,7 +323,8 @@ public class Doc_Invoice extends Doc
 
 		//  ** ARI, ARF
 		if (getDocumentType().equals(DOCTYPE_ARInvoice) 
-			|| getDocumentType().equals(DOCTYPE_ARProForma))
+			//|| getDocumentType().equals(DOCTYPE_ARProForma)
+			)
 		{
 			BigDecimal grossAmt = getAmount(Doc.AMTTYPE_Gross);
 			BigDecimal serviceAmt = Env.ZERO;

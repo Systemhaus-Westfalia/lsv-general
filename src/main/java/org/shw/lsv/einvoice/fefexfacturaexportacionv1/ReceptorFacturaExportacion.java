@@ -158,15 +158,8 @@ public class ReceptorFacturaExportacion {
 	 */
 
 	public void setCodPais(String codPais) {
-		final int MINLENGTH = 1;
-		final int MAXLENGTH = 2;
-		int length = codPais == null ? 0 : codPais.length();
-
-		if ((length >= MINLENGTH && length <= MAXLENGTH) || (nombreComercial == null))
-			this.codPais = codPais;
-		else
-					throw new IllegalArgumentException("Wrong parameter 'codPais' in FacturaExportacion.Receptor.setCodPais()" + "\n");
-
+		// CAT-020 now uses ISO 3166-1 alpha-2 codes; validation delegated to MH
+		this.codPais = codPais;
 	}
 
 	/**

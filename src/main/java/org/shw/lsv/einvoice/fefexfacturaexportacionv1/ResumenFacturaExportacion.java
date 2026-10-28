@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 import org.shw.lsv.einvoice.utils.PagosItem;
+import org.shw.lsv.einvoice.utils.TributosItem;
 
 /**
  * 
@@ -16,7 +17,8 @@ import org.shw.lsv.einvoice.utils.PagosItem;
 public class ResumenFacturaExportacion {
 
 	BigDecimal totalGravada;
-	BigDecimal descuento;
+	BigDecimal descuGravada;
+	BigDecimal totalNoOnerosas;
 	BigDecimal porcentajeDescuento;
 	BigDecimal totalDescu;
 	BigDecimal seguro=null;  // null allowed
@@ -24,6 +26,7 @@ public class ResumenFacturaExportacion {
 	BigDecimal montoTotalOperacion;
 	BigDecimal totalNoGravado;
 	BigDecimal totalPagar;
+	BigDecimal saldoFavor;
 	String totalLetras;
 	int condicionOperacion;
 	List<PagosItem> pagos ;  // there must be at least one item
@@ -31,6 +34,7 @@ public class ResumenFacturaExportacion {
 	String descIncoterms=null;  // null allowed
 	String numPagoElectronico=null;  // null allowed
 	String observaciones=null;  // null allowed   
+	List<TributosItem> tributos;
 
 
 	/**
@@ -38,6 +42,7 @@ public class ResumenFacturaExportacion {
 	 */
 	public ResumenFacturaExportacion() {
 		this.pagos = new ArrayList<PagosItem>();
+		this.tributos = new ArrayList<TributosItem>();
 	}
 	
 	/**
@@ -70,17 +75,6 @@ public class ResumenFacturaExportacion {
 	 * @return the descuento
 	 */
 
-	public BigDecimal getDescuento() {
-		return descuento;
-	}
-
-	/**
-	 * @param descuento the descuento to set
-	 */
-
-	public void setDescuento(BigDecimal descuento) {
-		this.descuento = descuento;
-	}
 
 	/**
 	 * @return the porcentajeDescuento
@@ -364,6 +358,38 @@ public class ResumenFacturaExportacion {
 	}
 
     
+	public BigDecimal getDescuGravada() {
+		return descuGravada;
+	}
+
+	public void setDescuGravada(BigDecimal descuGravada) {
+		this.descuGravada = descuGravada;
+	}
+
+	public BigDecimal getTotalNoOnerosas() {
+		return totalNoOnerosas;
+	}
+
+	public void setTotalNoOnerosas(BigDecimal totalNoOnerosas) {
+		this.totalNoOnerosas = totalNoOnerosas;
+	}
+
+	public List<TributosItem> getTributos() {
+		return tributos;
+	}
+
+	public void setTributos(List<TributosItem> tributos) {
+		this.tributos = tributos;
+	}
+
+	public BigDecimal getSaldoFavor() {
+		return saldoFavor;
+	}
+
+	public void setSaldoFavor(BigDecimal saldoFavor) {
+		this.saldoFavor = saldoFavor;
+	}
+
 	/**
 	 * @param args
 	 */

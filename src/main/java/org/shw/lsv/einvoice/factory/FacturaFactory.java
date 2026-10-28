@@ -2,19 +2,21 @@ package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_C_UOM;
+import org.adempiere.core.domains.models.X_E_DocType;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
 import org.compiere.model.MClient;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
 import org.compiere.model.MOrgInfo;
-import org.compiere.model.MPackageExp;
 import org.compiere.model.MPaymentTerm;
 import org.compiere.model.MTax;
 import org.compiere.model.Query;
@@ -143,14 +145,15 @@ public class FacturaFactory extends EDocumentFactory {
 		}
 		
 		System.out.println("Instantiate, fill and verify ExtensionFactura");
-		ExtensionFactura extension = factura.getExtension();
-		if(extension!=null) {
-			factura.fillExtension(jsonInputToFactory);
-			result = extension.validateValues();
-			if(! result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
-				factura.errorMessages.append(result);
-			}
-		}
+		//ExtensionFactura extension = factura.getExtension();
+		ExtensionFactura extension = null;
+		/*
+		 * if(extension!=null) { factura.fillExtension(jsonInputToFactory); result =
+		 * extension.validateValues(); if(!
+		 * result.equals(EDocumentUtils.VALIDATION_RESULT_OK)) {
+		 * factura.errorMessages.append(result); }
+		 */
+		//}
 		
 		List<ApendiceItemFactura> apendice = factura.getApendice();
 		if(apendice!=null) {
@@ -203,7 +206,7 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonInputToFactory.put(Factura.RESUMEN, generateResumenInputData());
 		jsonInputToFactory.put(Factura.CUERPODOCUMENTO, generateCuerpoDocumentoInputData());
 		jsonInputToFactory.put(Factura.APENDICE, generateApendiceInputData(invoice.getC_Invoice_ID()));
-		jsonInputToFactory.put(Factura.EXTENSION, generateExtensionInputData());
+		//jsonInputToFactory.put(Factura.EXTENSION, generateExtensionInputData());
 		
 		System.out.println("Generated JSON object from Invoice:");
 		System.out.println(jsonInputToFactory.toString());
@@ -225,6 +228,9 @@ public class FacturaFactory extends EDocumentFactory {
 		String horEmi = gethorEmi();
 		int tipoModelo = isContigencia?Factura.TIPOMODELO_CONTIGENCIA:Factura.TIPOMODELO_NOCONTIGENCIA;
 		int tipoOperacion = isContigencia?Factura.TIPOOPERACION_CONTIGENCIA:Factura.TIPOOPERACION_NOCONTIGENCIA;
+		X_E_DocType e_DocType =   docType_getE_DocType((MDocType)invoice.getC_DocType()) ;
+		jsonObjectIdentificacion.put(Factura.VERSION, e_DocType.get_Value("E_Version"));
+		jsonObjectIdentificacion.put(Factura.TIPODTE,docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue());
 		jsonObjectIdentificacion.put(Factura.NUMEROCONTROL, numeroControl);
 		jsonObjectIdentificacion.put(Factura.CODIGOGENERACION, codigoGeneracion);
 		jsonObjectIdentificacion.put(Factura.TIPOMODELO, tipoModelo);
@@ -253,11 +259,11 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(Factura.CODACTIVIDAD, client_getE_Activity(client).getValue());
 		jsonObjectEmisor.put(Factura.DESCACTIVIDAD, client_getE_Activity(client).getName());
 		jsonObjectEmisor.put(Factura.NOMBRECOMERCIAL, client.getName());
-		jsonObjectEmisor.put(Factura.TIPOESTABLECIMIENTO, client_getE_PlantType(client).getValue());
 
 		JSONObject jsonDireccion = new JSONObject();
 		jsonDireccion.put(Factura.DEPARTAMENTO,  city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
-		jsonDireccion.put(Factura.MUNICIPIO,     city_getValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.DISTRITO,     city_getValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.MUNICIPIO,     city_getMunicipioValue((MCity)orgInfo.getC_Location().getC_City()));
 		jsonDireccion.put(Factura.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
 		jsonObjectEmisor.put(Factura.DIRECCION, jsonDireccion);
 		
@@ -273,49 +279,48 @@ public class FacturaFactory extends EDocumentFactory {
 		System.out.println("Factura: start collecting JSON data for Receptor");
 
 		MBPartner partner = (MBPartner)invoice.getC_BPartner();
-//		if (partner.getE_Activity_ID()<=0 || partner.getE_Recipient_Identification_ID() <= 0) {
-//			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta configuracion para Facturacion Electronica"; 
-//			factura.errorMessages.append(errorMessage);
-//			System.out.println(errorMessage);
-//		}
-		
 		JSONObject jsonObjectReceptor = new JSONObject();
-		
-		jsonObjectReceptor.put(Factura.TIPODOCUMENTO,  bPartner_getE_Recipient_Identification(partner).getValue());
-		if (partner.getTaxID() != null) {
-			jsonObjectReceptor.put(Factura.NUMDOCUMENTO, partner.getTaxID().replace("-", ""));
-			jsonObjectReceptor.put(Factura.NOMBRE, partner.getName());			
-		}
-		else {
-			String errorMessage = "Socio de Negocio " + partner.getName() + ": Falta NIT"; 
-			factura.errorMessages.append(errorMessage);
-			System.out.println(errorMessage);
-		}
-		
-		if (bPartner_getE_Activity(partner).getE_Activity_ID()>0) {
-			jsonObjectReceptor.put(Factura.CODACTIVIDAD, bPartner_getE_Activity(partner).getValue());
-			jsonObjectReceptor.put(Factura.DESCACTIVIDAD, bPartner_getE_Activity(partner).getName());
-		} else  {
-			jsonObjectReceptor.put(Factura.CODACTIVIDAD, "");
-			jsonObjectReceptor.put(Factura.DESCACTIVIDAD, "");
-		}
+		jsonObjectReceptor.put(Factura.NOMBRE, partner.getName());		
+		jsonObjectReceptor.put(Factura.TIPODOCUMENTO,  
+				Optional.ofNullable(bPartner_getE_Recipient_Identification(partner).getValue()).orElse(""));
+		String taxID = Optional.ofNullable(partner.getTaxID()).orElse("");
+		jsonObjectReceptor.put(Factura.NUMDOCUMENTO, taxID.replace("-", ""));				
+		jsonObjectReceptor.put(Factura.CODACTIVIDAD, Optional.ofNullable(bPartner_getE_Activity(partner).getValue()).orElse(""));
+		jsonObjectReceptor.put(Factura.DESCACTIVIDAD, Optional.ofNullable(bPartner_getE_Activity(partner).getName()).orElse(""));
+	
 		JSONObject jsonDireccion = new JSONObject();
 		String departamento = "";
 		String municipio = "";
+		String distrito = "";
 		String complemento = "";
+		Boolean islocal = false;
 		for (MBPartnerLocation partnerLocation : MBPartnerLocation.getForBPartner(contextProperties, partner.getC_BPartner_ID(), trxName)){
-			if (partnerLocation.isBillTo() && partnerLocation.getC_Location().getC_Country_ID() == 173) {
-				departamento =  city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());
-				municipio =  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
-				complemento = (partnerLocation.getC_Location().getAddress1() + " " 
-				+ partnerLocation.getC_Location().getAddress2());
+			 {
+				 if (partnerLocation.getC_Location().getC_Country_ID() != 173) {
+					 departamento 	= "00";
+					 municipio 		= "00";
+					 complemento 	= (partnerLocation.getC_Location().getAddress1() + " " 
+									+ partnerLocation.getC_Location().getAddress2());
+					 distrito 		= partnerLocation.getC_Location().getC_City_ID() >0? partnerLocation.getC_Location().getC_City().getName():
+						 			partnerLocation.getC_Location().getCity();
+					 
+				 }
+				 else {
+					 departamento 	=  city_getRegionValue((MCity)partnerLocation.getC_Location().getC_City());						
+					 distrito 		=  city_getValue((MCity)partnerLocation.getC_Location().getC_City());
+					 municipio 		= city_getMunicipioValue((MCity)partnerLocation.getC_Location().getC_City());
+					 complemento 	= (partnerLocation.getC_Location().getAddress1() + " " 
+							 		+ partnerLocation.getC_Location().getAddress2());
+				 }
+				
 				jsonDireccion.put(Factura.DEPARTAMENTO, departamento);
 				jsonDireccion.put(Factura.MUNICIPIO, municipio);
+				jsonDireccion.put(Factura.DISTRITO, distrito);
 				jsonDireccion.put(Factura.COMPLEMENTO, complemento.replace("null", ""));
 				jsonObjectReceptor.put(Factura.DIRECCION, jsonDireccion);
+				islocal = true;
 				break;
-			}
-		}		
+			}		}		
 		
 		// In case there is no address
 		if (departamento == null) {
@@ -339,14 +344,17 @@ public class FacturaFactory extends EDocumentFactory {
 	
 	private JSONObject generateResumenInputData() {
 		System.out.println("Factura: start collecting JSON data for Resumen");
-		BigDecimal totalNoSuj 		= Env.ZERO;
-		BigDecimal totalExenta 		= Env.ZERO;
-		BigDecimal totalGravada 	= Env.ZERO;		
-		BigDecimal totalNoGravada 	= Env.ZERO;		
-		BigDecimal totalIVA 		= Env.ZERO;
-		BigDecimal ivaRete1 		= Env.ZERO;
+		BigDecimal totalNoSuj 			= Env.ZERO;
+		BigDecimal totalExenta 			= Env.ZERO;
+		BigDecimal totalGravada 		= Env.ZERO;		
+		BigDecimal totalNoGravada 		= Env.ZERO;		
+		BigDecimal totalIVA 			= Env.ZERO;
+		//BigDecimal ivaRete1 			= Env.ZERO;
+		BigDecimal ivaRete 		    	= Env.ZERO;
+		//BigDecimal reteRenta 		    = Env.ZERO;
 		String totalLetras=Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
 
+		String observacionesRaw = invoice.get_ValueAsString("Instructions");
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties , MInvoiceTax.Table_Name , "C_Invoice_ID=?" , trxName)
 				.setParameters(invoice.getC_Invoice_ID())
 				.list();
@@ -358,9 +366,11 @@ public class FacturaFactory extends EDocumentFactory {
 		JSONArray jsonTributosArray = new JSONArray();
 		for (MInvoiceTax invoiceTax:invoiceTaxes) {
 			if (invoiceTax.getC_Tax().getTaxIndicator().equals("RET")) {
-				ivaRete1 = ivaRete1.add(invoiceTax.getTaxAmt().multiply(new BigDecimal(-1)));
+				//ivaRete1 = ivaRete1.add(invoiceTax.getTaxAmt().multiply(new BigDecimal(-1)));
+				ivaRete = ivaRete.add(invoiceTax.getTaxAmt().multiply(new BigDecimal(-1)));		
 				continue;
 			}
+			
 			JSONObject jsonTributoItem = new JSONObject();		
 			if (invoiceTax.getC_Tax().getTaxIndicator().equals("NSUJ")) {
 				if (invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode() != null &&
@@ -402,11 +412,15 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonObjectResumen.put(Factura.DESCUGRAVADA, Env.ZERO);
 		jsonObjectResumen.put(Factura.PORCENTAJEDESCUENTO, Env.ZERO);
 		jsonObjectResumen.put(Factura.SUBTOTAL, totalGravada.add(totalNoSuj).add(totalExenta));
-		jsonObjectResumen.put(Factura.IVARETE1, ivaRete1);
+		//jsonObjectResumen.put(Factura.IVARETE1, ivaRete1);
+		jsonObjectResumen.put(Factura.IVARETE, ivaRete);
+		//jsonObjectResumen.put(Factura.RETERENTA, reteRenta);
 		jsonObjectResumen.put(Factura.MONTOTOTALOPERACION, totalGravada.add(totalNoSuj).add(totalExenta));
 		jsonObjectResumen.put(Factura.TOTALNOGRAVADO, totalNoGravada);
 		jsonObjectResumen.put(Factura.TOTALPAGAR, invoice.getGrandTotal());
 		jsonObjectResumen.put(Factura.TOTALLETRAS, totalLetras);
+		jsonObjectResumen.put(Factura.OBSERVACIONES, observacionesRaw);
+		
 		jsonObjectResumen.put(Factura.SALDOFAVOR, Env.ZERO);
 		int condicionOperacion = 
 		invoice.getC_PaymentTerm().getNetDays() == 0? Factura.CONDICIONOPERACION_AL_CONTADO:
@@ -426,6 +440,7 @@ public class FacturaFactory extends EDocumentFactory {
 		jsonArrayPagos.put(jsonPago);
 
 		jsonObjectResumen.put(Factura.PAGOS, jsonArrayPagos);
+		
 		
 
 		System.out.println("Factura: end collecting JSON data for Resumen");
@@ -517,20 +532,7 @@ public class FacturaFactory extends EDocumentFactory {
 		return jsonCuerpoDocumento;
 	}
 
-	private JSONObject generateExtensionInputData() {
-		System.out.println("Credito Fiscal: start collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
-		JSONObject jsonExtension = new JSONObject();
-		String observaciones = invoice.get_ValueAsString(MPackageExp.COLUMNNAME_Instructions);
-		
-		jsonExtension.put(EDocument.NOMBENTREGA, "");
-		jsonExtension.put(EDocument.DOCUENTREGA, "");
-		jsonExtension.put(EDocument.NOMBRECIBE, "");
-		jsonExtension.put(EDocument.DOCURECIBE, "");
-		jsonExtension.put(EDocument.OBSERVACIONES, observaciones);
-		jsonExtension.put(EDocument.PLACAVEHICULO, "");
-		System.out.println("Credito Fiscal: end collecting JSON data for Extension. Document: " + invoice.getDocumentNo());
-		return jsonExtension;
-	}
+	
 
 	public String createJsonString() throws Exception {
 		System.out.println("Factura: start generating JSON object from Document");
@@ -544,8 +546,11 @@ public class FacturaFactory extends EDocumentFactory {
         String facturaAsStringFinal = facturaAsJson.toString().
         		replace(":[],", ":null,").
         		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
+        		replace("\"tipoDocumento\":\"\"", "\"tipoDocumento\":null").
+        		replace("\"numDocumento\":\"\"", "\"numDocumento\":null").
         		replace("\"descActividad\":\"\"", "\"descActividad\":null").
         		replace("\"codActividad\":\"\"", "\"codActividad\":null").
+        		replace("\"observaciones\":\"\"", "\"observaciones\":null").
         		replace("\"telefono\":\"\"", "\"telefono\":null").
         		replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
         		replace("\"direccion\":{\"complemento\":null,\"municipio\":null,\"departamento\":null},", "\"direccion\":null,").

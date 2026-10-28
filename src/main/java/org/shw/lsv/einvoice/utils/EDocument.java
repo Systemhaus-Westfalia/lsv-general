@@ -47,6 +47,7 @@ public class EDocument {
 	public static final String TIPOPERSONA 			=  "tipoPersona";
 	public static final String DEPARTAMENTO 		=  "departamento";
 	public static final String MUNICIPIO 			=  "municipio";
+	public static final String DISTRITO 			=  "distrito";
 	public static final String COMPLEMENTO 			=  "complemento";
 	public static final String TELEFONO 			=  "telefono";
 	public static final String CORREO 				=  "correo";
@@ -91,6 +92,7 @@ public class EDocument {
 	public static final String PORCENTAJEDESCUENTO 	= "porcentajeDescuento";
 	public static final String SUBTOTAL 			= "subTotal";
 	public static final String IVARETE1 			= "ivaRete1";
+	public static final String IVARETE 			    = "ivaRete";
 	public static final String MONTOTOTALOPERACION 	= "montoTotalOperacion";
 	public static final String TOTALNOGRAVADO 		= "totalNoGravado";
 	public static final String TOTALPAGAR 			= "totalPagar";
@@ -110,8 +112,13 @@ public class EDocument {
 	public static final String PAGOS				= "pagos";
 	public static final String DIRECCION			= "direccion";
 	public static final String IVAPERCI1			= "ivaPerci1";
+	public static final String IVAPERCI				= "ivaPerci";
 	public static final String FLETE				= "flete";
 	public static final String SEGURO				= "seguro";
+	public static final String BIENTITULO			= "bienTitulo";
+	public static final String TOTALNOONEROSAS		= "totalNoOnerosas";
+
+	public static final String FUSION           	= "fusion";
 
 	public static final String VERSION				= "version";	
 	
@@ -163,6 +170,13 @@ public class EDocument {
 	public static final String MONTOSUJETOGRAV        = "montoSujetoGrav";
 	public static final String CODIGORETENCIONMH      = "codigoRetencionMH";
 	public static final String IVARETENIDO 			  = "ivaRetenido";
+	public static final String TIPOREGIMEN 			  = "tipoRegimen";
+	public static final String RECINTOFISCAL		  = "recintoFiscal";
+	public static final String REGIMEN				  = "regimen";
+
+
+
+	
 	
 	
 	public static final int		TIPOMODELO_NOCONTIGENCIA			=1;

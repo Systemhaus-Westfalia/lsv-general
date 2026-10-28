@@ -1147,7 +1147,7 @@ public class CalloutOrder extends CalloutEngine
 		if (enforce && MRole.getDefault().isOverwritePriceLimit())
 			enforce = false;
 		//	Check Price Limit?
-		if (MPriceList.isCheckPriceLimit(priceListId) && priceLimit.doubleValue() != 0.0
+		if (enforce && priceLimit.doubleValue() != 0.0
 		  && priceActual.compareTo(priceLimit) < 0)
 		{
 			priceActual = priceLimit;

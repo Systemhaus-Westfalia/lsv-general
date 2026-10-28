@@ -31,15 +31,16 @@ public class ResumenCreditoFiscal {
 	BigDecimal descuGravada;
 	BigDecimal porcentajeDescuento;
 	BigDecimal totalDescu;
+	//BigDecimal reteRenta;
 	List<TributosItem> tributos;
 	BigDecimal subTotal;
-	BigDecimal ivaPerci1;
-	BigDecimal ivaRete1;
-	BigDecimal reteRenta;
+	BigDecimal ivaPerci;
+	BigDecimal ivaRete;
 	BigDecimal montoTotalOperacion;
 	BigDecimal totalNoGravado;
 	BigDecimal totalPagar;
 	String totalLetras;
+	String observaciones=null;  // null allowed
 	BigDecimal saldoFavor;
 	int condicionOperacion;
 	List<PagosItem> pagos ;  // there must be at least one item
@@ -73,14 +74,14 @@ public class ResumenCreditoFiscal {
 		}
 
 		if(getTotalGravada().compareTo(BigDecimal.ZERO)==0) {
-			if ( (getIvaPerci1()==null) || (getIvaPerci1().compareTo(BigDecimal.ZERO) == 1) )
+			if ( (getIvaPerci()==null) || (getIvaPerci().compareTo(BigDecimal.ZERO) == 1) )
 				return VALIDATION_TOTALGRAVADA_IVAPERC1;
-		} 
+		}
 
 		if(getTotalGravada().compareTo(BigDecimal.ZERO)==0) {
-			if ( (getIvaPerci1()==null) ||  (getIvaRete1().compareTo(BigDecimal.ZERO) == 1) )
+			if ( (getIvaRete()==null) || (getIvaRete().compareTo(BigDecimal.ZERO) == 1) )
 				return VALIDATION_TOTALGRAVADA_IVARETE1;
-		} 
+		}
 
 		if( (getTotalPagar()!=null) && (getTotalPagar().compareTo(BigDecimal.ZERO)==0) ) {
 			if ( getCondicionOperacion() != 1 )
@@ -289,55 +290,38 @@ public class ResumenCreditoFiscal {
 
 
 	/**
-	 * @return the ivaPerci1
+	 * @return the ivaPerci
 	 */
 
-	public BigDecimal getIvaPerci1() {
-		return ivaPerci1;
+	public BigDecimal getIvaPerci() {
+		return ivaPerci;
 	}
 
 
 	/**
-	 * @param ivaPerci1 the ivaPerci1 to set
+	 * @param ivaPerci the ivaPerci to set
 	 */
 
-	public void setIvaPerci1(BigDecimal ivaPerci1) {
-		this.ivaPerci1 = ivaPerci1;
+	public void setIvaPerci(BigDecimal ivaPerci) {
+		this.ivaPerci = ivaPerci;
 	}
 
 
 	/**
-	 * @return the ivaRete1
+	 * @return the ivaRete
 	 */
 
-	public BigDecimal getIvaRete1() {
-		return ivaRete1;
+	public BigDecimal getIvaRete() {
+		return ivaRete;
 	}
 
 
 	/**
-	 * @param ivaRete1 the ivaRete1 to set
+	 * @param ivaRete the ivaRete to set
 	 */
 
-	public void setIvaRete1(BigDecimal ivaRete1) {
-		this.ivaRete1 = ivaRete1;
-	}
-
-
-	/**
-	 * @return the reteRenta
-	 */
-
-	public BigDecimal getReteRenta() {
-		return reteRenta;
-	}
-
-	/**
-	 * @param reteRenta the reteRenta to set
-	 */
-
-	public void setReteRenta(BigDecimal reteRenta) {
-		this.reteRenta = reteRenta;
+	public void setIvaRete(BigDecimal ivaRete) {
+		this.ivaRete = ivaRete;
 	}
 
 
@@ -411,10 +395,11 @@ public class ResumenCreditoFiscal {
 	 */
 
 	public void setTotalLetras(String totalLetras) {
+		final int MINLENGTH = 8;
 		final int MAXLENGTH = 200;
 		int length = totalLetras==null?0:totalLetras.length();
 
-		if( length<=MAXLENGTH)
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || (totalLetras==null) )
 			this.totalLetras = totalLetras;
 		else
 			throw new IllegalArgumentException("Wrong parameter 'totalLetras' in CreditoFiscal.Resumen.setTotalLetras()" + "\n");
@@ -455,10 +440,36 @@ public class ResumenCreditoFiscal {
 	 */
 
 	public void setCondicionOperacion(int condicionOperacion) {
-		if (condicionOperacion==1 || condicionOperacion==2 || condicionOperacion==2)
+		if (condicionOperacion==1 || condicionOperacion==2 || condicionOperacion==3)
 			this.condicionOperacion = condicionOperacion;
 		else
 			throw new IllegalArgumentException("Wrong parameter 'condicionOperacion' in CreditoFiscal.Resumen.setCondicionOperacion()" + "\n");
+	}
+
+
+	/**
+	 * @return the observaciones
+	 */
+
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+
+	/**
+	 * @param observaciones the observaciones to set<br>
+	 * "minLength" : 1, "maxLength" : 3000; null also possible
+	 */
+
+	public void setObservaciones(String observaciones) {
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 3000;
+		int length = observaciones==null?0:observaciones.length();
+
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || (observaciones==null) )
+			this.observaciones = observaciones;
+		else
+			throw new IllegalArgumentException("Wrong parameter 'observaciones' in CreditoFiscal.Resumen.setObservaciones()" + "\n");
 	}
 
 
@@ -504,6 +515,7 @@ public class ResumenCreditoFiscal {
 		else
 			throw new IllegalArgumentException("Wrong parameter 'numPagoElectronico' in CreditoFiscal.Resumen.setNumPagoElectronico()" + "\n");
 	}
+
 
 
 	/**

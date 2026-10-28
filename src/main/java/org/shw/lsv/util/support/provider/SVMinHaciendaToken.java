@@ -57,6 +57,7 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
 	private final String PROVIDER_HOST =  "providerhost"; 
 	private final String PWD = "pwd";
 	private final String USER = "user";
+	private final String USERAGENT = "User-Agent";
 
 	private final String PATH = "path";
 	
@@ -64,6 +65,7 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
 	private String path = null;
 	private String user = null;
 	private String pwd = null;
+	private String userAgent = null;
 	private int registrationId = 0;
 	private boolean voided = false;
 	private MClient client;
@@ -87,6 +89,7 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
 		this.path 			= registration.getParameterValue(PATH);
 		this.user 			= client.get_ValueAsString("ei_nit");
 		this.pwd 			= registration.getParameterValue(PWD);
+		this.userAgent 		= registration.getParameterValue(USERAGENT);
 	}
 
 	@Override
@@ -132,6 +135,7 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
 				//.path("3pl")
 				.request(MediaType.APPLICATION_FORM_URLENCODED)
 				.header(HttpHeaders.ACCEPT, "*/*")
+				.header(HttpHeaders.USER_AGENT, this.userAgent)
 				;
 		Form form = new Form();
 		form.param(PWD, this.pwd);
@@ -266,6 +270,10 @@ public class SVMinHaciendaToken implements IDeclarationProvider {
 	}
 	public void setAD_Client(MClient adClient) {
 		client = adClient;
+	}
+
+	public String getUSERAGENT() {
+		return USERAGENT;
 	}
 }
 

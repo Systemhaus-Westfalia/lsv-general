@@ -102,7 +102,12 @@ public class CuerpoDocumentoItemFacturaSujetoExcluido {
 	}
 
 	public void setNumItem(int numItem) {
-		this.numItem = numItem;
+		final int MINIMUM = 1;
+		final int MAXIMUM = 2000;
+		if(numItem>=MINIMUM && numItem<=MAXIMUM)
+			this.numItem = numItem;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'numItem' (" + numItem +  ") in FacturaSujetoExcluido.CuerpoDocumentoItem.setNumItem()" + "\n");
 	}
 
 	public int getTipoItem() {
@@ -128,7 +133,13 @@ public class CuerpoDocumentoItemFacturaSujetoExcluido {
 
 
 	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 25;
+		int length = codigo==null?0:codigo.length();
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || (codigo==null) )
+			this.codigo = codigo;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'codigo' (" + codigo +  ") in FacturaSujetoExcluido.CuerpoDocumentoItem.setCodigo()" + "\n");
 	}
 
 	public int getUniMedida() {
@@ -136,7 +147,11 @@ public class CuerpoDocumentoItemFacturaSujetoExcluido {
 	}
 
 	public void setUniMedida(int uniMedida) {
-		this.uniMedida = uniMedida;
+		final int MINIMUM = 1;
+		if(uniMedida>=MINIMUM)
+			this.uniMedida = uniMedida;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'uniMedida' (" + uniMedida +  ") in FacturaSujetoExcluido.CuerpoDocumentoItem.setUniMedida()" + "\n");
 	}
 
 	public String getDescripcion() {
@@ -144,7 +159,13 @@ public class CuerpoDocumentoItemFacturaSujetoExcluido {
 	}
 
 	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 1500;
+		int length = descripcion==null?0:descripcion.length();
+		if(length>=MINLENGTH && length<=MAXLENGTH)
+			this.descripcion = descripcion;
+		else
+	        throw new IllegalArgumentException("Wrong parameter 'descripcion' (" + descripcion +  ") in FacturaSujetoExcluido.CuerpoDocumentoItem.setDescripcion()" + "\n");
 	}
 
 	public BigDecimal getPrecioUni() {

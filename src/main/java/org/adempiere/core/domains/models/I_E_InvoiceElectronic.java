@@ -19,7 +19,6 @@ package org.adempiere.core.domains.models;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-
 import org.compiere.model.MTable;
 import org.compiere.util.KeyNamePair;
 
@@ -33,7 +32,7 @@ public interface I_E_InvoiceElectronic
     /** TableName=E_InvoiceElectronic */
     public static final String Table_Name = "E_InvoiceElectronic";
 
-    /** AD_Table_ID=4000033 */
+    /** AD_Table_ID=1000044 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -65,21 +64,6 @@ public interface I_E_InvoiceElectronic
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name C_DocType_ID */
-    public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
-
-	/** Set Document Type.
-	  * Document type or rules
-	  */
-	public void setC_DocType_ID (int C_DocType_ID);
-
-	/** Get Document Type.
-	  * Document type or rules
-	  */
-	public int getC_DocType_ID();
-
-	public I_C_DocType getC_DocType() throws RuntimeException;
-
     /** Column name C_Invoice_ID */
     public static final String COLUMNNAME_C_Invoice_ID = "C_Invoice_ID";
 
@@ -93,16 +77,7 @@ public interface I_E_InvoiceElectronic
 	  */
 	public int getC_Invoice_ID();
 
-	public I_C_Invoice getC_Invoice() throws RuntimeException;
-
-    /** Column name CodigoGeneracion */
-    public static final String COLUMNNAME_CodigoGeneracion = "CodigoGeneracion";
-
-	/** Set CodigoGeneracion	  */
-	public void setCodigoGeneracion (String CodigoGeneracion);
-
-	/** Get CodigoGeneracion	  */
-	public String getCodigoGeneracion();
+	public org.adempiere.core.domains.models.I_C_Invoice getC_Invoice() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -146,19 +121,6 @@ public interface I_E_InvoiceElectronic
 	  */
 	public String getDescription();
 
-    /** Column name DocAction */
-    public static final String COLUMNNAME_DocAction = "DocAction";
-
-	/** Set Document Action.
-	  * The targeted status of the document
-	  */
-	public void setDocAction (String DocAction);
-
-	/** Get Document Action.
-	  * The targeted status of the document
-	  */
-	public String getDocAction();
-
     /** Column name DocStatus */
     public static final String COLUMNNAME_DocStatus = "DocStatus";
 
@@ -185,15 +147,6 @@ public interface I_E_InvoiceElectronic
 	  */
 	public String getDocumentNo();
 
-    /** Column name E_InvoiceElectronic_ID */
-    public static final String COLUMNNAME_E_InvoiceElectronic_ID = "E_InvoiceElectronic_ID";
-
-	/** Set Electronic Invoice	  */
-	public void setE_InvoiceElectronic_ID (int E_InvoiceElectronic_ID);
-
-	/** Get Electronic Invoice	  */
-	public int getE_InvoiceElectronic_ID();
-
     /** Column name ei_numeroControl */
     public static final String COLUMNNAME_ei_numeroControl = "ei_numeroControl";
 
@@ -202,6 +155,24 @@ public interface I_E_InvoiceElectronic
 
 	/** Get numeroControl	  */
 	public String getei_numeroControl();
+
+    /** Column name E_InvoiceElectronic_ID */
+    public static final String COLUMNNAME_E_InvoiceElectronic_ID = "E_InvoiceElectronic_ID";
+
+	/** Set E_InvoiceElectronic_ID	  */
+	public void setE_InvoiceElectronic_ID (int E_InvoiceElectronic_ID);
+
+	/** Get E_InvoiceElectronic_ID	  */
+	public int getE_InvoiceElectronic_ID();
+
+    /** Column name ei_selloRecibido */
+    public static final String COLUMNNAME_ei_selloRecibido = "ei_selloRecibido";
+
+	/** Set selloRecibido	  */
+	public void setei_selloRecibido (String ei_selloRecibido);
+
+	/** Get selloRecibido	  */
+	public String getei_selloRecibido();
 
     /** Column name ei_ValidationStatus */
     public static final String COLUMNNAME_ei_ValidationStatus = "ei_ValidationStatus";
@@ -260,6 +231,38 @@ public interface I_E_InvoiceElectronic
 	/** Get json	  */
 	public String getjson();
 
+    /** Column name M_InOut_ID */
+    public static final String COLUMNNAME_M_InOut_ID = "M_InOut_ID";
+
+	/** Set Shipment/Receipt.
+	  * Material Shipment Document
+	  */
+	public void setM_InOut_ID (int M_InOut_ID);
+
+	/** Get Shipment/Receipt.
+	  * Material Shipment Document
+	  */
+	public int getM_InOut_ID();
+
+	public org.adempiere.core.domains.models.I_M_InOut getM_InOut() throws RuntimeException;
+	
+
+    /** Column name M_Movement_ID*/
+    public static final String COLUMNNAME_M_Movement_ID = "M_Movement_ID";
+
+	/** Set Movement
+	  * Material Shipment Document
+	  */
+	public void setM_Movement_ID (int M_Movement_ID);
+
+	/** Get Movement
+	  * Material Shipment Document
+	  */
+	public int getM_Movement_ID();
+
+	public org.adempiere.core.domains.models.I_M_Movement getM_Movement() throws RuntimeException;
+
+
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
 
@@ -281,15 +284,6 @@ public interface I_E_InvoiceElectronic
 
 	/** Get Process Now	  */
 	public boolean isProcessing();
-
-    /** Column name selloRecibido */
-    public static final String COLUMNNAME_selloRecibido = "selloRecibido";
-
-	/** Set selloRecibido	  */
-	public void setselloRecibido (String selloRecibido);
-
-	/** Get selloRecibido	  */
-	public String getselloRecibido();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

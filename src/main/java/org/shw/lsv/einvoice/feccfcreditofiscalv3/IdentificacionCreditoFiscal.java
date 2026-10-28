@@ -4,9 +4,7 @@ import java.util.regex.Pattern;
 import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
 public class IdentificacionCreditoFiscal {
-
-	static final int VERSION              = 3;
-	static final String TIPO_DE_DOCUMENTO = "03";
+	
 	static final String TIPOMONEDA        = "USD";
 
 	static final String VALIDATION_TIPOMODELO_FAILED_1         = "Documento: Credito Fiscal, clase: Identificacion. Validacion fall??: valor de 'tipoModelo' no debe ser diferente a 1";
@@ -16,9 +14,9 @@ public class IdentificacionCreditoFiscal {
 	static final String VALIDATION_TIPOCONTINGENCIA_IS_NULL    = "Documento: Credito Fiscal, clase: Identificacion. Validacion fall??: valor de 'tipoContingencia' no debe ser ='null'";
 	static final String VALIDATION_MOTIVOCONTINGENCIA_IS_NULL  = "Documento: Credito Fiscal, clase: Identificacion. Validacion fall??: valor de 'motivoContingencia' no debe ser ='null'";
 
-	int version=VERSION;
+	int version;
 	String ambiente;
-	String tipoDte=TIPO_DE_DOCUMENTO;
+	String tipoDte;
 	String numeroControl;
 	String codigoGeneracion;
 	int tipoModelo;
@@ -27,14 +25,12 @@ public class IdentificacionCreditoFiscal {
 	String motivoContin=null;       // null erlaubt
 	String fecEmi;
 	String horEmi;
-	String tipoMoneda = TIPOMONEDA;
+	String tipoMoneda;
 
 	/**
 	 * No parameters
 	 */
 	public IdentificacionCreditoFiscal() {
-		this.version    = VERSION;
-		this.tipoDte    = TIPO_DE_DOCUMENTO;
 		this.tipoMoneda = TIPOMONEDA;
 	}
 
@@ -134,8 +130,8 @@ public class IdentificacionCreditoFiscal {
 	 * "pattern" : "^DTE-03-[A-Z0-9]{8}-[0-9]{15}$"
 	 */
 	public void setNumeroControl(String numeroControl) {
-		final String PATTERN = "^DTE-03-[A-Z0-9]{8}-[0-9]{15}$";
-		boolean patternOK = (numeroControl!=null) && Pattern.matches(PATTERN, numeroControl);  
+		final String PATTERN = "^DTE-03-(M|B|S|P)([0-9]{3})(P)([0-9]{3})-[0-9]{15}";
+		boolean patternOK = (numeroControl!=null) && Pattern.matches(PATTERN, numeroControl);
 
 		if(patternOK)
 			this.numeroControl = numeroControl;
@@ -205,8 +201,8 @@ public class IdentificacionCreditoFiscal {
 	 * "minLength" : 1, "maxLength" : 150; , null
 	 */
 	public void setMotivoContin(String motivoContin) {
-		final int MINLENGTH = 1;		
-		final int MAXLENGTH = 150;
+		final int MINLENGTH = 1;
+		final int MAXLENGTH = 500;
 		int length = motivoContin==null?0:motivoContin.length();
 
 		if(motivoContin==null || (length>=MINLENGTH && length<=MAXLENGTH))

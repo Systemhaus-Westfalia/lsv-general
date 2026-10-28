@@ -20,6 +20,7 @@ package org.shw.model;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.compiere.model.CalloutEngine;
@@ -258,6 +259,49 @@ public class Callout_SHW extends CalloutEngine
 		mTab.setValue("Qty", qtyOrdered);
 		return "";
    }
+   public String BPartnerEDocType (Properties ctx, int WindowNo, GridTab mTab, GridField mField, Object value)
+   {   
+	   GridTab A_Tab = mTab;
+	   Properties A_Ctx = ctx;
+	   int A_WindowNo = WindowNo;
+	   int e_BienTitulo_ID = Env.getContextAsInt(A_Ctx, A_WindowNo, "e_BienTitulo_ID");
+	   Integer C_BPartner_ID = (Integer)A_Tab.getValue("C_BPartner_ID");
+	   Integer e_docTypeID = Env.getContextAsInt(A_Ctx, A_WindowNo, "E_DocType_ID");
+	   if (C_BPartner_ID == null || C_BPartner_ID.intValue() == 0 
+			   || e_docTypeID ==null 
+			   || e_docTypeID.intValue() ==0 )
+		   return "";
+
+	   MBPartner bpartner = new MBPartner (A_Ctx, C_BPartner_ID, null);
+	   Boolean sendmail = "Y".equals(Env.getContext(ctx, WindowNo, "SendEMail"));
+	   int e_ActivityID = bpartner.get_ValueAsInt("_Activity_ID"); 
+	   String email = bpartner.get_ValueAsString("EMail");
+	   String phone = bpartner.get_ValueAsString("phone");
+	   String nit = Optional.ofNullable(bpartner.getTaxID()).orElse("");
+	   if(sendmail && email.length()==0)
+		   A_Tab.fireDataStatusEEvent(bpartner.getName(), "Para este tipo de documento falta Email", true);
+	   StringBuffer errormsg = new StringBuffer();
+	    if (e_docTypeID == 100000|| e_docTypeID==1000003) {
+		   if (nit.length()==0)
+			   errormsg.append(" Falta NIT");
+		   if (e_ActivityID == 0)
+			   errormsg.append(" Falta actividad economica");
+		   if (!errormsg.isEmpty())
+			   A_Tab.fireDataStatusEEvent(bpartner.getName(), errormsg.toString(), true);
+	   }
+	    else if (e_docTypeID == 1000002) {
+
+			   if (e_ActivityID == 0)
+				   errormsg.append(" Falta actividad economica");
+			   if (!errormsg.isEmpty())
+				   A_Tab.fireDataStatusEEvent(bpartner.getName(), errormsg.toString(), true);
+			   if (e_BienTitulo_ID<0)
+				   errormsg.append("Falta Bientitulo");			   
+			   if (!errormsg.isEmpty())
+				   A_Tab.fireDataStatusEEvent(bpartner.getName(), errormsg.toString(), true);	    }
+	   return "";
+   }
+   
 
    
    

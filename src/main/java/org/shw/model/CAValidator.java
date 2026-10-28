@@ -224,7 +224,7 @@ public class CAValidator implements ModelValidator
 		}
 		if (type == ModelValidator.TYPE_BEFORE_NEW ) {
 			if( po.get_TableName().equals(MOrder.Table_Name)) {
-				error = UpdatePaymentRule(po);
+				error = error +  UpdatePaymentRule(po);
 				if (po.is_ValueChanged(MOrder.COLUMNNAME_DateOrdered))
 					UpdateDatePromised(po);
 			}
@@ -605,16 +605,11 @@ public class CAValidator implements ModelValidator
         
         if (ModelValidator.TIMING_BEFORE_COMPLETE == timing) {
         	if (po instanceof MOrder) {
-        		//error = testQtyOnhand(po)
-        				;
-        		if (!error.equals("")) {
-        			return error;
-        		}	
-        	    error = beforeCompleteIsControlLimitPrice(po);
-        	    if (!error.equals("")) {
-        			return error;
-        		}	
-                error = beforeCompleteOrderControlCreditStop(po);
+        	    //error = beforeCompleteIsControlLimitPrice(po);
+        	    //if (!error.equals("")) {
+        		//	return error;
+        		//}	
+                //error = beforeCompleteOrderControlCreditStop(po);
         	}
         }
         

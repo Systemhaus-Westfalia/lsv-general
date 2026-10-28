@@ -34,7 +34,9 @@ import org.adempiere.core.domains.models.X_E_InvoiceElectronic;
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.Adempiere;
 import org.compiere.model.MClient;
+import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
+import org.compiere.model.MMovement;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.util.Env;
@@ -160,7 +162,7 @@ public class SVMinHacienda implements IDeclarationProvider {
 	public String publishDocument(PO document) throws Exception {
 		
 		IDeclarationDocument declarationDocument = getDeclarationDocument(document);
-		MInvoice invoice = (MInvoice)document;
+		//MInvoice invoice = (MInvoice)document;
 		if(declarationDocument == null) {
 			return null;
 		}
@@ -173,7 +175,7 @@ public class SVMinHacienda implements IDeclarationProvider {
 		JSONObject identificacion =  jsonorg.getJSONObject("identificacion");
 		
 
-		testlocal = invoice.get_ValueAsString("ei_Status_Extern").equals("Firmado");
+		testlocal = document.get_ValueAsString("ei_Status_Extern").equals("Firmado");
 		if (testlocal) {
 			return "";
 		}
@@ -185,21 +187,24 @@ public class SVMinHacienda implements IDeclarationProvider {
 			documento = jsonorg.getJSONObject("documento");
 		ambiente = identificacion.getString("ambiente");
 		version = identificacion.getInt("version");
+		if (electronicInvoiceModel.getC_Invoice_ID()>0)
 		idEnvio = electronicInvoiceModel.getC_Invoice_ID();
-		
-			
-		codigoGeneracion = identificacion.getString("codigoGeneracion");
-		
-		
+		else if (electronicInvoiceModel.getM_InOut_ID()>0)
+			idEnvio = electronicInvoiceModel.getM_InOut_ID();	
+		if (electronicInvoiceModel.getM_Movement_ID()>0)
+			idEnvio = electronicInvoiceModel.getM_Movement_ID();	
+		codigoGeneracion = identificacion.getString("codigoGeneracion");		
 		String signature = getSignature(jsonorg);
+		document.set_ValueOfColumn("ei_Signature", signature);
+		document.saveEx();
 		if (!voided) {
-			tipoDte = identificacion.getString("tipoDte");
-			this.path = registration.getParameterValue(PATH); 
+			tipoDte = identificacion.has("tipoDte") ? identificacion.getString("tipoDte") : identificacion.getString("tipoEvento");
+			this.path = registration.getParameterValue(PATH);
 		}
 		else
 		{
-			tipoDte = documento.getString("tipoDte");
-			this.path = registration.getParameterValue(PATHVOIDED); 
+			tipoDte = documento.has("tipoDte") ? documento.getString("tipoDte") : documento.getString("tipoEvento");
+			this.path = registration.getParameterValue(PATHVOIDED);
 		}
 		  this.providerHost = registration.getParameterValue(PROVIDER_HOST);
 		 
@@ -236,8 +241,8 @@ public class SVMinHacienda implements IDeclarationProvider {
     	String output = response.readEntity(String.class);
     	if (response.getStatus() == 403 || status == 401) {
     		//MInvoice invoice = (MInvoice)electronicInvoiceModel.getC_Invoice();
-    		invoice.set_ValueOfColumn("ei_Status_Extern", status);
-    		invoice.saveEx();
+    		document.set_ValueOfColumn("ei_Status_Extern", status);
+    		document.saveEx();
     		return "";
     	}
     	JSONObject jsonOutput = new JSONObject(output);
@@ -254,9 +259,9 @@ public class SVMinHacienda implements IDeclarationProvider {
             }
 
         	if (estado.equals("Estado NO Valido")) {
-        		invoice.set_ValueOfColumn("ei_Status_Extern",response.getStatus());
-    			invoice.set_ValueOfColumn("ei_output", output);
-        		invoice.saveEx();
+        		document.set_ValueOfColumn("ei_Status_Extern",response.getStatus());
+        		document.set_ValueOfColumn("ei_output", output);
+        		document.saveEx();
         		return "";
         	}
         	//String estado = jsonOutput.getString("estado");
@@ -273,18 +278,19 @@ public class SVMinHacienda implements IDeclarationProvider {
 			}
     		if (descriptionMsg.contains("YA EXISTE UN REGISTRO CON ESE VALOR"))
     		{
-    			invoice.set_ValueOfColumn("ei_Status_Extern", "Firmado");
+    			document.set_ValueOfColumn("ei_Status_Extern", "Firmado");
+    			document.set_ValueOfColumn("ei_output", output);
             	System.out.println("reponse: Status " +  status + " error " + error + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-            	invoice.saveEx();
+            	document.saveEx();
             	return null;
     		}
     		else {   		
-    			invoice.set_ValueOfColumn("ei_Status_Extern",status);
-    			invoice.set_ValueOfColumn("ei_Error_Extern", error + " " + descriptionMsg);
+    			document.set_ValueOfColumn("ei_Status_Extern",status);
+    			document.set_ValueOfColumn("ei_Error_Extern", error + " " + descriptionMsg);
 
-    			invoice.set_ValueOfColumn("ei_output", output);
+    			document.set_ValueOfColumn("ei_output", output);
     			System.out.println("reponse: Status " +  status + " error " + error + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-    			invoice.saveEx();
+    			document.saveEx();
     			System.out.println("Return status false");
     			return null;
     		}
@@ -301,13 +307,15 @@ public class SVMinHacienda implements IDeclarationProvider {
         	if (completed|| estado.equals("Anulado")) {
         		System.out.println("reponse: Status " +  status + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
 
-        		invoice.set_ValueOfColumn("ei_Status_Extern", "Firmado");
+        		document.set_ValueOfColumn("ei_Status_Extern", "Firmado");
         		String sellorecibido = jsonOutput.getString("selloRecibido");
-        		invoice.set_ValueOfColumn("ei_selloRecibido",sellorecibido);
+        		document.set_ValueOfColumn("ei_selloRecibido",sellorecibido);
 
         		String fecha = jsonOutput.getString("fhProcesamiento");
         		System.out.println("Status Firmado: fecha " + fecha+ " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-        		invoice.set_ValueOfColumn("ei_dateReceived", fecha);
+        		document.set_ValueOfColumn("ei_dateReceived", fecha);
+
+    			document.set_ValueOfColumn("ei_output", output);
         		System.out.println("Invoice save" + " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
 
         		ObjectMapper mapper = new ObjectMapper();
@@ -320,7 +328,7 @@ public class SVMinHacienda implements IDeclarationProvider {
         		String finalJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
                	electronicInvoiceModel.setjson(finalJson);
                	electronicInvoiceModel.saveEx();
-        		invoice.saveEx();
+               	document.saveEx();
         		return null;
         	}
 
@@ -335,7 +343,7 @@ public class SVMinHacienda implements IDeclarationProvider {
         	if (estado.equals("Pendiente")) {
 
             	System.out.println("Save data "+ " For "+ electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-    			invoice.set_ValueOfColumn("ei_Status_Extern",status);
+            	document.set_ValueOfColumn("ei_Status_Extern",status);
     			String errorCode = isVoided()?"description":"error";
     			String error = "";
     			if (isVoided()) {
@@ -346,9 +354,9 @@ public class SVMinHacienda implements IDeclarationProvider {
             		JSONArray array = jsonOutput.getJSONArray(errorCode);
             		error = array.getString(0);
     			}
-        		invoice.set_ValueOfColumn("ei_Error_Extern", error);
+    			document.set_ValueOfColumn("ei_Error_Extern", error);
             	System.out.println("Stop " + electronicInvoiceModel.getC_Invoice().getDocumentNo() );
-            	invoice.saveEx();
+            	document.saveEx();
         	}
         }
 		return null;
@@ -367,7 +375,7 @@ public class SVMinHacienda implements IDeclarationProvider {
 	 * // 2. Integriere den Verifier in den ClientBuilder return
 	 * ClientBuilder.newBuilder() .withConfig(new ClientConfig())
 	 * .property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, true)
-	 * .hostnameVerifier(allHostsValid) // Das löst dein aktuelles Problem .build();
+	 * .hostnameVerifier(allHostsValid) // Das lï¿½st dein aktuelles Problem .build();
 	 * }
 	 */
 	
@@ -382,8 +390,9 @@ public class SVMinHacienda implements IDeclarationProvider {
 		if(entity == null) {
 			return null;
 		}
-		if(entity.get_TableName().equals(I_C_Invoice.Table_Name)) {
-			return new ElectronicInvoice((MInvoice) entity);
+		if(entity  instanceof MInvoice || entity instanceof MInOut || entity instanceof MMovement){
+			
+			return new ElectronicInvoice(entity);
 		}
 		return null;
 	}

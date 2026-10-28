@@ -7,8 +7,6 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
 
 public class IdentificacionFacturaExportacion {
 
-	static final int VERSION              = 1;
-	static final String TIPO_DE_DOCUMENTO = "11";
 	static final String TIPOMONEDA        = "USD";
 	
 	static final String VALIDATION_TIPOMODELO_FAILED_1         = "Documento: Factura de Exportacion, clase: Identificacion. Validacion fallo: valor de 'tipoModelo' no debe ser diferente a 1";
@@ -25,7 +23,7 @@ public class IdentificacionFacturaExportacion {
 	int tipoModelo;
 	int tipoOperacion;
 	Integer tipoContingencia=null;  // null possible
-	String motivoContigencia=null; // null possible
+	String motivoContin=null; // null possible
 	String fecEmi;
 	String horEmi;
 	String tipoMoneda = TIPOMONEDA;
@@ -34,8 +32,6 @@ public class IdentificacionFacturaExportacion {
 	 * No parameters
 	 */
 	public IdentificacionFacturaExportacion() {
-		this.version    = VERSION;
-		this.tipoDte    = TIPO_DE_DOCUMENTO;
 		this.tipoMoneda = TIPOMONEDA;
 	}
 	
@@ -48,7 +44,7 @@ public class IdentificacionFacturaExportacion {
 				return VALIDATION_TIPOMODELO_FAILED_1;
 			if (getTipoContingencia() != null) 
 				return VALIDATION_TIPOCONTINGENCIA_NOT_NULL;
-			if (getMotivoContigencia() != null) 
+			if (getMotivoContin() != null) 
 				return VALIDATION_MOTIVOCONTINGENCIA_NOT_NULL;
 		} else  {
 			if (getTipoModelo() != 2) 
@@ -57,7 +53,7 @@ public class IdentificacionFacturaExportacion {
 		
 		if(getTipoContingencia()!=null && getTipoContingencia()==5) {
 			// In schema: "motivoContingencia" : {"type" : "string"}
-			if(getMotivoContigencia()==null)
+			if(getMotivoContin()==null)
 		        return VALIDATION_MOTIVOCONTINGENCIA_IS_NULL;
 		}
 		
@@ -189,8 +185,8 @@ public class IdentificacionFacturaExportacion {
 	/**
 	 * @return the motivoContingencia
 	 */
-	public String getMotivoContigencia() {
-		return motivoContigencia;
+	public String getMotivoContin() {
+		return motivoContin;
 	}
 
 
@@ -199,13 +195,13 @@ public class IdentificacionFacturaExportacion {
 	 * The parameter is validated.<br>
 	 * "minLength" : 1, "maxLength" : 500; null permitted
 	 */
-	public void setMotivoContigencia(String motivoContingencia) {
+	public void setMotivoContin(String motivoContin) {
 		final int MINLENGTH = 1;		
 		final int MAXLENGTH = 500;
-		int length = motivoContingencia==null?0:motivoContingencia.length();
+		int length = motivoContin==null?0:motivoContin.length();
 		
-		if( (length>=MINLENGTH && length<=MAXLENGTH ) || (motivoContingencia==null) )
-			this.motivoContigencia = motivoContingencia;
+		if( (length>=MINLENGTH && length<=MAXLENGTH ) || (motivoContin==null) )
+			this.motivoContin = motivoContin;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'motivoContingencia' in FacturaExportacion.Identificacion.setMotivoContingencia()" + "\n");
 	}

@@ -18,13 +18,13 @@ public class ReceptorFactura {
 
 	String tipoDocumento=null; // null possible
 	String numDocumento=null; // null possible
-	String nrc;
+	String nrc; // null possible
 	String nombre=null; // null possible
-	String codActividad;
+	String codActividad; // null possible
 	String descActividad=null; // null possible
-	Direccion direccion;
+	Direccion direccion; // null possible
     String telefono=null; // null possible
-    String correo;
+    String correo; // null possible
 	
 	/**
 	 * No parameters
@@ -48,10 +48,7 @@ public class ReceptorFactura {
 			patternOK = (getNumDocumento()!=null) && Pattern.matches(pattern, getNumDocumento());
 			if(!patternOK)
 				return VALIDATION_NUMERODOCUMENTO_PATTERN_FAILED;
-		} else {
-			if(getNrc()!=null)
-				return VALIDATION_NRC_NOT_NULL;
-		}
+		} 
 
 		// In schema: "pattern" : "^[0-9]{8}-[0-9]{1}$"
 		if(getTipoDocumento() !=null && getTipoDocumento().equals("13")) {
@@ -101,7 +98,7 @@ public class ReceptorFactura {
 	 * "minLength" : 3, "maxLength" : 20; null also possible
 	 */
 	public void setNumDocumento(String numDocumento) {
-		final int MINLENGTH = 3;
+		final int MINLENGTH = 1;
 		final int MAXLENGTH = 20;
 		int length = numDocumento==null?0:numDocumento.length();
 		
@@ -125,13 +122,18 @@ public class ReceptorFactura {
 	 * "pattern" : "^[0-9]{1,8}$"
 	 */
 	public void setNrc(String nrc) {
-		final String PATTERN = "^[0-9]{1,8}$";
-		boolean patternOK = (nrc!=null) && Pattern.matches(PATTERN, nrc);  
+		if (nrc == null) {
+			this.nrc = nrc;
+			return;
+		}
+		final int MINLENGTH = 2;
+		final int MAXLENGTH = 8;
+		int length = nrc==null?0:nrc.length();
 		
-		if(patternOK)
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || numDocumento==null || numDocumento.length()==0 )
 			this.nrc = nrc;
 		else
-	        throw new IllegalArgumentException("Wrong expression 'nrc' in Factura.Receptor.setNrc()" + "\n");
+	        throw new IllegalArgumentException("Wrong parameter 'numDocumento' in Factura.Receptor.setNRC()" + "\n");
 	}
     
 	/**
@@ -170,9 +172,9 @@ public class ReceptorFactura {
 	 * "pattern" : "^[0-9]{2,6}$"
 	 */
 	public void setCodActividad(String codActividad) {
-		final String PATTERN = "^[0-9]{2,6}$";
-		boolean patternOK = codActividad == null ||  ((codActividad!=null) && Pattern.matches(PATTERN, codActividad));  
-		
+		final String PATTERN = "^[0-9]{5,6}$";
+		boolean patternOK = codActividad == null || Pattern.matches(PATTERN, codActividad);
+
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
@@ -252,10 +254,11 @@ public class ReceptorFactura {
 	 * "maxLength" : 100
 	 */
 	public void setCorreo(String correo) {
+		final int MINLENGTH = 6;
 		final int MAXLENGTH = 100;
 		int length = correo==null?0:correo.length();
-		
-		if(length<=MAXLENGTH)
+
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || (correo==null) )
 			this.correo = correo;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'correo' in Factura.Receptor.setCorreo()" + "\n");

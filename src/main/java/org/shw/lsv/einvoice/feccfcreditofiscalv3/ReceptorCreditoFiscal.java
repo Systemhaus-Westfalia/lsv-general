@@ -14,11 +14,11 @@ import org.shw.lsv.einvoice.utils.EDocumentUtils;
 public class ReceptorCreditoFiscal {
 
 	String nit;
-	String nrc;
+	String nrc=null;  // null possible
 	String nombre;
 	String codActividad;
 	String descActividad;
-	String nombreComercial;
+	String nombreComercial=null;  // null possible
 	Direccion direccion;
     String telefono;
     String correo;
@@ -79,9 +79,13 @@ public class ReceptorCreditoFiscal {
 	 */
 
 	public void setNrc(String nrc) {
-		final String PATTERN = "^[0-9]{1,8}$";
-		boolean patternOK = (nrc!=null) && Pattern.matches(PATTERN, nrc);  
-		
+		if (nrc == null) {
+			this.nrc = null;
+			return;
+		}
+		final String PATTERN = "^[0-9]{2,8}$";
+		boolean patternOK = Pattern.matches(PATTERN, nrc);
+
 		if(patternOK)
 			this.nrc = nrc;
 		else
@@ -128,9 +132,9 @@ public class ReceptorCreditoFiscal {
 	 */
 
 	public void setCodActividad(String codActividad) {
-		final String PATTERN = "^[0-9]{2,6}$";
-		boolean patternOK = (codActividad!=null) && Pattern.matches(PATTERN, codActividad);  
-		
+		final String PATTERN = "^[0-9]{5,6}$";
+		boolean patternOK = (codActividad!=null) && Pattern.matches(PATTERN, codActividad);
+
 		if(patternOK)
 			this.codActividad = codActividad;
 		else
@@ -152,10 +156,10 @@ public class ReceptorCreditoFiscal {
 	 */
 
 	public void setDescActividad(String descActividad) {
-		final int MINLENGTH = 1;
+		final int MINLENGTH = 5;
 		final int MAXLENGTH = 150;
 		int length = descActividad==null?0:descActividad.length();
-		
+
 		if(length>=MINLENGTH && length<=MAXLENGTH)
 			this.descActividad = descActividad;
 		else
@@ -243,10 +247,11 @@ public class ReceptorCreditoFiscal {
 	 */
 
 	public void setCorreo(String correo) {
+		final int MINLENGTH = 1;
 		final int MAXLENGTH = 100;
 		int length = correo==null?0:correo.length();
-		
-		if(length<=MAXLENGTH)
+
+		if( (length>=MINLENGTH && length<=MAXLENGTH) || (correo==null) )
 			this.correo = correo;
 		else
 	        throw new IllegalArgumentException("Wrong parameter 'correo' in CreditoFiscal.Receptor.setCorreo()" + "\n");

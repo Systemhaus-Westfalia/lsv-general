@@ -1,19 +1,21 @@
 package org.shw.lsv.einvoice.factory;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.core.domains.models.X_C_UOM;
+import org.adempiere.core.domains.models.X_E_DocType;
+import org.adempiere.core.domains.models.X_E_FiscalUnit;
+import org.adempiere.core.domains.models.X_E_Rule;
+import org.adempiere.core.domains.models.X_E_TipoRegimen;
 import org.apache.commons.lang3.StringUtils;
 import org.compiere.model.MBPartner;
 import org.compiere.model.MBPartnerLocation;
 import org.compiere.model.MCity;
 import org.compiere.model.MClient;
 import org.compiere.model.MCountry;
+import org.compiere.model.MDocType;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MInvoiceLine;
 import org.compiere.model.MInvoiceTax;
@@ -26,7 +28,6 @@ import org.compiere.util.Msg;
 import org.compiere.util.TimeUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.shw.lsv.einvoice.feccfcreditofiscalv3.CreditoFiscal;
 import org.shw.lsv.einvoice.fefcfacturaelectronicav1.Factura;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.ApendiceItemFacturaExportacion;
 import org.shw.lsv.einvoice.fefexfacturaexportacionv1.CuerpoDocumentoItemFacturaExportacion;
@@ -224,15 +225,31 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			isContigencia = true;
 		}
 
-		int tipoModelo = isContigencia?CreditoFiscal.TIPOMODELO_CONTIGENCIA:CreditoFiscal.TIPOMODELO_NOCONTIGENCIA;
-		int tipoOperacion = isContigencia?CreditoFiscal.TIPOOPERACION_CONTIGENCIA:CreditoFiscal.TIPOOPERACION_NOCONTIGENCIA;
+		int tipoModelo = isContigencia?FacturaExportacion.TIPOMODELO_CONTIGENCIA:FacturaExportacion.TIPOMODELO_NOCONTIGENCIA;
+		int tipoOperacion = isContigencia?FacturaExportacion.TIPOOPERACION_CONTIGENCIA:FacturaExportacion.TIPOOPERACION_NOCONTIGENCIA;
 		jsonObjectIdentificacion.put(FacturaExportacion.CODIGOGENERACION, codigoGeneracion);
+		X_E_DocType e_DocType =   docType_getE_DocType((MDocType)invoice.getC_DocType()) ;
+		String version = e_DocType.get_ValueAsString("E_Version");
+		jsonObjectIdentificacion.put(FacturaExportacion.VERSION, Integer.parseInt(version));
+		jsonObjectIdentificacion.put(FacturaExportacion.TIPODTE,docType_getE_DocType((MDocType)invoice.getC_DocType()).getValue());
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMODELO, tipoModelo);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOOPERACION, tipoOperacion);
 		jsonObjectIdentificacion.put(FacturaExportacion.FECEMI, invoice.getDateAcct().toString().substring(0, 10));
 		jsonObjectIdentificacion.put(FacturaExportacion.HOREMI,horEmi);
 		jsonObjectIdentificacion.put(FacturaExportacion.TIPOMONEDA, "USD");
 		jsonObjectIdentificacion.put(FacturaExportacion.AMBIENTE,  client_getE_Enviroment(client).getValue());
+
+		
+		if (isContigencia) {
+			jsonObjectIdentificacion.put(FacturaExportacion.MOTIVOCONTIN, "Contigencia por fecha de factura");
+			jsonObjectIdentificacion.put(FacturaExportacion.TIPOCONTINGENCIA, 5);
+		}
+		else
+		{
+			
+			jsonObjectIdentificacion.put(FacturaExportacion.MOTIVOCONTIN, "");
+			jsonObjectIdentificacion.put(FacturaExportacion.TIPOCONTINGENCIA, "");
+		}
 
 		System.out.println("Finish collecting JSON data for Identificacion");
 		return jsonObjectIdentificacion;
@@ -251,15 +268,44 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonObjectEmisor.put(FacturaExportacion.NOMBRECOMERCIAL, client.getName());
 		jsonObjectEmisor.put(FacturaExportacion.TIPOESTABLECIMIENTO,  client_getE_PlantType(client).getValue());
 
+
 		JSONObject jsonDireccion = new JSONObject();
-		jsonDireccion.put(FacturaExportacion.DEPARTAMENTO,  city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
-		jsonDireccion.put(FacturaExportacion.MUNICIPIO,  city_getValue((MCity)orgInfo.getC_Location().getC_City()) );
-		jsonDireccion.put(FacturaExportacion.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
-		jsonObjectEmisor.put(FacturaExportacion.DIRECCION, jsonDireccion);
-		
+		jsonDireccion.put(Factura.DEPARTAMENTO,  city_getRegionValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.DISTRITO,     city_getValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.MUNICIPIO,     city_getMunicipioValue((MCity)orgInfo.getC_Location().getC_City()));
+		jsonDireccion.put(Factura.COMPLEMENTO, orgInfo.getC_Location().getAddress1());
+		jsonObjectEmisor.put(Factura.DIRECCION, jsonDireccion);
 		jsonObjectEmisor.put(FacturaExportacion.TELEFONO, client.get_ValueAsString("phone"));
 		jsonObjectEmisor.put(FacturaExportacion.CORREO,   client_getEmail(client));
-		jsonObjectEmisor.put(FacturaExportacion.TIPOITEMEXPOR, 2);
+
+		boolean hasBienes = false, hasServicios = false;
+		for (MInvoiceLine line : invoice.getLines()) {
+			int ptype = invoiceLineProductType(line.getM_Product_ID());
+			if (ptype == 1) hasBienes = true; else hasServicios = true;
+		}
+		int tipoItemExpor = (hasBienes && hasServicios) ? 3 : hasBienes ? 1 : 2;
+		jsonObjectEmisor.put(FacturaExportacion.TIPOITEMEXPOR, tipoItemExpor);
+
+		if (tipoItemExpor != 2) {
+			// Bienes or Ambos: recintoFiscal, tipoRegimen, regimen required from orgInfo
+			int fiscalUnitId = orgInfo.get_ValueAsInt("E_FiscalUnit_ID");
+			jsonObjectEmisor.put(FacturaExportacion.RECINTOFISCAL, fiscalUnitId > 0
+					? new X_E_FiscalUnit(contextProperties, fiscalUnitId, trxName).getValue()
+					: JSONObject.NULL);
+			int tipoRegimenId = orgInfo.get_ValueAsInt("E_TipoRegimen_ID");
+			jsonObjectEmisor.put(FacturaExportacion.TIPOREGIMEN, tipoRegimenId > 0
+					? new X_E_TipoRegimen(contextProperties, tipoRegimenId, trxName).getValue()
+					: "");
+			int ruleId = orgInfo.get_ValueAsInt("E_Rule_ID");
+			jsonObjectEmisor.put(FacturaExportacion.REGIMEN, ruleId > 0
+					? new X_E_Rule(contextProperties, ruleId, trxName).getValue()
+					: JSONObject.NULL);
+		} else {
+			// Servicios: recintoFiscal, tipoRegimen and regimen must all be null
+			jsonObjectEmisor.put(FacturaExportacion.RECINTOFISCAL, JSONObject.NULL);
+			jsonObjectEmisor.put(FacturaExportacion.TIPOREGIMEN, "");
+			jsonObjectEmisor.put(FacturaExportacion.REGIMEN, JSONObject.NULL);
+		}
 
 		System.out.println("Finish collecting JSON data for Emisor");
 		return jsonObjectEmisor;
@@ -339,32 +385,46 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		BigDecimal totalGravada = Env.ZERO;	
 		String totalLetras=Msg.getAmtInWords(client.getLanguage(), invoice.getGrandTotal().setScale(2).toString());
 
+		JSONArray jsonTributosArray = new JSONArray();
 		List<MInvoiceTax> invoiceTaxes = new Query(contextProperties , MInvoiceTax.Table_Name , "C_Invoice_ID=?" , trxName)
 				.setParameters(invoice.getC_Invoice_ID())
 				.list();
 		BigDecimal totalNoGravada = Env.ZERO;
+		BigDecimal totalNoOnerosas = Env.ZERO;
 		for (MInvoiceTax invoiceTax:invoiceTaxes) {
-			
-				//totalGravada = invoiceTax.getTaxBaseAmt();
-				//break;
-					
-				if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_NSUJ)) {
-					if (invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode() != null &&
-							invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode().equals(CHARGETYPE_CTAJ))
-						totalNoGravada = invoiceTax.getTaxBaseAmt();	
-					else {					
-						totalGravada = totalGravada.add(invoiceTax.getTaxBaseAmt());
-					}
-				}
-				else if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_EXT)) {
-					totalGravada = totalGravada.add(invoiceTax.getTaxBaseAmt());
-				}
-				else if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_IVA)) {
+
+			//totalGravada = invoiceTax.getTaxBaseAmt();
+			//break;
+
+			JSONObject jsonTributoItem = new JSONObject();		
+			if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_NSUJ)) {
+				if (invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode() != null &&
+						invoiceTax.getC_Tax().getC_TaxCategory().getCommodityCode().equals(CHARGETYPE_CTAJ))
+					totalNoGravada = invoiceTax.getTaxBaseAmt();	
+				else {					
 					totalGravada = totalGravada.add(invoiceTax.getTaxBaseAmt());
 				}
 			}
+			else if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_EXT)) {
+				totalGravada = totalGravada.add(invoiceTax.getTaxBaseAmt());
+			}
+			else if (invoiceTax.getC_Tax().getTaxIndicator().equals(TAXINDICATOR_IVA)) {
+				totalGravada = totalGravada.add(invoiceTax.getTaxBaseAmt());
+				jsonTributoItem.put(FacturaExportacion.CODIGO, tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getValue());
+				jsonTributoItem.put(FacturaExportacion.DESCRIPCION, tax_getE_Duties((MTax)invoiceTax.getC_Tax()).getName());
+				jsonTributoItem.put(FacturaExportacion.VALOR, invoiceTax.getTaxAmt());
+				jsonTributosArray.put(jsonTributoItem); 
+			}
+		}
+
+		for (MInvoiceLine invoiceLine: invoice.getLines()) {
+			if (invoiceLine.getPriceActual().compareTo(Env.ZERO) == 0)
+				totalNoOnerosas = totalNoOnerosas.add(invoiceLine.getPriceLimit());
+		}
 				
 		JSONObject jsonObjectResumen = new JSONObject();
+
+		jsonObjectResumen.put(FacturaExportacion.TRIBUTOS, jsonTributosArray);
 		jsonObjectResumen.put(FacturaExportacion.TOTALGRAVADA, totalGravada);
 		jsonObjectResumen.put(FacturaExportacion.PORCENTAJEDESCUENTO, Env.ZERO);
 		jsonObjectResumen.put(FacturaExportacion.TOTALNOGRAVADO, totalNoGravada);
@@ -372,10 +432,13 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 		jsonObjectResumen.put(FacturaExportacion.TOTALLETRAS, totalLetras);
 		jsonObjectResumen.put(FacturaExportacion.CONDICIONOPERACION, FacturaExportacion.CONDICIONOPERACION_A_CREDITO);
 		jsonObjectResumen.put(FacturaExportacion.TOTALDESCU, Env.ZERO);
-		jsonObjectResumen.put(FacturaExportacion.DESCUENTO, Env.ZERO);
+		//jsonObjectResumen.put(FacturaExportacion.DESCUENTO, Env.ZERO);
+		jsonObjectResumen.put(FacturaExportacion.DESCUGRAVADA, Env.ZERO);
 		jsonObjectResumen.put(FacturaExportacion.MONTOTOTALOPERACION, totalGravada);
+		jsonObjectResumen.put(FacturaExportacion.SALDOFAVOR, Env.ZERO);
 		jsonObjectResumen.put(FacturaExportacion.SEGURO, Env.ZERO);
 		jsonObjectResumen.put(FacturaExportacion.FLETE, Env.ZERO);
+		jsonObjectResumen.put(FacturaExportacion.TOTALNOONEROSAS, totalNoOnerosas);
 		
 		
 
@@ -428,12 +491,13 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 			
 			JSONObject jsonCuerpoDocumentoItem = new JSONObject();
 
-			jsonCuerpoDocumentoItem.put(Factura.NUMITEM, i);
-			jsonCuerpoDocumentoItem.put(Factura.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.NUMITEM, i);
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.CODTRIBUTO, "");
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.NUMDOCUMENTO, "");
+			jsonCuerpoDocumentoItem.put(FacturaExportacion.TIPOITEM, invoiceLineProductType(invoiceLine.getM_Product_ID()));
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.CANTIDAD, invoiceLine.getQtyEntered());
 			jsonCuerpoDocumentoItem.put(FacturaExportacion.CODIGO, invoiceLine.getM_Product_ID()>0? 
 					invoiceLine.getProduct().getValue(): invoiceLine.getC_Charge().getC_ChargeType().getValue());
-			
 			JSONArray jsonTributosArray = new JSONArray();
 
 			String name = "";
@@ -488,7 +552,10 @@ public class FacturaExportacionFactory extends EDocumentFactory {
 				replace(":[],", ":null,").
         		replace("\"periodo\":0,\"plazo\":\"01\"", "\"periodo\":null,\"plazo\":null").
         		replace("\"descActividad\":\"\"", "\"descActividad\":null").
+        		replace("\"tipoRegimen\":\"\"", "\"tipoRegimen\":null").
+        		replace("\"codTributo\":\"\"", "\"codTributo\":null").
         		replace("\"codActividad\":\"\"", "\"codActividad\":null").
+        		replace("\"numeroDocumento\":\"\"", "\"numeroDocumento\":null").
 				replace("\"documentoRelacionado\":[]", "\"documentoRelacionado\":null").
 				replace("\"ventaTercero\":{\"nit\":null,\"nombre\":null},", "\"ventaTercero\":null,").
 				replace("\"tributos\":[{\"descripcion\":null,\"codigo\":null,\"valor\":null}]", "\"tributos\":null").

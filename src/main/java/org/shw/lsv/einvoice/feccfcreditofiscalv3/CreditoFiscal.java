@@ -34,7 +34,7 @@ public class CreditoFiscal extends EDocument {
 	VentaTerceroCreditoFiscal ventaTercero = null;
 	List<CuerpoDocumentoItemCreditoFiscal> cuerpoDocumento;
 	ResumenCreditoFiscal resumen;
-	ExtensionCreditoFiscal extension;
+	//ExtensionCreditoFiscal extension;
 	List<ApendiceItemCreditoFiscal> apendice=null;  // null allowed
 
 	/**
@@ -50,7 +50,7 @@ public class CreditoFiscal extends EDocument {
 		this.ventaTercero         = new VentaTerceroCreditoFiscal();
 	    this.cuerpoDocumento      = new ArrayList<CuerpoDocumentoItemCreditoFiscal>();	
 		this.resumen              = new ResumenCreditoFiscal();
-		this.extension            = new ExtensionCreditoFiscal();
+		//this.extension            = new ExtensionCreditoFiscal();
 	    this.apendice             = new ArrayList<ApendiceItemCreditoFiscal>();
 	}
 	
@@ -84,6 +84,8 @@ public class CreditoFiscal extends EDocument {
 		System.out.println("Start Credito Fiscal.fillIdentificacion()"); 
 
 		JSONObject identificationJson = factoryInput.getJSONObject(IDENTIFICACION);
+		try {identificacion.setVersion(identificationJson.getInt(VERSION));} 						catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_IDENTIFICACION + e);}
+		try {identificacion.setTipoDte(identificationJson.getString(TIPODTE));} 					catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_IDENTIFICACION + e);}
 		try {identificacion.setNumeroControl(identificationJson.getString(NUMEROCONTROL));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_IDENTIFICACION + e);}
 		try {identificacion.setCodigoGeneracion(identificationJson.getString(CODIGOGENERACION));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_IDENTIFICACION + e);}
 		try {identificacion.setTipoModelo(identificationJson.getInt(TIPOMODELO));} 					catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_IDENTIFICACION + e);}
@@ -161,12 +163,13 @@ public class CreditoFiscal extends EDocument {
 		try {emisor.setCodActividad(emisorJson.getString(CODACTIVIDAD));} 					catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}
 		try {emisor.setDescActividad(emisorJson.getString(DESCACTIVIDAD));} 				catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}
 		try {emisor.setNombreComercial(emisorJson.getString(NOMBRECOMERCIAL));} 			catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}		
-		try {emisor.setTipoEstablecimiento(emisorJson.getString(TIPOESTABLECIMIENTO));}		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}	
+		//try {emisor.setTipoEstablecimiento(emisorJson.getString(TIPOESTABLECIMIENTO));}		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}	
 
 		JSONObject jsonDireccion = emisorJson.getJSONObject(DIRECCION);
 		try {emisor.getDireccion().setDepartamento(jsonDireccion.getString(DEPARTAMENTO));}	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}
 		try {emisor.getDireccion().setMunicipio(jsonDireccion.getString(MUNICIPIO));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}
 		try {emisor.getDireccion().setComplemento(jsonDireccion.getString(COMPLEMENTO));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}
+		try {emisor.getDireccion().setDistrito(jsonDireccion.getString(DISTRITO));}			catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}
 
 		try {emisor.setTelefono(emisorJson.getString(TELEFONO));} 							catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}
 		try {emisor.setCorreo(emisorJson.getString(CORREO));} 								catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EMISOR + e);}
@@ -204,6 +207,7 @@ public class CreditoFiscal extends EDocument {
 		try {receptor.getDireccion().setDepartamento(jsonDireccion.getString(DEPARTAMENTO));}	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RECEPTOR + e);}
 		try {receptor.getDireccion().setMunicipio(jsonDireccion.getString(MUNICIPIO));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RECEPTOR + e);}
 		try {receptor.getDireccion().setComplemento(jsonDireccion.getString(COMPLEMENTO));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RECEPTOR + e);}
+		try {receptor.getDireccion().setDistrito(jsonDireccion.getString(DISTRITO));} 			catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RECEPTOR + e);}
 
 		try {receptor.setTelefono(receptorJson.getString(TELEFONO));} 							catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RECEPTOR + e);}
 		try {receptor.setCorreo(receptorJson.getString(CORREO));} 								catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RECEPTOR + e);}
@@ -341,7 +345,7 @@ public class CreditoFiscal extends EDocument {
 		try {resumen.setDescuGravada(resumenJson.getBigDecimal(DESCUGRAVADA));} 				catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
 		try {resumen.setPorcentajeDescuento(resumenJson.getBigDecimal(PORCENTAJEDESCUENTO));}	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
 		try {resumen.setSubTotal(resumenJson.getBigDecimal(SUBTOTAL));} 						catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
-		try {resumen.setIvaRete1(resumenJson.getBigDecimal(IVARETE1));} 						catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
+		try {resumen.setIvaRete(resumenJson.getBigDecimal(IVARETE));} 						catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
 		try {resumen.setMontoTotalOperacion(resumenJson.getBigDecimal(MONTOTOTALOPERACION));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
 		try {resumen.setTotalNoGravado(resumenJson.getBigDecimal(TOTALNOGRAVADO));} 			catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
 		try {resumen.setTotalPagar(resumenJson.getBigDecimal(TOTALPAGAR));} 					catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
@@ -349,8 +353,8 @@ public class CreditoFiscal extends EDocument {
 		try {resumen.setSaldoFavor(resumenJson.getBigDecimal(SALDOFAVOR));} 					catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
 		try {resumen.setCondicionOperacion(resumenJson.getInt(CONDICIONOPERACION));} 			catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
 		try {resumen.setTotalDescu(resumenJson.getBigDecimal(TOTALDESCU));} 					catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
-		try {resumen.setReteRenta(resumenJson.getBigDecimal(RETERENTA));} 						catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
-		try {resumen.setIvaPerci1(resumenJson.getBigDecimal(IVAPERCI1));} 						catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
+		//try {resumen.setReteRenta(resumenJson.getBigDecimal(RETERENTA));} 						catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
+		try {resumen.setIvaPerci(resumenJson.getBigDecimal(IVAPERCI));} 						catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_RESUMEN + e);}
 
 		JSONArray pagosItemsJson = resumenJson.getJSONArray(PAGOS);
 		JSONObject pagosItemJson = pagosItemsJson.getJSONObject(0);
@@ -367,46 +371,6 @@ public class CreditoFiscal extends EDocument {
 		System.out.println("End CreditoFiscal.fillResumen()"); 
 		return errorMessages;
 	}
-
-
-	/**
-	 * @return the extension
-	 */
-	public ExtensionCreditoFiscal getExtension() {
-		return extension;
-	}
-
-
-	/**
-	 * @param extension the extension to set
-	 */
-	public void setExtension(ExtensionCreditoFiscal extension) {
-		this.extension = extension;
-	}
-
-	public StringBuffer fillExtension(JSONObject factoryInput) {
-		System.out.println("Start CreditoFiscal.fillExtension()"); 
-
-		JSONObject extensionJson = factoryInput.getJSONObject(EXTENSION);
-		if (!extensionJson.getString(NOMBENTREGA).equals("")) 
-			try {extension.setNombEntrega(extensionJson.getString(NOMBENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
-		
-		if (!extensionJson.getString(DOCUENTREGA).equals("")) 
-			try {extension.setDocuEntrega(extensionJson.getString(DOCUENTREGA));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
-		
-		if (!extensionJson.getString(NOMBRECIBE).equals("")) 
-			try {extension.setNombRecibe(extensionJson.getString(NOMBRECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
-		if (!extensionJson.getString(DOCURECIBE).equals("")) 
-			try {extension.setDocuRecibe(extensionJson.getString(DOCURECIBE));} 		catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
-		if (!extensionJson.getString(OBSERVACIONES).equals("")) 
-			try {extension.setObservaciones(extensionJson.getString(OBSERVACIONES));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
-		if (!extensionJson.getString(PLACAVEHICULO).equals("")) 
-		try {extension.setPlacaVehiculo(extensionJson.getString(PLACAVEHICULO));} 	catch (Exception e) {errorMessages.append(ERROR_CREDITO_FISCAL_EXTENSION + e);}
-
-		System.out.println("End CreditoFiscal.fillExtension()"); 
-		return errorMessages;
-	}
-
 
 
 	/**
