@@ -348,7 +348,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 
 		jsonObjectResumen.put(NotaDeCredito.MONTOTOTALOPERACION, montoTotalOperacion);
 		jsonObjectResumen.put("ivaPerci",                        ivaPerci);
-		jsonObjectResumen.put("totalIva",                        totalIva);
+		jsonObjectResumen.put("totalIva",                        Env.ZERO);
 		jsonObjectResumen.put("ivaRete",                         ivaRete);
 		jsonObjectResumen.put(NotaDeCredito.TOTALNOGRAVADO,      totalNoGravada);
 		jsonObjectResumen.put(NotaDeCredito.TOTALPAGAR,          totalPagar);
@@ -418,7 +418,8 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.UNIMEDIDA,     uom_getValue((X_C_UOM)invoiceLine.getC_UOM()));
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.DESCRIPCION,   invoiceLine.getM_Product_ID() > 0 ?
 					invoiceLine.getM_Product().getName() : invoiceLine.getC_Charge().getName());
-			jsonCuerpoDocumentoItem.put(NotaDeCredito.PRECIOUNI,     invoiceLine.getPriceEntered());
+			// Normativa field 87: precioUni must be 0.00 for noGravado (CTAJ) charges
+			jsonCuerpoDocumentoItem.put(NotaDeCredito.PRECIOUNI,     ventanoGravada ? Env.ZERO : invoiceLine.getPriceEntered());
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.MONTODESCU,    Env.ZERO);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.VENTANOSUJ,    ventaNoSuj);
 			jsonCuerpoDocumentoItem.put(NotaDeCredito.VENTAEXENTA,   ventaExenta);
@@ -436,7 +437,7 @@ public class NotaDeCreditoFactory extends EDocumentFactory {
 					: Env.ZERO;
 			ivaReteBodySum = ivaReteBodySum.add(ivaReteItem);
 			jsonCuerpoDocumentoItem.put("ivaPerci",                  Env.ZERO);
-			jsonCuerpoDocumentoItem.put("totalIva",                  ivaItem);
+			jsonCuerpoDocumentoItem.put("totalIva",                  Env.ZERO);
 			jsonCuerpoDocumentoItem.put("ivaRete",                   ivaReteItem);
 
 			jsonCuerpoDocumentoArray.put(jsonCuerpoDocumentoItem);
