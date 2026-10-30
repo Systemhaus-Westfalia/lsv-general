@@ -58,7 +58,7 @@ public class ReceptorNotaRemision {
 	 */
 
 	public void setNrc(String nrc) {
-		if (nrc == null) {
+		if (nrc == null || nrc.length()==0) {
 			this.nrc = null;
 			return;
 		}
