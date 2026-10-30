@@ -18,6 +18,7 @@ package org.shw.lsv.util.support.provider;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -36,6 +37,7 @@ import org.compiere.model.PO;
 import org.compiere.util.Env;
 import org.compiere.util.Trx;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.HttpUrlConnectorProvider;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -188,7 +190,16 @@ public class SVMinHacienda implements IDeclarationProvider {
 		if (electronicInvoiceModel.getM_Movement_ID()>0)
 			idEnvio = electronicInvoiceModel.getM_Movement_ID();	
 		codigoGeneracion = identificacion.getString("codigoGeneracion");		
-		String signature = getSignature(jsonorg);
+		String docNo = document.get_ValueAsString("DocumentNo");
+		String signature;
+		try {
+			signature = getSignature(jsonorg);
+		} catch (ProcessingException e) {
+			String msg = "HTTP timeout signing document " + docNo + ": " + e.getMessage();
+			document.set_ValueOfColumn("ei_Error_Extern", msg);
+			document.saveEx();
+			throw new AdempiereException(msg);
+		}
 		document.set_ValueOfColumn("ei_Signature", signature);
 		document.saveEx();
 		if (!voided) {
@@ -227,7 +238,15 @@ public class SVMinHacienda implements IDeclarationProvider {
 
     	System.out.println("Signature: " + jsonSelloString);
 		Entity<String> entity = Entity.json(jsonSelloString);
-		Response response = invocationBuilder.post(entity);
+		Response response;
+		try {
+			response = invocationBuilder.post(entity);
+		} catch (ProcessingException e) {
+			String msg = "HTTP timeout posting to MH document " + docNo + ": " + e.getMessage();
+			document.set_ValueOfColumn("ei_Error_Extern", msg);
+			document.saveEx();
+			throw new AdempiereException(msg);
+		}
 		
 
 		System.out.println("Start post json for " + electronicInvoiceModel.getC_Invoice().getDocumentNo() );
@@ -375,8 +394,11 @@ public class SVMinHacienda implements IDeclarationProvider {
 	
 
 	public Client getClient() {
-		return ClientBuilder.newClient(new ClientConfig())
-		.property(HttpUrlConnectorProvider.SET_METHOD_WORKAROUND, true);
+		ClientConfig config = new ClientConfig();
+		config.property(ClientProperties.CONNECT_TIMEOUT, 10000);  // 10 seconds
+		config.property(ClientProperties.READ_TIMEOUT, 30000);     // 30 seconds
+		return ClientBuilder.newClient(config);
+
 	}
 
 	@Override
