@@ -37,6 +37,7 @@ import org.compiere.model.MInOut;
 import org.compiere.model.MInvoice;
 import org.compiere.model.MMailText;
 import org.compiere.model.MMovement;
+import org.compiere.model.MTable;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.process.ProcessInfo;
@@ -627,31 +628,32 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 
 		Trx dbTransaction = null;
 		try {
-			Integer id = document.get_ID();
-			dbTransaction = Trx.get(id.toString(), true);   
-			svMinHacienda.publishDocument(document);
-			document.set_ValueOfColumn("ei_Processing", false);
-			document.saveEx();
+			int id = document.get_ID();
+			int tableId = document.get_Table_ID();
+			dbTransaction = Trx.get(Trx.createTrxName("EI"), true);
+			// Reload document with its own dedicated transaction so the main process
+			// transaction is not held open during HTTP calls to firmador / MH API.
+			PO eiDocument = MTable.get(getCtx(), tableId).getPO(id, dbTransaction.getTrxName());
+			svMinHacienda.publishDocument(eiDocument);
+			eiDocument.set_ValueOfColumn("ei_Processing", false);
+			eiDocument.saveEx();
 			if (dbTransaction != null) {
 				dbTransaction.commit(true);
 				dbTransaction.close();
 			}
-			if (document.get_ValueAsString("ei_selloRecibido") != null) {
-				//printAndSendInvoices(invoice);
-				//sendIndividualMail(null, invoice);
+			if (eiDocument.get_ValueAsString("ei_selloRecibido") != null) {
 				System.out.println("End invoice No. " + counter + " of " + length+ "\n"+ "\n");
-
 			}
 		} catch (Exception e) {
 			String error = "Error al procesar documento #" + document.get_ID() + " " + e;
 			System.out.println(error);
 		}
 		finally {
-			if (dbTransaction != null) {							
+			if (dbTransaction != null) {
 				dbTransaction.close();
 			}
 		}
-		System.out.println("Publish document successful"); 
+		System.out.println("Publish document successful");
 
 
 	}
