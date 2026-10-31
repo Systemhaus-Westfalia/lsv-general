@@ -111,17 +111,19 @@ public class AnulacionFactory extends EDocumentFactory {
 	private JSONObject generateIdentificationInputData() {
 		System.out.println("Factura: start collecting JSON data for Identificacion");
 		codigoGeneracion = createCodigoGeneracion(invoice);
-		
+
 		JSONObject jsonObjectIdentificacion = new JSONObject();
-		String horEmi = gethorEmi();
-		String dateEmi = getfecEmi();
+		String horAnula = gethorEmi();
+		// fecAnula must equal fecEmi of the original DTE being annulled (MH validation code 027)
+		MInvoice invoiceOriginal = (MInvoice)invoice.getReversal();
+		String fecAnula = invoiceOriginal.getDateAcct().toString().substring(0, 10);
 		jsonObjectIdentificacion.put(Anulacion.AMBIENTE, client_getE_Enviroment(client).getValue());
 		jsonObjectIdentificacion.put(Anulacion.CODIGOGENERACION, codigoGeneracion);
-		jsonObjectIdentificacion.put(Anulacion.FECANULA, dateEmi);
-		jsonObjectIdentificacion.put(Anulacion.HORANULA, horEmi);
-		
+		jsonObjectIdentificacion.put(Anulacion.FECANULA, fecAnula);
+		jsonObjectIdentificacion.put(Anulacion.HORANULA, horAnula);
+
 		System.out.println("Factura: end collecting JSON data for Identificacion");
-		return jsonObjectIdentificacion;	
+		return jsonObjectIdentificacion;
 	}
 	
 	private JSONObject generateEmisorInputData() {
