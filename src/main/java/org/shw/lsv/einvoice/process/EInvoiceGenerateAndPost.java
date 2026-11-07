@@ -100,8 +100,8 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 		StringBuffer result = new StringBuffer();
 		if (isDirectPrint()) {
         
-			//MInvoice invoice = new MInvoice(getCtx(), getRecord_ID(), get_TrxName());
-			//		processInvoiceDirect(invoice);
+			MInvoice invoice = new MInvoice(getCtx(), getRecord_ID(), get_TrxName());
+				processInvoiceDirect(invoice);
 		}
 		else {
 			if (onlyinvoice|| all)
@@ -506,17 +506,9 @@ public class EInvoiceGenerateAndPost extends EInvoiceGenerateAndPostAbstract imp
 
 
 
-		System.out.println("Collecting invoices to be processed..."); 
-		/*Trx updateTransaction = Trx.get("UpdateDB_ei_Processing", true);  
-		StringBuffer sqlUpdate = new StringBuffer("UPDATE C_Invoice set ei_Processing = 'N' WHERE c_INvoice_ID = " + invoice.getC_Invoice_ID());
-		System.out.println("Set 'processing' flag so invoices cannot be processed by other processes..."+ "\n"); 
-		DB.executeUpdateEx(sqlUpdate.toString(),  invoice.get_TrxName());
-		if (updateTransaction != null) {
-			updateTransaction.commit(true);
-			updateTransaction.close();
-		}*/
+		System.out.println("Collecting invoices to be processed...");
 		try {
-			System.out.println("Start invoice No. " + invoice.getDocumentInfo()); 
+			System.out.println("Start invoice No. " + invoice.getDocumentInfo());
 			sv_minhacienda.publishDocument(invoice);
 			invoice.saveEx();
 			if (invoice.get_ValueAsString("ei_selloRecibido") != null && invoice.get_ValueAsString("ei_selloRecibido").length()>0) {
