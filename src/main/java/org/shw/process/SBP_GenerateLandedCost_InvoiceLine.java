@@ -55,8 +55,8 @@ public class SBP_GenerateLandedCost_InvoiceLine extends SBP_GenerateLandedCost_I
 	public String createLandedCost(MInvoiceLine invoiceLine) {
     	ArrayList<Object> params = new ArrayList<Object>();
     	params.add(getProjectId());
-    	params.add(getBPartnerId());
-		List<MInOut> inOuts = new Query(getCtx(), MInOut.Table_Name, "C_Project_ID=? and docstatus = 'CO' AND C_BPartner_ID=?", null)
+    	//params.add(getBPartnerId());
+		List<MInOut> inOuts = new Query(getCtx(), MInOut.Table_Name, "C_Project_ID=? and docstatus = 'CO'", null)
 				.setOnlyActiveRecords(true)
 				.setParameters(params)
 				.list();
