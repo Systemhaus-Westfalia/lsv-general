@@ -908,8 +908,8 @@ public class CalloutOrder extends CalloutEngine
 		boolean isSOTrx = Env.getContext(ctx, WindowNo, "IsSOTrx").equals("Y");
 		if (isSOTrx) {
 		 MCharge charge = new MCharge(Env.getCtx(), C_Charge_ID, null);
-	        if (charge.getC_TaxCategory().getName().equals("Cuenta ajena")
-	                || charge.getC_TaxCategory().getName().equals("No sujeto"))
+		 Boolean issplit = charge.getC_ChargeType().getValue().equals("CTAJ") ? true : false;
+	        if (issplit)
 	        {
 	            MBPartner bp = new MBPartner(Env.getCtx(), Env.getContextAsInt(ctx, WindowNo, "C_BPartner_ID"), null);
 	            mTab.setValue ("isSplitInvoice",bp.get_ValueAsBoolean("isSplitInvoice"));

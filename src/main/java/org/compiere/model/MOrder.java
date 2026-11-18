@@ -1960,9 +1960,9 @@ public class MOrder extends X_C_Order implements DocAction
 	private MInvoice createInvoice (MDocType dt, MInOut shipment, Timestamp invoiceDate)
 	{
 		log.info(dt.toString());
-		//MBPartner partner = (MBPartner)getC_BPartner();
+		MBPartner partner = (MBPartner)getC_BPartner();
 		Boolean issplit = dt.getC_DocTypeInvoice().isSplitWhenDifference() 
-				&& get_ValueAsBoolean("isSplitInvoice")
+				&& partner.get_ValueAsBoolean("isSplitInvoice")
 				&& dt.getC_DocTypeInvoice().getC_DocTypeDifference_ID()>0;
 		MOrderLine[] oLines = getLines();
 		MInvoice notaDebito = null;
@@ -1978,6 +1978,8 @@ public class MOrder extends X_C_Order implements DocAction
 		if (issplit) {			
 			//SHW SA
 			notaDebito = new MInvoice(this, dt.getC_DocTypeInvoice().getC_DocTypeDifference_ID(), invoiceDate);
+			if (getUser1_ID()>0)
+				notaDebito.setUser1_ID(getUser1_ID());
 			notaDebito.saveEx();
 		}			
 		MInvoice invoice = new MInvoice (this, dt.getC_DocTypeInvoice_ID(), invoiceDate);
