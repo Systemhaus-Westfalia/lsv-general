@@ -392,7 +392,7 @@ public class FacturaFactory extends EDocumentFactory {
 				//jsonTributosArray.put(jsonTributoItem); //tributosItems.add("20");
 			}
 			else if (invoiceTax.getC_Tax().getTaxIndicator().equals("IVA")) {
-				totalGravada = invoiceTax.getTaxBaseAmt();
+				totalGravada = invoiceTax.getTaxBaseAmt().add(invoiceTax.getTaxAmt());
 				totalIVA = invoiceTax.getTaxAmt();	
 				//jsonTributoItem.put(Factura.CODIGO, invoiceTax.getC_Tax().getE_Duties().getValue());
 				//jsonTributoItem.put(Factura.DESCRIPCION, invoiceTax.getC_Tax().getE_Duties().getName());
@@ -415,7 +415,7 @@ public class FacturaFactory extends EDocumentFactory {
 		//jsonObjectResumen.put(Factura.IVARETE1, ivaRete1);
 		jsonObjectResumen.put(Factura.IVARETE, ivaRete);
 		//jsonObjectResumen.put(Factura.RETERENTA, reteRenta);
-		jsonObjectResumen.put(Factura.MONTOTOTALOPERACION, totalGravada.add(totalNoSuj).add(totalExenta).add(totalIVA));
+		jsonObjectResumen.put(Factura.MONTOTOTALOPERACION, totalGravada.add(totalNoSuj).add(totalExenta));
 		jsonObjectResumen.put(Factura.TOTALNOGRAVADO, totalNoGravada);
 		jsonObjectResumen.put(Factura.TOTALPAGAR, invoice.getGrandTotal());
 		jsonObjectResumen.put(Factura.TOTALLETRAS, totalLetras);

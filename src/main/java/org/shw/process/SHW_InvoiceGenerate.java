@@ -600,28 +600,34 @@ public class SHW_InvoiceGenerate extends SvrProcess
 
 	private String SplitInvoice()
 	{ 
-    	Boolean isSplitInvoice = m_invoice.get_ValueAsBoolean("isSplitInvoice");
+		MBPartner partner = (MBPartner)m_invoice.getC_BPartner();
+    	Boolean isSplitInvoice = partner.get_ValueAsBoolean("isSplitInvoice")
+    			&& m_invoice.getC_DocTypeTarget().isSplitWhenDifference();
+
+		if (isSplitInvoice) {	
+			int count = 0;
+			for (MInvoiceLine line : m_invoice.getLines()) {
+				if(line.getC_Charge_ID() > 0 && line.getC_Charge().getC_ChargeType().getValue().equals("CTAJ"))
+					count++;
+			}
+			if (count==0)
+				isSplitInvoice = false;				
+		}
     	if (!isSplitInvoice)
     	{
     		m_invoice.renumberLines(10);
     		return"";
     	}
-		MDocType dt = (MDocType)m_invoice.getC_DocType();
-		if (dt.get_ValueAsBoolean("isSplitInvoice"))
-			return"";
-		int c_doctype_ID = new Query(getCtx(), MDocType.Table_Name, "isSplitInvoice ='Y'", get_TrxName())
-			.setOnlyActiveRecords(true)
-			.setClient_ID()
-			.firstId();
+		MDocType dt = (MDocType)m_invoice.getC_DocTypeTarget().getC_DocTypeDifference();
 
-		MInvoice NdD = new MInvoice((MOrder)m_invoice.getC_Order(), c_doctype_ID, m_invoice.getDateInvoiced());
+		MInvoice NdD = new MInvoice((MOrder)m_invoice.getC_Order(), dt.getC_DocTypeDifference_ID(), m_invoice.getDateInvoiced());
 		NdD.saveEx();
 		for (MInvoiceLine ivl:m_invoice.getLines(true))
 		{
 			if (ivl.getC_OrderLine_ID() <= 0)
 				continue;
 			MOrderLine oLine = (MOrderLine)ivl.getC_OrderLine();
-			if (oLine.get_ValueAsBoolean("isSplitInvoice"))
+			if (ivl.getC_Charge_ID() > 0 && ivl.getC_Charge().getC_ChargeType().getValue().equals("CTAJ"))
 			{
 				ivl.setC_Invoice_ID(NdD.getC_Invoice_ID());
 				ivl.saveEx();
