@@ -1,0 +1,18 @@
+{
+    "File": {
+        "Envelope": {
+            "Document": {
+                "admi.002.001.01": {
+                    "RltdRef": {
+                        "Ref": "2025-08-14T10:09:40"
+                    },
+                    "Rsn": {
+                        "RjctnDtTm": "2025-08-14T10:09:40",
+                        "RjctgPtyRsn": "2",
+                        "RsnDesc": "Error:  Fecha Invalida. Validar los campos de fecha."
+                    }
+                }
+            }
+        }
+    }
+}

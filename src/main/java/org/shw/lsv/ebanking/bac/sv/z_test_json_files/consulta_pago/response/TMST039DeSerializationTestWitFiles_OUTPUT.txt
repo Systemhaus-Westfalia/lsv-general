@@ -1,0 +1,20 @@
+--- Begin of TMST.039 Success Summary ---
+********************************************
+Ergebnisse der Zahlungsabfrage (TMST.039):
+********************************************
+Fr-BICFI: BAMCSVSS
+To-BICFI: AMERICA3PLX
+BizMsgIdr: 3968863
+MsgDefIdr: PYMT-BAC-TO-BAC-2025-08-12-46017
+BizSvc: swift.cbprplus.02
+CreDt: 2025-08-14T08:27:43-06:00
+
+Payment Info Status: ACSC
+Status Reason Info: Instrucciones procesadas
+
+--- Transaction Details ---
+Transaction Status ID: ACSC
+Transaction Status: ACSC
+Transaction Status Reason: Transaccion aplicada
+********************************************
+--- End of TMST.039 Success Summary ---

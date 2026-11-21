@@ -1,0 +1,197 @@
+package org.shw.lsv.ebanking.bac.sv.z_test.pago.response;
+
+import java.time.LocalDateTime;
+
+import org.shw.lsv.ebanking.bac.sv.handling.JsonProcessor;
+import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationException;
+import org.shw.lsv.ebanking.bac.sv.handling.JsonValidationExceptionCollector;
+import org.shw.lsv.ebanking.bac.sv.misc.EBankingConstants;
+import org.shw.lsv.ebanking.bac.sv.misc.Rejection;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfn;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnDocument;
+import org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseEvtNtfnEnvelope;
+
+public class PAIN001DeSerializationSystemEventNotificationTestWithoutFile {
+    public static void main(String[] args) {
+        boolean testSuccess = true; // Set to false to test the error case
+        LocalDateTime now = LocalDateTime.now();
+        System.err.println("PAIN001 deserialization started at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+
+        // 1. Create collector with explicit settings
+        JsonValidationExceptionCollector collector = new JsonValidationExceptionCollector();
+        //collector.setPrintImmediately(true); // Print errors as they occur
+
+        // 2. Inject collector into processor
+        JsonProcessor processor = new JsonProcessor(collector);
+
+        // 3. Prepare test JSON (could also read from file)
+        String testJson = testSuccess ? createTestJsonOK() : createTestJsonError();
+
+        // 4. Execute deserialization
+        try {
+            System.out.println("Starting PAIN001 deserialization test...");
+            PAIN001ResponseEvtNtfn response = processor.deserialize(testJson, PAIN001ResponseEvtNtfn.class);
+
+            // 5. Check for non-fatal warnings
+            if (collector.hasErrors()) {
+                System.err.println("\nPAIN001 Deserialization succeeded with warnings/errors:\n" + collector.getAllErrors());
+            } else {
+                System.out.println("PAIN001 deserialization completed cleanly");
+            }
+
+            // 6. Check for success or rejection and print the appropriate summary
+            PAIN001ResponseEvtNtfnEnvelope envelope = response.getPain001ResponseEvtNtfnFile().getPain001ResponseEnvelope();
+            PAIN001ResponseEvtNtfnDocument document = envelope.getpAIN001ResponseEvtNtfnDocument();
+
+            if (document != null && document.getRejection() != null) {
+                System.err.println("\n--- Begin of Rejection Summary ---");
+                Rejection rejection = document.getRejection();
+                if (rejection.getRsn() != null) {
+                    System.err.println("Rejection Message Received:");
+                    System.err.println("Reason Code: " + rejection.getRsn().getRjctgPtyRsn());
+                    System.err.println("Description: " + rejection.getRsn().getRsnDesc());
+                } else {
+                    System.err.println("Rejection object present but Reason (Rsn) is null.");
+                }
+                System.err.println("--- End of Rejection Summary ---\n");
+            } else if (document != null && document.getSysEvtNtfctn() != null) {
+                System.out.println("\nPAIN001 deserialized object details:");
+                printResponseSummary(response);
+            } else {
+                System.err.println("\n\nDeserialization successful, but response document contains neither a notification nor a rejection.");
+            }
+
+        } catch (JsonValidationException e) {
+            System.err.println("\nCritical validation failures:");
+            System.err.println(e.getValidationErrors());
+        }
+    }
+
+    private static String createTestJsonOK() {
+        // Example JSON for PAIN.001 System Event Notification
+        String jsonContent =
+            "{\n" +
+            "    \"Envelope\": {\n" +
+            "        \"AppHdr\": {\n" +
+            "            \"Fr\": {\n" +
+            "                \"FIId\": {\n" +
+            "                    \"FinInstnId\": {\n" +
+            "                        \"BICFI\": \"BMILHNTE\"\n" +
+            "                    }\n" +
+            "                }\n" +
+            "            },\n" +
+            "            \"To\": {\n" +
+            "                \"FIId\": {\n" +
+            "                    \"FinInstnId\": {\n" +
+            "                        \"BICFI\": \"DUMMYMASTER\"\n" +
+            "                    }\n" +
+            "                }\n" +
+            "            },\n" +
+            "            \"BizMsgIdr\": \"8034\",\n" +
+            "            \"MsgDefIdr\": \"ADMIN.004.001.02\",\n" +
+            "            \"BizSvc\": \"swift.cbprplus.02\",\n" +
+            "            \"CreDt\": \"2024-07-23T12:47:32-06:00\"\n" +
+            "        },\n" +
+            "        \"Document\": {\n" +
+            "            \"SysEvtNtfctn\": {\n" +
+            "                \"EvtInf\": {\n" +
+            "                    \"EvtCd\": \"RCVD\",\n" +
+            "                    \"EvtDesc\": \"Solicitud recibida. Su pago se esta procesando o se procesara en la fecha indicada en el mensaje. Consulte mas tarde.\",\n" +
+            "                    \"EvtTm\": \"2024-07-23T12:47:32-06:00\"\n" +
+            "                }\n" +
+            "            }\n" +
+            "        }\n" +
+            "    }\n" +
+            "}";
+        return jsonContent;
+    }
+
+    private static String createTestJsonError() {
+        // Example JSON for a rejection message
+        String jsonContent =
+            "{\n" +
+            "    \"File\": {\n" +
+            "        \"Envelope\": {\n" +
+            "            \"Document\": {\n" +
+            "                \"admi.002.001.01\": {\n" +
+            "                    \"Rsn\": {\n" +
+            "                        \"RjctgPtyRsn\": \"27\",\n" +
+            "                        \"RsnDesc\": \"Transaccion no puede ser procesada, comuniquese con el ejecutivo.\"\n" +
+            "                    }\n" +
+            "                }\n" +
+            "            }\n" +
+            "        }\n" +
+            "    }\n" +
+            "}";
+        return jsonContent;
+    }
+
+    /*
+    * Zu erwartetes Ergebnis:
+    *
+    *
+    ********************************************
+    ********************************************
+    *** AppHdr ***
+        Fr-BICFI : BMILHNTE
+        BizMshIdr: 8034
+        BizSvc:    swift.cbprplus.02
+        CreDt:     2024-07-23T12:47:32-06:00
+        MsgDefIdr: ADMIN.004.001.02
+    ********************************************
+    *** PAIN001 (System Notification) Response Document ***
+    ********************************************
+    SysEvtNtfctn present: true
+    EvtInf present:
+    Erhaltene Variablen: true
+        EvtCd  : RCVD
+        EvtDesc: Solicitud recibida. Su pago se esta procesando o se procesara en la fecha indicada en el mensaje. Consulte mas tarde.
+        EvtTm  : 2024-07-23T12:47:32-06:00
+    ********************************************
+    ********************************************
+    *
+    */
+    private static void printResponseSummary(PAIN001ResponseEvtNtfn response) {
+        LocalDateTime now = LocalDateTime.now();
+        System.err.println("PAIN001 Deserialization finished at: " + now.format(EBankingConstants.DATETIME_FORMATTER));
+
+        PAIN001ResponseEvtNtfnEnvelope envelope = response.getPain001ResponseEvtNtfnFile().getPain001ResponseEnvelope();
+        System.out.println("PAIN001 Envelope present: " + (envelope != null));
+        if (envelope != null) {
+            PAIN001ResponseEvtNtfnDocument document = envelope.getpAIN001ResponseEvtNtfnDocument();
+            System.out.println("PAIN001 Document present: " +
+                (document != null));
+            if (document != null) {
+                System.err.println("********************************************");
+                System.err.println("********************************************");
+                System.err.println("Ergebinisse:");
+                System.err.println("*** AppHdr ***");
+                System.err.println("    Fr-BICFI : "  + envelope.getAppHdr().getFr().getfIId().getFinInstnId().getbICFI());
+                System.err.println("    BizMshIdr: "  + envelope.getAppHdr().getBizMsgIdr());
+                System.err.println("    BizSvc:    "  + envelope.getAppHdr().getBizSvc());
+                System.err.println("    CreDt:     "  + envelope.getAppHdr().getCreDt());
+                System.err.println("    MsgDefIdr: "  + envelope.getAppHdr().getMsgDefIdr());
+                System.err.println("********************************************");
+                System.err.println("*** PAIN001 (System Event Notification) Response Document ***");
+                System.err.println("********************************************");
+                System.out.println("SysEvtNtfctn present: " +
+                    (document.getSysEvtNtfctn() != null));
+                if (document.getSysEvtNtfctn() != null) {
+                    System.out.println("EvtInf present: ");
+                    System.out.println("Erhaltene Variablen: " +
+                        (document.getSysEvtNtfctn().getEvtInf() != null));
+                    if (document.getSysEvtNtfctn().getEvtInf() != null) {
+                        System.out.println("    EvtCd  : " +
+                            document.getSysEvtNtfctn().getEvtInf().getEvtCd());
+                        System.out.println("    EvtDesc: " +
+                            document.getSysEvtNtfctn().getEvtInf().getEvtDesc());
+                        System.out.println("    EvtTm  : " +
+                            document.getSysEvtNtfctn().getEvtInf().getEvtTm());
+                    }
+                }
+            }
+        }
+        System.err.println("********************************************");
+        System.err.println("********************************************");
+    }
+}

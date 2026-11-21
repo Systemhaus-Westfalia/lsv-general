@@ -1,0 +1,22 @@
+
+Critical validation failures:
+[2025-07-14 08:41:10.077][Deserialization error] Unrecognized field "file" (class org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReport), not marked as ignorable (one known property: "File"])
+ at [Source: (String)"{
+    "file": {
+        "Envelope": {
+            "AppHdr": {
+                "Fr": {
+                    "FIId": {
+                        "FinInstnId": {
+                            "BICFI": "AMERICA3PLX"
+                        }
+                    }
+                },
+                "To": {
+                    "FIId": {
+                        "FinInstnId": {
+                            "BICFI": "BCINPAPA"
+                        }
+                    }
+                },
+                ""[truncated 636 chars]; line: 2, column: 14] (through reference chain: org.shw.lsv.ebanking.bac.sv.pain001.response.PAIN001ResponseStatusReport["file"])

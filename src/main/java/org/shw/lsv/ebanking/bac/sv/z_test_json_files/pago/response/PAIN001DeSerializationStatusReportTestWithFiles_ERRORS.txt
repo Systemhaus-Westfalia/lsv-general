@@ -1,0 +1,4 @@
+
+Critical validation failures:
+[2025-08-14 01:59:50.276][Parameter with value 'null' is not allowed] AppHdr cannot be null
+[2025-08-14 01:59:50.276][Deserialization error] Deserialization validation failed

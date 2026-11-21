@@ -1,0 +1,2 @@
+
+JSON validation failure: Required JSON path is missing. Failed at segment 'AppHdr' in path: File.Envelope.AppHdr.BizMsgIdr
