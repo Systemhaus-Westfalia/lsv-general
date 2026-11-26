@@ -201,7 +201,7 @@ public abstract class EDocumentFactory {
 //				+ " WHERE AD_LANGUAGE = 'es_SV' AND C_Invoice_ID=?";
 		String infoInvoice = DB.getSQLValueStringEx(null, sqlApendice, invoiceID);
 		if (infoInvoice == null || infoInvoice.length()==0)
-			infoInvoice = " ";
+			infoInvoice = "";
 		ArrayList<String> info = new ArrayList<String>();
 		int part = 150;
 		if (infoInvoice.length()<= 150) {
@@ -222,7 +222,7 @@ public abstract class EDocumentFactory {
 			JSONObject jsonApendiceItem = new JSONObject();
 			jsonApendiceItem.put(EDocument.CAMPO, "Info");
 			jsonApendiceItem.put(EDocument.ETIQUETA, "Descripcion");
-			jsonApendiceItem.put(EDocument.VALOR, info.get(i));
+			jsonApendiceItem.put(EDocument.VALOR, "0" + info.get(i));
 			jsonTributosArray.put(jsonApendiceItem);
 		}
 		
