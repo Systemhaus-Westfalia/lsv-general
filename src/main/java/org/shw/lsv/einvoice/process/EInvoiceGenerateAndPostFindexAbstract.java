@@ -31,9 +31,39 @@ public abstract class EInvoiceGenerateAndPostFindexAbstract extends SvrProcess {
 	private static final String NAME_FOR_PROCESS = "EInvoiceGenerateAndPostFindex";
 	/** Process Id 	*/
 	private static final int ID_FOR_PROCESS = 54983;
+	/**	Parameter Name for Client	*/
+	public static final String AD_CLIENT_ID = "AD_Client_ID";
+	/**	Parameter Name for Invoice	*/
+	public static final String C_INVOICE_ID = "C_Invoice_ID";
+	/**	Parameter Value for Client	*/
+	private int clientId;
+	/**	Parameter Value for Invoice	*/
+	private int invoiceId;
 
 	@Override
 	protected void prepare() {
+		clientId = getParameterAsInt(AD_CLIENT_ID);
+		invoiceId = getParameterAsInt(C_INVOICE_ID);
+	}
+
+	/**	 Getter Parameter Value for Client	*/
+	protected int getClientId() {
+		return clientId;
+	}
+
+	/**	 Setter Parameter Value for Client	*/
+	protected void setClientId(int clientId) {
+		this.clientId = clientId;
+	}
+
+	/**	 Getter Parameter Value for Invoice	*/
+	protected int getInvoiceId() {
+		return invoiceId;
+	}
+
+	/**	 Setter Parameter Value for Invoice	*/
+	protected void setInvoiceId(int invoiceId) {
+		this.invoiceId = invoiceId;
 	}
 
 	/**	 Getter Parameter Value for Process ID	*/

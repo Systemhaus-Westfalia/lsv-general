@@ -28,7 +28,7 @@ import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Trx;
-import org.shw.lsv.util.support.provider.Findex;
+import org.shw.lsv.util.support.findex.Findex;
 import org.spin.model.MADAppRegistration;
 
 /** Generated Process for (EI_CreateInvoice_Electronic)
@@ -199,6 +199,9 @@ public class EInvoiceGenerateAndPostFindex extends EInvoiceGenerateAndPostFindex
 		findex.setAppRegistrationId(registration.getAD_AppRegistration_ID() );
 
 		String whereClause = IGenerateAndPost.getWhereclause(false);
+		if (getInvoiceId()>0)
+			whereClause = whereClause + " AND C_Invoice_ID=" + getInvoiceId();
+			
 	
 		try {
 			int[] invoiceIds = new Query(Env.getCtx(), MInvoice.Table_Name, whereClause, null)

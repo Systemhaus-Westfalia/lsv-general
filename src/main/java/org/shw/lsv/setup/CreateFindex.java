@@ -20,7 +20,7 @@ import java.util.Properties;
 
 import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.Query;
-import org.shw.lsv.util.support.provider.Findex;
+import org.shw.lsv.util.support.findex.Findex;
 import org.spin.model.MADAppRegistration;
 import org.spin.model.MADAppSupport;
 import org.spin.util.ISetupDefinition;
