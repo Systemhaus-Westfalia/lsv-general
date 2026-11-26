@@ -43,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.shw.lsv.util.support.IDeclarationDocument;
 import org.shw.lsv.util.support.IDeclarationProvider;
+import org.shw.lsv.util.support.findex.Findex;
 import org.spin.model.MADAppRegistration;
 
 import com.fasterxml.jackson.annotation.JsonInclude;  

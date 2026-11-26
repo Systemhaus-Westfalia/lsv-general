@@ -28,7 +28,7 @@ import org.compiere.model.Query;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
 import org.compiere.util.Trx;
-import org.shw.lsv.util.support.provider.Findex;
+import org.shw.lsv.util.support.findex.Findex;
 import org.spin.model.MADAppRegistration;
 
 /** Generated Process for (EInvoiceGenerateAndPost_Voided)
